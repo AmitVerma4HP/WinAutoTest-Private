@@ -6,7 +6,6 @@
 
 
 .classpath
-*.xml
 *.prefs
 .settings/org.eclipse.m2e.core.prefs
 .settings/*.prefs

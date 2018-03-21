@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" packages="main.resources">
+
+  <Properties>
+    <Property name="filename">logs/TestLogs/test.log</Property>
+  </Properties>
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyyMMdd-HHmmss} [%t] %M- %msg%n" />
+		</Console>
+		
+	   <RollingFile name="RollingFile" fileName="${filename}"
+                       filePattern="logs/TestLogs/test-%d{yyyy-MM-dd-hh-mm-ss}.log">
+		<PatternLayout>
+			<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %M- %msg%n
+			</pattern>
+		</PatternLayout>
+		<Policies>
+		  <OnStartupTriggeringPolicy />				
+		</Policies>
+	</RollingFile>
+	</Appenders>
+	
+		
+	<Loggers>
+<!-- 	    <Logger name="com.hp.mobile" level="info" additivity="false"> -->
+<!--       	<AppenderRef ref="Console"/> -->
+<!--       	<AppenderRef ref="RollingFile"/>	 -->
+<!--     	</Logger> -->
+
+		<Root level="info">
+			<AppenderRef ref="Console" level="info"/>
+			<AppenderRef ref="RollingFile" level="info"/>
+		</Root>
+	</Loggers>
+</Configuration>

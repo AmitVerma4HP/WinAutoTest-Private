@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>MS</groupId>
+  <artifactId>WinAutoTest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>WinAutoTest</name>
+  <url>http://maven.apache.org</url>
+  
+  
+<build>
+	<sourceDirectory>${basedir}/src/</sourceDirectory>
+		<plugins>
+			<!-- Compiler plug-in -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${jdk.level}</source>
+					<target>${jdk.level}</target>
+					<outputDirectory>${basedir}/target/</outputDirectory>
+				</configuration>
+			</plugin>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+				<suiteXmlFiles>
+    					<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+				</suiteXmlFiles> 
+		<!-- 		<suiteXmlFiles>
+					TestNG suite XML files 
+					<suiteXmlFile>testsuite/mopria_ui_tests.xml</suiteXmlFile>
+                   	<suiteXmlFile>testsuite/mopria_printer_discovery.xml</suiteXmlFile>
+     				<suiteXmlFile>testsuite/mopria_addPrinter_tests.xml</suiteXmlFile> 
+ 					<suiteXmlFile>testsuite/mopria_pageOptions_tests.xml</suiteXmlFile> 
+     				<suiteXmlFile>testsuite/testsuite_UI_Tests.xml</suiteXmlFile> 
+ 				</suiteXmlFiles> -->
+				</configuration>
+			</plugin>
+</plugins>
+</build>
+
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+
+  <dependencies>
+  
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<!-- 	<dependency> -->
+<!-- 	    <groupId>org.seleniumhq.selenium</groupId> -->
+<!-- 	    <artifactId>selenium-java</artifactId> -->
+<!-- 	    <version>3.10</version> -->
+<!-- 	</dependency> -->
+	
+	<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+	<dependency>
+	    <groupId>org.testng</groupId>
+	    <artifactId>testng</artifactId>
+	    <version>6.14.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-server</artifactId>
+	    <version>3.6.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-remote-driver -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-remote-driver</artifactId>
+	    <version>3.6.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
+	<dependency>
+	    <groupId>io.appium</groupId>
+	    <artifactId>java-client</artifactId>
+	    <version>5.0.4</version>
+	</dependency>
+	
+	
+	
+	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	<dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.8.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+	<dependency>
+	    <groupId>com.google.guava</groupId>
+	    <artifactId>guava</artifactId>
+	    <version>23.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-support -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-support</artifactId>
+	    <version>3.6.0</version>
+	</dependency>
+	
+		<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-java</artifactId>
+	    <version>3.6.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20180130</version>
+	</dependency>
+	
+ 	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core --> 
+	<dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-core</artifactId>
+	    <version>2.10.0</version>
+	</dependency>
+  </dependencies>
+</project>
