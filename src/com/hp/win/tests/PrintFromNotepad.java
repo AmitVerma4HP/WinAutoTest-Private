@@ -45,15 +45,15 @@ public class PrintFromNotepad {
         try {
     	    capabilities = new DesiredCapabilities();
             capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
-            capabilities.setCapability("appArguments", "test1.txt");
-            capabilities.setCapability("appWorkingDir", "C:\\SourceFile\\");
+            capabilities.setCapability("appArguments", "NotepadTestFile.txt");
+            capabilities.setCapability("appWorkingDir", "C:\\TestFiles\\");
             capabilities.setCapability("platformName", "Windows");
             capabilities.setCapability("deviceName", "VERAMIT6");
             NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
             Assert.assertNotNull(NotepadSession);
             NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             
-            System.out.println("Open test1.txt file");
+            log.info("Open test1.txt file");
             
            openPrintQueue("HP ENVY 5530 Series Class Driver");   
          
@@ -70,37 +70,37 @@ public class PrintFromNotepad {
     {
     	// Go to file Menu
     	NotepadSession.findElementByName("File").click();
-    	System.out.println("Clicked on File Menu Successfully in Notepad");
+    	log.info("Clicked on File Menu Successfully in Notepad");
     	 
     	// Save the file
     	NotepadSession.findElementByXPath("//MenuItem[starts-with(@Name, \"Save\")]").click();
-        System.out.println("Pressed Save button to Save the File");
+        log.info("Pressed Save button to Save the File");
     	
          
         // Go to file Menu
 	    NotepadSession.findElementByName("File").click();
-	    System.out.println("Clicked on File Menu Successfully in Notepad");
+	    log.info("Clicked on File Menu Successfully in Notepad");
 	    	
 	    	
     	// Tap on Print
     	NotepadSession.findElementByXPath("//MenuItem[starts-with(@Name, \"Print\")]").click();
-    	System.out.println("Clicked on File -> Print option Successfully");
+    	log.info("Clicked on File -> Print option Successfully");
     	
     	//Select WiFi Printer
     	NotepadSession.findElementByName("HP ENVY 5530 Series Class Driver").click();
-    	System.out.println("Selected Printer Successfully");
+    	log.info("Selected Printer Successfully");
     	
     	//Tap on print icon (Give Print)
     	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
-    	System.out.println("Pressed Print Button Successfully");
+    	log.info("Pressed Print Button Successfully");
 	
     	
-    	System.out.println("Handles from Notepad Session");
+    	log.info("Handles from Notepad Session");
     	//currentWindowHandle = NotepadSession.getWindowHandle();
     	allWindowHandles = NotepadSession.getWindowHandles();
     	for (String handle :allWindowHandles) {
-    	    System.out.println("Notepad:" + handle);
-    	    System.out.println("\n");
+    	    log.info("Notepad:" + handle);
+    	    log.info("\n");
     	}
 	}
 
@@ -126,9 +126,9 @@ public class PrintFromNotepad {
 	    WebElement printerQueueWindow = DesktopSession.findElementByName("HP ENVY 5530 Series Class Driver - Offline");
     	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
     	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
-    	System.out.println("int value:" + nativeWindowHandle);
+    	log.info("int value:" + nativeWindowHandle);
     	String printerQueueTopWindowHandle  = ("0x" + Integer.toHexString(printerQueueWindowHandle));
-    	System.out.println("Hex Value:" + printerQueueTopWindowHandle);
+    	log.info("Hex Value:" + printerQueueTopWindowHandle);
 
     	// Create a new session by attaching to an existing application top level window
     	DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -137,13 +137,13 @@ public class PrintFromNotepad {
     	capabilities.setCapability("platformName", "Windows");
         capabilities.setCapability("deviceName", "mannala7");
         PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
-    	System.out.println("Queue session created: " + PrintQueueSession );
+    	log.info("Queue session created: " + PrintQueueSession );
     	
     	// Ensure you have Correct Print Queue opened
     	//Assert.assertNotNull(PrintQueueSession.findElementByXPath("//TitleBar//[)
     	
     	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains("HP ENVY 5530 Series Class Driver - Offline"));
-	    System.out.println("Double checked that we opened correct printer queue => ");
+	    log.info("Double checked that we opened correct printer queue => ");
 	    		    
 	    //Validate Job Name
 	   // Assert.assertTrue(DesktopSession.findElementByXPath("SysListView32//[starts-with(@Name, \"test1.txt - Notepad\")]").getText().contains("test1 - Notepad"),"Expected Print Job NOT FOUND in Print Queue");
@@ -174,10 +174,10 @@ public class PrintFromNotepad {
 		try {		
 			process = new ProcessBuilder("rundll32.exe","printui.dll","PrintUIEntry","/o","/n",printerName).start();
 			PrintFromNotepad.startBuilder(process);
-			System.out.println("Opened printer queue => " +printerName);
+			log.info("Opened printer queue => " +printerName);
 			
 		} catch (Exception e) {
-			System.out.println("Error Occured while getting device property");
+			log.info("Error Occured while getting device property");
 			e.printStackTrace();
 
 		}
