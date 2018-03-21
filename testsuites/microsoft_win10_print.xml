@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Test suite - Printing Tests">
+ 
+<!-- **************************************** PRINTING TESTS ******************************************************** -->
+  
+  <test verbose="2" name="Printing Test from Notepad - Device Under test (VERAMIT6) => Printer Under Test (EPSON XP-430 Series)">
+    	<parameter name="device_name" value="VERAMIT6" />
+     	<parameter name="ptr_name" value="EPSON XP-430 Series" /> 
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+ 
+ <!-- **************************************** PRINTING TESTS ******************************************************** -->
+  
+  </suite>
+  
+   
+ 

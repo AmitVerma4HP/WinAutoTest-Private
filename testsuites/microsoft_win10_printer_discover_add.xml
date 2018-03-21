@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Test suite - Printer Discovery and Addition">
+ 
+<!-- **************************************** PRINTER DISCOVERY & ADDITION TESTS ******************************************************** -->
+  
+  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer Under Test (EPSON XP-430 Series)">
+    	<parameter name="device_name" value="VERAMIT6" />
+     	<parameter name="ptr_name" value="EPSON XP-430 Series" /> 
+		
+    <classes>
+         <class name="com.hp.win.tests.DiscoverAddPrinter"/>
+    </classes>
+  </test>
+ 
+ <!-- **************************************** PRINTER DISCOVERY & ADDITION TESTS ******************************************************** -->
+  
+  </suite>
+  
+   
+ 

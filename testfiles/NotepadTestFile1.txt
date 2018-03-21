@@ -1,0 +1,7 @@
+************************ NOTEPAD TEST FILE *****************************************
+
+
+This is notepad test file to be printed via automated  tests on Windows 10
+
+
+************************ NOTEPAD TEST FILE *****************************************

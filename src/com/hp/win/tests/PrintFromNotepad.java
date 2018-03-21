@@ -1,10 +1,10 @@
 package com.hp.win.tests;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -15,9 +15,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import com.hp.win.core.Base;
 
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
@@ -31,9 +31,6 @@ public class PrintFromNotepad {
     private static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
     
     public static Process process;
-	public static InputStream is;
-	public static InputStreamReader isr;
-	public static BufferedReader br;
 	public static String line;
 	public static String printerName = null;
 	public static String currentWindowHandle = null;
@@ -41,32 +38,33 @@ public class PrintFromNotepad {
 	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
 
     @BeforeClass
-    public static void setup() {
+	@Parameters({ "device_name", "ptr_name", "test_filename"})
+    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) {
         try {
+        	Path path = FileSystems.getDefault().getPath("test_filename").toAbsolutePath();
+        	log.info("Test file complete location =>" +path);
     	    capabilities = new DesiredCapabilities();
             capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
-            capabilities.setCapability("appArguments", "NotepadTestFile.txt");
-            capabilities.setCapability("appWorkingDir", "C:\\TestFiles\\");
+            capabilities.setCapability("appArguments",test_filename );
+            capabilities.setCapability("appWorkingDir", path);
             capabilities.setCapability("platformName", "Windows");
-            capabilities.setCapability("deviceName", "VERAMIT6");
+            capabilities.setCapability("deviceName",device_name);
             NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
             Assert.assertNotNull(NotepadSession);
-            NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+            NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);            
+            log.info("Opened"+test_filename+"file from "+path);            
+            Base.openPrintQueue(ptr_name);                            
             
-            log.info("Open test1.txt file");
-            
-           openPrintQueue("HP ENVY 5530 Series Class Driver");   
-         
-                
-        }catch(Exception e){
+        	}catch(Exception e){
             e.printStackTrace();
-        } finally {
-   }
-}
+        	} finally {
+        }
+    }
 
 	
 	@Test
-    public void PrintNoteFile() throws InterruptedException, IOException
+	@Parameters({ "device_name", "ptr_name", "test_filename"})
+    public void PrintNoteFile(String ptr_name) throws InterruptedException, IOException
     {
     	// Go to file Menu
     	NotepadSession.findElementByName("File").click();
@@ -87,7 +85,7 @@ public class PrintFromNotepad {
     	log.info("Clicked on File -> Print option Successfully");
     	
     	//Select WiFi Printer
-    	NotepadSession.findElementByName("HP ENVY 5530 Series Class Driver").click();
+    	NotepadSession.findElementByName(ptr_name).click();
     	log.info("Selected Printer Successfully");
     	
     	//Tap on print icon (Give Print)
@@ -95,59 +93,54 @@ public class PrintFromNotepad {
     	log.info("Pressed Print Button Successfully");
 	
     	
-    	log.info("Handles from Notepad Session");
+    	log.debug("Handles from Notepad Session");
     	//currentWindowHandle = NotepadSession.getWindowHandle();
     	allWindowHandles = NotepadSession.getWindowHandles();
     	for (String handle :allWindowHandles) {
-    	    log.info("Notepad:" + handle);
-    	    log.info("\n");
+    	    log.debug("Notepad:" + handle);
+    	    log.debug("\n");
     	}
 	}
+	
+	
 
 	
 	@Test
-	public void ValidatePrintQueue() throws IOException, InterruptedException 
+	@Parameters({ "device_name", "ptr_name", "test_filename"})
+	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
 		
-		//Validate print icon appears in task bar or check print job in queue
-    	// Open notification then print queue then check job name and status
-	    
-	   // Create session by attaching to PrintQueue top level window
+		    	  
+	    // Create Desktop session 
 	    capabilities = new DesiredCapabilities();
 	    capabilities.setCapability("app","Root");
-	    //capabilities.setCapability("appTopLevelWindow",0x3098C);
 	    capabilities.setCapability("platformName", "Windows");
         capabilities.setCapability("deviceName", "mannala7");
 	    DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 
 	    
-	    
-	    //WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
-	    WebElement printerQueueWindow = DesktopSession.findElementByName("HP ENVY 5530 Series Class Driver - Offline");
+	    //Get handle to PrinterQueue window
+	    WebElement printerQueueWindow = DesktopSession.findElementByName(ptr_name);
     	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
     	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
-    	log.info("int value:" + nativeWindowHandle);
+    	log.debug("int value:" + nativeWindowHandle);
     	String printerQueueTopWindowHandle  = ("0x" + Integer.toHexString(printerQueueWindowHandle));
-    	log.info("Hex Value:" + printerQueueTopWindowHandle);
+    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
 
-    	// Create a new session by attaching to an existing application top level window
+    	// Create a PrintQueueSession by attaching to an existing application top level window handle
     	DesiredCapabilities capabilities = new DesiredCapabilities();
-    	//capabilities.setCapability("app", "C:\\Windows\\System32\\printui.dll");
     	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);
     	capabilities.setCapability("platformName", "Windows");
-        capabilities.setCapability("deviceName", "mannala7");
+        capabilities.setCapability("deviceName", device_name);
         PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
-    	log.info("Queue session created: " + PrintQueueSession );
+    	log.info("PrintQueue session created successfully " + PrintQueueSession );
     	
-    	// Ensure you have Correct Print Queue opened
-    	//Assert.assertNotNull(PrintQueueSession.findElementByXPath("//TitleBar//[)
-    	
-    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains("HP ENVY 5530 Series Class Driver - Offline"));
-	    log.info("Double checked that we opened correct printer queue => ");
+    	// Ensure correct PrintQueue is opened    	
+    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
+	    log.info("Open printer queue is correct for the printer => "+ptr_name);
 	    		    
-	    //Validate Job Name
-	   // Assert.assertTrue(DesktopSession.findElementByXPath("SysListView32//[starts-with(@Name, \"test1.txt - Notepad\")]").getText().contains("test1 - Notepad"),"Expected Print Job NOT FOUND in Print Queue");
-	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains("test1.txt - Notepad"));	
+	    //Validate Print Job Queued up
+	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));	
 	    
 	}
 
@@ -169,28 +162,6 @@ public class PrintFromNotepad {
     }
     
     
-    public static void openPrintQueue(String printerName) throws IOException {
-		
-		try {		
-			process = new ProcessBuilder("rundll32.exe","printui.dll","PrintUIEntry","/o","/n",printerName).start();
-			PrintFromNotepad.startBuilder(process);
-			log.info("Opened printer queue => " +printerName);
-			
-		} catch (Exception e) {
-			log.info("Error Occured while getting device property");
-			e.printStackTrace();
-
-		}
-
-	}
-    
-	// Method to start the process builder
-	public static BufferedReader startBuilder(Object process) throws IOException {
-		is = ((Process) process).getInputStream();
-		isr = new InputStreamReader(is);
-		br = new BufferedReader(isr);
-		return br;
-
-	}
+  
 }
 
