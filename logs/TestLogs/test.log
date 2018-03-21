@@ -1,0 +1,13 @@
+[INFO ] 2018-03-21 14:55:44 [main] setup- user.dir location =>C:\gitHub\WinAutoTest
+[INFO ] 2018-03-21 14:55:45 [main] setup- OpenedNotepadTestFile1.txtfile from C:\gitHub\WinAutoTest\testfiles\
+[INFO ] 2018-03-21 14:55:46 [main] openPrintQueue- Opened printer queue => HPB8033E (HP OfficeJet 250 Mobile Series)
+[INFO ] 2018-03-21 14:55:47 [main] PrintNotePadFile- Clicked on File Menu Successfully in Notepad
+[INFO ] 2018-03-21 14:55:48 [main] PrintNotePadFile- Pressed Save button to Save the File
+[INFO ] 2018-03-21 14:55:50 [main] PrintNotePadFile- Clicked on File Menu Successfully in Notepad
+[INFO ] 2018-03-21 14:55:51 [main] PrintNotePadFile- Clicked on File -> Print option Successfully
+[INFO ] 2018-03-21 14:55:53 [main] PrintNotePadFile- Selected Printer Successfully
+[INFO ] 2018-03-21 14:55:54 [main] PrintNotePadFile- Pressed Print Button Successfully
+[INFO ] 2018-03-21 14:56:16 [main] SwitchToPrinterQueue- PrintQueue session created successfully
+[INFO ] 2018-03-21 14:56:16 [main] SwitchToPrinterQueue- Open printer queue is correct for the printer => HPB8033E (HP OfficeJet 250 Mobile Series)
+[INFO ] 2018-03-21 14:56:16 [main] ValidatePrintQueue- Expected queued job should be => NotepadTestFile1
+[INFO ] 2018-03-21 14:56:17 [main] ValidatePrintQueue- Found correct job in print queue => NotepadTestFile1
