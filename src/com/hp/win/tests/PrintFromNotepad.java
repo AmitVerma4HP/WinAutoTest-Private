@@ -2,6 +2,7 @@ package com.hp.win.tests;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
@@ -19,26 +20,14 @@ public class PrintFromNotepad extends Base{
 
     @BeforeClass
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
-    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) {
-        try {
-    	    capabilities = new DesiredCapabilities();
-            capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
-            capabilities.setCapability("appArguments",test_filename );
-            capabilities.setCapability("appWorkingDir", testfiles_loc);
-            capabilities.setCapability("platformName", "Windows");
-            capabilities.setCapability("deviceName",device_name);
-            NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
-            Assert.assertNotNull(NotepadSession);
-            NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);            
-            log.info("Opened"+test_filename+"file from "+testfiles_loc); 
-            Thread.sleep(1000);
+    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
+        	
+    		NotepadSession = Base.OpenNoteFile(device_name, test_filename);
+           
+        	Thread.sleep(1000);
             
-            Base.openPrintQueue(ptr_name);                            
-            
-        	}catch(Exception e){
-            e.printStackTrace();
-        	} finally {
-        }
+            Base.OpenPrintQueue(ptr_name);                            
+                   	
     }
 
 	

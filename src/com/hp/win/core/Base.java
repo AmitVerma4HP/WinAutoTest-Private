@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -30,9 +32,12 @@ public class Base {
 		protected static RemoteWebDriver NotepadSession = null;
 		protected static RemoteWebDriver DesktopSession = null;
 		protected static RemoteWebDriver PrintQueueSession = null;
+		protected static RemoteWebDriver CortanaSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
-		public static void openPrintQueue(String printerName) throws IOException {
+		protected static final String hex = "0x";
+		
+		public static void OpenPrintQueue(String printerName) throws IOException {
 			
 			try {		
 				process = new ProcessBuilder("rundll32.exe","printui.dll","PrintUIEntry","/o","/n",printerName).start();
@@ -108,7 +113,7 @@ public class Base {
 	    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
 	    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
 	    	log.debug("int value:" + nativeWindowHandle);
-	    	String printerQueueTopWindowHandle  = ("0x" + Integer.toHexString(printerQueueWindowHandle));
+	    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
 	    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
 
 	    	// Create a PrintQueueSession by attaching to an existing application top level window handle
@@ -124,6 +129,66 @@ public class Base {
 		    log.info("Open printer queue is correct for the printer => "+ptr_name);
 		}
 	
+
+		
+		public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
+			
+		   try {
+		    	capabilities = new DesiredCapabilities();
+		        capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
+		        capabilities.setCapability("appArguments",test_filename );
+		        capabilities.setCapability("appWorkingDir", testfiles_loc);
+		        capabilities.setCapability("platformName", "Windows");
+		        capabilities.setCapability("deviceName",device_name);
+		        NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+		        Assert.assertNotNull(NotepadSession);
+		        NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);            
+		        log.info("Opened"+test_filename+"file from "+testfiles_loc);
+		         	
+			 
+		   		}catch(Exception e){
+	            e.printStackTrace();
+	            log.info("Error opening notepad file");	            
+	        	}
+			
+			return NotepadSession;
+		
+		}
+
+		
+		public static RemoteWebDriver GetCortanaSession(String device_name) throws MalformedURLException {
+			
+		try {
+		    DesiredCapabilities capabilities = new DesiredCapabilities();
+		    capabilities.setCapability("app","Root");
+	        capabilities.setCapability("deviceName", device_name);
+		    RemoteWebDriver DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+		
+		    //Get handle to Cortana window
+		    DesktopSession.getKeyboard().sendKeys(Keys.META + "s" + Keys.META);
+		    WebElement CortanaWindow = DesktopSession.findElementByName("Cortana");
+	    	String nativeWindowHandle = CortanaWindow.getAttribute("NativeWindowHandle");
+	    	int cortanaWindowHandle = Integer.parseInt(nativeWindowHandle);
+	    	log.debug("int value:" + cortanaWindowHandle);
+	    	String cortanaTopWindowHandle  = hex.concat(Integer.toHexString(cortanaWindowHandle));
+	    	log.debug("Hex Value:" + cortanaTopWindowHandle);
+
+	    	// Create a PrintQueueSession by attaching to an existing application top level window handle
+	    	DesiredCapabilities appCapabilities = new DesiredCapabilities();
+	    	appCapabilities.setCapability("appTopLevelWindow", cortanaTopWindowHandle);		    	
+	    	appCapabilities.setCapability("deviceName", device_name);
+	    	CortanaSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), appCapabilities);
+	    	log.info("Cortana session created successfully");
+	    	
+			 
+			}catch(Exception e){
+	            e.printStackTrace();
+	            log.info("Error getting Cortana session");	            
+	        	}
+			
+			return CortanaSession;
+		
+		}
 	
 	
 }
