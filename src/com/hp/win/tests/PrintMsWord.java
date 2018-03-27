@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -23,16 +24,20 @@ public class PrintMsWord extends Base{
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
         	
     		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);
-            Thread.sleep(4000);                                               
+            Thread.sleep(5000);                                               
                    	
     }
 
 	
 	@Test
-	@Parameters({"ptr_name"})
-    public void PrintMsWordFile(String ptr_name) throws InterruptedException, IOException
+	@Parameters({"ptr_name","device_name"})
+    public void PrintMsWordFile(String ptr_name ,String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
+		DesktopSession = Base.GetDesktopSession(device_name);
+		Thread.sleep(1000); 
+		DesktopSession.getKeyboard().pressKey(Keys.CONTROL+"p");
+		log.info("Pressed CTRL+P to get to Print Option");
 		
 		
 	}

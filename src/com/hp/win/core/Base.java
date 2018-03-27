@@ -98,16 +98,23 @@ public class Base {
 	    	Thread.sleep(1000);
 		}
 		
-	
-	
-		public static void SwitchToPrinterQueue(String device_name, String ptr_name) throws MalformedURLException {
-			  // Create Desktop session 
+		
+		public static RemoteWebDriver GetDesktopSession(String device_name) throws MalformedURLException {
+			// Create Desktop session 
 		    capabilities = new DesiredCapabilities();
 		    capabilities.setCapability("app","Root");
 		    capabilities.setCapability("platformName", "Windows");
 	        capabilities.setCapability("deviceName", device_name);
 		    DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+		    return DesktopSession;
+		}
 
+		
+				
+	
+		public static void SwitchToPrinterQueue(String device_name, String ptr_name) throws MalformedURLException {
+			// Create Desktop session 
+		    DesktopSession = Base.GetDesktopSession(device_name);
 		    
 		    //Get handle to PrinterQueue window
 		    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
@@ -160,10 +167,7 @@ public class Base {
 		public static RemoteWebDriver GetCortanaSession(String device_name) throws MalformedURLException {
 			
 		try {
-		    DesiredCapabilities capabilities = new DesiredCapabilities();
-		    capabilities.setCapability("app","Root");
-	        capabilities.setCapability("deviceName", device_name);
-		    RemoteWebDriver DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+			DesktopSession = Base.GetDesktopSession(device_name);
 		
 		    //Get handle to Cortana window
 		    DesktopSession.getKeyboard().sendKeys(Keys.META + "s" + Keys.META);
