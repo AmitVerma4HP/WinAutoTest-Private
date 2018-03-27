@@ -23,10 +23,7 @@ public class PrintMsWord extends Base{
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
         	
     		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);
-            
-        	Thread.sleep(4000);
-            
-                                        
+            Thread.sleep(4000);                                               
                    	
     }
 
@@ -36,6 +33,7 @@ public class PrintMsWord extends Base{
     public void PrintMsWordFile(String ptr_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
+		
 		
 	}
 	
