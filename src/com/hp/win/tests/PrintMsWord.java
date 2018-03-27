@@ -4,34 +4,37 @@ package com.hp.win.tests;
 import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 
 
-public class PrintFromNotepad extends Base{
-	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
+public class PrintMsWord extends Base{
+	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
 	
 
     @BeforeClass
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
-    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
+    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
         	
-    		NotepadSession = Base.OpenNoteFile(device_name, test_filename);
-           
-        	Thread.sleep(1000);
-            
-            Base.OpenPrintQueue(ptr_name);                            
+    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);
+            Thread.sleep(5000);                                               
                    	
     }
 
 	
 	@Test
-	@Parameters({"ptr_name"})
-    public void PrintNoteFile(String ptr_name) throws InterruptedException, IOException
+	@Parameters({"ptr_name","device_name"})
+    public void PrintMsWordFile(String ptr_name ,String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name);
+		DesktopSession = Base.GetDesktopSession(device_name);
+		Thread.sleep(1000); 
+		DesktopSession.getKeyboard().pressKey(Keys.CONTROL+"p");
+		log.info("Pressed CTRL+P to get to Print Option");
+		
+		
 	}
 	
 	
@@ -43,15 +46,15 @@ public class PrintFromNotepad extends Base{
 	{
 		
 		// Method to attach session to Printer Queue Window
-		SwitchToPrinterQueue(device_name,ptr_name);
+		//SwitchToPrinterQueue(device_name,ptr_name);
 		
 	    //Take out .txt from file name for validation in Assert.
-	    test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
+	   // test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
 	    
-	    log.info("Expected queued job should be => "+test_filename);
+	   // log.info("Expected queued job should be => "+test_filename);
 	    //Validate Print Job Queued up
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
-	    log.info("Found correct job in print queue => "+test_filename);
+	   // log.info("Found correct job in print queue => "+test_filename);
 	    
 	}
 
@@ -60,9 +63,9 @@ public class PrintFromNotepad extends Base{
     public static void TearDown()
     {	        
     
-        	if (NotepadSession!= null)
+        	if (MsWordSession!= null)
         	{
-        		NotepadSession.quit();
+        		MsWordSession.quit();
         	}
         	
     		if(DesktopSession!=null)

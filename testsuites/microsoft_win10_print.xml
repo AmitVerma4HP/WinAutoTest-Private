@@ -2,19 +2,35 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Test suite - Printing Tests">
  
-<!-- **************************************** PRINTING TESTS ******************************************************** -->
+<!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+  
+<!--   <test verbose="2" name="Printing Test from Notepad - Device Under test (VERAMIT6) => Printer Under Test (HP OfficeJet 250 Mobile Series)"> -->
+<!--     	<parameter name="device_name" value="VERAMIT6" /> -->
+<!--      	<parameter name="ptr_name" value="HPB8033E (HP OfficeJet 250 Mobile Series)" /> -->
+<!--      	<parameter name="test_filename" value="NotepadTestFile1.txt" /> -->
+		
+<!--     <classes> -->
+<!--          <class name="com.hp.win.tests.PrintFromNotepad"/> -->
+<!--     </classes> -->
+<!--   </test> -->
+ 
+ <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+  
+  
+  <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
   <test verbose="2" name="Printing Test from Notepad - Device Under test (VERAMIT6) => Printer Under Test (HP OfficeJet 250 Mobile Series)">
     	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="HPB8033E (HP OfficeJet 250 Mobile Series)" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
 		
     <classes>
-         <class name="com.hp.win.tests.PrintFromNotepad"/>
+         <class name="com.hp.win.tests.PrintMsWord"/>
     </classes>
   </test>
  
- <!-- **************************************** PRINTING TESTS ******************************************************** -->
+ <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
+  
   
   </suite>
   

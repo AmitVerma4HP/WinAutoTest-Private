@@ -33,10 +33,13 @@ public class Base {
 		protected static RemoteWebDriver DesktopSession = null;
 		protected static RemoteWebDriver PrintQueueSession = null;
 		protected static RemoteWebDriver CortanaSession = null;
+		protected static RemoteWebDriver MsWordSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
 		
+		
+		// Method to Open Print Queue for Given Printer
 		public static void OpenPrintQueue(String printerName) throws IOException {
 			
 			try {		
@@ -97,43 +100,61 @@ public class Base {
 	    	Thread.sleep(1000);
 		}
 		
-	
-	
-		public static void SwitchToPrinterQueue(String device_name, String ptr_name) throws MalformedURLException {
-			  // Create Desktop session 
+		
+		// Method to Create Desktop Session
+		public static RemoteWebDriver GetDesktopSession(String device_name) throws MalformedURLException {	
+			try {
 		    capabilities = new DesiredCapabilities();
 		    capabilities.setCapability("app","Root");
 		    capabilities.setCapability("platformName", "Windows");
 	        capabilities.setCapability("deviceName", device_name);
 		    DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+			}catch(Exception e){
+	            e.printStackTrace();
+	            log.info("Error getting Desktop session");	            
+	        	}
+			log.info("Desktop session created successfully");
+		    return DesktopSession;
+		}
 
-		    
-		    //Get handle to PrinterQueue window
-		    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
-	    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
-	    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
-	    	log.debug("int value:" + nativeWindowHandle);
-	    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
-	    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
-
-	    	// Create a PrintQueueSession by attaching to an existing application top level window handle
-	    	DesiredCapabilities capabilities = new DesiredCapabilities();
-	    	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);
-	    	capabilities.setCapability("platformName", "Windows");
-	        capabilities.setCapability("deviceName", device_name);
-	        PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+						
+		// Method to switch from NotePad session to PrintQueue Window
+		public static void SwitchToPrinterQueue(String device_name, String ptr_name) throws MalformedURLException {
+			try {
+			
+				DesktopSession = Base.GetDesktopSession(device_name);
+			    
+			    //Get handle to PrinterQueue window
+			    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
+		    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
+		    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
+		    	log.debug("int value:" + nativeWindowHandle);
+		    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
+		    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
+	
+		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
+		    	DesiredCapabilities capabilities = new DesiredCapabilities();
+		    	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);
+		    	capabilities.setCapability("platformName", "Windows");
+		        capabilities.setCapability("deviceName", device_name);
+		        PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+				}catch(Exception e){
+	            e.printStackTrace();
+	            log.info("Error getting Print Queue session");	            
+	        	}
+			
 	    	log.info("PrintQueue session created successfully");
 	    	
 	    	// Ensure correct PrintQueue is opened    	
 	    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
-		    log.info("Open printer queue is correct for the printer => "+ptr_name);
+		    log.info("Opened printer queue is correct for the printer => "+ptr_name);
 		}
 	
 
-		
+		// Method to open Notepad test file
 		public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 			
-		   try {
+		  try {
 		    	capabilities = new DesiredCapabilities();
 		        capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
 		        capabilities.setCapability("appArguments",test_filename );
@@ -142,28 +163,22 @@ public class Base {
 		        capabilities.setCapability("deviceName",device_name);
 		        NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
 		        Assert.assertNotNull(NotepadSession);
-		        NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);            
-		        log.info("Opened"+test_filename+"file from "+testfiles_loc);
-		         	
-			 
+		        NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);        		        		         			 
 		   		}catch(Exception e){
 	            e.printStackTrace();
 	            log.info("Error opening notepad file");	            
 	        	}
-			
-			return NotepadSession;
-		
-		}
+		 log.info("Opened"+test_filename+"file from "+testfiles_loc);
+		 return NotepadSession;
+	  }
 
 		
-		public static RemoteWebDriver GetCortanaSession(String device_name) throws MalformedURLException {
+		
+	  // Method to Get Cortana Session	
+	  public static RemoteWebDriver GetCortanaSession(String device_name) throws MalformedURLException {
 			
 		try {
-		    DesiredCapabilities capabilities = new DesiredCapabilities();
-		    capabilities.setCapability("app","Root");
-	        capabilities.setCapability("deviceName", device_name);
-		    RemoteWebDriver DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
-		
+			DesktopSession = Base.GetDesktopSession(device_name);		
 		    //Get handle to Cortana window
 		    DesktopSession.getKeyboard().sendKeys(Keys.META + "s" + Keys.META);
 		    WebElement CortanaWindow = DesktopSession.findElementByName("Cortana");
@@ -173,22 +188,41 @@ public class Base {
 	    	String cortanaTopWindowHandle  = hex.concat(Integer.toHexString(cortanaWindowHandle));
 	    	log.debug("Hex Value:" + cortanaTopWindowHandle);
 
-	    	// Create a PrintQueueSession by attaching to an existing application top level window handle
+	    	// Create a Cortana session by attaching to its existing application top level window handle
 	    	DesiredCapabilities appCapabilities = new DesiredCapabilities();
 	    	appCapabilities.setCapability("appTopLevelWindow", cortanaTopWindowHandle);		    	
 	    	appCapabilities.setCapability("deviceName", device_name);
-	    	CortanaSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), appCapabilities);
-	    	log.info("Cortana session created successfully");
-	    	
-			 
+	    	CortanaSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), appCapabilities);	    	
 			}catch(Exception e){
 	            e.printStackTrace();
 	            log.info("Error getting Cortana session");	            
 	        	}
-			
-			return CortanaSession;
-		
-		}
+		log.info("Cortana session created successfully");
+		return CortanaSession;
+	  }
+	  
 	
+	  
+	 // Method to open MS Word test file
+	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws MalformedURLException {
+			
+			   try {
+			    	capabilities = new DesiredCapabilities();
+			        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+			        capabilities.setCapability("appArguments",test_filename );
+			        capabilities.setCapability("appWorkingDir", testfiles_loc);
+			        capabilities.setCapability("platformName", "Windows");
+			        capabilities.setCapability("deviceName",device_name);
+			        MsWordSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+			        Assert.assertNotNull(MsWordSession);
+			        MsWordSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
+			   		}catch(Exception e){
+		            e.printStackTrace();
+		            log.info("Error opening notepad file");	            
+		        	}
+			    log.info("Opened"+test_filename+"file from "+testfiles_loc);
+				return MsWordSession;
+			
+		}
 	
 }
