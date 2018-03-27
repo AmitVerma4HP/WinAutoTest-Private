@@ -33,6 +33,7 @@ public class Base {
 		protected static RemoteWebDriver DesktopSession = null;
 		protected static RemoteWebDriver PrintQueueSession = null;
 		protected static RemoteWebDriver CortanaSession = null;
+		protected static RemoteWebDriver MsWordSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
@@ -190,5 +191,28 @@ public class Base {
 		
 		}
 	
+		public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws MalformedURLException {
+			
+			   try {
+			    	capabilities = new DesiredCapabilities();
+			        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+			        capabilities.setCapability("appArguments",test_filename );
+			        capabilities.setCapability("appWorkingDir", testfiles_loc);
+			        capabilities.setCapability("platformName", "Windows");
+			        capabilities.setCapability("deviceName",device_name);
+			        MsWordSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+			        Assert.assertNotNull(MsWordSession);
+			        MsWordSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);            
+			        log.info("Opened"+test_filename+"file from "+testfiles_loc);
+			         	
+				 
+			   		}catch(Exception e){
+		            e.printStackTrace();
+		            log.info("Error opening notepad file");	            
+		        	}
+				
+				return MsWordSession;
+			
+			}
 	
 }
