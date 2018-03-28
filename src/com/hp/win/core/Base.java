@@ -35,6 +35,7 @@ public class Base {
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
+		//protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4724/wd/hub";
 		protected static final String hex = "0x";
 		
 		public static void OpenPrintQueue(String printerName) throws IOException {
@@ -66,6 +67,15 @@ public class Base {
 		
 	  // Method to print from Notepad
 		public static void PrintNotePadFile(String ptr_name) throws InterruptedException {
+			
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// ** WORKAROUND -- the named file is not opening when the session is started - this will create new file content
+			// in order to continue the test - it will save in Notepad's default directory (the last one used)
+			NotepadSession.getKeyboard().sendKeys("************************ THIS IS THE NOTEPAD TEST FILE *****************************************\n");
+			Thread.sleep(1000);
+			// ** END WORKAROUND
+	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
 			// Go to file Menu
 	    	NotepadSession.findElementByName("File").click();
 	    	log.info("Clicked on File Menu in Notepad");
@@ -75,7 +85,23 @@ public class Base {
 	    	NotepadSession.findElementByXPath("//MenuItem[starts-with(@Name, \"Save\")]").click();
 	        log.info("Pressed Save button to Save the File");
 	        Thread.sleep(1000);
-	         
+	        
+	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	        // ** WORKAROUND -- the named file is not opening when the session is started - this will create a new file name
+	        // in order to continue the test
+	        NotepadSession.getKeyboard().sendKeys("NotepadTestFile1.txt");
+	        Thread.sleep(1000);
+	        NotepadSession.findElementByName("Save").click();
+	        Thread.sleep(1000);
+	        
+	        //choose to save over the existing file
+	        if(NotepadSession.findElementByName("Yes").isEnabled()) {
+	        	NotepadSession.findElementByName("Yes").click();
+	        	Thread.sleep(1000);
+	        }
+	        // ** END WORKAROUND
+	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	        
 	        // Go to file Menu
 		    NotepadSession.findElementByName("File").click();
 		    log.info("Clicked on File Menu in Notepad");
@@ -86,11 +112,23 @@ public class Base {
 	    	log.info("Clicked on File -> Print option Successfully");
 	    	Thread.sleep(1000);
 	    	
-	    	//Select WiFi Printer
-	    	NotepadSession.findElementByName(ptr_name).click();
-	    	log.info("Selected Printer Successfully");
-	    	Thread.sleep(1000);
+
 	    	
+	    	// If PUT is not the default, select it
+	    	if(NotepadSession.findElementByName(ptr_name).isSelected()) {
+	    		NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
+	    		Thread.sleep(1000);
+	    	}
+	    	else {
+		    	//Select WiFi Printer
+		    	NotepadSession.findElementByName(ptr_name).click();
+		    	log.info("Selected Printer Successfully");
+		    	Thread.sleep(1000);
+		    	
+	    		NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
+	    		Thread.sleep(1000);
+	    	}
+
 	    	//Tap on print icon (Give Print)
 	    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 	    	log.info("Pressed Print Button Successfully");
@@ -136,14 +174,14 @@ public class Base {
 		   try {
 		    	capabilities = new DesiredCapabilities();
 		        capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
-		        capabilities.setCapability("appArguments",test_filename );
+		        capabilities.setCapability("appArguments", testfiles_loc + test_filename );
 		        capabilities.setCapability("appWorkingDir", testfiles_loc);
 		        capabilities.setCapability("platformName", "Windows");
 		        capabilities.setCapability("deviceName",device_name);
 		        NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
 		        Assert.assertNotNull(NotepadSession);
 		        NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);            
-		        log.info("Opened"+test_filename+"file from "+testfiles_loc);
+		        log.info("Opened "+test_filename+" file from "+testfiles_loc);
 		         	
 			 
 		   		}catch(Exception e){
