@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Test suite - Printing Tests">
+ 
+<!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+  
+  <test verbose="2" name="Printing Test from Notepad - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+  
+    <test verbose="2" name="Printing Test from Notepad - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY Photo 7800 series [093C76])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP ENVY Photo 7800 series [093C76]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+ 
+ <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+ 
+  </suite>
+  
+   
+ 
