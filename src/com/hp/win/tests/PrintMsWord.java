@@ -5,15 +5,10 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.remote.SessionId;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 
-import io.appium.java_client.windows.WindowsElement;
 
 
 public class PrintMsWord extends Base{
@@ -30,30 +25,21 @@ public class PrintMsWord extends Base{
 
 	
 	@Test
-	@Parameters({"ptr_name","device_name"})
-    public void PrintMsWordFile(String ptr_name ,String device_name) throws InterruptedException, IOException
-    {   
-		
+	@Parameters({"ptr_name"})
+    public void PrintMsWordFile(String ptr_name) throws InterruptedException, IOException
+    {   		
 		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
-		Thread.sleep(2000); 
-		
-		WebElement PrinterListComboBox = MsWordSession.findElementByClassName("NetUIDropdownAnchor");
-        Assert.assertNotNull(PrinterListComboBox);   
-        log.info("Currently selected printer is => " +PrinterListComboBox.getText().toString());
-                
-       
-        
-        
-        /*
-        if(PrinterListComboBox.getText().contentEquals(ptr_name)) {
-        	log.info("Desired printer =>" +ptr_name+" is already selected");
-        }else {
-        PrinterListComboBox.findElementByName(ptr_name).click();
-        log.info("Selected desired printer "+ptr_name+"from printers list dropdown");
-        */
+		Thread.sleep(2000);		
+		Base.SelectDesiredPrinter_Msword(ptr_name);        
 		
 		
+		// Write method to select Print settings
+		// TDB
+		
+		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	
+		Thread.sleep(1000);
+		log.info("Finally gave a print by clicking on PRINT button");
 	}
 	
 	

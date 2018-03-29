@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -249,5 +250,27 @@ public class Base {
 				return MsWordSession;
 			
 		}
+	 
+	 
+	 
+	 // Method to select desired printer from printers list combo box
+	 // Possible candidate for re-factoring when there are multiple application in automation
+	 public static void SelectDesiredPrinter_Msword(String ptr_name) throws MalformedURLException, InterruptedException {
+		 
+		 	WebElement PrinterListComboBox = MsWordSession.findElementByClassName("NetUIDropdownAnchor");		
+	        Assert.assertNotNull(PrinterListComboBox);           
+	        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) {
+	        log.info("Desired printer is not selected so selecting it from drop down");
+	        PrinterListComboBox.click();
+	        Thread.sleep(1000);
+	        PrinterListComboBox.findElement(By.name(ptr_name)).click();
+	        Thread.sleep(1000);
+	        log.info("Selected desired printer =>" +PrinterListComboBox.getText().toString());
+	        } else {
+	        log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+		 
+	 }
+	
 	
 }
