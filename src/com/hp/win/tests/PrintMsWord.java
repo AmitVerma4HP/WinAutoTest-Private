@@ -30,6 +30,8 @@ public class PrintMsWord extends Base{
     {   		
 		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
+		Thread.sleep(1000);
+		MsWordSession.getKeyboard().releaseKey(Keys.CONTROL);
 		Thread.sleep(2000);		
 		Base.SelectDesiredPrinter_Msword(ptr_name);        
 		
@@ -50,16 +52,21 @@ public class PrintMsWord extends Base{
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
 		
+		//Open Print Queue 
+		Base.OpenPrintQueue(ptr_name);        
+		 
+		Thread.sleep(1000);
+		
 		// Method to attach session to Printer Queue Window
-		//SwitchToPrinterQueue(device_name,ptr_name);
+		SwitchToPrinterQueue(device_name,ptr_name);
 		
 	    //Take out .txt from file name for validation in Assert.
-	   // test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
+	    test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));	    
+	    log.info("Expected queued job should be => "+test_filename);
 	    
-	   // log.info("Expected queued job should be => "+test_filename);
 	    //Validate Print Job Queued up
-	    //Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
-	   // log.info("Found correct job in print queue => "+test_filename);
+	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    log.info("Found correct job in print queue => "+test_filename);
 	    
 	}
 
