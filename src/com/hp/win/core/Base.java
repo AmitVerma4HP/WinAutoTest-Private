@@ -263,7 +263,14 @@ public class Base {
 	        log.info("Desired printer is not selected so selecting it from drop down");
 	        PrinterListComboBox.click();
 	        Thread.sleep(1000);
-	        PrinterListComboBox.findElement(By.name(ptr_name)).click();
+	        try {
+	        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
+	        	}catch(Exception e){
+	        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
+	        	e.printStackTrace();
+	            log.info("Error selecting printer under test");     
+	            throw new RuntimeException(e);
+	        	}
 	        Thread.sleep(1000);
 	        log.info("Selected desired printer =>" +PrinterListComboBox.getText().toString());
 	        } else {
