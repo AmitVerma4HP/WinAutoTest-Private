@@ -10,6 +10,7 @@ import org.testng.annotations.*;
 import com.hp.win.core.Base;
 
 
+
 public class PrintMsWord extends Base{
 	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
 	
@@ -18,23 +19,27 @@ public class PrintMsWord extends Base{
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
         	
-    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);
-            Thread.sleep(5000);                                               
-                   	
+    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);    		
+            Thread.sleep(1000); 
     }
 
 	
 	@Test
-	@Parameters({"ptr_name","device_name"})
-    public void PrintMsWordFile(String ptr_name ,String device_name) throws InterruptedException, IOException
-    {   
-		// Method to Print Notepad File to Printer Under Test
-		DesktopSession = Base.GetDesktopSession(device_name);
-		Thread.sleep(1000); 
-		DesktopSession.getKeyboard().pressKey(Keys.CONTROL+"p");
+	@Parameters({"ptr_name"})
+    public void PrintMsWordFile(String ptr_name) throws InterruptedException, IOException
+    {   		
+		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
+		Thread.sleep(2000);		
+		Base.SelectDesiredPrinter_Msword(ptr_name);        
 		
 		
+		// Write method to select Print settings
+		// TDB
+		
+		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	
+		Thread.sleep(1000);
+		log.info("Finally gave a print by clicking on PRINT button");
 	}
 	
 	
@@ -53,7 +58,7 @@ public class PrintMsWord extends Base{
 	    
 	   // log.info("Expected queued job should be => "+test_filename);
 	    //Validate Print Job Queued up
-	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    //Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	   // log.info("Found correct job in print queue => "+test_filename);
 	    
 	}
@@ -73,9 +78,9 @@ public class PrintMsWord extends Base{
     			DesktopSession.quit();
     		}
     		
-    		if(PrintQueueSession!=null)
+    		if(MsWordFirstSession!=null)
     		{
-    		   PrintQueueSession.quit();
+    			MsWordFirstSession.quit();
     		}
         	        
     }
