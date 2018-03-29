@@ -37,6 +37,7 @@ public class PrintFromNotepad extends Base{
     {   
 		// Method to Print Notepad File to Printer Under Test
 		PrintNotePadFile(ptr_name);
+		//System.out.println("Switching to printer queue...");
 	}
 	
 	
@@ -46,17 +47,25 @@ public class PrintFromNotepad extends Base{
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
-		
+		System.out.println("Switching to printer queue...");
 		// Method to attach session to Printer Queue Window
 		SwitchToPrinterQueue(device_name,ptr_name);
 		
+		log.info("Altering " + test_filename + "...");
+		System.out.println("Altering " + test_filename + "...\n");
 	    //Take out .txt from file name for validation in Assert.
-	    test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
+	    //test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
+		String test_name_no_extension = test_filename.substring(0, test_filename.lastIndexOf('.'));
+	    log.info("Successfully changed to " + test_filename + "\n.......\n");
+		log.info("Successfully changed to " + test_name_no_extension + "\n.......\n");
+		System.out.println("Successfully changed to " + test_name_no_extension + "\n.......\n");
 	    
 	    log.info("Expected queued job should be => "+test_filename);
 	    //Validate Print Job Queued up
-	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    //Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_name_no_extension));
 	    log.info("Found correct job in print queue => "+test_filename);
+	    log.info("Found correct job in print queue => "+test_name_no_extension);
 	    
 	}
 

@@ -35,7 +35,6 @@ public class Base {
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
-		//protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4724/wd/hub";
 		protected static final String hex = "0x";
 		
 		public static void OpenPrintQueue(String printerName) throws IOException {
@@ -47,6 +46,7 @@ public class Base {
 				
 	    		} catch (Exception e) {
 				log.info("Error Occured while getting device property");
+	    			System.out.println("Error occurred while getting device property.\n");
 				e.printStackTrace();
 
 	    		}
@@ -68,13 +68,13 @@ public class Base {
 	  // Method to print from Notepad
 		public static void PrintNotePadFile(String ptr_name) throws InterruptedException {
 			
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// ** WORKAROUND -- the named file is not opening when the session is started - this will create new file content
-			// in order to continue the test - it will save in Notepad's default directory (the last one used)
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// ** WORKAROUND -- the named file is not opening when the session is started - this will create new file content
+		// in order to continue the test - it will save in Notepad's default directory (the last one used)
 			NotepadSession.getKeyboard().sendKeys("************************ THIS IS THE NOTEPAD TEST FILE *****************************************\n");
 			Thread.sleep(1000);
-			// ** END WORKAROUND
-	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// ** END WORKAROUND
+	    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			// Go to file Menu
 	    	NotepadSession.findElementByName("File").click();
@@ -86,9 +86,9 @@ public class Base {
 	        log.info("Pressed Save button to Save the File");
 	        Thread.sleep(1000);
 	        
-	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	        // ** WORKAROUND -- the named file is not opening when the session is started - this will create a new file name
-	        // in order to continue the test
+	    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    // ** WORKAROUND -- the named file is not opening when the session is started - this will create a new file name
+	    // in order to continue the test
 	        NotepadSession.getKeyboard().sendKeys("NotepadTestFile1.txt");
 	        Thread.sleep(1000);
 	        NotepadSession.findElementByName("Save").click();
@@ -99,8 +99,8 @@ public class Base {
 	        	NotepadSession.findElementByName("Yes").click();
 	        	Thread.sleep(1000);
 	        }
-	        // ** END WORKAROUND
-	        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    // ** END WORKAROUND
+	    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	        
 	        // Go to file Menu
 		    NotepadSession.findElementByName("File").click();
@@ -114,31 +114,38 @@ public class Base {
 	    	
 
 	    	
-	    	// If PUT is not the default, select it
+	    	// If PUT is the previously selected printer, click 'print'
 	    	if(NotepadSession.findElementByName(ptr_name).isSelected()) {
 	    		NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
+	    		System.out.println("Pressed Print Button Successfully");
+	    		//NotepadSession.findElementByName("Print").click();
 	    		Thread.sleep(1000);
 	    	}
 	    	else {
-		    	//Select WiFi Printer
+		    	// If PUT is not the previously selected printer, select it and click 'print'
 		    	NotepadSession.findElementByName(ptr_name).click();
-		    	log.info("Selected Printer Successfully");
+		    	log.info("Selected Printer Successfully\n");
 		    	Thread.sleep(1000);
 		    	
-	    		NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
+		    	//NotepadSession.findElementByName("Print").click();
+		    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
+	    		log.info("Pressed Print Button Successfully");
+	    		System.out.println("Pressed Print Button Successfully\n");
 	    		Thread.sleep(1000);
 	    	}
-
+/*
 	    	//Tap on print icon (Give Print)
 	    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 	    	log.info("Pressed Print Button Successfully");
-	    	Thread.sleep(1000);
+	    	Thread.sleep(1000);*/
 		}
 		
 	
 	
 		public static void SwitchToPrinterQueue(String device_name, String ptr_name) throws MalformedURLException {
-			  // Create Desktop session 
+			  
+			System.out.println("Creating desktop session...");
+			// Create Desktop session 
 		    capabilities = new DesiredCapabilities();
 		    capabilities.setCapability("app","Root");
 		    capabilities.setCapability("platformName", "Windows");
@@ -146,14 +153,33 @@ public class Base {
 		    DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 
 		    
+		    System.out.println("Getting printer queue window handle...");
 		    //Get handle to PrinterQueue window
 		    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
 	    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
 	    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
 	    	log.debug("int value:" + nativeWindowHandle);
+	    	System.out.println("int value:" + nativeWindowHandle);
 	    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
 	    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
+	    	System.out.println("Hex Value:" + printerQueueTopWindowHandle);
 
+/*	          System.out.println("Getting printer queue window handle...");
+	            //Get handle to PrinterQueue window
+	            try {
+	                WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
+	                String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
+	                int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
+	                log.debug("int value:" + nativeWindowHandle);
+	                System.out.println("int value:" + nativeWindowHandle);
+	                String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
+	            log.debug("Hex Value:" + printerQueueTopWindowHandle);
+	                System.out.println("Hex Value:" + printerQueueTopWindowHandle);
+	            } catch (Exception e) {
+	                  System.out.println("Failed to get the printer queue window handle...");
+	            }*/
+	    	
+	    	System.out.println("Creating a print queue session...");
 	    	// Create a PrintQueueSession by attaching to an existing application top level window handle
 	    	DesiredCapabilities capabilities = new DesiredCapabilities();
 	    	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);
@@ -161,10 +187,13 @@ public class Base {
 	        capabilities.setCapability("deviceName", device_name);
 	        PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 	    	log.info("PrintQueue session created successfully");
+	    	System.out.println("PrintQueue session created successfully");
 	    	
 	    	// Ensure correct PrintQueue is opened    	
 	    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
 		    log.info("Open printer queue is correct for the printer => "+ptr_name);
+	    	System.out.println("Open printer queue is correct for the printer => "+ptr_name);
+		    
 		}
 	
 
