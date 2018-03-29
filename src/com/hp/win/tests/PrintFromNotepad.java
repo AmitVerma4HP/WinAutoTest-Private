@@ -12,9 +12,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.Base_Notepad;
 
 
-public class PrintFromNotepad extends Base{
+public class PrintFromNotepad extends Base_Notepad{
 	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
 	
 
