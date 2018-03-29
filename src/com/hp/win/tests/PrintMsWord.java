@@ -5,9 +5,15 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.remote.SessionId;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+
+import io.appium.java_client.windows.WindowsElement;
 
 
 public class PrintMsWord extends Base{
@@ -18,9 +24,8 @@ public class PrintMsWord extends Base{
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
         	
-    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);
-            Thread.sleep(5000);                                               
-                   	
+    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);    		
+            Thread.sleep(1000); 
     }
 
 	
@@ -28,11 +33,25 @@ public class PrintMsWord extends Base{
 	@Parameters({"ptr_name","device_name"})
     public void PrintMsWordFile(String ptr_name ,String device_name) throws InterruptedException, IOException
     {   
-		// Method to Print Notepad File to Printer Under Test
-		DesktopSession = Base.GetDesktopSession(device_name);
-		Thread.sleep(1000); 
-		DesktopSession.getKeyboard().pressKey(Keys.CONTROL+"p");
+		
+		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
+		Thread.sleep(2000); 
+		
+		WebElement PrinterListComboBox = MsWordSession.findElementByClassName("NetUIDropdownAnchor");
+        Assert.assertNotNull(PrinterListComboBox);   
+        log.info("Currently selected printer is => " +PrinterListComboBox.getText().toString());
+                
+       
+        
+        
+        /*
+        if(PrinterListComboBox.getText().contentEquals(ptr_name)) {
+        	log.info("Desired printer =>" +ptr_name+" is already selected");
+        }else {
+        PrinterListComboBox.findElementByName(ptr_name).click();
+        log.info("Selected desired printer "+ptr_name+"from printers list dropdown");
+        */
 		
 		
 	}
@@ -53,7 +72,7 @@ public class PrintMsWord extends Base{
 	    
 	   // log.info("Expected queued job should be => "+test_filename);
 	    //Validate Print Job Queued up
-	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    //Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	   // log.info("Found correct job in print queue => "+test_filename);
 	    
 	}
@@ -73,9 +92,9 @@ public class PrintMsWord extends Base{
     			DesktopSession.quit();
     		}
     		
-    		if(PrintQueueSession!=null)
+    		if(MsWordFirstSession!=null)
     		{
-    		   PrintQueueSession.quit();
+    			MsWordFirstSession.quit();
     		}
         	        
     }

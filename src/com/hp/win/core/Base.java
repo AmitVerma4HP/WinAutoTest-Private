@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +36,7 @@ public class Base {
 		protected static RemoteWebDriver PrintQueueSession = null;
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static RemoteWebDriver MsWordSession = null;
+		protected static RemoteWebDriver MsWordFirstSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
@@ -70,7 +73,7 @@ public class Base {
 	  // Method to print from Notepad
 		public static void PrintNotePadFile(String ptr_name) throws InterruptedException {
 			// Go to file Menu
-	    	NotepadSession.findElementByName("File").click();
+			NotepadSession.findElementByName("File").click();
 	    	log.info("Clicked on File Menu in Notepad");
 	    	Thread.sleep(1000);
 	    	
@@ -204,7 +207,7 @@ public class Base {
 	
 	  
 	 // Method to open MS Word test file
-	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws MalformedURLException {
+	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws MalformedURLException, InterruptedException {
 			
 			   try {
 			    	capabilities = new DesiredCapabilities();
@@ -213,14 +216,36 @@ public class Base {
 			        capabilities.setCapability("appWorkingDir", testfiles_loc);
 			        capabilities.setCapability("platformName", "Windows");
 			        capabilities.setCapability("deviceName",device_name);
-			        MsWordSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
-			        Assert.assertNotNull(MsWordSession);
-			        MsWordSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
+			        MsWordFirstSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+			        Assert.assertNotNull(MsWordFirstSession);
+			        MsWordFirstSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
 			   		}catch(Exception e){
 		            e.printStackTrace();
-		            log.info("Error opening notepad file");	            
+		            log.info("Error opening MS Word file");	            
 		        	}
 			    log.info("Opened"+test_filename+"file from "+testfiles_loc);
+			    
+			    Thread.sleep(3000); 
+			    
+			    log.info("Relauching MSWord App to Get Main Window Session");
+			    
+			    try {
+			    capabilities = new DesiredCapabilities();
+		        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+		        capabilities.setCapability("appArguments",test_filename );
+		        capabilities.setCapability("appWorkingDir", testfiles_loc);
+		        capabilities.setCapability("platformName", "Windows");
+		        capabilities.setCapability("deviceName",device_name);
+		        MsWordSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+		        Assert.assertNotNull(MsWordSession);
+		        MsWordSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
+		   		}catch(Exception e){
+	            e.printStackTrace();
+	            log.info("Error opening MS Word file");	            
+	        	}
+			    
+			    log.info("Relauching MSWord App Successful and Got Main Window Session");
+			   
 				return MsWordSession;
 			
 		}
