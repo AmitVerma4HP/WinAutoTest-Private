@@ -72,7 +72,7 @@ public class Base {
 		
 		
 	  // Method to print from Notepad
-		public static void PrintNotePadFile(String ptr_name) throws InterruptedException {
+		public static void PrintNotePadFile(String ptr_name, String duplex_optn) throws InterruptedException {
 			// Go to file Menu
 			NotepadSession.findElementByName("File").click();
 	    	log.info("Clicked on File Menu in Notepad");
@@ -93,7 +93,11 @@ public class Base {
 	    	log.info("Clicked on File -> Print option Successfully");
 	    	Thread.sleep(1000);
 	    	
-	    	//Select WiFi Printer
+	    	OpenPreferences();
+	    	
+	        ChooseDuplexOrSimplex(duplex_optn);
+	    	
+/*	    	//Select WiFi Printer
 	    	NotepadSession.findElementByName(ptr_name).click();
 	    	log.info("Selected Printer Successfully");
 	    	Thread.sleep(1000);
@@ -101,8 +105,47 @@ public class Base {
 	    	//Tap on print icon (Give Print)
 	    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 	    	log.info("Pressed Print Button Successfully");
-	    	Thread.sleep(1000);
+	    	Thread.sleep(1000);*/
 		}
+		
+		public static void OpenPreferences() throws InterruptedException{
+            NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Preferences\")]").click();
+            log.info("Pressed Preferences Button Successfully");
+            Thread.sleep(1000);
+		}
+				
+		// Method to select duplex option
+		public static void ChooseDuplexOrSimplex(String option) throws InterruptedException {
+
+            String optn = option.toLowerCase();
+		    
+		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Open\")]").click();
+		    log.info("Opened \"Print on Both Sides\" menu successfully");
+		    
+		    log.info("Going to select " + optn);
+		    
+		    switch(optn) {
+		    case "simplex":
+		        NotepadSession.findElementByXPath("//ListItem[starts-with(@Name, \"None\")]").click();
+		        log.info("Simplex selected.");
+		        Thread.sleep(1000);
+		        break;
+		        
+		    case "long edge":
+		        NotepadSession.findElementByXPath("//ListItem[starts-with(@Name, \"Flip on Long Edge\")]").click();
+                log.info("Duplex on Long Edge selected.");
+		        Thread.sleep(1000);
+		        break;
+		        
+		    case "short edge":
+	            //NotepadSession.findElementByXPath("//List[starts-with(@Name, \"Print on Both Sides\")]/ListItem[starts-with(@Name, \"Flip on Short Edge\")]").click();
+		        NotepadSession.findElementByTagName("ListItem");
+		        log.info("Duplex on Short Edge selected.");
+		        Thread.sleep(1000);
+		    }
+		}
+		
+		
 		
 		
 		// Method to Create Desktop Session

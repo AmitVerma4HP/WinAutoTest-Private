@@ -14,7 +14,7 @@ public class PrintFromNotepad extends Base{
 	
 
     @BeforeClass
-	@Parameters({ "device_name", "ptr_name", "test_filename"})
+	@Parameters({ "device_name", "ptr_name", "test_filename" })
     public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
         	
     		NotepadSession = Base.OpenNoteFile(device_name, test_filename);
@@ -27,17 +27,17 @@ public class PrintFromNotepad extends Base{
 
 	
 	@Test
-	@Parameters({"ptr_name"})
-    public void PrintNoteFile(String ptr_name) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "duplex_optn" })
+    public void PrintNoteFile(String ptr_name, String duplex_optn) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name);
+		PrintNotePadFile(ptr_name, duplex_optn);
 	}
 	
 	
 
 	
-	@Test
+/*	@Test
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
@@ -53,7 +53,7 @@ public class PrintFromNotepad extends Base{
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
 	    
-	}
+	}*/
 
     
     @AfterClass
