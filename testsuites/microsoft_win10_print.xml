@@ -19,9 +19,23 @@
   
   <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
-  <test verbose="2" name="Printing Test from Notepad - Device Under test (VERAMIT6) => Printer Under Test (HP OfficeJet 250 Mobile Series)">
+  <test verbose="2" name="Printing Test MSWord test file - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
     	<parameter name="device_name" value="VERAMIT6" />
-     	<parameter name="ptr_name" value="HPB8033E (HP OfficeJet 250 Mobile Series)" />
+     	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+ 
+ <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
+ 
+  <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
+  
+  <test verbose="2" name="Printing Test MSWord Test file2 - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
+    	<parameter name="device_name" value="VERAMIT6" />
+     	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
      	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
 		
     <classes>
@@ -31,7 +45,8 @@
  
  <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
-  
+   
+ 
   </suite>
   
    
