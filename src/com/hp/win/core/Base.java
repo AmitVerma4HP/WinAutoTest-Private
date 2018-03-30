@@ -259,25 +259,106 @@ public class Base {
 		 
 		 	WebElement PrinterListComboBox = MsWordSession.findElementByClassName("NetUIDropdownAnchor");		
 	        Assert.assertNotNull(PrinterListComboBox);           
-	        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) {
-	        log.info("Desired printer is not selected so selecting it from drop down");
-	        PrinterListComboBox.click();
-	        Thread.sleep(1000);
-	        try {
-	        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
-	        	}catch(Exception e){
-	        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting printer under test");     
-	            throw new RuntimeException(e);
-	        	}
-	        Thread.sleep(1000);
-	        log.info("Selected desired printer =>" +PrinterListComboBox.getText().toString());
-	        } else {
-	        log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) 
+	        {
+		        log.info("Desired printer  => "+ptr_name+" <=  is not selected so selecting it from drop down");
+		        PrinterListComboBox.click();
+		        Thread.sleep(1000);
+		        try {
+		        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
+		        	}catch(Exception e){
+		        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
+		        	e.printStackTrace();
+		            log.info("Error selecting printer under test");     
+		            throw new RuntimeException(e);
+		        	}
+		        Thread.sleep(1000);
+		        log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");
+		    } else {
+		    	log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
 		 
 	 }
-	
+	 
+	 // Method to select desired paper size  
+	 // Possible candidate for re-factoring when there are multiple application in automation
+	 public static void SelectPaperSize_Msword(String paper_size) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement PaperSizeListComboBox = MsWordSession.findElementByName("Page Size");		 		
+	        Assert.assertNotNull(PaperSizeListComboBox);           
+	        if(!PaperSizeListComboBox.getText().toString().contentEquals(paper_size)) 
+	        {
+		        log.info("Desired paper size => "+paper_size+" <= is not selected so selecting it from drop down");
+		        PaperSizeListComboBox.click();
+		        Thread.sleep(1000);
+		        try {
+		        	PaperSizeListComboBox.findElement(By.name(paper_size)).click();
+		        	//Its big List so if needed Scroll Down Twice (if needed) - TBD
+		        	}catch(Exception e){
+		        	log.info("Desired Paper Size is not found so make sure Printer Support this paper size OR have typed the paper size name incorrectly in testsuite xml");
+		        	e.printStackTrace();
+		            log.info("Error selecting desired paper size");     
+		            throw new RuntimeException(e);
+		        	}
+		        Thread.sleep(1000);
+		        log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
+		     } else {
+		    	log.info("Desired paper size => " +PaperSizeListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+	 }
+	 
+	 
+	 // Method to select desired duplex option  
+	 // Possible candidate for re-factoring when there are multiple application in automation
+	 public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement DuplexListComboBox = MsWordSession.findElementByName("Two-Sided Printing");		 		
+	        Assert.assertNotNull(DuplexListComboBox);           
+	        if(!DuplexListComboBox.getText().toString().contentEquals(duplex_option)) 
+	        {
+		        log.info("Desired duplex option => "+duplex_option+" <= is not selected so selecting it from drop down");
+		        DuplexListComboBox.click();
+		        Thread.sleep(1000);
+		        try {
+		        	DuplexListComboBox.findElement(By.name(duplex_option)).click();		        	
+		        	}catch(Exception e){
+		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
+		        	e.printStackTrace();
+		            log.info("Error selecting duplex option");     
+		            throw new RuntimeException(e);
+		        	}
+		        Thread.sleep(1000);
+		        log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
+		     } else {
+		    	log.info("Desired duplex option => " +DuplexListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+	 }
+	 
+	 
+	 // Method to select desired orientation  
+	 // Possible candidate for re-factoring when there are multiple application in automation
+	 public static void SelectOrientation_Msword(String orientation) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement OrientationListComboBox = MsWordSession.findElementByName("Orientation");		 		
+	        Assert.assertNotNull(OrientationListComboBox);           
+	        if(!OrientationListComboBox.getText().toString().contentEquals(orientation)) 
+	        {
+		        log.info("Desired duplex option => "+orientation+" <= is not selected so selecting it from drop down");
+		        OrientationListComboBox.click();
+		        Thread.sleep(1000);
+		        try {
+		        	OrientationListComboBox.findElement(By.name(orientation)).click();		        	
+		        	}catch(Exception e){
+		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
+		        	e.printStackTrace();
+		            log.info("Error selecting duplex option");     
+		            throw new RuntimeException(e);
+		        	}
+		        Thread.sleep(1000);
+		        log.info("Selected desired duplex option *****" +OrientationListComboBox.getText().toString()+"*****");
+		     } else {
+		    	log.info("Desired duplex option => " +OrientationListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+	 }
 	
 }
