@@ -95,18 +95,17 @@ public class Base {
 	    	Thread.sleep(1000);
 	    	
 	    	OpenPreferences();
-	    	
 	        ChooseDuplexOrSimplex(duplex_optn);
 	    	
-/*	    	//Select WiFi Printer
+	    	//Select WiFi Printer
 	    	NotepadSession.findElementByName(ptr_name).click();
 	    	log.info("Selected Printer Successfully");
-	    	Thread.sleep(1000);
+	    	Thread.sleep(1000); 
 	    	
 	    	//Tap on print icon (Give Print)
 	    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 	    	log.info("Pressed Print Button Successfully");
-	    	Thread.sleep(1000);*/
+	    	Thread.sleep(1000);
 		}
 		
 		public static void OpenPreferences() throws InterruptedException{
@@ -117,7 +116,8 @@ public class Base {
 				
 		// Method to select duplex option
 		// NOTE: Cannot currently select list items from the combo box's drop down menu
-		// Currently the way a duplex option is chosen is with the arrow keys navigating to the selection
+		// A workaround is to use the arrow keys to navigate to the selection
+		// This issue has been already reported here: https://github.com/Microsoft/WinAppDriver/issues/389
 		public static void ChooseDuplexOrSimplex(String option) throws InterruptedException {
 
             String optn = option.toLowerCase();
@@ -125,18 +125,16 @@ public class Base {
             String shortEdge = "Flip on Short Edge";
             String longEdge = "Flip on Long Edge";
             
-            // Get the default selection in the combo box
-            // This can be used for comparison later, but it's not doing anything yet EMC
+            // Create an object for the combo box and get the default selection value
+            // This can be used for comparison later, but it's not doing anything yet - EMC
             WebElement DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox"); 
             String comboBoxText = DuplexComboBoxView.getText();
             Assert.assertNotNull(DuplexComboBoxView);
 
-            // Select the right duplex option from the drop down menu
+            // Select the correct duplex option from the drop down menu
 		    switch(optn) {
 		    case "simplex":
-		        Thread.sleep(1000);
 		        log.info("Selecting '" + simplex + "'...");
-                //DuplexComboBoxView.click();
 		        DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
 		        DuplexComboBoxView.click();
                 comboBoxText = DuplexComboBoxView.getText();
@@ -146,41 +144,44 @@ public class Base {
 		        break;
 		        
 		    case "long edge":
-		        Thread.sleep(1000);
+		        
                 log.info("Navigating to '" + longEdge + "'...");
 		        try {
-                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-                DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
-                DuplexComboBoxView.click();
-                comboBoxText = DuplexComboBoxView.getText();
-                //Assert.assertNotNull(DuplexComboBoxView);
-                Assert.assertEquals(comboBoxText, longEdge);
-                log.info("Selecting '" + comboBoxText + ".'");
-                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
-                Thread.sleep(1000);
-                
+		            // Tap down arrow twice because the first tap opens the drop down menu
+		            NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+		            NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+		            DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
+		            DuplexComboBoxView.click();
+		            Thread.sleep(1000);
+		            
+		            // Make sure the option we want is selected
+		            DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
+		            comboBoxText = DuplexComboBoxView.getText();
+		            Assert.assertEquals(comboBoxText, longEdge);
+		            
+		            log.info("Selecting '" + comboBoxText + ".'");
+		            NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
+		            Thread.sleep(1000);
                 } catch(Exception e)
 		        {
-                    log.info("Can't find '" + longEdge + ".'");
-                    e.printStackTrace();
-                    log.info("Error selecting duplex option.");     
+                    log.info("Can't find '" + longEdge + ".'");     
                     throw new RuntimeException(e);
 		        }
-            Thread.sleep(1000);
 		        break;
 		        
 		    case "short edge":
+		        
 		        log.info("Navigating to " + shortEdge + "...");
-
 	            try {
 	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
 	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
 	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
 	                DuplexComboBoxView.click();
+	                Thread.sleep(1000);
+	                
 	                DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
 	                comboBoxText = DuplexComboBoxView.getText();
-	                //Assert.assertNotNull(DuplexComboBoxView);
+
 	                Assert.assertEquals(comboBoxText, shortEdge);
 	                log.info("Selecting '" + comboBoxText + ".'");
 	                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
@@ -188,9 +189,7 @@ public class Base {
 	                
 	            } catch(Exception e)
 	            {
-	                log.info("Can't find '" + shortEdge + ".'");
-	                e.printStackTrace();
-	                log.info("Error selecting duplex option.");     
+	                log.info("Can't find '" + shortEdge + ".'");    
 	                throw new RuntimeException(e);
 	            }
 	            Thread.sleep(1000);
@@ -199,8 +198,6 @@ public class Base {
 	        default:
 	            log.info("Invalid duplex selection. Please use 'simplex,' 'long edge,' or 'short edge.'");
 	        }
-
-		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 		}
 		
 		
