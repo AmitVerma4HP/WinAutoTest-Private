@@ -38,6 +38,7 @@ public class Base {
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static RemoteWebDriver MsWordSession = null;
 		protected static RemoteWebDriver MsWordFirstSession = null;
+		protected static RemoteWebDriver PhotosSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
@@ -143,11 +144,10 @@ public class Base {
 		        capabilities.setCapability("deviceName", device_name);
 		        PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 				}catch(Exception e){
-	            e.printStackTrace();
-	            log.info("Error getting Print Queue session");	            
-	        	}
-			
-	    	log.info("PrintQueue session created successfully");
+					e.printStackTrace();
+					log.info("Error getting Print Queue session");	            
+		        	}
+			log.info("PrintQueue session created successfully");
 	    	
 	    	// Ensure correct PrintQueue is opened    	
 	    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
@@ -183,7 +183,6 @@ public class Base {
 			
 		try {
 			DesktopSession = Base.GetDesktopSession(device_name);		
-		    //Get handle to Cortana window
 		    DesktopSession.getKeyboard().sendKeys(Keys.META + "s" + Keys.META);
 		    WebElement CortanaWindow = DesktopSession.findElementByName("Cortana");
 	    	String nativeWindowHandle = CortanaWindow.getAttribute("NativeWindowHandle");
@@ -279,5 +278,85 @@ public class Base {
 		 
 	 }
 	
+	 
+	 // Method to open Photos test file
+	 public static RemoteWebDriver OpenPhotosFile(String device_name, String test_filename) throws MalformedURLException {
+			
+			 try {
+		    	    capabilities = new DesiredCapabilities();
+		            capabilities.setCapability("app", "Microsoft.Windows.Photos_8wekyb3d8bbwe!App");
+		            capabilities.setCapability("appArguments", test_filename);
+		            capabilities.setCapability("appWorkingDir", testfiles_loc);
+		            capabilities.setCapability("platformName", "Windows");
+		            capabilities.setCapability("deviceName", device_name);
+		            PhotosSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);	
+		            Assert.assertNotNull(PhotosSession);
+		            PhotosSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		            }catch(Exception e){
+		            	log.info("Error opening Photos app");	            
+		        }
+			 
+			// log.info("Opened"+test_filename+"file from "+testfiles_loc);
+		 	log.info("Opened PhotosSession successfully");
+			return PhotosSession;
+	    	
+		}
+	 
+	 
+	 // Method to print from Photos
+		public static void PrintPhoto(String ptr_name, String test_filename) throws InterruptedException {
+			// Go to Folders Tab
+	    	PhotosSession.findElementByName("Folders").click();
+	    	log.info("Clicked on Folder Menu Successfully in PhotoApp");
+	    	Thread.sleep(1000);
+	    	
+	    	// Search for Saved Pictures folder.
+            PhotosSession.findElementByName("Search").sendKeys("testfiles");
+            log.info("Searching \"Saved Pictures\"");
+            Thread.sleep(1000);
+            
+            // Click on Saved Pictures
+            PhotosSession.findElementByXPath("//Button[@Name = \"testfiles\"]").click();
+            log.info("Clicked on \"Saved Pictures\"");
+            Thread.sleep(1000);
+                        
+            // Select the Photo file
+	    	PhotosSession.findElementByXPath("//Button[@AutomationId = '"+test_filename+"']").click();
+	    	log.info("Pressed Save button to Save the File");
+	        Thread.sleep(1000);
+	        
+	        // Tap on Print icon
+		    PhotosSession.findElementByName("Print").click();
+		    log.info("Clicked on Print Icon Successfully in PhotoApp");
+		    Thread.sleep(1000);
+		    
+    	}
+		
+		
+		 // Method to select desired printer from printers list combo box
+		 // Possible candidate for re-factoring when there are multiple application in automation
+		 public static void SelectDesiredPrinter_Photos(String ptr_name) throws MalformedURLException, InterruptedException {
+			 
+			 	WebElement PrinterListComboBox = PhotosSession.findElementByClassName("ComboBoxItem");		
+		        Assert.assertNotNull(PrinterListComboBox);           
+		        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) {
+		        	log.info("Desired printer is not selected so selecting it from drop down");
+		 	        PrinterListComboBox.click();
+		 	        Thread.sleep(1000);
+		 	        try {
+		 	        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
+		 	        	}catch(Exception e){
+		 	        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
+		 	        	e.printStackTrace();
+		 	            log.info("Error selecting printer under test");     
+		 	            throw new RuntimeException(e);
+		 	        	}
+		 	        Thread.sleep(1000);
+		 	        log.info("Selected desired printer =>" +PrinterListComboBox.getText().toString());
+		 	        } else {
+		 	        log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
+		 	        }
+		 		 
+		 }
 	
 }
