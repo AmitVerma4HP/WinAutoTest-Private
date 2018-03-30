@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -115,34 +116,91 @@ public class Base {
 		}
 				
 		// Method to select duplex option
+		// NOTE: Cannot currently select list items from the combo box's drop down menu
+		// Currently the way a duplex option is chosen is with the arrow keys navigating to the selection
 		public static void ChooseDuplexOrSimplex(String option) throws InterruptedException {
 
             String optn = option.toLowerCase();
-		    
-		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Open\")]").click();
-		    log.info("Opened \"Print on Both Sides\" menu successfully");
-		    
-		    log.info("Going to select " + optn);
-		    
+            String simplex = "None";
+            String shortEdge = "Flip on Short Edge";
+            String longEdge = "Flip on Long Edge";
+            
+            // Get the default selection in the combo box
+            // This can be used for comparison later, but it's not doing anything yet EMC
+            WebElement DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox"); 
+            String comboBoxText = DuplexComboBoxView.getText();
+            Assert.assertNotNull(DuplexComboBoxView);
+
+            // Select the right duplex option from the drop down menu
 		    switch(optn) {
 		    case "simplex":
-		        NotepadSession.findElementByXPath("//ListItem[starts-with(@Name, \"None\")]").click();
-		        log.info("Simplex selected.");
 		        Thread.sleep(1000);
+		        log.info("Selecting '" + simplex + "'...");
+                //DuplexComboBoxView.click();
+		        DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
+		        DuplexComboBoxView.click();
+                comboBoxText = DuplexComboBoxView.getText();
+		        Assert.assertEquals(comboBoxText, simplex);
+		        NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
+                Thread.sleep(1000);
 		        break;
 		        
 		    case "long edge":
-		        NotepadSession.findElementByXPath("//ListItem[starts-with(@Name, \"Flip on Long Edge\")]").click();
-                log.info("Duplex on Long Edge selected.");
 		        Thread.sleep(1000);
+                log.info("Navigating to '" + longEdge + "'...");
+		        try {
+                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+                DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
+                DuplexComboBoxView.click();
+                comboBoxText = DuplexComboBoxView.getText();
+                //Assert.assertNotNull(DuplexComboBoxView);
+                Assert.assertEquals(comboBoxText, longEdge);
+                log.info("Selecting '" + comboBoxText + ".'");
+                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
+                Thread.sleep(1000);
+                
+                } catch(Exception e)
+		        {
+                    log.info("Can't find '" + longEdge + ".'");
+                    e.printStackTrace();
+                    log.info("Error selecting duplex option.");     
+                    throw new RuntimeException(e);
+		        }
+            Thread.sleep(1000);
 		        break;
 		        
 		    case "short edge":
-	            //NotepadSession.findElementByXPath("//List[starts-with(@Name, \"Print on Both Sides\")]/ListItem[starts-with(@Name, \"Flip on Short Edge\")]").click();
-		        NotepadSession.findElementByTagName("ListItem");
-		        log.info("Duplex on Short Edge selected.");
-		        Thread.sleep(1000);
-		    }
+		        log.info("Navigating to " + shortEdge + "...");
+
+	            try {
+	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+	                DuplexComboBoxView.click();
+	                DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
+	                comboBoxText = DuplexComboBoxView.getText();
+	                //Assert.assertNotNull(DuplexComboBoxView);
+	                Assert.assertEquals(comboBoxText, shortEdge);
+	                log.info("Selecting '" + comboBoxText + ".'");
+	                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
+	                Thread.sleep(1000);
+	                
+	            } catch(Exception e)
+	            {
+	                log.info("Can't find '" + shortEdge + ".'");
+	                e.printStackTrace();
+	                log.info("Error selecting duplex option.");     
+	                throw new RuntimeException(e);
+	            }
+	            Thread.sleep(1000);
+	            break;
+	            
+	        default:
+	            log.info("Invalid duplex selection. Please use 'simplex,' 'long edge,' or 'short edge.'");
+	        }
+
+		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
 		}
 		
 		
