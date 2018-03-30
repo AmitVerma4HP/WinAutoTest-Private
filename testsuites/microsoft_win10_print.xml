@@ -4,22 +4,56 @@
  
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
   
-<!--   <test verbose="2" name="Printing Test from Notepad - Device Under test (VERAMIT6) => Printer Under Test (HP OfficeJet 250 Mobile Series)"> -->
-<!--     	<parameter name="device_name" value="VERAMIT6" /> -->
-<!--      	<parameter name="ptr_name" value="HPB8033E (HP OfficeJet 250 Mobile Series)" /> -->
-<!--      	<parameter name="test_filename" value="NotepadTestFile1.txt" /> -->
+<!--   <test verbose="2" name="Printing Test from Notepad - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY Photo 7800 series [093C76])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP ENVY Photo 7800 series [093C76]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+     	<parameter name="duplex_optn" value="Long Edge" />
 		
-<!--     <classes> -->
-<!--          <class name="com.hp.win.tests.PrintFromNotepad"/> -->
-<!--     </classes> -->
-<!--   </test> -->
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test> -->
+  
+    <test verbose="2" name="Notepad Duplex Short Edge - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+     	<parameter name="duplex_optn" value="Short Edge" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+  
+<!--       <test verbose="2" name="Notepad Duplex Long Edge - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+     	<parameter name="duplex_optn" value="long edge" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+  
+        <test verbose="2" name="Notepad Simplex - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+     	<parameter name="duplex_optn" value="simplex" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test> -->
  
  <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
   
   
   <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
-  <test verbose="2" name="Printing Test MSWord test file - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
+<!--   <test verbose="2" name="Printing Test MSWord test file - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
     	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
      	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
@@ -27,13 +61,13 @@
     <classes>
          <class name="com.hp.win.tests.PrintMsWord"/>
     </classes>
-  </test>
+  </test> -->
  
  <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
  
   <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
-  <test verbose="2" name="Printing Test MSWord Test file2 - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
+<!--   <test verbose="2" name="Printing Test MSWord Test file2 - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
     	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
      	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
@@ -41,7 +75,7 @@
     <classes>
          <class name="com.hp.win.tests.PrintMsWord"/>
     </classes>
-  </test>
+  </test> -->
  
  <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
