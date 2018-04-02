@@ -113,7 +113,27 @@ public class Base {
             log.info("Pressed Preferences Button Successfully");
             Thread.sleep(1000);
 		}
-				
+		
+		
+		// Method to select the necessary tab to change the print preference options
+		public static void SelectPreferencesTab(String desiredTab) throws InterruptedException {
+
+		    try {
+		        if(NotepadSession.findElementByName(desiredTab).isSelected()) {
+		            log.info("'" + desiredTab + "' tab is already selected.");
+		        }
+		        else {
+		            NotepadSession.findElementByName(desiredTab).click();
+		            log.info("Successfully clicked on '" + desiredTab + ".'");
+		        }
+		    } catch (Exception e) {
+		        log.info("Error: Tab '" + desiredTab + "' doesn't exist. Use 'Layout' or 'Paper/Quality.'");
+		        throw new RuntimeException(e);
+		    }
+
+		}
+		
+		
 		// Method to select duplex option
 		// NOTE: Cannot currently select list items from the combo box's drop down menu
 		// A workaround is to use the arrow keys to navigate to the selection
@@ -125,8 +145,10 @@ public class Base {
             String shortEdge = "Flip on Short Edge";
             String longEdge = "Flip on Long Edge";
             
+            SelectPreferencesTab("Layout");
+            
             // Create an object for the combo box and get the default selection value
-            // This can be used for comparison later, but it's not doing anything yet - EMC
+            // This might be used for comparison later, but it's not doing anything yet - EMC
             WebElement DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox"); 
             String comboBoxText = DuplexComboBoxView.getText();
             Assert.assertNotNull(DuplexComboBoxView);
@@ -134,7 +156,7 @@ public class Base {
             // Select the correct duplex option from the drop down menu
 		    switch(optn) {
 		    case "simplex":
-		        log.info("Selecting '" + simplex + "'...");
+		        log.info("Selected '" + simplex + "'...");
 		        DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
 		        DuplexComboBoxView.click();
                 comboBoxText = DuplexComboBoxView.getText();
@@ -159,7 +181,7 @@ public class Base {
 		            comboBoxText = DuplexComboBoxView.getText();
 		            Assert.assertEquals(comboBoxText, longEdge);
 		            
-		            log.info("Selecting '" + comboBoxText + ".'");
+		            log.info("Selected '" + comboBoxText + ".'");
 		            NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
 		            Thread.sleep(1000);
                 } catch(Exception e)
@@ -183,7 +205,7 @@ public class Base {
 	                comboBoxText = DuplexComboBoxView.getText();
 
 	                Assert.assertEquals(comboBoxText, shortEdge);
-	                log.info("Selecting '" + comboBoxText + ".'");
+	                log.info("Selected '" + comboBoxText + ".'");
 	                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
 	                Thread.sleep(1000);
 	                
