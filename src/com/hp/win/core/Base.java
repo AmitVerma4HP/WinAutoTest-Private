@@ -74,7 +74,7 @@ public class Base {
 		
 		
 	  // Method to print from Notepad
-		public static void PrintNotePadFile(String ptr_name, String duplex_optn) throws InterruptedException {
+		public static void PrintNotePadFile(String ptr_name, String duplex_optn, String color_optn) throws InterruptedException {
 			// Go to file Menu
 			NotepadSession.findElementByName("File").click();
 	    	log.info("Clicked on File Menu in Notepad");
@@ -95,10 +95,15 @@ public class Base {
 	    	log.info("Clicked on File -> Print option Successfully");
 	    	Thread.sleep(1000);
 	    	
+	    	// Select print preferences
 	    	OpenPreferences();
 	        ChooseDuplexOrSimplex(duplex_optn);
+	        ChooseColorOrMono(color_optn);
+	        
+	        ClosePreferences();
 	    	
 	    	//Select WiFi Printer
+	        log.info("Looking for " + ptr_name + "...");
 	    	NotepadSession.findElementByName(ptr_name).click();
 	    	log.info("Selected Printer Successfully");
 	    	Thread.sleep(1000); 
@@ -111,14 +116,19 @@ public class Base {
 		
 		public static void OpenPreferences() throws InterruptedException{
             NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Preferences\")]").click();
-            log.info("Pressed Preferences Button Successfully");
+            log.info("Clicked 'Preferences' button successfully");
             Thread.sleep(1000);
 		}
 		
+		public static void ClosePreferences() throws InterruptedException{
+		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
+		    log.info("Clicked 'OK' button successfully.");
+		    Thread.sleep(1000);
+		}
 		
 		// Method to select the necessary tab to change the print preference options
 		public static void SelectPreferencesTab(String desiredTab) throws InterruptedException {
-
+		    
 		    try {
 		        if(NotepadSession.findElementByName(desiredTab).isSelected()) {
 		            log.info("'" + desiredTab + "' tab is already selected.");
@@ -126,6 +136,7 @@ public class Base {
 		        else {
 		            NotepadSession.findElementByName(desiredTab).click();
 		            log.info("Successfully clicked on '" + desiredTab + ".'");
+		            Thread.sleep(1000);
 		        }
 		    } catch (Exception e) {
 		        log.info("Error: Tab '" + desiredTab + "' doesn't exist. Use 'Layout' or 'Paper/Quality.'");
@@ -162,7 +173,6 @@ public class Base {
 		        DuplexComboBoxView.click();
                 comboBoxText = DuplexComboBoxView.getText();
 		        Assert.assertEquals(comboBoxText, simplex);
-		        NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
                 Thread.sleep(1000);
 		        break;
 		        
@@ -183,7 +193,6 @@ public class Base {
 		            Assert.assertEquals(comboBoxText, longEdge);
 		            
 		            log.info("Selected '" + comboBoxText + ".'");
-		            NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
 		            Thread.sleep(1000);
                 } catch(Exception e)
 		        {
@@ -207,7 +216,6 @@ public class Base {
 
 	                Assert.assertEquals(comboBoxText, shortEdge);
 	                log.info("Selected '" + comboBoxText + ".'");
-	                NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
 	                Thread.sleep(1000);
 	                
 	            } catch(Exception e)
@@ -224,6 +232,36 @@ public class Base {
 		}
 		
 		
+		public static void ChooseColorOrMono(String color_optn) throws InterruptedException {
+		    String color = "Color";
+		    String mono = "Black && White";
+		    String color_choice;
+		    
+		    String color_sel = color_optn.toLowerCase();
+		    
+		    if(color_sel.equals("mono")) {
+		        color_choice = mono;
+		    }
+		    else {
+		        color_choice = color;
+		    }
+		    
+		    SelectPreferencesTab("Paper/Quality");
+		    
+	          try {
+	                if(NotepadSession.findElementByName(color_choice).isSelected()) {
+	                    log.info("'" + color_optn + "' is already selected.");
+	                }
+	                else {
+	                    NotepadSession.findElementByName(color_choice).click();
+	                    log.info("Successfully clicked on '" + color_choice + ".'");
+	                }
+	            } catch (Exception e) {
+	                log.info("Error: Tab '" + color_choice + "' doesn't exist. Use 'color' or 'mono.'");
+	                throw new RuntimeException(e);
+	            }
+		    
+		}
 		
 		
 		// Method to Create Desktop Session

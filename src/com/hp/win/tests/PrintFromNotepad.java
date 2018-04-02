@@ -27,11 +27,11 @@ public class PrintFromNotepad extends Base{
 
 	
 	@Test
-	@Parameters({ "ptr_name", "duplex_optn" })
-    public void PrintNoteFile(String ptr_name, String duplex_optn) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "duplex_optn", "color_optn" })
+    public void PrintNoteFile(String ptr_name, String duplex_optn, String color_optn) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name, duplex_optn);
+		PrintNotePadFile(ptr_name, duplex_optn, color_optn);
 	}
 	
 	
