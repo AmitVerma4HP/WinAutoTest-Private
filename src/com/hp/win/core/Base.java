@@ -731,12 +731,13 @@ public class Base {
 		 // Possible candidate for re-factoring when there are multiple application in automation
 		 public static void SelectDesiredPrinter_Photos(String ptr_name) throws MalformedURLException, InterruptedException {
 			 
-			 	WebElement PrinterListComboBox = PhotosSession.findElementByClassName("ComboBoxItem");		
+			 	WebElement PrinterListComboBox = PhotosSession.findElementByClassName("ComboBox");		
 		        Assert.assertNotNull(PrinterListComboBox);           
 		        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) {
 		        	log.info("Desired printer is not selected so selecting it from drop down");
 		 	        PrinterListComboBox.click();
 		 	        Thread.sleep(1000);
+		 	    		 	        	
 		 	        try {
 		 	        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
 		 	        	}catch(Exception e){
