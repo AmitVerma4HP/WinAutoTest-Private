@@ -7,8 +7,8 @@
   
   <test verbose="2" name="Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (HP ENVY Photo 7800 series)">
     	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
-     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [4FA898]" />
-     	<parameter name="test_filename" value="Rose_Potrait.jpg" />
+     	<parameter name="ptr_name" value="Brother MFC-J4620DW " />
+     	<parameter name="test_filename" value="Rose_Portrait.jpg" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromPhotos"/>
