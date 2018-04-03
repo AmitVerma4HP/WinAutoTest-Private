@@ -8,9 +8,10 @@ import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.utility.ScreenshotUtility;
 
 
-
+@Listeners({ScreenshotUtility.class})
 public class PrintMsWord extends Base{
 	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
 	
