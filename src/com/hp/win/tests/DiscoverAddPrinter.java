@@ -10,13 +10,15 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.hp.win.core.Base;
+import com.hp.win.utility.ScreenshotUtility;
 
-
+@Listeners({ScreenshotUtility.class})
 public class DiscoverAddPrinter extends Base {
 	private static final Logger log = LogManager.getLogger(DiscoverAddPrinter.class);
 	static WebDriverWait wait;
