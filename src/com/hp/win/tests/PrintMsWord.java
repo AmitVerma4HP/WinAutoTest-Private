@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -16,8 +17,9 @@ public class PrintMsWord extends Base{
 	
 
     @BeforeClass
-	@Parameters({ "device_name", "ptr_name", "test_filename"})
-    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) throws InterruptedException, IOException {
+	@Parameters({"device_name", "ptr_name", "test_filename"})
+    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) 
+    		throws InterruptedException, IOException {
         	
     		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);    		
             Thread.sleep(1000); 
@@ -25,23 +27,58 @@ public class PrintMsWord extends Base{
 
 	
 	@Test
-	@Parameters({"ptr_name"})
-    public void PrintMsWordFile(String ptr_name) throws InterruptedException, IOException
-    {   		
+	@Parameters({"device_name","ptr_name","paper_size","duplex_option","orientation","collation","copies","pages_to_print","page_count"})
+    public void PrintMsWordFile(String device_name,String ptr_name, @Optional("Letter")String paper_size,@Optional("Print One Sided")String duplex_option,
+    	@Optional("Portrait Orientation")String orientation,@Optional("Collated")String collation,@Optional("1")String copies,
+    	@Optional("Print All Pages")String pages_to_print, @Optional("NA")String page_count) throws InterruptedException, IOException    {
+		
 		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
 		Thread.sleep(1000);
 		MsWordSession.getKeyboard().releaseKey(Keys.CONTROL);
 		Thread.sleep(2000);		
+		
+		//Selecting desired printer
 		Base.SelectDesiredPrinter_Msword(ptr_name);        
 		
 		
 		// Write method to select Print settings
-		// TDB
+		// Select Desired Paper Size
+		Base.SelectPaperSize_Msword(paper_size);
 		
+		// Select Desired Duplex Option
+		Base.SelectDuplexOption_Msword(duplex_option);
+		
+		// Select Desired Orientation Option
+		Base.SelectOrientation_Msword(orientation);
+		
+		// Select Desired Collation Option
+		Base.SelectCollation_Msword(collation);
+		
+		// Enter Desired Copies value
+		Base.SelectCopies_Msword(copies);
+		
+		// Select Desired Pages to Print Value
+		Base.SelectPagesToPrint_Msword(pages_to_print, page_count);
+				
+		//After all print settings give print 
 		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	
 		Thread.sleep(1000);
 		log.info("Finally gave a print by clicking on PRINT button");
+		
+		
+		// See if you got "Print Settings Conflict" pop up if so inform user and click on "Print Anyway"
+		//Base.SwitchToPrintSettingsConflictPopup(device_name);		
+//		if(MsWordSession.findElementByXPath("\\TitleBar[@Value='Print Settings Conflict']").getSize() != null)
+//		{
+//			log.info("Got Windows Pop up of \"Print Settings Conflict\"");
+//			Thread.sleep(1000);
+//			MsWordSession.findElementByName("Print Anyway").click();
+//			log.info("Clicked \"Print Anyway\" for Print Settings Conflict");
+//			Thread.sleep(1000);
+//		}
+//			
+		
 	}
 	
 	
@@ -65,21 +102,33 @@ public class PrintMsWord extends Base{
 	    log.info("Expected queued job should be => "+test_filename);
 	    
 	    //Validate Print Job Queued up
-	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    try {
+	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));	    
+	    }catch(NoSuchElementException e) {
+	    	log.info("Expected Print job is not found in print queue");	 
+	    	throw new RuntimeException(e);
+	    }catch(Exception e) {
+	    	log.info("Error validating print job in print queue");
+	    	throw new RuntimeException(e);
+	    }
+	    
 	    log.info("Found correct job in print queue => "+test_filename);
+	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    
 	}
 
-    
+
+	
     @AfterClass
-    public static void TearDown()
+    public static void TearDown() throws InterruptedException
     {	        
+	    		
     
         	if (MsWordSession!= null)
-        	{
+        	{      	       		
         		MsWordSession.quit();
         	}
-        	
+      			        	
     		if(DesktopSession!=null)
     		{
     			DesktopSession.quit();
