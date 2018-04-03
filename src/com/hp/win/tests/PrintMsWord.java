@@ -67,19 +67,6 @@ public class PrintMsWord extends Base{
 		Thread.sleep(1000);
 		log.info("Finally gave a print by clicking on PRINT button");
 		
-		
-		// See if you got "Print Settings Conflict" pop up if so inform user and click on "Print Anyway"
-		//Base.SwitchToPrintSettingsConflictPopup(device_name);		
-//		if(MsWordSession.findElementByXPath("\\TitleBar[@Value='Print Settings Conflict']").getSize() != null)
-//		{
-//			log.info("Got Windows Pop up of \"Print Settings Conflict\"");
-//			Thread.sleep(1000);
-//			MsWordSession.findElementByName("Print Anyway").click();
-//			log.info("Clicked \"Print Anyway\" for Print Settings Conflict");
-//			Thread.sleep(1000);
-//		}
-//			
-		
 	}
 	
 	
@@ -114,6 +101,7 @@ public class PrintMsWord extends Base{
 	    }
 	    
 	    log.info("Found correct job in print queue => "+test_filename);
+	    PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    
 	}
@@ -123,22 +111,35 @@ public class PrintMsWord extends Base{
     @AfterClass
     public static void TearDown() throws InterruptedException
     {	        
-	    		
+			if(DesktopSession!=null)
+			{
+				DesktopSession.quit();
+			}
     
+			if(PrintQueueSession!=null)
+			{
+				PrintQueueSession.quit();
+			}
+			
+			if(MsWordFirstSession!=null)
+			{
+				MsWordFirstSession.quit();
+			}
+			
         	if (MsWordSession!= null)
         	{      	       		
+        		MsWordSession.close();
+        		
+        		if(MsWordSession.findElementByClassName("NetUINetUIDialog").isDisplayed())
+					{
+        				log.info("Found alert dialog to save test file");
+						MsWordSession.findElementByName("Don't Save").click();
+					}
         		MsWordSession.quit();
+        		
         	}
       			        	
-    		if(DesktopSession!=null)
-    		{
-    			DesktopSession.quit();
-    		}
-    		
-    		if(MsWordFirstSession!=null)
-    		{
-    			MsWordFirstSession.quit();
-    		}
+
         	        
     }
     
