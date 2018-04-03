@@ -4,21 +4,23 @@ package com.hp.win.tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.utility.ScreenshotUtility;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
-
+	@Listeners({ScreenshotUtility.class})
 	public class PrintFromPhotos extends Base {
 		private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
 	   
 		@BeforeClass
 		@Parameters({ "device_name", "ptr_name", "test_filename"})
-	    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException { 
+	    public static void setup(String device_name, String ptr_name, @Optional("Rose_Portrait.jpg")String test_filename) throws InterruptedException, IOException { 
 	       
 	    PhotosSession = Base.OpenPhotosFile(device_name, test_filename);
 	    Thread.sleep(1000);
-            
+         
 	    }
 	
 		
