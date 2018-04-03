@@ -22,7 +22,7 @@ import com.hp.win.tests.PrintFromNotepad;
 public class ScreenshotUtility extends Base implements ITestListener {
 
 	public static String sTestName;
-	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
+	private static final Logger log = LogManager.getLogger(ScreenshotUtility.class);
 	protected static RemoteWebDriver curSession = null;
 
 	public ScreenshotUtility() throws IOException {
@@ -65,11 +65,12 @@ public class ScreenshotUtility extends Base implements ITestListener {
 
 	
 	// Method for capture screenshot
+	// Session information for capturing a Screenshot is determined based on the class and method names
+	// that is being executed.
 	public void captureScreenShot(ITestResult result, String status) {
 		String curdevice = "";
 		log.info("Capturing the screenshot now");
 
-		// AndroidDriver driver=ScreenshotOnPassFail.getDriver();
 		String destDir = System.getProperty("user.dir");
 		String passfailMethod = result.getMethod().getRealClass().getSimpleName() + "."
 				+ result.getMethod().getMethodName();
