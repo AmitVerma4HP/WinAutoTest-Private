@@ -26,7 +26,7 @@
     	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
      	<parameter name="paper_size" value="A4" />
-     	<parameter name="duplex_option" value="Print On Both Sides" />
+     	<parameter name="duplex_option" value="Print on Both Sides" />
      	<parameter name="orientation" value="Landscape Orientation" />
      	<parameter name="collation" value="Uncollated" />
      	<parameter name="copies" value="5" />
