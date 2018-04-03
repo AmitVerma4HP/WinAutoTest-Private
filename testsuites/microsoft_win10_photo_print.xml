@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Microsoft Win10 Test suite - Printing Tests">
+<suite name="Microsoft Win10 Photos Test suite - Printing Tests">
  
 <!-- **************************************** PRINTING TESTS ******************************************************** -->
 <!-- Before intiating the test import the Test Folder(testfiles) into Photos app. -->
