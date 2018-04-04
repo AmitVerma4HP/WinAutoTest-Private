@@ -30,7 +30,7 @@ public class DiscoverAddPrinter extends Base {
 	        
 	    	    CortanaSession=Base.GetCortanaSession(device_name);
 	    	    wait = new WebDriverWait(CortanaSession, 60);
-	    	    Thread.sleep(1000);
+	    	    Thread.sleep(3000);
 	    	    try {
 	            CortanaSession.findElementByName("Search box").sendKeys("Printers & scanners");
 	            log.info("Searching \"Printers & scanners\"");
@@ -44,11 +44,12 @@ public class DiscoverAddPrinter extends Base {
 	    	    
 	    	    //Ensure to release pressed key
 	    	    CortanaSession.getKeyboard().releaseKey(Keys.RETURN);
-	    	    Thread.sleep(1000);
+	    	    
 	    	    //Switch session to Printers & scanner screen
 	    	    //TBD
 	    	    //wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
 	    	    log.info("Waited until \"Printers & scanner\" show up");
+	    	    Thread.sleep(3000);
 	    }
 		
 		

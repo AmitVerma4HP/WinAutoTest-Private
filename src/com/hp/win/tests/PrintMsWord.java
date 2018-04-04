@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -130,11 +131,15 @@ public class PrintMsWord extends Base{
         	{      	       		
         		MsWordSession.close();
         		
-        		if(MsWordSession.findElementByClassName("NetUINetUIDialog").isDisplayed())
+        		try {
+        			if(MsWordSession.findElementByClassName("NetUINetUIDialog").isDisplayed())
 					{
         				log.info("Found alert dialog to save test file");
 						MsWordSession.findElementByName("Don't Save").click();
 					}
+        		}catch(NoSuchWindowException e) {
+        				log.info("There is no alert dialog to save test file so continuing test without taking any action");
+        		}
         		MsWordSession.quit();
         		
         	}

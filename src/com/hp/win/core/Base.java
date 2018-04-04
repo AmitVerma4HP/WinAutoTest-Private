@@ -304,7 +304,8 @@ public class Base {
 		        PrintQueueSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 				}catch(Exception e){
 					e.printStackTrace();
-					log.info("Error getting Print Queue session");	            
+					log.info("Error getting Print Queue session");
+					throw new RuntimeException(e);
 		        	}
 			log.info("PrintQueue session created successfully");
 	    	
@@ -329,7 +330,8 @@ public class Base {
 		        NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);        		        		         			 
 		   		}catch(Exception e){
 	            e.printStackTrace();
-	            log.info("Error opening notepad file");	            
+	            log.info("Error opening notepad file");
+	            throw new RuntimeException(e);
 	        	}
 		 log.info("Opened"+test_filename+"file from "+testfiles_loc);
 		 return NotepadSession;
@@ -343,8 +345,10 @@ public class Base {
 		try {
 			DesktopSession = Base.GetDesktopSession(device_name);		
 		    DesktopSession.getKeyboard().sendKeys(Keys.META + "s" + Keys.META);
+		    Thread.sleep(1000);
 		    WebElement CortanaWindow = DesktopSession.findElementByName("Cortana");
-	    	String nativeWindowHandle = CortanaWindow.getAttribute("NativeWindowHandle");
+		    Thread.sleep(1000);
+		    String nativeWindowHandle = CortanaWindow.getAttribute("NativeWindowHandle");
 	    	int cortanaWindowHandle = Integer.parseInt(nativeWindowHandle);
 	    	log.debug("int value:" + cortanaWindowHandle);
 	    	String cortanaTopWindowHandle  = hex.concat(Integer.toHexString(cortanaWindowHandle));
@@ -357,7 +361,8 @@ public class Base {
 	    	CortanaSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), appCapabilities);	    	
 			}catch(Exception e){
 	            e.printStackTrace();
-	            log.info("Error getting Cortana session");	            
+	            log.info("Error getting Cortana session");
+	            throw new RuntimeException(e);
 	        	}
 		log.info("Cortana session created successfully");
 		return CortanaSession;
@@ -380,7 +385,8 @@ public class Base {
 			        MsWordFirstSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
 			   		}catch(Exception e){
 		            e.printStackTrace();
-		            log.info("Error opening MS Word file");	            
+		            log.info("Error opening MS Word file");
+		            throw new RuntimeException(e);
 		        	}
 			    log.info("Opened"+test_filename+"file from "+testfiles_loc);
 			    
@@ -400,7 +406,8 @@ public class Base {
 		        MsWordSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);      			        
 		   		}catch(Exception e){
 	            e.printStackTrace();
-	            log.info("Error opening MS Word file");	            
+	            log.info("Error opening MS Word file");
+	            throw new RuntimeException(e);
 	        	}
 			    
 			    log.info("Relauching MSWord App Successful and Got Main Window Session");
@@ -447,11 +454,12 @@ public class Base {
 	        if(!PaperSizeListComboBox.getText().toString().contentEquals(paper_size)) 
 	        {
 		        log.info("Desired paper size => "+paper_size+" <= is not selected so selecting it from drop down");
+		        
+		        // if paper size is not visible then WinAppDriver auto scroll to make list item visible and then selects it.
 		        PaperSizeListComboBox.click();
 		        Thread.sleep(1000);
 		        try {
-		        	PaperSizeListComboBox.findElement(By.name(paper_size)).click();
-		        	//Its big List so if needed Scroll Down Twice (if needed) - TBD
+		        	PaperSizeListComboBox.findElement(By.name(paper_size)).click();		        	
 		        	}catch(Exception e){
 		        	log.info("Desired Paper Size is not found so make sure Printer Support this paper size OR have typed the paper size name incorrectly in testsuite xml");
 		        	e.printStackTrace();
@@ -466,30 +474,68 @@ public class Base {
 	 }
 	 
 	 
-	 // Method to select desired duplex option  
-	 // Possible candidate for re-factoring when there are multiple application in automation
+	 // Method to select desired duplex option
 	 public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
 		 		 
 		 	WebElement DuplexListComboBox = MsWordSession.findElementByName("Two-Sided Printing");		 		
-	        Assert.assertNotNull(DuplexListComboBox);           
-	        if(!DuplexListComboBox.getText().toString().contentEquals(duplex_option)) 
-	        {
-		        log.info("Desired duplex option => "+duplex_option+" <= is not selected so selecting it from drop down");
-		        DuplexListComboBox.click();
-		        Thread.sleep(1000);
-		        try {
-		        	DuplexListComboBox.findElement(By.name(duplex_option)).click();		        	
-		        	}catch(Exception e){
-		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-		        	e.printStackTrace();
-		            log.info("Error selecting duplex option");     
+	        Assert.assertNotNull(DuplexListComboBox);  
+	        DuplexListComboBox.click();
+	        Thread.sleep(1000);
+	        if(duplex_option.toLowerCase().contains("long"))
+	        	{
+	        	try {	        		
+	        		DuplexListComboBox.findElement(By.name("Print One Sided")).click();
+	        		Thread.sleep(1000);
+	        		DuplexListComboBox.click();
+	        		Thread.sleep(1000);
+	        		// Using keys as xpath does not work for longedge as it has only help text as unique property
+	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN); 
+	        		Thread.sleep(1000);
+	        		MsWordSession.getKeyboard().pressKey(Keys.ENTER);
+	        		
+	        		}catch(Exception e){
+		            log.info("Error selecting duplex long edge option");
+		           	e.printStackTrace();
 		            throw new RuntimeException(e);
-		        	}
-		        Thread.sleep(1000);
-		        log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
-		     } else {
-		    	log.info("Desired duplex option => " +DuplexListComboBox.getText().toString()+" <= is already selected so proceeding");
-	        }
+	        		}
+	        	Thread.sleep(1000);
+	        	log.info("Selected => ***** Duplex LongEdge ***** Option");
+	        	} 
+	        else if(duplex_option.toLowerCase().contains("short"))
+	        	{
+	        	try {
+	        		DuplexListComboBox.findElement(By.name("Print One Sided")).click();
+	        		Thread.sleep(1000);
+	        		DuplexListComboBox.click();
+	        		Thread.sleep(1000);
+	        		
+	        		// Using keys as xpath does not work for shortedge as it has only help text as unique property
+	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN); 
+	        		Thread.sleep(1000);
+	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+	        		Thread.sleep(1000);
+	        		MsWordSession.getKeyboard().pressKey(Keys.ENTER);
+	        		
+	        		}catch(Exception e){
+		            log.info("Error selecting duplex short option");
+		           	e.printStackTrace();
+		            throw new RuntimeException(e);
+	        	}
+	        	Thread.sleep(1000);
+	        	log.info("Selected => ***** Duplex ShortEdge ***** Option");
+	        	}
+	        else {
+	        	try {
+	        	DuplexListComboBox.findElement(By.name(duplex_option)).click();
+	        	Thread.sleep(1000);
+	        	log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
+	        	}catch(Exception e){
+	        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
+	        	e.printStackTrace();
+	            log.info("Error selecting duplex option");     
+	            throw new RuntimeException(e);
+	        		}
+	        	}   
 	 }
 	 
 	 
@@ -504,7 +550,7 @@ public class Base {
 		        log.info("Desired duplex option => "+orientation+" <= is not selected so selecting it from drop down");
 		        OrientationListComboBox.click();
 		        Thread.sleep(1000);
-		        try {
+		        try {		        	
 		        	OrientationListComboBox.findElement(By.name(orientation)).click();		        	
 		        	}catch(Exception e){
 		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
@@ -642,7 +688,7 @@ public class Base {
 			    
 			    //Get handle to Print Settings Conflict windows pop up
 				
-				WebElement printSettingConflictWindow = DesktopSession.findElementByXPath("\\TitleBar[@Value='Print Settings Conflict']");
+				WebElement printSettingConflictWindow = DesktopSession.findElementByXPath("//TitleBar[@Value='Print Settings Conflict']");
 				
 		    	String nativeWindowHandle = printSettingConflictWindow.getAttribute("NativeWindowHandle");
 		    	int printSettingConflictWindowHandle = Integer.parseInt(nativeWindowHandle);
