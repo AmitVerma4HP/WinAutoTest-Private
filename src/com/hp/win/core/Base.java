@@ -96,12 +96,15 @@ public class Base {
 	    	log.info("Clicked on File -> Print option Successfully");
 	    	Thread.sleep(1000);
 	    	
-	    	// Select print preferences
-	    	OpenPreferences();
+	    	// Open Preferences window
+	    	ClickButton(NotepadSession, "Preferences");
+	    	
+	    	// Select Preferences
 	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
 	        ChooseColorOrMono_Notepad(color_optn);
 	        
-	        ClosePreferences_Notepad();
+	        // Close Preferences window
+	        ClickButton(NotepadSession, "OK");
 	    	
 	    	//Select WiFi Printer
 	        log.info("Looking for " + ptr_name + "...");
@@ -109,21 +112,13 @@ public class Base {
 	    	log.info("Selected Printer Successfully");
 	    	Thread.sleep(1000); 
 	    	
-	    	//Tap on print icon (Give Print)
-	    	NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Print\")]").click();
-	    	log.info("Pressed Print Button Successfully");
-	    	Thread.sleep(1000);
+	    	//Tap on print icon (Give Print)    	
+	    	ClickButton(NotepadSession, "Print");
 		}
 		
-		public static void OpenPreferences() throws InterruptedException{
-            NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"Preferences\")]").click();
-            log.info("Clicked 'Preferences' button successfully");
-            Thread.sleep(1000);
-		}
-		
-		public static void ClosePreferences_Notepad() throws InterruptedException{
-		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
-		    log.info("Clicked 'OK' button successfully.");
+		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
+		    session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
+		    log.info("Clicked '" + buttonName + "' button successfully.");
 		    Thread.sleep(1000);
 		}
 		
@@ -263,7 +258,7 @@ public class Base {
 	            }
 		    
 		}
-		
+
 		
 		// Method to Create Desktop Session
 		public static RemoteWebDriver GetDesktopSession(String device_name) throws MalformedURLException {	
