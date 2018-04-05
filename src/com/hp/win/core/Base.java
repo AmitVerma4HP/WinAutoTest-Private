@@ -98,10 +98,10 @@ public class Base {
 	    	
 	    	// Select print preferences
 	    	OpenPreferences();
-	        ChooseDuplexOrSimplex(duplex_optn);
-	        ChooseColorOrMono(color_optn);
+	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
+	        ChooseColorOrMono_Notepad(color_optn);
 	        
-	        ClosePreferences();
+	        ClosePreferences_Notepad();
 	    	
 	    	//Select WiFi Printer
 	        log.info("Looking for " + ptr_name + "...");
@@ -121,14 +121,14 @@ public class Base {
             Thread.sleep(1000);
 		}
 		
-		public static void ClosePreferences() throws InterruptedException{
+		public static void ClosePreferences_Notepad() throws InterruptedException{
 		    NotepadSession.findElementByXPath("//Button[starts-with(@Name, \"OK\")]").click();
 		    log.info("Clicked 'OK' button successfully.");
 		    Thread.sleep(1000);
 		}
 		
 		// Method to select the necessary tab to change the print preference options
-		public static void SelectPreferencesTab(String desiredTab) throws InterruptedException {
+		public static void SelectPreferencesTab_Notepad(String desiredTab) throws InterruptedException {
 		    
 		    try {
 		        if(NotepadSession.findElementByName(desiredTab).isSelected()) {
@@ -151,14 +151,14 @@ public class Base {
 		// NOTE: Cannot currently select list items from the combo box's drop down menu
 		// A workaround is to use the arrow keys to navigate to the selection
 		// This issue has been already reported here: https://github.com/Microsoft/WinAppDriver/issues/389
-		public static void ChooseDuplexOrSimplex(String option) throws InterruptedException {
+		public static void ChooseDuplexOrSimplex_Notepad(String option) throws InterruptedException {
 
             String optn = option.toLowerCase();
             String simplex = "None";
             String shortEdge = "Flip on Short Edge";
             String longEdge = "Flip on Long Edge";
             
-            SelectPreferencesTab("Layout");
+            SelectPreferencesTab_Notepad("Layout");
             
             // Create an object for the combo box and get the default selection value
             // This might be used for comparison later, but it's not doing anything yet - EMC
@@ -233,7 +233,7 @@ public class Base {
 		}
 		
 		
-		public static void ChooseColorOrMono(String color_optn) throws InterruptedException {
+		public static void ChooseColorOrMono_Notepad(String color_optn) throws InterruptedException {
 		    String color = "Color";
 		    String mono = "Black && White";
 		    String color_choice;
@@ -247,7 +247,7 @@ public class Base {
 		        color_choice = color;
 		    }
 		    
-		    SelectPreferencesTab("Paper/Quality");
+		    SelectPreferencesTab_Notepad("Paper/Quality");
 		    
 	          try {
 	                if(NotepadSession.findElementByName(color_choice).isSelected()) {
