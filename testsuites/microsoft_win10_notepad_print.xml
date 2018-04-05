@@ -4,7 +4,7 @@
  
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
   
-  <test verbose="2" name="Printing Test from Notepad - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY Photo 7800 series [093C76])">
+<!--   <test verbose="2" name="Printing Test from Notepad - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY Photo 7800 series [093C76])">
     	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: HP ENVY Photo 7800 series [093C76]" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
@@ -14,7 +14,7 @@
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
-  </test>
+  </test> -->
   
     <test verbose="2" name="Notepad Duplex Short Edge - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
     	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
@@ -28,7 +28,7 @@
     </classes>
   </test>
   
-      <test verbose="2" name="Notepad Duplex Long Edge - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+<!--       <test verbose="2" name="Notepad Duplex Long Edge - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
     	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
@@ -38,9 +38,9 @@
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
-  </test>
+  </test> -->
   
-        <test verbose="2" name="Notepad Simplex - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
+<!--         <test verbose="2" name="Notepad Simplex - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP Officejet Pro 251dw Printer [1A27D9])">
     	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: HP Officejet Pro 251dw Printer [1A27D9]" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
@@ -50,13 +50,8 @@
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
-  </test>
+  </test> -->
  
  <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
-  
- 
-   
+     
   </suite>
-  
-   
- 
