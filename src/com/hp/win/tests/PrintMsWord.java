@@ -68,12 +68,29 @@ public class PrintMsWord extends Base{
 		Thread.sleep(1000);
 		log.info("Finally gave a print by clicking on PRINT button");
 		
+		//Watch for Print Conflict Pop up and message to user that print settings needs to be changed and don't proceed with Print
+		
+		try {
+			if(MsWordSession.findElementByXPath("//*[contains(@Name,'Print Settings Conflict')]").isDisplayed())
+			{
+				log.info("Found \"Print Settings Conflict\" Dialog so not attempting print. Resolve Conflicting Print Setting and re-Run the test ");
+				Thread.sleep(1000);
+				MsWordSession.getKeyboard().pressKey(Keys.ESCAPE);
+				Thread.sleep(1000);
+				//Fail the test and call quit
+				Assert.fail();
+
+			}
+		}catch(NoSuchElementException e) {
+				log.info("There is no \"Print Settings Conflict\" Dialog so continuing test without taking any action");
+		}
+				
 	}
 	
 	
 
 	
-	@Test
+	@Test(dependsOnMethods={"PrintMsWordFile"})
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
@@ -109,7 +126,7 @@ public class PrintMsWord extends Base{
 
 
 	
-    @AfterClass
+    @AfterClass(alwaysRun=true)
     public static void TearDown() throws InterruptedException
     {	        
 			if(DesktopSession!=null)
@@ -137,7 +154,7 @@ public class PrintMsWord extends Base{
         				log.info("Found alert dialog to save test file");
 						MsWordSession.findElementByName("Don't Save").click();
 					}
-        		}catch(NoSuchWindowException e) {
+        		}catch(NoSuchElementException e) {
         				log.info("There is no alert dialog to save test file so continuing test without taking any action");
         		}
         		MsWordSession.quit();

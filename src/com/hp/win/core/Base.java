@@ -679,45 +679,6 @@ public class Base {
 	 }
 	 
 
-	 
-		// Method to switch from NotePad session to PrintQueue Window
-		public static void SwitchToPrintSettingsConflictPopup(String device_name) throws MalformedURLException, InterruptedException {
-			try {
-			
-				DesktopSession = Base.GetDesktopSession(device_name);
-			    
-			    //Get handle to Print Settings Conflict windows pop up
-				
-				WebElement printSettingConflictWindow = DesktopSession.findElementByXPath("//TitleBar[@Value='Print Settings Conflict']");
-				
-		    	String nativeWindowHandle = printSettingConflictWindow.getAttribute("NativeWindowHandle");
-		    	int printSettingConflictWindowHandle = Integer.parseInt(nativeWindowHandle);
-		    	log.debug("int value:" + nativeWindowHandle);
-		    	String printSettingConflictTopWindowHandle  = hex.concat(Integer.toHexString(printSettingConflictWindowHandle));
-		    	log.debug("Hex Value:" + printSettingConflictTopWindowHandle);
-	
-		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
-		    	DesiredCapabilities capabilities = new DesiredCapabilities();
-		    	capabilities.setCapability("appTopLevelWindow", printSettingConflictTopWindowHandle);
-		    	capabilities.setCapability("platformName", "Windows");
-		        capabilities.setCapability("deviceName", device_name);
-		        PrintSettingConflictSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
-				}catch(Exception e){
-	            e.printStackTrace();
-	            log.info("Error getting Print Settings Conflict Windows session");	            
-	        	}
-			
-	    	log.info("Moved session to \"Print Settings Conflict\" pop up window successfully");
-	    	
-	    	log.info("Got Windows Pop up of \"Print Settings Conflict\"");
-			Thread.sleep(1000);
-			PrintSettingConflictSession.findElementByName("Print Anyway").click();
-			log.info("Clicked \"Print Anyway\" for Print Settings Conflict");
-			Thread.sleep(1000);
-		}
-	
-	 
-
 
 	 // Method to open Photos test file
 	 public static RemoteWebDriver OpenPhotosFile(String device_name, String test_filename) throws MalformedURLException {
