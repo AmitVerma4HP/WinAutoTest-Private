@@ -6,15 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchWindowException;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.MsWordAppBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 
 @Listeners({ScreenshotUtility.class})
-public class PrintMsWord extends Base{
+public class PrintMsWord extends MsWordAppBase{
 	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
 	
 
@@ -23,7 +23,7 @@ public class PrintMsWord extends Base{
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) 
     		throws InterruptedException, IOException {
         	
-    		MsWordSession = Base.OpenMsWordFile(device_name, test_filename);    		
+    		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename);    		
             Thread.sleep(1000); 
     }
 
@@ -41,27 +41,27 @@ public class PrintMsWord extends Base{
 		Thread.sleep(2000);		
 		
 		//Selecting desired printer
-		Base.SelectDesiredPrinter_Msword(ptr_name);        
+		MsWordAppBase.SelectDesiredPrinter_Msword(ptr_name);        
 		
 		
 		// Write method to select Print settings
 		// Select Desired Paper Size
-		Base.SelectPaperSize_Msword(paper_size);
+		MsWordAppBase.SelectPaperSize_Msword(paper_size);
 		
 		// Select Desired Duplex Option
-		Base.SelectDuplexOption_Msword(duplex_option);
+		MsWordAppBase.SelectDuplexOption_Msword(duplex_option);
 		
 		// Select Desired Orientation Option
-		Base.SelectOrientation_Msword(orientation);
+		MsWordAppBase.SelectOrientation_Msword(orientation);
 		
 		// Select Desired Collation Option
-		Base.SelectCollation_Msword(collation);
+		MsWordAppBase.SelectCollation_Msword(collation);
 		
 		// Enter Desired Copies value
-		Base.SelectCopies_Msword(copies);
+		MsWordAppBase.SelectCopies_Msword(copies);
 		
 		// Select Desired Pages to Print Value
-		Base.SelectPagesToPrint_Msword(pages_to_print, page_count);
+		MsWordAppBase.SelectPagesToPrint_Msword(pages_to_print, page_count);
 				
 		//After all print settings give print 
 		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	

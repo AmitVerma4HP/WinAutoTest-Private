@@ -17,7 +17,6 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.hp.win.core.Base;
-import com.hp.win.tests.PrintFromNotepad;
 
 public class ScreenshotUtility extends Base implements ITestListener {
 

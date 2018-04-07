@@ -7,10 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.NotepadBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 @Listeners({ScreenshotUtility.class})
-public class PrintFromNotepad extends Base{
+public class PrintFromNotepad extends NotepadBase{
 	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
 	
 
@@ -18,7 +19,7 @@ public class PrintFromNotepad extends Base{
 	@Parameters({ "device_name", "ptr_name", "test_filename" })
     public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
         	
-    		NotepadSession = Base.OpenNoteFile(device_name, test_filename);
+    		NotepadSession = NotepadBase.OpenNoteFile(device_name, test_filename);
            
         	Thread.sleep(1000);
             
@@ -32,7 +33,7 @@ public class PrintFromNotepad extends Base{
     public void PrintNoteFile(String ptr_name, String duplex_optn, String color_optn) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name, duplex_optn, color_optn);
+		NotepadBase.PrintNotePadFile(ptr_name, duplex_optn, color_optn);
 	}
 	
 	
@@ -44,7 +45,7 @@ public class PrintFromNotepad extends Base{
 	{
 		
 		// Method to attach session to Printer Queue Window
-		SwitchToPrinterQueue(device_name,ptr_name);
+		Base.SwitchToPrinterQueue(device_name,ptr_name);
 		
 	    //Take out .txt from file name for validation in Assert.
 	    test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));

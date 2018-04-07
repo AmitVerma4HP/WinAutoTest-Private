@@ -14,12 +14,11 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
-import com.hp.win.core.Base;
+import com.hp.win.core.SettingBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 @Listeners({ScreenshotUtility.class})
-public class DiscoverAddPrinter extends Base {
+public class DiscoverAddPrinter extends SettingBase {
 	private static final Logger log = LogManager.getLogger(DiscoverAddPrinter.class);
 	static WebDriverWait wait;
 	
@@ -28,7 +27,7 @@ public class DiscoverAddPrinter extends Base {
 		@Parameters({"device_name"})
 	    public static void setup(String device_name) throws MalformedURLException, InterruptedException {
 	        
-	    	    CortanaSession=Base.GetCortanaSession(device_name);
+	    	    CortanaSession=SettingBase.GetCortanaSession(device_name);
 	    	    wait = new WebDriverWait(CortanaSession, 60);
 	    	    Thread.sleep(3000);
 	    	    try {
