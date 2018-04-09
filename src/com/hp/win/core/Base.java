@@ -35,15 +35,8 @@ public class Base {
 		protected static BufferedReader br;
 		private static final Logger log = LogManager.getLogger(Base.class);
 		protected static String testfiles_loc = System.getProperty("user.dir").concat("\\testfiles\\");
-		protected static RemoteWebDriver NotepadSession = null;
-		protected static RemoteWebDriver DesktopSession = null;
-		protected static RemoteWebDriver PrintQueueSession = null;
-		protected static RemoteWebDriver CortanaSession = null;
-		protected static RemoteWebDriver MsWordSession = null;
-		protected static RemoteWebDriver PrintSettingConflictSession = null;		
-		protected static RemoteWebDriver MsWordFirstSession = null;
-		protected static RemoteWebDriver PhotosSession = null;
-		protected static RemoteWebDriver curSession = null;
+		public static RemoteWebDriver DesktopSession = null;
+		public static RemoteWebDriver PrintQueueSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
@@ -138,65 +131,4 @@ public class Base {
 		    log.info("Opened printer queue is correct for the printer => "+ptr_name);
 		}
 	
-
-		// Method for capture screenshot
-		// Session information for capturing a Screenshot is determined based on the class and method names
-		// that is being executed.
-		public static void captureScreenShot(ITestResult result, String status) {
-			String curdevice = "";
-			log.info("Capturing the screenshot now");
-
-			String destDir = System.getProperty("user.dir");
-			String passfailMethod = result.getMethod().getRealClass().getSimpleName() + "."
-					+ result.getMethod().getMethodName();
-			
-			log.info("print:" + passfailMethod);
-
-			// Conditions to capture the appropriate Session to use in capturing the screenshot.
-			if (passfailMethod.contains("Photos")) {
-				//curSession = Base.PhotosSession;
-				curSession = PhotoAppBase.PhotosSession;
-			} else if (passfailMethod.contains("MsWord")) {
-				curSession = MsWordAppBase.MsWordSession;
-			} else if (passfailMethod.contains("Note")) {
-				curSession = NotepadBase.NotepadSession;
-			} else if (passfailMethod.contains("Discover")) {
-				curSession = Base.DesktopSession;
-			} else if (passfailMethod.contains("Queue")) {
-				curSession = Base.PrintQueueSession;
-			}
-
-			log.info("Print Session:" + curSession);
-			log.info("Print status:" + status);
-			
-			
-			// To capture screenshot.
-			File scrFile = ((TakesScreenshot) curSession).getScreenshotAs(OutputType.FILE);
-			DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
-
-			// If status = fail then set folder name "screenshots/Failures"
-			if (status.equalsIgnoreCase("fail")) {
-				destDir = destDir + "/screenshots/Failures/" + (dateFormat.format(new Date()).substring(0, 11));
-			}
-
-			// If status = pass then set folder name "screenshots/Success" Below 2
-			// lines can be comment if we dont want to capture screenshot upon success
-			/* else if (status.equalsIgnoreCase("pass")) { destDir =
-			 * "screenshots/Success"; }
-			 */
-
-			// To create folder to store screenshots
-			new File(destDir).mkdirs();
-
-			// Set file name with combination of test class name + date time.
-			String destFile = passfailMethod + " - " + curdevice + "-" + dateFormat.format(new Date()) + ".png";
-
-			try {
-				// Store file at destination folder location
-				FileUtils.copyFile(scrFile, new File(destDir + "/" + destFile));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
 }

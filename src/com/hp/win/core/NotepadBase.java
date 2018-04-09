@@ -16,7 +16,7 @@ import org.testng.Assert;
 public class NotepadBase extends Base {
 		
 		private static final Logger log = LogManager.getLogger(NotepadBase.class);
-		protected static RemoteWebDriver NotepadSession = null;		
+		public static RemoteWebDriver NotepadSession = null;		
 		
 		
 	  // Method to print from Notepad
