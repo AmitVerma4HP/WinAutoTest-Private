@@ -128,7 +128,8 @@ public class PrintMsWord extends MsWordAppBase{
 	
     @AfterClass(alwaysRun=true)
     public static void TearDown() throws InterruptedException
-    {	        
+    {  
+    	
 			if(DesktopSession!=null)
 			{
 				DesktopSession.quit();
@@ -139,10 +140,10 @@ public class PrintMsWord extends MsWordAppBase{
 				PrintQueueSession.quit();
 			}
 			
-			if(MsWordFirstSession!=null)
-			{
-				MsWordFirstSession.quit();
-			}
+//			if(MsWordFirstSession!=null)
+//			{
+//				MsWordFirstSession.quit();
+//			}
 			
         	if (MsWordSession!= null)
         	{      	       		
