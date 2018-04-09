@@ -1,16 +1,26 @@
 package com.hp.win.core;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.ITestResult;
+
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
 
@@ -25,14 +35,8 @@ public class Base {
 		protected static BufferedReader br;
 		private static final Logger log = LogManager.getLogger(Base.class);
 		protected static String testfiles_loc = System.getProperty("user.dir").concat("\\testfiles\\");
-		protected static RemoteWebDriver NotepadSession = null;
-		protected static RemoteWebDriver DesktopSession = null;
-		protected static RemoteWebDriver PrintQueueSession = null;
-		protected static RemoteWebDriver CortanaSession = null;
-		protected static RemoteWebDriver MsWordSession = null;
-		protected static RemoteWebDriver PrintSettingConflictSession = null;		
-		protected static RemoteWebDriver MsWordFirstSession = null;
-		protected static RemoteWebDriver PhotosSession = null;
+		public static RemoteWebDriver DesktopSession = null;
+		public static RemoteWebDriver PrintQueueSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
 		protected static final String hex = "0x";
@@ -127,5 +131,4 @@ public class Base {
 		    log.info("Opened printer queue is correct for the printer => "+ptr_name);
 		}
 	
-
 }

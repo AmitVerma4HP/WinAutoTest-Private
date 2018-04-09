@@ -17,7 +17,7 @@ import org.testng.Assert;
 
 public class PhotoAppBase extends Base {
 		private static final Logger log = LogManager.getLogger(PhotoAppBase.class);
-		protected static RemoteWebDriver PhotosSession = null;		
+		public static RemoteWebDriver PhotosSession = null;
 		
 
 	// Method to open Photos test file

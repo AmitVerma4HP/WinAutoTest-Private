@@ -15,10 +15,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import com.hp.win.core.*;
 
-import com.hp.win.core.Base;
-
-public class ScreenshotUtility extends Base implements ITestListener {
+public class ScreenshotUtility implements ITestListener {
 
 	public static String sTestName;
 	private static final Logger log = LogManager.getLogger(ScreenshotUtility.class);
@@ -63,30 +62,38 @@ public class ScreenshotUtility extends Base implements ITestListener {
 	}
 
 	
+
 	// Method for capture screenshot
 	// Session information for capturing a Screenshot is determined based on the class and method names
 	// that is being executed.
-	public void captureScreenShot(ITestResult result, String status) {
+	public static void captureScreenShot(ITestResult result, String status) {
 		String curdevice = "";
 		log.info("Capturing the screenshot now");
 
 		String destDir = System.getProperty("user.dir");
 		String passfailMethod = result.getMethod().getRealClass().getSimpleName() + "."
 				+ result.getMethod().getMethodName();
+		
+		log.info("print:" + passfailMethod);
 
 		// Conditions to capture the appropriate Session to use in capturing the screenshot.
 		if (passfailMethod.contains("Photos")) {
-			curSession = Base.PhotosSession;
+			//curSession = Base.PhotosSession;
+			curSession = PhotoAppBase.PhotosSession;
 		} else if (passfailMethod.contains("MsWord")) {
-			curSession = Base.MsWordSession;
+			curSession = MsWordAppBase.MsWordSession;
 		} else if (passfailMethod.contains("Note")) {
-			curSession = Base.NotepadSession;
+			curSession = NotepadBase.NotepadSession;
 		} else if (passfailMethod.contains("Discover")) {
 			curSession = Base.DesktopSession;
 		} else if (passfailMethod.contains("Queue")) {
 			curSession = Base.PrintQueueSession;
 		}
 
+		log.info("Print Session:" + curSession);
+		log.info("Print status:" + status);
+		
+		
 		// To capture screenshot.
 		File scrFile = ((TakesScreenshot) curSession).getScreenshotAs(OutputType.FILE);
 		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
@@ -115,7 +122,8 @@ public class ScreenshotUtility extends Base implements ITestListener {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	// This method returns the testname of each test used in naming the log
 	// files, screenshots and videos captured.
 	public static String getTestName() {
