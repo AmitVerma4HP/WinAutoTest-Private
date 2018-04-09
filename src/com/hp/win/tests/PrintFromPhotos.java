@@ -9,6 +9,8 @@ import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
+
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
@@ -27,7 +29,7 @@ import java.io.IOException;
 		
 		@Test
 		@Parameters({ "ptr_name", "test_filename","copies","orientation","paper_size","photo_size","photo_fit","page_margins","color_optn","duplex_optn","borderless","paper_tray"})
-	    public void PrintPhotos(String ptr_name, String test_filename, String copies, String orientation, @Optional("Letter")String paper_size,  @Optional("Full page")String photo_size,  @Optional("Fill page")String photo_fit,  @Optional("Normal")String page_margins,  @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("On")String borderless,  @Optional("Auto select")String paper_tray) throws InterruptedException, IOException
+	    public void PrintPhotos(String ptr_name, String test_filename, @Optional("1")String copies, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size,  @Optional("Full page")String photo_size,  @Optional("Fill page")String photo_fit,  @Optional("Normal")String page_margins,  @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("On")String borderless,  @Optional("Auto select")String paper_tray) throws InterruptedException, IOException
 	    {
 	    	
 			// Method to Print Photo File to Printer Under Test
@@ -134,9 +136,20 @@ import java.io.IOException;
 		    log.info("Expected queued job should be => "+test_filename);
 		    
 		    //Validate Print Job Queued up
-		    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+		    try {
+		    	Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+		    }catch(NoSuchElementException e) {
+		    	log.info("Expected Print job is not found in print queue");
+		     	throw new RuntimeException(e);
+		    }catch(Exception e) {
+		    	log.info("Error validating print job in print queue");
+		    	throw new RuntimeException(e);
+		    }
+		    
 		    log.info("Found correct job in print queue => "+test_filename);
-		    		
+		    PrintQueueSession.close();
+		    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
+		    
 		}
 
 	    

@@ -28,7 +28,7 @@ public class MsWordAppBase extends Base {
 			
 			   try {
 			    	capabilities = new DesiredCapabilities();
-			        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+			        capabilities.setCapability("app", "C:\\Program Files\\Microsoft Office\\Office16\\WINWORD.EXE");
 			        capabilities.setCapability("appArguments",test_filename );
 			        capabilities.setCapability("appWorkingDir", testfiles_loc);
 			        capabilities.setCapability("platformName", "Windows");
@@ -49,7 +49,7 @@ public class MsWordAppBase extends Base {
 			    
 			    try {
 			    capabilities = new DesiredCapabilities();
-		        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+		        capabilities.setCapability("app", "C:\\Program Files\\Microsoft Office\\Office16\\WINWORD.EXE");
 		        capabilities.setCapability("appArguments",test_filename );
 		        capabilities.setCapability("appWorkingDir", testfiles_loc);
 		        capabilities.setCapability("platformName", "Windows");
