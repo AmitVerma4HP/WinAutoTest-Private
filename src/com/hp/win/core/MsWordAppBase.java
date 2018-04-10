@@ -127,69 +127,53 @@ public class MsWordAppBase extends Base {
 	 }
 	 
 	 
-	 // Method to select desired duplex option
-	 public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
-		 		 
-		 	WebElement DuplexListComboBox = MsWordSession.findElementByName("Two-Sided Printing");		 		
-	        Assert.assertNotNull(DuplexListComboBox);  
-	        DuplexListComboBox.click();
-	        Thread.sleep(1000);
-	        if(duplex_option.toLowerCase().contains("long"))
-	        	{
-	        	try {	        		
-	        		DuplexListComboBox.findElement(By.name("Print One Sided")).click();
-	        		Thread.sleep(1000);
-	        		DuplexListComboBox.click();
-	        		Thread.sleep(1000);
-	        		// Using keys as xpath does not work for longedge as it has only help text as unique property
-	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN); 
-	        		Thread.sleep(1000);
-	        		MsWordSession.getKeyboard().pressKey(Keys.ENTER);
-	        		
-	        		}catch(Exception e){
-		            log.info("Error selecting duplex long edge option");
-		           	e.printStackTrace();
-		            throw new RuntimeException(e);
-	        		}
-	        	Thread.sleep(1000);
-	        	log.info("Selected => ***** Duplex LongEdge ***** Option");
-	        	} 
-	        else if(duplex_option.toLowerCase().contains("short"))
-	        	{
-	        	try {
-	        		DuplexListComboBox.findElement(By.name("Print One Sided")).click();
-	        		Thread.sleep(1000);
-	        		DuplexListComboBox.click();
-	        		Thread.sleep(1000);
-	        		
-	        		// Using keys as xpath does not work for shortedge as it has only help text as unique property
-	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN); 
-	        		Thread.sleep(1000);
-	        		MsWordSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-	        		Thread.sleep(1000);
-	        		MsWordSession.getKeyboard().pressKey(Keys.ENTER);
-	        		
-	        		}catch(Exception e){
-		            log.info("Error selecting duplex short option");
-		           	e.printStackTrace();
-		            throw new RuntimeException(e);
-	        	}
-	        	Thread.sleep(1000);
-	        	log.info("Selected => ***** Duplex ShortEdge ***** Option");
-	        	}
-	        else {
-	        	try {
-	        	DuplexListComboBox.findElement(By.name(duplex_option)).click();
-	        	Thread.sleep(1000);
-	        	log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
-	        	}catch(Exception e){
-	        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting duplex option");     
-	            throw new RuntimeException(e);
-	        		}
-	        	}   
-	 }
+	 
+			 public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
+				 
+			WebElement DuplexListComboBox = MsWordSession.findElementByName("Two-Sided Printing");		 		
+			Assert.assertNotNull(DuplexListComboBox);  
+			DuplexListComboBox.click();
+			Thread.sleep(1000);
+			if(duplex_option.toLowerCase().contains("long"))
+			{
+			try {	        		
+				DuplexListComboBox.findElement(By.xpath("//ListItem[@HelpText ='Flip pages on long edge']")).click();
+				Thread.sleep(1000);				
+				}catch(Exception e){
+		        log.info("Error selecting duplex long edge option");
+		       	e.printStackTrace();
+		        throw new RuntimeException(e);
+				}
+			Thread.sleep(1000);
+			log.info("Selected => ***** Duplex LongEdge ***** Option");
+			} 
+		else if(duplex_option.toLowerCase().contains("short"))
+			{
+			try {
+				DuplexListComboBox.findElement(By.xpath("//ListItem[@HelpText ='Flip pages on short edge']")).click();
+				Thread.sleep(1000);				
+				}catch(Exception e){
+		        log.info("Error selecting duplex short option");
+		       	e.printStackTrace();
+		        throw new RuntimeException(e);
+			}
+			Thread.sleep(1000);
+			log.info("Selected => ***** Duplex ShortEdge ***** Option");
+			}
+		else {
+			try {
+			DuplexListComboBox.findElement(By.name(duplex_option)).click();
+			Thread.sleep(1000);
+			log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
+			}catch(Exception e){
+			log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
+			e.printStackTrace();
+		    log.info("Error selecting duplex option");     
+		    throw new RuntimeException(e);
+				}
+			}   
+		}
+
 	 
 	 
 	 // Method to select desired orientation  
