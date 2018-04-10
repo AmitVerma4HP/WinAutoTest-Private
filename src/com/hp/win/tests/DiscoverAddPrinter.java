@@ -3,12 +3,16 @@ package com.hp.win.tests;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
@@ -27,47 +31,56 @@ public class DiscoverAddPrinter extends SettingBase {
 		@Parameters({"device_name"})
 	    public static void setup(String device_name) throws MalformedURLException, InterruptedException {
 	        
-	    	    CortanaSession=SettingBase.GetCortanaSession(device_name);
-	    	    wait = new WebDriverWait(CortanaSession, 60);
+	    	    CortanaSession=SettingBase.GetCortanaSession(device_name);	    	    
 	    	    Thread.sleep(3000);
 	    	    try {
 	            CortanaSession.findElementByName("Search box").sendKeys("Printers & scanners");
 	            log.info("Searching \"Printers & scanners\"");
-	            CortanaSession.getKeyboard().sendKeys(Keys.RETURN);
-	            log.info("Pressed ENTER key to open \"Printers & scanners\"");
+	            	            
+	            CortanaSession.findElementByName("Printers & scanners, System settings").click();
+	            log.info("Clicked on \"Printers & scanners\"");
 	    	    } catch(Exception e){
 	    	    	e.printStackTrace();
 	    	    	log.info("Error getting to Settings -> \"Printers & scanner\"");
 	        	}
 	    	    Thread.sleep(1000);
 	    	    
-	    	    //Ensure to release pressed key
-	    	    CortanaSession.getKeyboard().releaseKey(Keys.RETURN);
+	    	    SettingSession=SettingBase.GetSettingSession(device_name);
+	    	    wait = new WebDriverWait(SettingSession, 60);
+	    	    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
+	    	    log.info("Waited until \"Printers & scanner\" is clickable");
 	    	    
-	    	    //Switch session to Printers & scanner screen
-	    	    //TBD
-	    	    //wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
-	    	    log.info("Waited until \"Printers & scanner\" show up");
-	    	    Thread.sleep(3000);
 	    }
 		
 		
 		// Method to Discover Printer Under Test		
 		@Test
 		@Parameters({"ptr_name"})
-	    public void DiscoverPrinter(@Optional("Dummy")String ptr_name) throws InterruptedException, IOException
+	    public void DiscoverPrinter(@Optional("ptr_name")String ptr_name) throws InterruptedException, IOException
 	    {   
-			CortanaSession.findElementByName("Add a printer or scanner").click();
+			SettingSession.findElementByName("Add a printer or scanner").click();
 			Thread.sleep(1000);
 			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
 			Thread.sleep(1000);
-			//do {
+			
+			do {
 				log.info("Printer Discovery is in Progress");				
-				Thread.sleep(1000);
-				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.name("Searching for printers and scanners")));
-				log.info("Waiting until discovery is completed");
-			//}while(CortanaSession.findElementByName("Searching for printers and scanners").isDisplayed());
-				log.info("Printer Discovery completed");	
+				Thread.sleep(5000);
+				
+				}while(SettingSession.findElementsByName("Searching for printers and scanners").size()!=0);
+				log.info("Printer Discovery completed");
+				
+				// Store all discovered printer in a List
+				
+				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+				Assert.assertNotNull(PrinterListItem);
+				log.info("Total Printer Discovered => "+PrinterListItem.size());
+				int i = 1; 
+				for(WebElement el : PrinterListItem) {
+					
+					log.info("Printer "+i+" => "+el.getText());
+					i++;
+				}
 		}
 		
 		
