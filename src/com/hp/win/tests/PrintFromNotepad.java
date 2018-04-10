@@ -39,7 +39,7 @@ public class PrintFromNotepad extends NotepadBase{
 	}
 	
 	
-	@Test
+/*	@Test
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
@@ -57,7 +57,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
 	    
-	}
+	}*/
 
     
     @AfterClass

@@ -48,8 +48,12 @@ public class NotepadBase extends Base {
 	    	
 	    	// Select Preferences
 	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
-	        ChooseColorOrMono_Notepad(color_optn);
+	        //ChooseColorOrMono_Notepad(color_optn);
 	        
+	    	
+//	    	ClickButton(NotepadSession, "Advanced");
+//	    	String size = "A4"; // Temporary value to develop with - will add as test suite parameter once test is further along - EMC
+	    	//ChoosePaperSize_Notepad(size);
 	        // Close Preferences window
 	        ClickButton(NotepadSession, "OK");
 	    	
@@ -60,7 +64,7 @@ public class NotepadBase extends Base {
 	    	Thread.sleep(1000); 
 	    	
 	    	//Tap on print icon (Give Print)    	
-	    	ClickButton(NotepadSession, "Print");
+	    	//ClickButton(NotepadSession, "Print");
 		}
 		
 		
@@ -86,32 +90,33 @@ public class NotepadBase extends Base {
 		
 		// Method to select duplex option
 		public static void ChooseDuplexOrSimplex_Notepad(String option) throws InterruptedException {
-            SelectPreferencesTab_Notepad("Layout");
+            String duplexDefault = "None"; // A combo box's text value is the value shown in the box - "None" is the default value for duplex - EMC
+	    
+            // Make sure we're on the correct preferences tab
+		    SelectPreferencesTab_Notepad("Layout");
             
             // get a list of all combo boxes available
-            List<WebElement> DuplexComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
-            Assert.assertNotNull(DuplexComboBoxList);
-            
+            List<WebElement> AllComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
+            Assert.assertNotNull(AllComboBoxList);
+
             // iterate through the combo box list and select the correct combo box (the duplex one in this case)
-            for(WebElement el : DuplexComboBoxList) {
-                if(!el.getText().equals("None")) {
-                    log.info("Trying to click on " + DuplexComboBoxList.get(1).getText().toString());
+            for(WebElement box : AllComboBoxList) {
+                if(box.getText().equals(duplexDefault)) {
+                    log.info("Going to click on '" + box.getText().toString() + "'...");
                     try {
-                        WebElement duplex = DuplexComboBoxList.get(1); // 1 is the current index for the duplex combo box
-                        duplex.click();
+                        box.click();
                         Thread.sleep(1000);
-                        ChooseDuplexOrSimplex_Old(option, duplex);
-                    } catch(Exception e)
-                    {
-                        log.info("Can't click on duplex combo box.");    
+                        ChooseDuplexOrSimplex_Old(option, box);
+                    } catch (Exception e) {
+                        log.info("Can't click on duplex combo box.");
                         throw new RuntimeException(e);
                     }
                     break;
                 }
-                else {
-                    ChooseDuplexOrSimplex_Old(option, el);
-                    break;
+                else{
+                    log.info("On combo box '" + box.getText().toString() + "'. Going to keep looking.");
                 }
+
                 }
             }
         
@@ -215,8 +220,44 @@ public class NotepadBase extends Base {
 		}
 
 		
+		// Method to select the paper size
+		public static void ChoosePaperSize_Notepad(String size) throws InterruptedException{
+		    //get a list of all combo boxes available
+		    List<WebElement> AdvancedComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
+		    Assert.assertNotNull(AdvancedComboBoxList);
+    
+		    // iterate through the combo box list and select the correct combo box (the paper size one in this case)
+		    for(WebElement el : AdvancedComboBoxList) {
+		        if(!el.getText().equals("Letter")) {
+		            log.info("Trying to click on " + AdvancedComboBoxList.get(0).getText().toString());
+		            try {
+		                WebElement paperSize = AdvancedComboBoxList.get(0); // 0 is the current index for the paperSize combo box
+		                paperSize.click();
+		                Thread.sleep(1000);
+		            } catch(Exception e)
+		            {
+		                log.info("Can't click on paper size combo box.");    
+		                throw new RuntimeException(e);
+		            }
+		            break;
+		        }
+		        else {
+		            log.info("Found " + el.getText().toString());
+		            try {
+		                el.click();
+		                Thread.sleep(1000);
+		                
+		            } catch(Exception e) {
+		                log.info("Cant click on paper size combo box.");
+		                throw new RuntimeException(e);
+		            }
+            
+		            break;
+		        }
+		    }
+		}
 
-
+		
 		// Method to open Notepad test file
 		public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 			
