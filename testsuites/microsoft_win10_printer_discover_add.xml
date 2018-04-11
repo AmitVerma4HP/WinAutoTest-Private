@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Microsoft Win10 Test suite - Printer Discovery and Addition">
+<suite name="Microsoft Win10 Test suite - Printer Discovery In Settings">
  
-<!-- **************************************** PRINTER DISCOVERY & ADDITION TESTS ******************************************************** -->
+<!-- **************************************** PRINTER DISCOVERY TESTS ******************************************************** -->
   
-  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer Under Test (EPSON XP-430 Series)">
+  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer1">
     	<parameter name="device_name" value="VERAMIT6" />
-     	<parameter name="ptr_name" value="EPSON XP-430 Series" /> 
+     	<parameter name="ptr_name" value="HP DesignJet Z9 44in PDF V4 on MOLINA6 Printer" /> 
 		
     <classes>
-         <class name="com.hp.win.tests.DiscoverAddPrinter"/>
+         <class name="com.hp.win.tests.DiscoverPrinterInSettings"/>
     </classes>
   </test>
  
- <!-- **************************************** PRINTER DISCOVERY & ADDITION TESTS ******************************************************** -->
+  
+  
+  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer2">
+    	<parameter name="device_name" value="VERAMIT6" />
+     	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" /> 
+		
+    <classes>
+         <class name="com.hp.win.tests.DiscoverPrinterInSettings"/>
+    </classes>
+  </test>
+  
+  
+  
+    <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer3">
+    	<parameter name="device_name" value="VERAMIT6" />
+     	<parameter name="ptr_name" value="Fake Printer Name" /> 
+		
+    <classes>
+         <class name="com.hp.win.tests.DiscoverPrinterInSettings"/>
+    </classes>
+  </test>
+ 
+ <!-- **************************************** PRINTER DISCOVERY TESTS ******************************************************** -->
+  
   
   </suite>
   
+
    
  
