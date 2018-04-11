@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -65,7 +66,7 @@ public class DiscoverAddPrinter extends SettingBase {
 			
 			do {
 				log.info("Printer Discovery is in Progress");				
-				Thread.sleep(5000);
+				Thread.sleep(3000);
 				
 				}while(SettingSession.findElementsByName("Searching for printers and scanners").size()!=0);
 				log.info("Printer Discovery completed");
@@ -75,21 +76,33 @@ public class DiscoverAddPrinter extends SettingBase {
 				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 				Assert.assertNotNull(PrinterListItem);
 				log.info("Total Printer Discovered => "+PrinterListItem.size());
+				int printerFound=0;
 				int i = 1; 
 				for(WebElement el : PrinterListItem) {
 					
 					log.info("Printer "+i+" => "+el.getText());
 					i++;
+														
+						if (el.getText().contains(ptr_name)) 
+						{
+							printerFound = 1;
+							break;
+						}						
 				}
-		}
-		
+				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
+				log.info("Found Target Printer => "+ptr_name);
+								
+	    }
 		
 		// Method to Add Printer Under Test
 		@Test
 		@Parameters({"ptr_name"})
-	    public void AddPrinter(@Optional("Dummy")String ptr_name) throws InterruptedException, IOException
+	    public void AddPrinter(String ptr_name) throws InterruptedException, IOException
 	    {   
-			// TDB
+			Thread.sleep(1000);
+			SettingSession.findElementByName(ptr_name).click();
+			
+			//Add printer if printer is not added already
 		}
 
 		
@@ -106,6 +119,11 @@ public class DiscoverAddPrinter extends SettingBase {
 		   if(CortanaSession!=null)
 		   {
 		   	  CortanaSession.quit();
+		   }
+		   
+		   if(SettingSession!=null)
+		   {
+			   SettingSession.quit();
 		   }
 		        	        
 		}
