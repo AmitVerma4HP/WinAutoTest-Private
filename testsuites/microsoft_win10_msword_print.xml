@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 MSWord 2016 Test suite - Printing Tests">
+		<parameter name="device_name" value="VERAMIT6" />
+		<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
  
  
  <!-- Supported Parameters:  -->
@@ -21,10 +23,8 @@
   <!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** -->
   
 	 <test verbose="2" name="Printing Test MSWord test file - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
-    	<parameter name="device_name" value="VERAMIT6" />
-     	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
-     	<parameter name="paper_size" value="Legal" />
-     	<parameter name="duplex_option" value="Print One Sided" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print ShortEdge" />
      	<parameter name="orientation" value="Portrait Orientation" />
      	<parameter name="collation" value="Collated" />
      	<parameter name="copies" value="2" />
@@ -38,10 +38,8 @@
   </test>
 
 	 <test verbose="2" name="Printing Test MSWord test file2 - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
-    	<parameter name="device_name" value="VERAMIT6" />
-     	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
      	<parameter name="paper_size" value="A4" />
-     	<parameter name="duplex_option" value="DuplexLongEdge" />
+     	<parameter name="duplex_option" value="Print One Sided" />
      	<parameter name="orientation" value="Landscape Orientation" />
      	<parameter name="collation" value="Uncollated" />
      	<parameter name="copies" value="5" />

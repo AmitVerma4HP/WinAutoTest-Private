@@ -2,6 +2,8 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
@@ -80,6 +82,42 @@ public class SettingBase extends Base {
 			log.info("Settings session created successfully");
 			return SettingSession;
 		  }
+	  
+	  
+	  // Method to discover target printer
+	  public static void FindPrinter(String ptr_name) throws InterruptedException {
+		  
+		  	SettingSession.findElementByName("Add a printer or scanner").click();
+			Thread.sleep(1000);
+			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
+			Thread.sleep(1000);
+			
+			do {
+				log.info("Printer Discovery is in Progress");				
+				Thread.sleep(3000);				
+				}while(SettingSession.findElementsByName("Searching for printers and scanners").size()!=0);
+				log.info("Printer Discovery completed");
+				
+				// Store all printers in a List				
+				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+				Assert.assertNotNull(PrinterListItem);
+				log.info("Total Printer Discovered => "+PrinterListItem.size());
+				int printerFound=0;
+				int i = 1; 
+				for(WebElement el : PrinterListItem) {
+					
+					log.debug("Printer "+i+" => "+el.getText());
+					i++;														
+						if (el.getText().contains(ptr_name)) 
+						{
+							printerFound = 1;
+							break;
+						}						
+				}
+				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
+				log.info("Found Target Printer => "+ptr_name);
+		  
+	  }
 	  
 	
 
