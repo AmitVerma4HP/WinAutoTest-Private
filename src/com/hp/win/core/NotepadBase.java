@@ -2,9 +2,11 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -46,8 +48,12 @@ public class NotepadBase extends Base {
 	    	
 	    	// Select Preferences
 	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
-	        ChooseColorOrMono_Notepad(color_optn);
+	        //ChooseColorOrMono_Notepad(color_optn);
 	        
+	    	
+//	    	ClickButton(NotepadSession, "Advanced");
+//	    	String size = "A4"; // Temporary value to develop with - will add as test suite parameter once test is further along - EMC
+	    	//ChoosePaperSize_Notepad(size);
 	        // Close Preferences window
 	        ClickButton(NotepadSession, "OK");
 	    	
@@ -58,7 +64,7 @@ public class NotepadBase extends Base {
 	    	Thread.sleep(1000); 
 	    	
 	    	//Tap on print icon (Give Print)    	
-	    	ClickButton(NotepadSession, "Print");
+	    	//ClickButton(NotepadSession, "Print");
 		}
 		
 		
@@ -83,89 +89,103 @@ public class NotepadBase extends Base {
 		
 		
 		// Method to select duplex option
-		// NOTE: Cannot currently select list items from the combo box's drop down menu
-		// A workaround is to use the arrow keys to navigate to the selection
-		// This issue has been already reported here: https://github.com/Microsoft/WinAppDriver/issues/389
 		public static void ChooseDuplexOrSimplex_Notepad(String option) throws InterruptedException {
+            String duplexDefault = "None"; // A combo box's text value is the value shown in the box - "None" is the default value for duplex - EMC
+	    
+            // Make sure we're on the correct preferences tab
+		    SelectPreferencesTab_Notepad("Layout");
+            
+            // get a list of all combo boxes available
+            List<WebElement> AllComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
+            Assert.assertNotNull(AllComboBoxList);
 
+            // iterate through the combo box list and select the correct combo box (the duplex one in this case)
+            for(WebElement box : AllComboBoxList) {
+                if(box.getText().equals(duplexDefault)) {
+                    log.info("Going to click on '" + box.getText().toString() + "'...");
+                    try {
+                        box.click();
+                        Thread.sleep(1000);
+                        ChooseDuplexOrSimplex_Old(option, box);
+                    } catch (Exception e) {
+                        log.info("Can't click on duplex combo box.");
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                }
+                else{
+                    log.info("On combo box '" + box.getText().toString() + "'. Going to keep looking.");
+                }
+
+                }
+            }
+        
+		// This is the original method to select a duplex option - it has become a helper function for now
+	    // NOTE: Cannot currently select list items from the combo box's drop down menu
+        // A workaround is to use the arrow keys to navigate to the selection
+        // This issue has been already reported here: https://github.com/Microsoft/WinAppDriver/issues/389
+        public static void ChooseDuplexOrSimplex_Old(String option, WebElement duplex) throws InterruptedException{
+            
             String optn = option.toLowerCase();
             String simplex = "None";
             String shortEdge = "Flip on Short Edge";
             String longEdge = "Flip on Long Edge";
             
-            SelectPreferencesTab_Notepad("Layout");
-            
-            // Create an object for the combo box and get the default selection value
-            // This might be used for comparison later, but it's not doing anything yet - EMC
-            WebElement DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox"); 
-            String comboBoxText = DuplexComboBoxView.getText();
-            Assert.assertNotNull(DuplexComboBoxView);
-
-            // Select the correct duplex option from the drop down menu
-		    switch(optn) {
-		    case "simplex":
-		        log.info("Selected '" + simplex + "'...");
-		        DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
-		        DuplexComboBoxView.click();
-                comboBoxText = DuplexComboBoxView.getText();
-		        Assert.assertEquals(comboBoxText, simplex);
+            switch(optn) {
+            case "simplex":
+                log.info("Selected '" + simplex + "'...");
+                duplex.click();
+                String comboBoxText = duplex.getText();
+                Assert.assertEquals(comboBoxText, simplex);
                 Thread.sleep(1000);
-		        break;
-		        
-		    case "long edge":
-		        
+                break;
+                
+            case "long edge":
                 log.info("Navigating to '" + longEdge + "'...");
-		        try {
-		            // Tap down arrow twice because the first tap opens the drop down menu
-		            NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-		            NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-		            DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
-		            DuplexComboBoxView.click();
-		            Thread.sleep(1000);
-		            
-		            // Make sure the option we want is selected
-		            DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
-		            comboBoxText = DuplexComboBoxView.getText();
-		            Assert.assertEquals(comboBoxText, longEdge);
-		            
-		            log.info("Selected '" + comboBoxText + ".'");
-		            Thread.sleep(1000);
+                try {
+                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+                    duplex.click();
+                    Thread.sleep(1000);
+                    
+                    // Make sure the option we want is selected
+                    comboBoxText = duplex.getText();
+                    Assert.assertEquals(comboBoxText, longEdge);
+                    
+                    log.info("Selected '" + comboBoxText + ".'");
+                    Thread.sleep(1000);
                 } catch(Exception e)
-		        {
+                {
                     log.info("Can't find '" + longEdge + ".'");     
                     throw new RuntimeException(e);
-		        }
-		        break;
-		        
-		    case "short edge":
-		        
-		        log.info("Navigating to " + shortEdge + "...");
-	            try {
-	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-	                NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-	                DuplexComboBoxView.click();
-	                Thread.sleep(1000);
-	                
-	                DuplexComboBoxView = NotepadSession.findElementByClassName("ComboBox");
-	                comboBoxText = DuplexComboBoxView.getText();
+                }
+                break;
+                
+            case "short edge":
+                log.info("Navigating to " + shortEdge + "...");
+                try {
+                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
+                    duplex.click();
+                    Thread.sleep(1000);
 
-	                Assert.assertEquals(comboBoxText, shortEdge);
-	                log.info("Selected '" + comboBoxText + ".'");
-	                Thread.sleep(1000);
-	                
-	            } catch(Exception e)
-	            {
-	                log.info("Can't find '" + shortEdge + ".'");    
-	                throw new RuntimeException(e);
-	            }
-	            Thread.sleep(1000);
-	            break;
-	            
-	        default:
-	            log.info("Invalid duplex selection. Please use 'simplex,' 'long edge,' or 'short edge.'");
-	        }
-		}
+                    comboBoxText = duplex.getText();
+                    Assert.assertEquals(comboBoxText, shortEdge);
+                    log.info("Selected '" + comboBoxText + ".'");
+                    Thread.sleep(1000);
+                    
+                } catch(Exception e)
+                {
+                    log.info("Can't find '" + shortEdge + ".'");    
+                    throw new RuntimeException(e);
+                }
+                Thread.sleep(1000);
+                break;
+                
+            default:
+                log.info("Invalid duplex selection. Please use 'simplex,' 'long edge,' or 'short edge.'");
+            
+            }
+        }
 		
 		
 		public static void ChooseColorOrMono_Notepad(String color_optn) throws InterruptedException {
@@ -200,8 +220,44 @@ public class NotepadBase extends Base {
 		}
 
 		
+		// Method to select the paper size
+		public static void ChoosePaperSize_Notepad(String size) throws InterruptedException{
+		    //get a list of all combo boxes available
+		    List<WebElement> AdvancedComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
+		    Assert.assertNotNull(AdvancedComboBoxList);
+    
+		    // iterate through the combo box list and select the correct combo box (the paper size one in this case)
+		    for(WebElement el : AdvancedComboBoxList) {
+		        if(!el.getText().equals("Letter")) {
+		            log.info("Trying to click on " + AdvancedComboBoxList.get(0).getText().toString());
+		            try {
+		                WebElement paperSize = AdvancedComboBoxList.get(0); // 0 is the current index for the paperSize combo box
+		                paperSize.click();
+		                Thread.sleep(1000);
+		            } catch(Exception e)
+		            {
+		                log.info("Can't click on paper size combo box.");    
+		                throw new RuntimeException(e);
+		            }
+		            break;
+		        }
+		        else {
+		            log.info("Found " + el.getText().toString());
+		            try {
+		                el.click();
+		                Thread.sleep(1000);
+		                
+		            } catch(Exception e) {
+		                log.info("Cant click on paper size combo box.");
+		                throw new RuntimeException(e);
+		            }
+            
+		            break;
+		        }
+		    }
+		}
 
-
+		
 		// Method to open Notepad test file
 		public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 			

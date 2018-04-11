@@ -23,7 +23,9 @@ public class PrintFromNotepad extends NotepadBase{
            
         	Thread.sleep(1000);
             
-            Base.OpenPrintQueue(ptr_name);                            
+        	// Method was originally called here, but print queue was getting in the way of the notepad test
+        	// Moved to ValidatePrintQueue method
+            //Base.OpenPrintQueue(ptr_name);                            
                    	
     }
 
@@ -37,13 +39,13 @@ public class PrintFromNotepad extends NotepadBase{
 	}
 	
 	
-
-	
-	@Test
+/*	@Test
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
-		
+	    // Method to open the print queue (Moved from setup() method)
+	    Base.OpenPrintQueue(ptr_name);
+	    
 		// Method to attach session to Printer Queue Window
 		Base.SwitchToPrinterQueue(device_name,ptr_name);
 		
@@ -55,7 +57,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
 	    
-	}
+	}*/
 
     
     @AfterClass
