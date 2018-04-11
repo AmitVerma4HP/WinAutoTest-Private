@@ -47,13 +47,13 @@ public class NotepadBase extends Base {
 	    	ClickButton(NotepadSession, "Preferences");
 	    	
 	    	// Select Preferences
-	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
+	        //ChooseDuplexOrSimplex_Notepad(duplex_optn);
 	        //ChooseColorOrMono_Notepad(color_optn);
 	        
 	    	
-//	    	ClickButton(NotepadSession, "Advanced");
-//	    	String size = "A4"; // Temporary value to develop with - will add as test suite parameter once test is further along - EMC
-	    	//ChoosePaperSize_Notepad(size);
+	    	ClickButton(NotepadSession, "Advanced");
+	    	String size = "A4"; // Temporary value to develop with - will add as test suite parameter once test is further along - EMC
+	    	ChoosePaperSize_Notepad(size);
 	        // Close Preferences window
 	        ClickButton(NotepadSession, "OK");
 	    	
@@ -102,7 +102,7 @@ public class NotepadBase extends Base {
             // iterate through the combo box list and select the correct combo box (the duplex one in this case)
             for(WebElement box : AllComboBoxList) {
                 if(box.getText().equals(duplexDefault)) {
-                    log.info("Going to click on '" + box.getText().toString() + "'...");
+                    log.info("Going to click on duplex combo box with default value of '" + box.getText().toString() + "'...");
                     try {
                         box.click();
                         Thread.sleep(1000);
@@ -221,40 +221,32 @@ public class NotepadBase extends Base {
 
 		
 		// Method to select the paper size
-		public static void ChoosePaperSize_Notepad(String size) throws InterruptedException{
-		    //get a list of all combo boxes available
-		    List<WebElement> AdvancedComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
-		    Assert.assertNotNull(AdvancedComboBoxList);
-    
-		    // iterate through the combo box list and select the correct combo box (the paper size one in this case)
-		    for(WebElement el : AdvancedComboBoxList) {
-		        if(!el.getText().equals("Letter")) {
-		            log.info("Trying to click on " + AdvancedComboBoxList.get(0).getText().toString());
-		            try {
-		                WebElement paperSize = AdvancedComboBoxList.get(0); // 0 is the current index for the paperSize combo box
-		                paperSize.click();
-		                Thread.sleep(1000);
-		            } catch(Exception e)
-		            {
-		                log.info("Can't click on paper size combo box.");    
-		                throw new RuntimeException(e);
-		            }
-		            break;
-		        }
-		        else {
-		            log.info("Found " + el.getText().toString());
-		            try {
-		                el.click();
-		                Thread.sleep(1000);
-		                
-		            } catch(Exception e) {
-		                log.info("Cant click on paper size combo box.");
-		                throw new RuntimeException(e);
-		            }
+		public static void ChoosePaperSize_Notepad(String size) throws InterruptedException{   
+            String paperSizeDefault = "Letter"; // A combo box's text value is the value shown in the box - "None" is the default value for duplex - EMC
             
-		            break;
-		        }
-		    }
+            // get a list of all combo boxes available
+            List<WebElement> AllComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
+            Assert.assertNotNull(AllComboBoxList);
+
+            // iterate through the combo box list and select the correct combo box (the duplex one in this case)
+            for(WebElement box : AllComboBoxList) {
+                if(box.getText().equals(paperSizeDefault)) {
+                    log.info("Going to click on paper size combo box with default value of '" + box.getText().toString() + "'...");
+                    try {
+                        box.click();
+                        Thread.sleep(1000);
+                        
+                    } catch (Exception e) {
+                        log.info("Can't click on paper size combo box.");
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                }
+                else{
+                    log.info("On combo box '" + box.getText().toString() + "'. Going to keep looking.");
+                }
+
+                }
 		}
 
 		
