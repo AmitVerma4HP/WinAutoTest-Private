@@ -415,4 +415,86 @@ public class PhotoAppBase extends Base {
 			log.info("Desired Paper Tray option => " + PhotoPaperTrayListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
+	
+	// Method to select desired Paper Type Option
+	// Possible candidate for re-factoring when there are multiple application in automation
+	public static void SelectPaperType_Photos(String paper_type) throws InterruptedException {
+		   
+		WebElement PhotoPaperTypeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Paper type']");
+		Assert.assertNotNull(PhotoPaperTypeListComboBox);           
+        if(!PhotoPaperTypeListComboBox.getText().toString().contentEquals(paper_type)) {
+	        log.info("Desired photo paper type => "+paper_type+" <= is not selected so selecting it from drop down");
+	        PhotoPaperTypeListComboBox.click();
+	        Thread.sleep(1000);
+	        
+          try {
+        	  PhotoPaperTypeListComboBox.findElement(By.name(paper_type)).click();              
+            } catch(Exception e){
+	        	log.info("Desired Photo Paper type is not found so make sure Printer Support this photo paper type option OR have typed the photo paper type name incorrectly in testsuite xml");
+	        	e.printStackTrace();
+	            log.info("Error selecting desired Paper Type");     
+	            throw new RuntimeException(e);
+            }   
+          	Thread.sleep(1000);
+			log.info("Selected desired paper type option *****" + PhotoPaperTypeListComboBox.getText().toString() + "*****");
+			
+        }else {
+			log.info("Desired Paper Type option => " + PhotoPaperTypeListComboBox.getText().toString() + " <= is already selected so proceeding");
+		}
+	}
+	
+	// Method to select desired Output Quality Option
+	// Possible candidate for re-factoring when there are multiple application in automation
+	public static void SelectOutputQuality_Photos(String output_qlty) throws InterruptedException {
+		   
+		WebElement PhotoOutputQualityListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Output quality']");
+		Assert.assertNotNull(PhotoOutputQualityListComboBox);           
+        if(!PhotoOutputQualityListComboBox.getText().toString().contentEquals(output_qlty)) {
+	        log.info("Desired photo output quality => "+output_qlty+" <= is not selected so selecting it from drop down");
+	        PhotoOutputQualityListComboBox.click();
+	        Thread.sleep(1000);
+	        
+          try {
+        	  PhotoOutputQualityListComboBox.findElement(By.name(output_qlty)).click();              
+            } catch(Exception e){
+	        	log.info("Desired Photo Output Quality is not found so make sure Printer Support this photo output quality option OR have typed the photo output quality name incorrectly in testsuite xml");
+	        	e.printStackTrace();
+	            log.info("Error selecting desired Photo Output Quality");     
+	            throw new RuntimeException(e);
+            }   
+          	Thread.sleep(1000);
+			log.info("Selected desired Photo Output Quality option *****" + PhotoOutputQualityListComboBox.getText().toString() + "*****");
+			
+        }else {
+			log.info("Desired Photo Output Quality option => " + PhotoOutputQualityListComboBox.getText().toString() + " <= is already selected so proceeding");
+		}
+	}
+	
+	
+	// Method to select desired Stapling Option
+	// Possible candidate for re-factoring when there are multiple application in automation
+	public static void SelectStaplingOption_Photos(String stapling_optn) throws InterruptedException {
+		   
+		WebElement SelectStaplingOption_Photos = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Stapling']");
+		Assert.assertNotNull(SelectStaplingOption_Photos);           
+        if(!SelectStaplingOption_Photos.getText().toString().contentEquals(stapling_optn)) {
+	        log.info("Desired photo Stapling Option => "+stapling_optn+" <= is not selected so selecting it from drop down");
+	        SelectStaplingOption_Photos.click();
+	        Thread.sleep(1000);
+	        
+          try {
+        	  SelectStaplingOption_Photos.findElement(By.name(stapling_optn)).click();              
+            } catch(Exception e){
+	        	log.info("Desired Photo Stapling Option is not found so make sure Printer Support this photo Stapling option OR have typed the photo Stapling option name incorrectly in testsuite xml");
+	        	e.printStackTrace();
+	            log.info("Error selecting desired Photo Stapling Option");     
+	            throw new RuntimeException(e);
+            }   
+          	Thread.sleep(1000);
+			log.info("Selected desired Photo Stapling Option *****" + SelectStaplingOption_Photos.getText().toString() + "*****");
+			
+        }else {
+			log.info("Desired Photo Stapling Option => " + SelectStaplingOption_Photos.getText().toString() + " <= is already selected so proceeding");
+		}
+	}
 }
