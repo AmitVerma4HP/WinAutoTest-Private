@@ -31,11 +31,11 @@ public class PrintFromNotepad extends NotepadBase{
 
 	
 	@Test
-	@Parameters({ "ptr_name", "duplex_optn", "color_optn" })
-    public void PrintNoteFile(String ptr_name, String duplex_optn, String color_optn) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn" })
+    public void PrintNoteFile(String ptr_name, String orientation, String duplex_optn, String color_optn) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		NotepadBase.PrintNotePadFile(ptr_name, duplex_optn, color_optn);
+		NotepadBase.PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn);
 	}
 	
 	
