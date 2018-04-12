@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import com.hp.win.core.SettingBase;
@@ -53,7 +52,7 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 		// Method to Discover Printer Under Test		
 		@Test
 		@Parameters({"ptr_name"})
-	    public void DiscoverPrinter(@Optional("ptr_name")String ptr_name) throws InterruptedException, IOException
+	    public void DiscoverPrinter(String ptr_name) throws InterruptedException, IOException
 	    {   
 			SettingBase.FindPrinter(ptr_name);
 								
@@ -76,6 +75,7 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 				}catch(NoSuchElementException e) {
 					log.info("\"Add device\" option not found so looks like printer is already added so just continue the test");
 				}
+			
 			}
 			
 			
