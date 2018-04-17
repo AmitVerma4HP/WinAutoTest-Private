@@ -22,7 +22,7 @@ public class NotepadBase extends Base {
 		
 		
 	  // Method to print from Notepad
-		public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn) throws InterruptedException {
+		public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String paper_size) throws InterruptedException {
 			// Go to file Menu
 			NotepadSession.findElementByName("File").click();
 	    	log.info("Clicked on File Menu in Notepad");
@@ -53,22 +53,20 @@ public class NotepadBase extends Base {
 	    	ClickButton(NotepadSession, "Preferences");
 	    	
 	    	// Select Preferences
-	        //ChooseDuplexOrSimplex_Notepad(duplex_optn);
-	        //ChooseColorOrMono_Notepad(color_optn);
-	    	//ChooseOrientation_Notepad(orientation);
-	    	//SelectComboBox_Notepad("Portrait");
+	        ChooseDuplexOrSimplex_Notepad(duplex_optn);
+	        ChooseColorOrMono_Notepad(color_optn);
+	    	ChooseOrientation_Notepad(orientation);
 	    	
 	    	ClickButton(NotepadSession, "Advanced");
-	    	String size = "A4"; // Temporary value to develop with - will add as test suite parameter once test is further along - EMC
-	    	ChoosePaperSize_Notepad(size);
+	    	ChoosePaperSize_Notepad(paper_size);
 	    	
-	        // Close Preferences window
+	        // Close print option windows
 	        ClickButton(NotepadSession, "OK");
-	        ClickButton(NotepadSession, "Cancel");
+	        ClickButton(NotepadSession, "OK");
 
 	    	
 	    	//Tap on print icon (Give Print)    	
-	    	//ClickButton(NotepadSession, "Print");
+	    	ClickButton(NotepadSession, "Print");
 		}
 		
 		
@@ -235,8 +233,6 @@ public class NotepadBase extends Base {
 	            // Move up the list
 	            NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
 	            String newText = listItem.getText();
-	                
-	            log.info("Current text is '" + currText + "' and new text is '" + newText + ".'");
 	            // Check if we're at the top of the list
 	            if(currText.equals(newText) && !currText.equals(selection)) {
 	                log.info("End of the list has been reached. Going to change directions.");
@@ -321,99 +317,8 @@ public class NotepadBase extends Base {
                     Up_SearchListAndSelect_Notepad(selection, box);
                 }
             }
-		    
-		    //ChooseDuplexOrSimplex_Old(option, box);
-/*            // get a list of all combo boxes available
-            List<WebElement> AllComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
-            Assert.assertNotNull(AllComboBoxList);
-
-            // iterate through the combo box list and select the correct combo box (the duplex one in this case)
-            for(WebElement box : AllComboBoxList) {
-                if(box.getText().equals(duplexDefault)) {
-                    log.info("Going to click on duplex combo box with default value of '" + box.getText().toString() + "'...");
-                    try {
-                        box.click();
-                        Thread.sleep(1000);
-                        ChooseDuplexOrSimplex_Old(option, box);
-                    } catch (Exception e) {
-                        log.info("Can't click on duplex combo box.");
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                }
-                else{
-                    log.info("On combo box '" + box.getText().toString() + "'. Going to keep looking.");
-                }
-
-                }*/
             }
-        
-		// This is the original method to select a duplex option - it has become a helper function for now
-	    // NOTE: Cannot currently select list items from the combo box's drop down menu
-        // A workaround is to use the arrow keys to navigate to the selection
-        // This issue has been already reported here: https://github.com/Microsoft/WinAppDriver/issues/389
-        public static void ChooseDuplexOrSimplex_Old(String option, WebElement duplex) throws InterruptedException{
-            
-            String optn = option.toLowerCase();
-            String simplex = "None";
-            String shortEdge = "Flip on Short Edge";
-            String longEdge = "Flip on Long Edge";
-            
-            switch(optn) {
-            case "simplex":
-                log.info("Selected '" + simplex + "'...");
-                duplex.click();
-                String comboBoxText = duplex.getText();
-                Assert.assertEquals(comboBoxText, simplex);
-                Thread.sleep(1000);
-                break;
-                
-            case "long edge":
-                log.info("Navigating to '" + longEdge + "'...");
-                try {
-                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-                    duplex.click();
-                    Thread.sleep(1000);
-                    
-                    // Make sure the option we want is selected
-                    comboBoxText = duplex.getText();
-                    Assert.assertEquals(comboBoxText, longEdge);
-                    
-                    log.info("Selected '" + comboBoxText + ".'");
-                    Thread.sleep(1000);
-                } catch(Exception e)
-                {
-                    log.info("Can't find '" + longEdge + ".'");     
-                    throw new RuntimeException(e);
-                }
-                break;
-                
-            case "short edge":
-                log.info("Navigating to " + shortEdge + "...");
-                try {
-                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-                    NotepadSession.getKeyboard().sendKeys(Keys.ARROW_DOWN);
-                    duplex.click();
-                    Thread.sleep(1000);
 
-                    comboBoxText = duplex.getText();
-                    Assert.assertEquals(comboBoxText, shortEdge);
-                    log.info("Selected '" + comboBoxText + ".'");
-                    Thread.sleep(1000);
-                    
-                } catch(Exception e)
-                {
-                    log.info("Can't find '" + shortEdge + ".'");    
-                    throw new RuntimeException(e);
-                }
-                Thread.sleep(1000);
-                break;
-                
-            default:
-                log.info("Invalid duplex selection. Please use 'simplex,' 'long edge,' or 'short edge.'");
-            
-            }
-        }
 		
 		
 		public static void ChooseColorOrMono_Notepad(String color_optn) throws InterruptedException {
@@ -463,34 +368,6 @@ public class NotepadBase extends Base {
             else {
                 log.info("Moving on to next option...");
             }
-/*            // get a list of all combo boxes available
-            List<WebElement> AllComboBoxList = NotepadSession.findElementsByTagName("ComboBox");
-            Assert.assertNotNull(AllComboBoxList);
-
-            // iterate through the combo box list and select the correct combo box (the duplex one in this case)
-            for(WebElement box : AllComboBoxList) {
-                if(box.getText().equals(paperSizeDefault)) {
-                    log.info("Going to click on paper size combo box with default value of '" + box.getText().toString() + "'...");
-                    try {
-                        box.click();
-                        Thread.sleep(1000);
-                        
-                        
-                        // check down the list
-                        
-                        // check up the list
-                        
-                    } catch (Exception e) {
-                        log.info("Can't click on paper size combo box.");
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                }
-                else{
-                    log.info("On combo box '" + box.getText().toString() + "'. Going to keep looking.");
-                }
-
-                }*/
 		}
 
 		

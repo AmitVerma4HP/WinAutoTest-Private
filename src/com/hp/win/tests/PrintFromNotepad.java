@@ -16,8 +16,8 @@ public class PrintFromNotepad extends NotepadBase{
 	
 
     @BeforeClass
-	@Parameters({ "device_name", "ptr_name", "test_filename" })
-    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
+	@Parameters({ "device_name", "ptr_name", "test_filename", "paper_size" })
+    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename, String paper_size) throws InterruptedException, IOException {
         	
     		NotepadSession = NotepadBase.OpenNoteFile(device_name, test_filename);
            
@@ -31,15 +31,15 @@ public class PrintFromNotepad extends NotepadBase{
 
 	
 	@Test
-	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn" })
-    public void PrintNoteFile(String ptr_name, String orientation, String duplex_optn, String color_optn) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "paper_size" })
+    public void PrintNoteFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String paper_size) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		NotepadBase.PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn);
+		NotepadBase.PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, paper_size);
 	}
 	
 	
-/*	@Test
+	@Test
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
@@ -57,7 +57,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
 	    
-	}*/
+	}
 
     
     @AfterClass
