@@ -1,96 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
+ 		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+
+
+ <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
+ 
+ <!-- Supported Parameters:  																	-->
+ <!-- MUST		device_name    = <Your Windows PC Name> 										-->
+ <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
+ <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
+ <!-- OPTIONAL	duplex_optn    = <"Simplex", "Short Edge", "Long Edge">  , DEFAULT = "Simplex"  -->
+ <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
+ <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
+ 
+ 
  
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
-  
+
+
+
 <!-- ************************* OJ 8600 on R12 ************************* -->
     <test verbose="2" name="Notepad Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])">
-    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Short Edge" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
- 
-  
 <!-- ************************* OJ 8600 on R12 ************************* -->
+  
   
 <!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
       <test verbose="2" name="Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
-    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
-     	<parameter name="orientation" value="landscape" />
-     	<parameter name="duplex_optn" value="long edge" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="duplex_optn" value="Long Edge" />
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="paper_size" value="Legal" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-  
 <!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+
 
 <!-- ************************* ENVY 7640 on R12 ************************* -->
         <test verbose="2" name="Notepad Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY 7640 series [CCF025])">
-    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
      	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
-     	<parameter name="orientation" value="portrait" />
-     	<parameter name="duplex_optn" value="short edge" />
-     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Short Edge" />
+     	<parameter name="color_optn" value="Color" />
      	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-  
 <!-- ************************* ENVY 7640 on R12 ************************* -->
 
 
-<!-- ************************* PageWide Pro MFP 772-222 on R12 ************************* -->  
+<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->  
         <test verbose="2" name="Notepad Simplex Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Pro MFP 772-222 [64425B])">
-    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
-     	<parameter name="ptr_name" value="ipp: HP PageWide Pro MFP 772-222 [64425B]" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
-     	<parameter name="duplex_optn" value="simplex" />
+     	<parameter name="ptr_name" value="ipp: HP PageWide Pro MFP 772-777 [64425B]" />
+		<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Simplex" />
      	<parameter name="color_optn" value="Mono" />
 		<parameter name="paper_size" value="A4" />
+		<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
    </test>
+<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->
 
 
-<!-- ************************* PageWide Pro MFP 772-222 on R12 ************************* -->
-
-
-
-<!-- ************************* Xerox Phaser 3330 on R12 ************************* -->
-<!--         <test verbose="2" name="Notepad Simplex Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: XEROX Phaser 3330 (XRX9C934E734C76))">
-    	<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
-     	<parameter name="ptr_name" value="ipp: XEROX Phaser 3330 (XRX9C934E734C76)" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
-     	<parameter name="orientation" value="landscape" />
-     	<parameter name="duplex_optn" value="simplex" />
-     	<parameter name="color_optn" value="Color" />
-     	<parameter name="paper_size" value="B4 (JIS)" />
-		
-    <classes>
-         <class name="com.hp.win.tests.PrintFromNotepad"/>
-    </classes>
-  </test> -->
-
-<!-- ************************* Xerox Phaser 3330 on R12 ************************* -->
 
  <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
      

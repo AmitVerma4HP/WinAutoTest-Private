@@ -66,7 +66,7 @@ public class NotepadBase extends Base {
 
 	    	
 	    	//Tap on print icon (Give Print)    	
-	    	ClickButton(NotepadSession, "Print");
+	    	//ClickButton(NotepadSession, "Print");
 		}
 		
 		
