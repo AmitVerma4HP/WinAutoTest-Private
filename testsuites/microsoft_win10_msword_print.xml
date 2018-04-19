@@ -8,7 +8,7 @@
  <!-- Supported Parameters:  -->
  <!-- MUST		device_name = <Your Windows PC Name> -->
  <!-- MUST 		ptr_name 	= <Printer name as it shows in discovery-->
- <!-- OPTIONAL	paper_size 	= <Paper size list> , DEFAULT = "Letter" -->
+ <!-- OPTIONAL	paper_size 	= <One Supported Paper Size> , DEFAULT = "Letter" -->
  <!-- OPTIONAL	duplex_option = <"Print One Sided", "DuplexLongEdge", "DuplexShortEdge","Manually Print on Both Sides"> , DEFAULT = "Print One Sided" -->
  <!-- OPTIONAL	orientation = <"Portrait Orientation","Landscape Orientation"> , DEFAULT = "Portrait Orientation" -->
  <!-- OPTIONAL	collation = <"Collated","Uncollated"> , DEFAULT = "Collated" -->
@@ -36,6 +36,7 @@
          <class name="com.hp.win.tests.PrintMsWord"/>
     </classes>
   </test>
+
 
 	 <test verbose="2" name="Printing Test MSWord test file2 - Device Under test (VERAMIT6) => Printer Under Test - HPBFB476 (HP Officejet Pro 8600)">
      	<parameter name="paper_size" value="A4" />
