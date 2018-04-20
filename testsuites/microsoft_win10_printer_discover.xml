@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Test suite - Printer Discovery In Settings">
+	<parameter name="device_name" value="VERAMIT6" />
  
 <!-- **************************************** PRINTER DISCOVERY TESTS ******************************************************** -->
   
-  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer1">
-    	<parameter name="device_name" value="VERAMIT6" />
+  <test verbose="2" name="Discovery Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer1">    	
      	<parameter name="ptr_name" value="HP DesignJet Z9 44in PDF V4 on MOLINA6 Printer" /> 
 		
     <classes>
@@ -16,7 +16,6 @@
   
   
   <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer2">
-    	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" /> 
 		
     <classes>
@@ -27,7 +26,6 @@
   
   
     <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer3">
-    	<parameter name="device_name" value="VERAMIT6" />
      	<parameter name="ptr_name" value="Fake Printer Name" /> 
 		
     <classes>

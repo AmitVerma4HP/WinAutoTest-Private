@@ -330,11 +330,11 @@ public class PhotoAppBase extends Base {
 		String duplex_sel = duplex_optn.toLowerCase();
 
 		if (duplex_sel.equals("none")) {
-			duplex_sel = "Print on only one side of the page";
+			duplex_sel = "one side";
 		} else if(duplex_sel.equals("shortedge")) {
-			duplex_sel = "Flip the short edge";
+			duplex_sel = "short edge";
 		} else {
-			duplex_sel = "Flip the long edge";
+			duplex_sel = "long edge";
 		}
 
 		WebElement PhotoDuplexListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Duplex printing']");
