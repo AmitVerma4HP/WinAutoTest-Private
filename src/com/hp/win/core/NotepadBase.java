@@ -52,36 +52,38 @@ public class NotepadBase extends Base {
         // Open Preferences window
         ClickButton(NotepadSession, "Preferences");
 
+        RemoteWebDriver PreferencesSession = GetDesktopSession(device_name);
         // Select Preferences on the Layout tab first
-        ChooseDuplexOrSimplex_Notepad(duplex_optn, device_name);
-        ChooseOrientation_Notepad(orientation, device_name);
+        ChooseDuplexOrSimplex_Notepad(PreferencesSession, duplex_optn, device_name);
+        ChooseOrientation_Notepad(PreferencesSession, orientation, device_name);
 
         // Select settings on Paper/Quality tab after the Layout tab
-        ChooseColorOrMono_Notepad(color_optn);
+        ChooseColorOrMono_Notepad(PreferencesSession, color_optn);
 
+        RemoteWebDriver AdvancedSession = GetDesktopSession(device_name);
         // Now open the Advanced settings
-        ClickButton(NotepadSession, "Advanced");
-        ChoosePaperSize_Notepad(paper_size, device_name);
+        ClickButton(PreferencesSession, "Advanced");
+        ChoosePaperSize_Notepad(AdvancedSession, paper_size, device_name);
 
         // Close print option windows
-        ClickButton(NotepadSession, "OK");
-        ClickButton(NotepadSession, "OK");
+        ClickButton(AdvancedSession, "OK");
+        ClickButton(PreferencesSession, "OK");
 
 
         //Tap on print icon (Give Print)    	
-        ClickButton(NotepadSession, "Print");
+        ClickButton(PreferencesSession, "Print");
     }
 
 
     // Method to select the necessary tab to change the print preference options
-    public static void SelectPreferencesTab_Notepad(String desiredTab) throws InterruptedException {
+    public static void SelectPreferencesTab_Notepad(RemoteWebDriver session, String desiredTab) throws InterruptedException {
 
         try {
-            if(NotepadSession.findElementByName(desiredTab).isSelected()) {
+            if(session.findElementByName(desiredTab).isSelected()) {
                 log.info("'" + desiredTab + "' tab is already selected.");
             }
             else {
-                NotepadSession.findElementByName(desiredTab).click();
+                session.findElementByName(desiredTab).click();
                 log.info("Successfully clicked on '" + desiredTab + ".'");
                 Thread.sleep(1000);
             }
@@ -94,9 +96,9 @@ public class NotepadBase extends Base {
 
 
     // Method to select a list item from a combo box drop down menu
-    public static void SelectListItem_Notepad(String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
+    public static void SelectListItem_Notepad(RemoteWebDriver DialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
 
-        RemoteWebDriver DialogSession = GetDesktopSession(device_name);
+        //RemoteWebDriver DialogSession = GetDesktopSession(device_name);
 
         // Several elements have the same name, so this list will loop through them and find the correct one (if they exist)
         List<WebElement> nameList = DialogSession.findElementsByName(boxName);
@@ -310,9 +312,9 @@ public class NotepadBase extends Base {
     }
 
 
-    public static void ChooseOrientation_Notepad(String option, String device_name) throws InterruptedException, MalformedURLException {
+    public static void ChooseOrientation_Notepad(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {
 
-        SelectListItem_Notepad("Orientation: ", option, device_name);
+        SelectListItem_Notepad(session, "Orientation: ", option, device_name);
 
     }
 
@@ -320,15 +322,15 @@ public class NotepadBase extends Base {
     // Method to select duplex option
 
 
-    public static void ChooseDuplexOrSimplex_Notepad(String duplexSel, String device_name) throws InterruptedException, MalformedURLException {
+    public static void ChooseDuplexOrSimplex_Notepad(RemoteWebDriver session, String duplexSel, String device_name) throws InterruptedException, MalformedURLException {
 
-        SelectListItem_Notepad("Print on Both Sides: ", duplexSel, device_name);
+        SelectListItem_Notepad(session, "Print on Both Sides: ", duplexSel, device_name);
 
     }
 
 
 
-    public static void ChooseColorOrMono_Notepad(String color_optn) throws InterruptedException {
+    public static void ChooseColorOrMono_Notepad(RemoteWebDriver session, String color_optn) throws InterruptedException {
         String color = "Color";
         String mono = "Black && White";
         String color_choice;
@@ -342,14 +344,14 @@ public class NotepadBase extends Base {
             color_choice = color;
         }
 
-        SelectPreferencesTab_Notepad("Paper/Quality");
+        SelectPreferencesTab_Notepad(session, "Paper/Quality");
 
         try {
-            if(NotepadSession.findElementByName(color_choice).isSelected()) {
+            if(session.findElementByName(color_choice).isSelected()) {
                 log.info("'" + color_optn + "' is already selected.");
             }
             else {
-                NotepadSession.findElementByName(color_choice).click();
+                session.findElementByName(color_choice).click();
                 log.info("Successfully clicked on '" + color_choice + ".'");
             }
         } catch (Exception e) {
@@ -361,9 +363,9 @@ public class NotepadBase extends Base {
 
 
     // Method to select the paper size
-    public static void ChoosePaperSize_Notepad(String size, String device_name) throws InterruptedException, MalformedURLException {   
+    public static void ChoosePaperSize_Notepad(RemoteWebDriver session, String size, String device_name) throws InterruptedException, MalformedURLException {   
 
-        SelectListItem_Notepad("Paper Size: ", size, device_name);
+        SelectListItem_Notepad(session, "Paper Size: ", size, device_name);
 
     }
 
