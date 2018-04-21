@@ -4,6 +4,7 @@ package com.hp.win.tests;
 import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchSessionException;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -60,26 +61,45 @@ public class PrintFromNotepad extends NotepadBase{
 	}
 
     
-    @AfterClass
-    public static void TearDown()
-    {	        
-    
-        	if (NotepadSession!= null)
-        	{
-        		NotepadSession.quit();
-        	}
-        	
-    		if(DesktopSession!=null)
-    		{
-    			DesktopSession.quit();
-    		}
-    		
-    		if(PrintQueueSession!=null)
-    		{
-    		   PrintQueueSession.quit();
-    		}
-        	        
-    }
+	@AfterClass
+	public static void TearDown() throws NoSuchSessionException
+	{	        
+
+/*	    try {
+	        PreferencesSession.quit();
+	    } catch (Exception e) {
+	        log.info("PreferencesSession already terminated.");
+	    }
+
+	    try {
+	        AdvancedSession.quit();
+	    } catch (Exception e) {
+	        log.info("AdvancedSession already terminated.");
+	    }*/
+
+	    try {
+	        NotepadSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("NotepadSession has already been terminated.");
+	    }
+
+	    try {
+	        DesktopSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("DesktopSession has already been terminated.");
+	    }
+
+	    try {
+	        PrintQueueSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("PrintQueueSession has already been terminated.");
+	    }
+
+
+	}
     
     
   

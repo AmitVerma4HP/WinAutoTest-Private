@@ -17,7 +17,9 @@ import org.testng.Assert;
 public class NotepadBase extends Base {
 
     private static final Logger log = LogManager.getLogger(NotepadBase.class);
-    public static RemoteWebDriver NotepadSession = null;		
+    public static RemoteWebDriver NotepadSession = null;
+    public static RemoteWebDriver PreferencesSession = null;
+    public static RemoteWebDriver AdvancedSession = null;
 
 
     // Method to print from Notepad
@@ -51,26 +53,51 @@ public class NotepadBase extends Base {
         // Open Preferences window
         ClickButton(NotepadSession, "Preferences");
 
-        RemoteWebDriver PreferencesSession = GetDesktopSession(device_name);
+        PreferencesSession = GetDesktopSession(device_name);
+        
         // Select Preferences on the Layout tab first
         ChooseDuplexOrSimplex_Notepad(PreferencesSession, duplex_optn, device_name);
+        //ChooseDuplexOrSimplex_Notepad(duplex_optn, device_name);
         ChooseOrientation_Notepad(PreferencesSession, orientation, device_name);
+        //ChooseOrientation_Notepad(orientation, device_name);
 
         // Select settings on Paper/Quality tab after the Layout tab
         ChooseColorOrMono_Notepad(PreferencesSession, color_optn);
+        //ChooseColorOrMono_Notepad(color_optn);
 
-        RemoteWebDriver AdvancedSession = GetDesktopSession(device_name);
         // Now open the Advanced settings
         ClickButton(PreferencesSession, "Advanced");
+        
+        try {
+            PreferencesSession.quit();
+        } catch (Exception e) {
+            log.info("PreferencesSession already terminated.");
+        }
+        
+        AdvancedSession = GetDesktopSession(device_name);
         ChoosePaperSize_Notepad(AdvancedSession, paper_size, device_name);
 
-        // Close print option windows
+        
         ClickButton(AdvancedSession, "OK");
+        
+        try {
+            AdvancedSession.quit();
+        } catch (Exception e) {
+            log.info("AdvancedSession already terminated.");
+        }
+        
+        PreferencesSession = GetDesktopSession(device_name);
+        
+        // Close print option dialogs
         ClickButton(PreferencesSession, "OK");
-
 
         //Tap on print icon (Give Print)    	
         ClickButton(PreferencesSession, "Print");
+     
+
+
+
+        
     }
 
 
@@ -95,15 +122,16 @@ public class NotepadBase extends Base {
 
 
     // Method to select a list item from a combo box drop down menu
-    public static void SelectListItem_Notepad(RemoteWebDriver DialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
+    public static void SelectListItem_Notepad(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
 
         //RemoteWebDriver DialogSession = GetDesktopSession(device_name);
 
         // Several elements have the same name, so this list will loop through them and find the correct one (if they exist)
-        List<WebElement> nameList = DialogSession.findElementsByName(boxName);
+        List<WebElement> nameList = dialogSession.findElementsByName(boxName);
 
         if(nameList.size() != 0) {
             for (WebElement el : nameList) {
+                log.info("Looking for " + el.getText().toString());
                 if(el.getAttribute("Name").toString().equals(boxName)) {
                     if(el.getAttribute("LocalizedControlType").equals("combo box")) {
                         try {
@@ -123,7 +151,7 @@ public class NotepadBase extends Base {
                 }
             }
 
-            WebElement listItem = DialogSession.findElementByName(listSel);
+            WebElement listItem = dialogSession.findElementByName(listSel);
 
             try {
                 log.info("Found option " + listItem.getText().toString() + "' with text '" + listItem.getText().toString() + "'");
@@ -318,9 +346,8 @@ public class NotepadBase extends Base {
     }
 
 
+
     // Method to select duplex option
-
-
     public static void ChooseDuplexOrSimplex_Notepad(RemoteWebDriver session, String duplexSel, String device_name) throws InterruptedException, MalformedURLException {
 
         SelectListItem_Notepad(session, "Print on Both Sides: ", duplexSel, device_name);
@@ -333,7 +360,7 @@ public class NotepadBase extends Base {
         String color = "Color";
         String mono = "Black && White";
         String color_choice;
-
+       
         String color_sel = color_optn.toLowerCase();
 
         if(color_sel.equals("mono")) {
