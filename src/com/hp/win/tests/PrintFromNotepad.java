@@ -14,9 +14,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
-//import com.hp.win.core.NotepadBase;
 import com.hp.win.core.Win32Base;
 import com.hp.win.utility.ScreenshotUtility;
+
 
 @Listeners({ScreenshotUtility.class})
 public class PrintFromNotepad extends Win32Base {
@@ -58,11 +58,12 @@ public class PrintFromNotepad extends Win32Base {
         // Open Preferences window
         ClickButton(NotepadSession, "Preferences");
 
+        // In order to access the Preferences dialog, we need to start a new desktop session
         PreferencesSession = GetDesktopSession(device_name);
-        //Assert.assertNotNull(PreferencesSession);
+        Assert.assertNotNull(PreferencesSession);
         
         // Select Preferences on the Layout tab first
-        Win32Base.ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
+        ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
         ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
 
         // Select settings on Paper/Quality tab after the Layout tab
@@ -71,25 +72,33 @@ public class PrintFromNotepad extends Win32Base {
         // Now open the Advanced settings
         ClickButton(PreferencesSession, "Advanced");
         
+        
+        // A new desktop session must be created to access the Advanced dialog
+        // so the Preferences dialog session must be closed here
         try {
             PreferencesSession.quit();
         } catch (Exception e) {
             log.info("PreferencesSession already terminated.");
         }
         
+        
         AdvancedSession = GetDesktopSession(device_name);
-        //Assert.assertNotNull(AdvancedSession);
+        Assert.assertNotNull(AdvancedSession);
+        
         ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
-
         
         ClickButton(AdvancedSession, "OK");
         
+        
+        // The Advanced desktop session must be closed here instead of at tear down
         try {
             AdvancedSession.quit();
         } catch (Exception e) {
             log.info("AdvancedSession already terminated.");
         }
         
+        
+        // A new Preferences desktop session must be opened here in order to continue the test 
         PreferencesSession = GetDesktopSession(device_name);
         
         // Close print option dialogs
@@ -129,11 +138,7 @@ public class PrintFromNotepad extends Win32Base {
         	
     		NotepadSession = OpenNoteFile(device_name, test_filename);
            
-        	Thread.sleep(1000);
-            
-        	// Method was originally called here, but print queue was getting in the way of the notepad test
-        	// Moved to ValidatePrintQueue method
-            //Base.OpenPrintQueue(ptr_name);                            
+        	Thread.sleep(1000);                       
                    	
     }
 
@@ -172,6 +177,7 @@ public class PrintFromNotepad extends Win32Base {
 	public static void TearDown() throws NoSuchSessionException
 	{	        
 
+        // Leaving this here just in case it is necessary - EMC
 	    try {
 	        NotepadSession.quit();
 	    } catch (Exception e)
