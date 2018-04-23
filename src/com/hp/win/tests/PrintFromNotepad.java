@@ -2,8 +2,15 @@ package com.hp.win.tests;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchSessionException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -11,14 +18,19 @@ import com.hp.win.core.NotepadBase;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
+
 @Listeners({ScreenshotUtility.class})
+
 public class PrintFromNotepad extends NotepadBase{
 	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
 	private static String currentClass;	
 
+
+    
     @BeforeClass
 	@Parameters({ "device_name", "ptr_name", "test_filename" })
     public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
+
 		currentClass = PrintFromNotepad.class.getSimpleName();
 	
 		//Start PrintTrace log capturing 
@@ -35,11 +47,11 @@ public class PrintFromNotepad extends NotepadBase{
 
 	
 	@Test
-	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "paper_size" })
-    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("Simplex")String duplex_optn, @Optional("Color")String color_optn, @Optional("Letter")String paper_size) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "device_name" })
+    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("Simplex")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		NotepadBase.PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, paper_size);
+		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, device_name);
 	}
 	
 	
@@ -64,30 +76,38 @@ public class PrintFromNotepad extends NotepadBase{
 	}
 
     
-    @AfterClass
-    public static void TearDown() throws IOException, InterruptedException
-    {	        
-    
-        	if (NotepadSession!= null)
-        	{
-        		NotepadSession.quit();
-        	}
-        	
-    		if(DesktopSession!=null)
-    		{
-    			DesktopSession.quit();
-    		}
-    		
-    		if(PrintQueueSession!=null)
-    		{
-    		   PrintQueueSession.quit();
-    		}
-    		
-    		//Stop PrintTrace log capturing.
+
+	@AfterClass
+	public static void TearDown() throws NoSuchSessionException
+	{	        
+
+        // Leaving this here just in case it is necessary - EMC
+	    try {
+	        NotepadSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("NotepadSession has already been terminated.");
+	    }
+
+	    try {
+	        DesktopSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("DesktopSession has already been terminated.");
+	    }
+
+	    try {
+	        PrintQueueSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("PrintQueueSession has already been terminated.");
+	    }
+
+      //Stop PrintTrace log capturing.
     		PrintTraceCapture.StopLogCollection(currentClass);	
-        	        
-    }
-    
+
+	}
+
       
 }
 
