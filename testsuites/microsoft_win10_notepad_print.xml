@@ -13,9 +13,10 @@
  <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">  , DEFAULT = "None"  -->
  <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
  <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
  <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "NotepadTestFile1.txt"    -->
  <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
- 
+
  
  
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
@@ -28,6 +29,7 @@
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
+     	<!-- <parameter name="prnt_quality" value="Draft" /> -->
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -44,6 +46,7 @@
      	<parameter name="orientation" value="Landscape" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
      	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Better" />
      	<parameter name="paper_size" value="Legal" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -60,6 +63,7 @@
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
+     	<parameter name="prnt_quality" value="Best" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -76,6 +80,7 @@
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="None" />
      	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Draft" />
 		<parameter name="paper_size" value="A4" />
 		<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		

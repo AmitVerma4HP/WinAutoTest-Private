@@ -28,7 +28,7 @@ public class PrintFromNotepad extends Win32Base {
 
 
     // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
+    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
         // Go to file Menu
         NotepadSession.findElementByName("File").click();
         log.info("Clicked on File Menu in Notepad");
@@ -67,7 +67,9 @@ public class PrintFromNotepad extends Win32Base {
         ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
 
         // Select settings on Paper/Quality tab after the Layout tab
+        SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
         ChooseColorOrMono_Win32(PreferencesSession, color_optn);
+        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
         // Now open the Advanced settings
         ClickButton(PreferencesSession, "Advanced");
@@ -144,11 +146,11 @@ public class PrintFromNotepad extends Win32Base {
 
 	
 	@Test
-	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "paper_size", "device_name" })
-    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("Simplex")String duplex_optn, @Optional("Color")String color_optn, @Optional("Letter")String paper_size, String device_name) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "device_name" })
+    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("Simplex")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, paper_size, device_name);
+		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, device_name);
 	}
 	
 	
