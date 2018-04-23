@@ -15,7 +15,7 @@ import com.hp.win.core.SettingBase;
 public class PrintTraceCapture extends SettingBase {
 	
 	static DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
-	private static String providersFileLoc = "C:/Workspace/WinAutoTest/resources/";
+	private static String providersFileLoc = System.getProperty("user.dir").concat("\\resources\\");
 	private static String cmdStart = "logman -ets start WindowsippTrace -pf providers.cfg";
 	private static String cmdStop = "logman -ets stop WindowsippTrace";
 	private static final Logger log = LogManager.getLogger(PrintTraceCapture.class);
@@ -29,7 +29,7 @@ public class PrintTraceCapture extends SettingBase {
 		pb.redirectErrorStream(true);
 		pb.directory(new File(providersFileLoc));
 		Process pc = pb.start();
-		log.info("executed the cmd successfully");
+		log.debug("executed the cmd successfully");
 		try {
 			InputStreamReader isr = new InputStreamReader(pc.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
@@ -39,7 +39,7 @@ public class PrintTraceCapture extends SettingBase {
 		} catch (InterruptedException e) {
 			pc.destroyForcibly();
 		}
-		log.info("Started log tracing from PrintTraceCapture");
+		log.info("Started log tracing from PrintTraceCapture \"logman -ets start WindowsippTrace -pf providers.cfg\".");
 	}
 	
 	
@@ -49,7 +49,7 @@ public class PrintTraceCapture extends SettingBase {
 		ProcessBuilder pb = new ProcessBuilder("cmd.exe","/k",cmdStop);
 		pb.directory(new File(providersFileLoc));
 		Process pc = pb.start();
-		log.info("executed the cmd successfully");
+		log.debug("executed the cmd successfully");
 		try {
 			InputStreamReader isr = new InputStreamReader(pc.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
@@ -59,7 +59,7 @@ public class PrintTraceCapture extends SettingBase {
 		} catch (InterruptedException e) {
 			pc.destroyForcibly();
 		}
-		log.info("Stopped log tracing from PrintTraceCapture");
+		log.info("Stopped log tracing from PrintTraceCapture \"logman -ets stop WindowsippTrace\".");
 		
 		PrintTraceSave(currentClass);
 			
@@ -73,7 +73,7 @@ public class PrintTraceCapture extends SettingBase {
 				+ (dateFormat.format(new Date()).substring(0, 11)) + "\\";
 		new File(DirectoryToSavePrintTrace).mkdirs();
 		
-		curTestName = ScreenshotUtility.getTestName().substring(0, 10).replaceAll("\\s|:", "").trim(); 
+		String curTestName = ScreenshotUtility.getTestName().substring(0, 7);
 		
 		String destFile = curTestName + "-" +currentClass + "-" + dateFormat.format(new Date()) + ".etl";
 		log.info("PrintTrace captured file name: " + destFile);

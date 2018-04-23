@@ -67,10 +67,9 @@ public class ScreenshotUtility implements ITestListener {
 	// Session information for capturing a Screenshot is determined based on the class and method names
 	// that is being executed.
 	public static void captureScreenShot(ITestResult result, String status) {
-		String curdevice = "";
 		log.info("Capturing the screenshot now");
 		
-		String curTestName = ScreenshotUtility.getTestName().substring(0, 10).replaceAll("\\s|:", "").trim(); 
+		String curTestName = ScreenshotUtility.getTestName().substring(0, 7);
 		String destDir = System.getProperty("user.dir");
 		String passfailMethod = result.getMethod().getRealClass().getSimpleName() + "."
 				+ result.getMethod().getMethodName();
