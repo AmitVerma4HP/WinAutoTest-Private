@@ -2,15 +2,9 @@ package com.hp.win.tests;
 
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -78,7 +72,7 @@ public class PrintFromNotepad extends NotepadBase{
     
 
 	@AfterClass
-	public static void TearDown() throws NoSuchSessionException
+	public static void TearDown() throws NoSuchSessionException, IOException, InterruptedException
 	{	        
 
         // Leaving this here just in case it is necessary - EMC
@@ -104,7 +98,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    }
 
       //Stop PrintTrace log capturing.
-    		PrintTraceCapture.StopLogCollection(currentClass);	
+    	PrintTraceCapture.StopLogCollection(currentClass);	
 
 	}
 
