@@ -16,7 +16,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import com.hp.win.core.*;
-import com.hp.win.tests.PrintFromNotepad;
 
 public class ScreenshotUtility implements ITestListener {
 
@@ -84,7 +83,7 @@ public class ScreenshotUtility implements ITestListener {
 		} else if (passfailMethod.contains("MsWord")) {
 			curSession = MsWordAppBase.MsWordSession;
 		} else if (passfailMethod.contains("Note")) {
-			curSession = PrintFromNotepad.NotepadSession;
+			curSession = NotepadBase.NotepadSession;
 		} else if (passfailMethod.contains("Discover")) {
 			curSession = Base.DesktopSession;
 		} else if (passfailMethod.contains("Queue")) {
