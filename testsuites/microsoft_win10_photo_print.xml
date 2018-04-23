@@ -27,7 +27,7 @@
 
 <!-- **************************************** PRINTING TESTS ******************************************************** -->
   
-  <test verbose="2" name="Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+  <test verbose="2" name="Test-01 : Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
     	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
   		<parameter name="ptr_name" value="ipp: HP OfficeJet 250 Mobile Series [B8033E]" />
      	<parameter name="test_filename" value="Rose_Portrait.jpg" />
@@ -50,7 +50,7 @@
     </classes>
   </test>
  
-   <test verbose="2" name="Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP ENVY 7640 series [4FA898])">
+   <test verbose="2" name="Test-02 : Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP ENVY 7640 series [4FA898])">
     	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
   		<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [4FA898]" /> 
        	<parameter name="test_filename" value="Tiger_Portrait.jpg" />

@@ -15,22 +15,33 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.NotepadBase;
+import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
 
 @Listeners({ScreenshotUtility.class})
-public class PrintFromNotepad extends NotepadBase {
 
-    private static final Logger log = LogManager.getLogger(NotepadBase.class);
+public class PrintFromNotepad extends NotepadBase{
+	private static final Logger log = LogManager.getLogger(PrintFromNotepad.class);
+	private static String currentClass;	
+
 
     
     @BeforeClass
 	@Parameters({ "device_name", "ptr_name", "test_filename" })
     public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
-        	
-    		NotepadSession = OpenNoteFile(device_name, test_filename);
-           
-        	Thread.sleep(1000);                       
+
+		currentClass = PrintFromNotepad.class.getSimpleName();
+	
+		//Start PrintTrace log capturing 
+		PrintTraceCapture.StartLogCollection(currentClass);	
+		NotepadSession = NotepadBase.OpenNoteFile(device_name, test_filename);
+       
+    	Thread.sleep(1000);
+        
+    	// Method was originally called here, but print queue was getting in the way of the notepad test
+    	// Moved to ValidatePrintQueue method
+        // Base.OpenPrintQueue(ptr_name);                            
                    	
     }
 
@@ -65,6 +76,7 @@ public class PrintFromNotepad extends NotepadBase {
 	}
 
     
+
 	@AfterClass
 	public static void TearDown() throws NoSuchSessionException
 	{	        
@@ -91,10 +103,11 @@ public class PrintFromNotepad extends NotepadBase {
 	        log.info("PrintQueueSession has already been terminated.");
 	    }
 
+      //Stop PrintTrace log capturing.
+    		PrintTraceCapture.StopLogCollection(currentClass);	
 
 	}
-    
-    
-  
+
+      
 }
 

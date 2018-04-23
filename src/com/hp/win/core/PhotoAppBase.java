@@ -235,6 +235,12 @@ public class PhotoAppBase extends Base {
 				log.info("Desired Photo Fit is not found so make sure Printer Support this photo Fit OR have typed the photo Fit name incorrectly in testsuite xml");
 				e.printStackTrace();
 				log.info("Error selecting desired photo fit");
+				/*Thread.sleep(1000);
+				if(PhotosSession.findElementByXPath("//TouchButton[@Name = 'Close App']").isDisplayed()){
+					PhotosSession.findElementByXPath("//TouchButton[@Name = 'Close App']").click();
+					}
+				PhotosSession.close();
+				Thread.sleep(1000);*/
 				throw new RuntimeException(e);
 			}
 			Thread.sleep(1000);
