@@ -5,7 +5,7 @@
  
 <!-- **************************************** PRINTER DISCOVERY TESTS ******************************************************** -->
   
-  <test verbose="2" name="Discovery Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer1">    	
+  <test verbose="2" name="Test-01 : Discovery Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer1">    	
      	<parameter name="ptr_name" value="HP DesignJet Z9 44in PDF V4 on MOLINA6 Printer" /> 
 		
     <classes>
@@ -15,7 +15,7 @@
  
   
   
-  <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer2">
+  <test verbose="2" name="Test-02 : Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer2">
      	<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" /> 
 		
     <classes>
@@ -25,7 +25,7 @@
   
   
   
-    <test verbose="2" name="Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer3">
+    <test verbose="2" name="Test-03 : Discovery and Add Printer Tests from Windows Settings - Device Under test (VERAMIT6) => Printer3">
      	<parameter name="ptr_name" value="Fake Printer Name" /> 
 		
     <classes>

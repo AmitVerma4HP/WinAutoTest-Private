@@ -69,7 +69,8 @@ public class ScreenshotUtility implements ITestListener {
 	public static void captureScreenShot(ITestResult result, String status) {
 		String curdevice = "";
 		log.info("Capturing the screenshot now");
-
+		
+		String curTestName = ScreenshotUtility.getTestName().substring(0, 10).replaceAll("\\s|:", "").trim(); 
 		String destDir = System.getProperty("user.dir");
 		String passfailMethod = result.getMethod().getRealClass().getSimpleName() + "."
 				+ result.getMethod().getMethodName();
@@ -113,7 +114,7 @@ public class ScreenshotUtility implements ITestListener {
 		new File(destDir).mkdirs();
 
 		// Set file name with combination of test class name + date time.
-		String destFile = passfailMethod + " - " + curdevice + "-" + dateFormat.format(new Date()) + ".png";
+		String destFile = curTestName + "-" + passfailMethod + "-" + dateFormat.format(new Date()) + ".png";
 
 		try {
 			// Store file at destination folder location

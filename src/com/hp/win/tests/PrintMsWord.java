@@ -10,21 +10,26 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.MsWordAppBase;
+import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
 
 @Listeners({ScreenshotUtility.class})
 public class PrintMsWord extends MsWordAppBase{
 	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
-	
+	private static String currentClass;	
 
     @BeforeClass
 	@Parameters({"device_name", "ptr_name", "test_filename"})
     public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) 
     		throws InterruptedException, IOException {
         	
-    		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename);    		
-            Thread.sleep(1000); 
+    	currentClass = PrintMsWord.class.getSimpleName();
+		
+		//Start PrintTrace log capturing 
+    	PrintTraceCapture.StartLogCollection(currentClass);	
+   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename);    		
+        Thread.sleep(1000); 
     }
 
 	
@@ -127,7 +132,7 @@ public class PrintMsWord extends MsWordAppBase{
 
 	
     @AfterClass(alwaysRun=true)
-    public static void TearDown() throws InterruptedException
+    public static void TearDown() throws IOException, InterruptedException
     {  
     	
 			if(DesktopSession!=null)
@@ -162,7 +167,8 @@ public class PrintMsWord extends MsWordAppBase{
         		
         	}
       			        	
-
+        	//Stop PrintTrace log capturing.
+        	PrintTraceCapture.StopLogCollection(currentClass);	
         	        
     }
     
