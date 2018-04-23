@@ -1,5 +1,6 @@
 package com.hp.win.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
+import com.hp.win.utility.ReadPropertyFile;
+
 
 
 public class MsWordAppBase extends Base {
@@ -19,16 +22,19 @@ public class MsWordAppBase extends Base {
 		public static RemoteWebDriver MsWordSession = null;
 		protected static RemoteWebDriver PrintSettingConflictSession = null;		
 		protected static RemoteWebDriver MsWordFirstSession = null;
-		
-		
+				
 	
 	  
 	 // Method to open MS Word test file
-	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws MalformedURLException, InterruptedException {
-			
+	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws InterruptedException, IOException {
+				
+		 ReadPropertyFile dataFile = new ReadPropertyFile();
+		 Thread.sleep(2000);
+		 log.info("Word location: " + dataFile.getMsWordLocation());
+
 			   try {
 			    	capabilities = new DesiredCapabilities();
-			        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+			        capabilities.setCapability("app", dataFile.getMsWordLocation());
 			        capabilities.setCapability("appArguments",test_filename );
 			        capabilities.setCapability("appWorkingDir", testfiles_loc);
 			        capabilities.setCapability("platformName", "Windows");
@@ -49,7 +55,7 @@ public class MsWordAppBase extends Base {
 			    
 			    try {
 			    capabilities = new DesiredCapabilities();
-		        capabilities.setCapability("app", "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
+		        capabilities.setCapability("app", dataFile.getMsWordLocation());
 		        capabilities.setCapability("appArguments",test_filename );
 		        capabilities.setCapability("appWorkingDir", testfiles_loc);
 		        capabilities.setCapability("platformName", "Windows");
