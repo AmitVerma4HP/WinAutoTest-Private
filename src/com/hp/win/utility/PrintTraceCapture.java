@@ -73,7 +73,7 @@ public class PrintTraceCapture extends SettingBase {
 				+ (dateFormat.format(new Date()).substring(0, 11)) + "\\";
 		new File(DirectoryToSavePrintTrace).mkdirs();
 		
-		String curTestName = ScreenshotUtility.getTestName().substring(0, 7);
+		curTestName = ScreenshotUtility.getTestName().substring(0, 7);
 		
 		String destFile = curTestName + "-" +currentClass + "-" + dateFormat.format(new Date()) + ".etl";
 		log.info("PrintTrace captured file name: " + destFile);
