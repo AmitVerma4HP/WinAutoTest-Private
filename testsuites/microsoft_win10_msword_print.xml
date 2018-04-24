@@ -16,6 +16,7 @@
  <!-- OPTIONAL	pages_to_print = <"Print All Pages","Print Current Page","Custom Print"> , DEFAULT = "Print All Pages" -->
  <!-- OPTIONAL	page_count = <Page range like 1,2 or 1-3 etc.> , DEFAULT = "NA" -->
  <!-- OPTIONAL	margin = <"Normal","Narrow","Moderate","Wide","Mirrored","Office 2003 Default"> , DEFAULT = "Normal" -->
+ <!-- OPTIONAL	pages_per_sheet = <"1 Page Per Sheet","2 Pages Per Sheet","4 Pages Per Sheet","6 Pages Per Sheet","8 Pages Per Sheet","16 Pages Per Sheet">, DEFAULT = "1 Page Per Sheet" -->
  <!-- OPTIONAL	TDB = <TDB> , DEFAULT = TBD -->
  
  <!-- Note: parameter page_count needed only if pages_to_print set to "Custom Print" -->
@@ -31,7 +32,8 @@
      	<parameter name="copies" value="2" />
      	<parameter name="pages_to_print" value="Print All Pages" />  
  		<parameter name="page_count" value="NA" />
- 		<parameter name="margin" value="Narrow" />      	      	
+ 		<parameter name="margin" value="Narrow" />
+ 		<parameter name="pages_per_sheet" value="2 Pages Per Sheet" />      	      	
      	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
 		
     <classes>
@@ -48,7 +50,8 @@
      	<parameter name="copies" value="5" />
      	<parameter name="pages_to_print" value="Custom Print" />  
 	   	<parameter name="page_count" value="1,3" />
-	   	<parameter name="margin" value="Mirrored" />       	 
+	   	<parameter name="margin" value="Mirrored" />	
+	   	<parameter name="pages_per_sheet" value="1 Page Per Sheet" />    	       	 
      	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
 		
     <classes>

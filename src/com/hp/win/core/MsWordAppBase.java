@@ -327,13 +327,13 @@ public class MsWordAppBase extends Base {
 	 
 	 
 	 
-	 // Method to select desired PagesToPrint option  
+	 // Method to select desired Print Margin option  
 	 public static void SelectMargins_Msword(String margin) throws MalformedURLException, InterruptedException {
 		 		 
 		 	WebElement PrintMarginComboBox = MsWordSession.findElementByName("Margins");		 		
 	        Assert.assertNotNull(PrintMarginComboBox);
 	        
-	        if(!PrintMarginComboBox.getText().toString().toLowerCase().contains(margin)) 
+	        if(!PrintMarginComboBox.getText().toString().contains(margin)) 
 	        {
 	        	log.info("Desired margin option => "+margin+" <= is not selected so selecting it from drop down");
 	        	PrintMarginComboBox.click();
@@ -343,9 +343,9 @@ public class MsWordAppBase extends Base {
 			        	Thread.sleep(1000);
 					    log.info("Selected margin option *****" +PrintMarginComboBox.getText().toString()+"*****");
 			        	}catch(Exception e){
-			        	log.info("Desired margin option is not found so make sure Printer Support this margin option OR have typed the margin option value incorrectly in testsuite xml");
+			        	log.info("Desired margin option is not found so 1) make sure Printer Support this margin option OR 2) have typed the margin option value incorrectly in testsuite xml");
 			        	//e.printStackTrace();
-			            log.info("Error selecting margin option but contunuing test with rest of the print options");     
+			            log.info("Error selecting margin option but continuing test with rest of the print options");     
 			            //throw new RuntimeException(e);
 			        	}
 			       
@@ -354,5 +354,32 @@ public class MsWordAppBase extends Base {
 		        }
 	 }
 	 
+	 
+	 // Method to select desired "Pages per Sheet" option  
+	 public static void SelectPagesPerSheet_Msword(String pages_per_sheet) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement PagesPerSheetComboBox = MsWordSession.findElementByName("Pages Per Sheet");		 		
+	        Assert.assertNotNull(PagesPerSheetComboBox);
+	        
+	        if(!PagesPerSheetComboBox.getText().toString().contentEquals(pages_per_sheet)) 
+	        {
+	        	log.info("Desired PagesPerSheet option => "+pages_per_sheet+" <= is not selected so selecting it from drop down");
+	        	PagesPerSheetComboBox.click();
+			    Thread.sleep(1000);
+			        try {
+			        	PagesPerSheetComboBox.findElement(By.xpath("//ListItem[@Name ='"+pages_per_sheet+"']")).click();	
+			        	Thread.sleep(1000);
+					    log.info("Selected PagesPerSheet option *****" +PagesPerSheetComboBox.getText().toString()+"*****");
+			        	}catch(Exception e){
+			        	log.info("Desired PagesPerSheet option is not found so 1) make sure Printer Support this PagesPerSheet option OR 2) have typed the PagesPerSheet option value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting PagesPerSheet option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
+			        	}
+			       
+			     } else {
+			    	log.info("Desired margin option => " +PagesPerSheetComboBox.getText().toString()+" <= is already selected so proceeding");
+		        }
+	 }
 
 }
