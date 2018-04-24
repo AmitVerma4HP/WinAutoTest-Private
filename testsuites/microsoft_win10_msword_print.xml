@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 MSWord 2016 Test suite - Printing Tests">
+		<parameter name="word2016_exe_loc" value="C:\Program Files (x86)\Microsoft Office\root\Office15\WINWORD.EXE" />
 		<parameter name="device_name" value="VERAMIT6" />
-		<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />
+		<parameter name="ptr_name" value="HPBFB476 (HP Officejet Pro 8600)" />		
  
  
  <!-- Supported Parameters:  -->

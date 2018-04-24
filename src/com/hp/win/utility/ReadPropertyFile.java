@@ -15,9 +15,9 @@ public class ReadPropertyFile {
 
 	}
 
-	public String getMsWordLocation() {
-		return prop.getProperty("locationMsWord");
-	}
+//	public String getMsWordLocation() {
+//		return prop.getProperty("locationMsWord");
+//	}
 
 	
 }

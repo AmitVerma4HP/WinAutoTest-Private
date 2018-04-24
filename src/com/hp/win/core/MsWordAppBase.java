@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
-import com.hp.win.utility.ReadPropertyFile;
 
 
 
@@ -26,15 +25,13 @@ public class MsWordAppBase extends Base {
 	
 	  
 	 // Method to open MS Word test file
-	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws InterruptedException, IOException {
-				
-		 ReadPropertyFile dataFile = new ReadPropertyFile();
-		 Thread.sleep(2000);
-		 log.info("Word location: " + dataFile.getMsWordLocation());
+	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename,String word2016_exe_loc) throws InterruptedException, IOException {		
+		
+		 log.info("Word location: " +word2016_exe_loc);
 
 			   try {
 			    	capabilities = new DesiredCapabilities();
-			        capabilities.setCapability("app", dataFile.getMsWordLocation());
+			        capabilities.setCapability("app", word2016_exe_loc);
 			        capabilities.setCapability("appArguments",test_filename );
 			        capabilities.setCapability("appWorkingDir", testfiles_loc);
 			        capabilities.setCapability("platformName", "Windows");
@@ -55,7 +52,7 @@ public class MsWordAppBase extends Base {
 			    
 			    try {
 			    capabilities = new DesiredCapabilities();
-		        capabilities.setCapability("app", dataFile.getMsWordLocation());
+		        capabilities.setCapability("app", word2016_exe_loc);
 		        capabilities.setCapability("appArguments",test_filename );
 		        capabilities.setCapability("appWorkingDir", testfiles_loc);
 		        capabilities.setCapability("platformName", "Windows");

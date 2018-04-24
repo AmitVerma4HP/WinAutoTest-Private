@@ -20,15 +20,15 @@ public class PrintMsWord extends MsWordAppBase{
 	private static String currentClass;	
 
     @BeforeClass
-	@Parameters({"device_name", "ptr_name", "test_filename"})
-    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) 
+	@Parameters({"device_name", "ptr_name", "test_filename","word2016_exe_loc"})
+    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename,String word2016_exe_loc) 
     		throws InterruptedException, IOException {
         	
     	currentClass = PrintMsWord.class.getSimpleName();
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
-   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename);    		
+   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename,word2016_exe_loc);    		
         Thread.sleep(1000); 
     }
 
