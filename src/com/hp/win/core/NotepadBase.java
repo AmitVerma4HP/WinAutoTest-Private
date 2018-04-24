@@ -65,10 +65,11 @@ public class NotepadBase extends Win32Base {
         // Select settings on Paper/Quality tab after the Layout tab
         SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
         ChooseColorOrMono_Win32(PreferencesSession, color_optn);
+        
         ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
         // Now open the Advanced settings
-        ClickButton(PreferencesSession, "Advanced");
+        ClickButton(PreferencesSession, "Advanced...");
         
         
         // A new desktop session must be created to access the Advanced dialog
