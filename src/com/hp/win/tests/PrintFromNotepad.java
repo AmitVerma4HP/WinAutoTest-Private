@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -31,11 +32,7 @@ public class PrintFromNotepad extends NotepadBase{
 		PrintTraceCapture.StartLogCollection(currentClass);	
 		NotepadSession = NotepadBase.OpenNoteFile(device_name, test_filename);
        
-    	Thread.sleep(1000);
-        
-    	// Method was originally called here, but print queue was getting in the way of the notepad test
-    	// Moved to ValidatePrintQueue method
-        // Base.OpenPrintQueue(ptr_name);                            
+    	Thread.sleep(1000);                         
                    	
     }
 
@@ -63,6 +60,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    test_filename = test_filename.substring(0, test_filename.lastIndexOf('.'));
 	    
 	    log.info("Expected queued job should be => "+test_filename);
+
 	    //Validate Print Job Queued up
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);

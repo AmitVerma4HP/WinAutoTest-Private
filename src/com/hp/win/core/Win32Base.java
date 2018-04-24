@@ -31,9 +31,29 @@ public class Win32Base extends Base {
         }
 
     }
-
-
+   
+    public static boolean ConfirmGroupExists_Win32(RemoteWebDriver session, String groupName){
+        
+        boolean exists = false;
+        
+        try {
+            
+            WebElement group = session.findElementByName(groupName);
+            exists = true;
+            
+        } catch (Exception e) {
+            
+            log.info("Printer does not support '" + groupName + "'. Confirm printer's available settings.");
+            return exists;
+        
+        }
+        
+        return exists;
+    }
+    
+    
     // Method to select a list item from a combo box drop down menu
+    // -- also confirms if the setting is available
     public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
 
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
@@ -56,15 +76,15 @@ public class Win32Base extends Base {
                     }
                 } else
                 {
-                    log.info("Printer does not support '" + boxName + "'.");
+                    log.info("Printer does not support '" + boxName + ".'. Confirm printer's available settings.");
                     return;
                 }
             }
-
+        
             WebElement listItem = dialogSession.findElementByName(listSel);
 
             try {
-                log.info("Found option '" + listItem.getText().toString() + "'");
+                log.info("Going to click on '" + listItem.getText().toString() + "'");
                 listItem.click();
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -73,19 +93,25 @@ public class Win32Base extends Base {
             }
         }
         else {
-            log.info("Print setting " + listSel + " is not available for this printer.");
+            log.info("Printer does not support '" + boxName + ".'. Confirm printer's available settings.");
         }
     }
 
     
     // Method to click a radio button
-    public static void SelectRadioButton_Win32(RemoteWebDriver session, String settingsSel) {
-        try {
+    public static void SelectRadioButton_Win32(RemoteWebDriver session, String settingsSel, String radioGroup) {
+        
+        if (ConfirmGroupExists_Win32(session, radioGroup)){
+            try {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
-        } catch (Exception e) {
-            log.info("Error: Tab '" + settingsSel + "' doesn't exist. Refer to print settings for correct selection.");
-            throw new RuntimeException(e);
+            } catch (Exception e) {
+                log.info("Couldn't click on '" + settingsSel + "' button.");
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            return;
         }
     }
 
@@ -124,20 +150,20 @@ public class Win32Base extends Base {
             color_choice = color;
         }
 
-        SelectRadioButton_Win32(session, color_choice);
+        SelectRadioButton_Win32(session, color_choice, "Color");
 
     }
 
     
     // Method to select print quality
     public static void ChoosePrintQuality_Win32(RemoteWebDriver session, String qualitySel) {
-        SelectRadioButton_Win32(session, qualitySel);
+        SelectRadioButton_Win32(session, qualitySel, "Quality Settings");
     }
     
 
     // Method to select the paper size
     public static void ChoosePaperSize_Win32(RemoteWebDriver session, String size, String device_name) throws InterruptedException, MalformedURLException {   
-
+        
         SelectListItem_Win32(session, "Paper Size: ", size, device_name);
 
     }
