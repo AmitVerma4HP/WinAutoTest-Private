@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
+ 		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+
+
+ <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
+ 
+ <!-- Supported Parameters:  																	-->
+ <!-- MUST		device_name    = <Your Windows PC Name> 										-->
+ <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
+ <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
+ <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">  , DEFAULT = "None"  -->
+ <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
+ <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
+ <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "NotepadTestFile1.txt"    -->
+ <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
+
+ 
+ 
+<!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+
+
+
+<!-- ************************* OJ 8600 on R12 ************************* -->
+    <test verbose="2" name="Test-01 : Notepad Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])">
+     	<parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" />
+<!--      	<parameter name="orientation" value="Portrait" /> -->
+<!--      	<parameter name="duplex_optn" value="Flip on Short Edge" /> -->
+<!--      	<parameter name="color_optn" value="Color" /> -->
+     	<!-- <parameter name="prnt_quality" value="Draft" /> -->
+<!--      	<parameter name="paper_size" value="Letter" /> -->
+     	<parameter name="test_filename" value="OneNoteTestFile1.one" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromOneNote"/>
+    </classes>
+  </test>
+<!-- ************************* OJ 8600 on R12 ************************* -->
+  
+  
+<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+      <test verbose="2" name="Test-02 : Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
+     	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
+<!--      	<parameter name="orientation" value="Landscape" /> -->
+<!--      	<parameter name="duplex_optn" value="Flip on Long Edge" /> -->
+<!--      	<parameter name="color_optn" value="Mono" /> -->
+<!--      	<parameter name="prnt_quality" value="Better" /> -->
+<!--      	<parameter name="paper_size" value="Legal" /> -->
+     	<parameter name="test_filename" value="OneNoteTestFile1.one" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromOneNote"/>
+    </classes>
+  </test>
+<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+
+
+<!-- ************************* ENVY 7640 on R12 ************************* -->
+        <test verbose="2" name="Test-03 : Notepad Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY 7640 series [CCF025])">
+     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+<!--      	<parameter name="orientation" value="Portrait" /> -->
+<!--      	<parameter name="duplex_optn" value="Flip on Short Edge" /> -->
+<!--      	<parameter name="color_optn" value="Color" /> -->
+<!--      	<parameter name="prnt_quality" value="Best" /> -->
+<!--      	<parameter name="paper_size" value="Letter" /> -->
+     	<parameter name="test_filename" value="OneNoteTestFile1.one" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromOneNote"/>
+    </classes>
+  </test>
+<!-- ************************* ENVY 7640 on R12 ************************* -->
+
+
+<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->  
+        <test verbose="2" name="Test-04 : Notepad Simplex Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Pro MFP 772-222 [64425B])">
+     	<parameter name="ptr_name" value="ipp: HP PageWide Pro MFP 772-777 [64425B]" />
+<!-- 		<parameter name="orientation" value="Portrait" /> -->
+<!--      	<parameter name="duplex_optn" value="None" /> -->
+<!--      	<parameter name="color_optn" value="Mono" /> -->
+<!--      	<parameter name="prnt_quality" value="Draft" /> -->
+<!-- 		<parameter name="paper_size" value="A4" /> -->
+     	<parameter name="test_filename" value="OneNoteTestFile1.one" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromOneNote"/>
+    </classes>
+   </test>
+<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->
+
+
+
+ <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
+     
+  </suite>
