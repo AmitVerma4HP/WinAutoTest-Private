@@ -15,11 +15,15 @@ import org.testng.annotations.*;
 import com.hp.win.core.Win32Base;
 import com.hp.win.utility.ScreenshotUtility;
 
+import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.WindowsElement;
+
 
 @Listeners({ScreenshotUtility.class})
 public class OneNoteBase extends Win32Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
+    public static RemoteWebDriver SignInSession = null;
     public static RemoteWebDriver OneNoteSession = null;
     
     
@@ -50,35 +54,48 @@ public class OneNoteBase extends Win32Base {
 
 
 
-    public static void PrintOneNoteFile(String ptr_name, String device_name, String test_filename) throws InterruptedException {
+    public static void PrintOneNoteFile(String ptr_name, String device_name, String test_filename) throws InterruptedException, MalformedURLException {
         //TODO stub for printing a file
         
         log.info("Going to open a OneNote file...");
-        OpenOneNoteFile(test_filename);
+        OpenOneNoteFile(test_filename, device_name);
     }
 
     
-    public static void OpenOneNoteFile(String test_filename) throws InterruptedException {
+    public static void OpenOneNoteFile(String test_filename, String device_name) throws InterruptedException, MalformedURLException {
         //TODO stub for opening a file
         
-        log.info("Closing sign-in prompts first...");
-        CloseMicrosoftAccountPrompts();
+        log.info("Checking for 'Sign in to set up Office' window...");
+        CloseMicrosoftAccountPrompts(device_name);
         
+        log.info("Back to the main OneNote window now...");
+        if(OneNoteSession == null) {
+            log.info("OneNoteSession was closed. Opening another one...");
+            OneNoteSession = GetDesktopSession(device_name);
+        }
+        
+        log.info("OneNoteSession exists. Going to open the File tab...");
+        Assert.assertNotNull(OneNoteSession.findElementByName("File Tab"));
+        ClickButton(OneNoteSession, "File Tab");
     }
 
-    //This method handles any popup prompts regarding a Microsoft account or security key
-    public static void CloseMicrosoftAccountPrompts() throws InterruptedException {
-
-        // Might want to try just clicking the Close button instead of the hyperlink
-        Assert.assertTrue(OneNoteSession.findElementByClassName("NetUIHyperlink").getAttribute("Name").equals("I don't want to sign in or create an account"));
-        log.info("Seeing the first prompt.");
+    
+    //This method handles the 'Sign in to set up Office' prompt
+    public static void CloseMicrosoftAccountPrompts(String device_name) throws InterruptedException, MalformedURLException {
         
         try {
-            OneNoteSession.findElementByClassName("NetUIHyperlink").click();
-            Thread.sleep(1000);
+
+            SignInSession = Base.GetDesktopSession(device_name);
+            WebElement signInWindow = DesktopSession.findElementByClassName("NUIDialog");
+            log.info("'" + signInWindow.getAttribute("Name").toString() + "' window is present. Going to close it.");
+            ClickButton(SignInSession, "Close");
+
         } catch (Exception e) {
-            log.info("Could not click on the hyperlink...");
+        
+            log.info("'Sign in to set up Office' window is not present. Continuing test...");
+        
         }
+
     }
 }
 
