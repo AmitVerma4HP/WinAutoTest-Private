@@ -141,6 +141,7 @@ public class PhotoAppBase extends Base {
 				//e.printStackTrace();
 				log.info("Error selecting orientation option but continuing test with rest of the print options");
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails. 
 				OrientationListComboBox.click();
 			}			
 		} else {
@@ -169,6 +170,7 @@ public class PhotoAppBase extends Base {
 				//e.printStackTrace();
 				log.info("Error selecting paper size option but continuing test with rest of the print options");
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 				PaperSizeListComboBox.click();
 			}				
 		} else {
@@ -196,6 +198,7 @@ public class PhotoAppBase extends Base {
 				//e.printStackTrace();
 				log.info("Error selecting desired photo size but continuing with rest of the print options");
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 				PhotoSizeListComboBox.click();
 			}
 		} else {
@@ -223,6 +226,7 @@ public class PhotoAppBase extends Base {
 					//e.printStackTrace();
 					log.info("Error selecting desired photo fit but continuing with rest of the print options");
 					//throw new RuntimeException(e);
+					//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 					PhotoFitListComboBox.click();
 				}			
 		} else {
@@ -250,6 +254,7 @@ public class PhotoAppBase extends Base {
 				//e.printStackTrace();
 				log.info("Error selecting desired photo fit but continuing with rest of the print options");
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 				PhotoPageMarginListComboBox.click();
 			}			
 		} else {
@@ -296,6 +301,7 @@ public class PhotoAppBase extends Base {
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired color mode but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 	            PhotoColorModeListComboBox.click();
             }         
         }else {
@@ -331,6 +337,7 @@ public class PhotoAppBase extends Base {
 				//e.printStackTrace();
 				log.info("Error selecting duplex option but continuing with rest of the print options");
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 				PhotoDuplexListComboBox.click();
 			}			
 		} else {
@@ -357,9 +364,10 @@ public class PhotoAppBase extends Base {
 				log.info("Desired Borderless option is not found so either 1) your Printer does not support desired borderless option OR 2) you have typed the borderless option value incorrectly in testsuite xml");
 				//e.printStackTrace();
 				log.info("Error selecting desired Borderless option but continuing with rest of the print options");
-				//PhotosSession.findElementByXPath("//ComboBoxLightDismiss[@Name = 'Close']").click();
-				PhotoBorderlessListComboBox.click();
 				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PhotoBorderlessListComboBox.click();
+				
 			}		
 		} else {
 			log.info("Desired Borderless option => " + PhotoBorderlessListComboBox.getText().toString() + " <= is already selected so proceeding");
@@ -386,6 +394,7 @@ public class PhotoAppBase extends Base {
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Paper Tray but continuing with rest of the print options");     
 				//throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 	            PhotoPaperTrayListComboBox.click();
             }   			
         }else {
@@ -412,6 +421,7 @@ public class PhotoAppBase extends Base {
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Paper Type but continuing with rest of the print options");     
 				//throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 	            PhotoPaperTypeListComboBox.click();
             }   			
         }else {
@@ -438,6 +448,7 @@ public class PhotoAppBase extends Base {
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Photo Output Quality but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 	            PhotoOutputQualityListComboBox.click();
             }   			
         }else {
@@ -465,6 +476,7 @@ public class PhotoAppBase extends Base {
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Photo Stapling Option but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 	            SelectStaplingOption_Photos.click();
             } 	
         }else {
