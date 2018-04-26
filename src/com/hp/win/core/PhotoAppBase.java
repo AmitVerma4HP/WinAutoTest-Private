@@ -50,17 +50,17 @@ public class PhotoAppBase extends Base {
 		// Go to Folders Tab
 		PhotosSession.findElementByName("Folders").click();
 		log.info("Clicked on Folder Menu Successfully in PhotoApp");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Search for Saved Pictures folder.
 		PhotosSession.findElementByName("Search").sendKeys("testfiles");
 		log.info("Searching \"Test Folder - testfiles\"");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Click on Saved Pictures
 		PhotosSession.findElementByXPath("//Button[@Name = \"testfiles\"]").click();
 		log.info("Clicked on \"Test Folder - testfiles\"");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Select the Photo file
 		PhotosSession.findElementByXPath("//Button[@AutomationId = '" + test_filename + "']").click();
