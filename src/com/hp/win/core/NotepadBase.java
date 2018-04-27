@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,12 +17,14 @@ import org.testng.annotations.*;
 import com.hp.win.core.Win32Base;
 import com.hp.win.utility.ScreenshotUtility;
 
+import io.appium.java_client.windows.WindowsDriver;
+
 
 @Listeners({ScreenshotUtility.class})
 public class NotepadBase extends Win32Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
-    public static RemoteWebDriver NotepadSession = null;
+    public static WindowsDriver NotepadSession = null;
     public static RemoteWebDriver PrintDialogSession = null;
     public static RemoteWebDriver PreferencesSession = null;
     public static RemoteWebDriver AdvancedSession = null;
@@ -49,6 +52,7 @@ public class NotepadBase extends Win32Base {
         log.info("Clicked on File -> Print option Successfully");
         Thread.sleep(1000);
 
+        log.info("Opening PrintDialogSession...");
         PrintDialogSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PrintDialogSession);
         
@@ -76,12 +80,14 @@ public class NotepadBase extends Win32Base {
         // A new desktop session must be created every time a dialog box is created or destroyed
         try {
             PrintDialogSession.quit();
+            log.info("Closed PrintDialogSession...");
         } catch (Exception e) {
             log.info("PrintDialogSession already terminated.");
         }
 
         
         // In order to access the Preferences dialog, we need to start a new desktop session
+        log.info("Opening PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
@@ -101,28 +107,39 @@ public class NotepadBase extends Win32Base {
         // Close the session for the Preferences dialog box
         try {
             PreferencesSession.quit();
+            log.info("Closed PreferencesSession...");
         } catch (Exception e) {
             log.info("PreferencesSession already terminated.");
         }
         
         
         // Open a session for the Advanced dialog box
+        log.info("Opening AdvancedSession...");
         AdvancedSession = GetDesktopSession(device_name);
         Assert.assertNotNull(AdvancedSession);
         
         ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
         
         ClickButton(AdvancedSession, "OK");
-              
-        // The Advanced desktop session must be closed here instead of at tear down
+        ClickButton(AdvancedSession, "OK");
+        ClickButton(AdvancedSession, "Print");
+
+        // Use ALT + F4 hotkeys to close the notepad window 
+/*        AdvancedSession.getKeyboard().sendKeys(Keys.ALT, Keys.F4);
+        AdvancedSession.getKeyboard().pressKey(Keys.ALT);*/
+        
+        
+        /*        // The Advanced desktop session must be closed here instead of at tear down
         try {
             AdvancedSession.quit();
+            log.info("Closed AdvancedSession...");
         } catch (Exception e) {
             log.info("AdvancedSession already terminated.");
         }
         
         
         // A new Preferences desktop session must be opened here in order to continue the test 
+        log.info("Opening PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
@@ -133,11 +150,13 @@ public class NotepadBase extends Win32Base {
         // Close the preferences session
         try {
             PreferencesSession.quit();
+            log.info("Closing PreferencesSession...");
         } catch (Exception e) {
             log.info("PreferencesSession already terminated.");
         }
         
         // Get a new print dialog session
+        log.info("Opening PrintDialogSession...");
         PrintDialogSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PrintDialogSession);
         
@@ -146,15 +165,16 @@ public class NotepadBase extends Win32Base {
         
         try {
             PrintDialogSession.quit();
+            log.info("Closed PrintDialogSession...");
         } catch (Exception e) {
             log.info("PrintDialogSession already terminated.");
-        }
+        }*/
      
     }
 
 
     // Method to open Notepad test file
-    public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
+    public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 
         try {
             capabilities = new DesiredCapabilities();
@@ -163,7 +183,7 @@ public class NotepadBase extends Win32Base {
             capabilities.setCapability("appWorkingDir", testfiles_loc);
             capabilities.setCapability("platformName", "Windows");
             capabilities.setCapability("deviceName",device_name);
-            NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
+            NotepadSession = new WindowsDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
             Assert.assertNotNull(NotepadSession);
             NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);                                                  
         }catch(Exception e){
