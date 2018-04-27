@@ -114,7 +114,7 @@ public class Win32Base extends Base {
             return;
         }
     }
-
+    
     
     // Method to select print orientation
     public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {
