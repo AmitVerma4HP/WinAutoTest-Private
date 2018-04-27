@@ -51,35 +51,14 @@ public class NotepadBase extends Win32Base {
         log.info("Selected Printer Successfully");
         Thread.sleep(1000); 
 
-        // Select Page Range
+/*        // Select Page Range
         log.info("Selecting page range...");
         String pageRangeSel = "All";
-        SelectRadioButton_Win32(NotepadSession, pageRangeSel, "Page Range");
+        SelectRadioButton_Win32(NotepadSession, pageRangeSel, "Page Range");*/
         
         
         // Open Preferences window
         ClickButton(NotepadSession, "Preferences");
-
-        
-/*        // In order to access the Preferences dialog, we need to start a new desktop session
-        NotepadSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(NotepadSession);
-        
-        // Select Preferences on the Layout tab first
-        ChooseDuplexOrSimplex_Win32(NotepadSession, duplex_optn, device_name);
-        ChooseOrientation_Win32(NotepadSession, orientation, device_name);
-
-        // Select settings on Paper/Quality tab after the Layout tab
-        SelectPreferencesTab_Win32(NotepadSession, "Paper/Quality");
-        ChooseColorOrMono_Win32(NotepadSession, color_optn);
-        
-        ChoosePrintQuality_Win32(NotepadSession, prnt_quality);
-        
-        // Close print option dialogs
-        ClickButton(NotepadSession, "OK");
-
-        //Tap on print icon (Give Print)        
-        ClickButton(NotepadSession, "Print");*/
         
         
         // In order to access the Preferences dialog, we need to start a new desktop session
