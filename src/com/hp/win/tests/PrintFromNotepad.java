@@ -75,6 +75,7 @@ public class PrintFromNotepad extends NotepadBase{
 
         // Leaving this here just in case it is necessary - EMC
 	    try {
+	        NotepadSession.close();
 	        NotepadSession.quit();
 	    } catch (Exception e)
 	    {

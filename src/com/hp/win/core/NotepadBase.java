@@ -79,6 +79,7 @@ public class NotepadBase extends Win32Base {
         } catch (Exception e) {
             log.info("PrintDialogSession already terminated.");
         }
+
         
         // In order to access the Preferences dialog, we need to start a new desktop session
         PreferencesSession = GetDesktopSession(device_name);
@@ -95,7 +96,7 @@ public class NotepadBase extends Win32Base {
         ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
         // Now open the Advanced settings
-        ClickButton(PreferencesSession, "Advanced...");
+                ClickButton(PreferencesSession, "Advanced...");
         
         // Close the session for the Preferences dialog box
         try {
@@ -127,6 +128,7 @@ public class NotepadBase extends Win32Base {
         
         // Close print option dialogs
         ClickButton(PreferencesSession, "OK");
+
 
         // Close the preferences session
         try {
