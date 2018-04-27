@@ -1,13 +1,40 @@
-[INFO ] 2018-03-21 14:55:44 [main] setup- user.dir location =>C:\gitHub\WinAutoTest
-[INFO ] 2018-03-21 14:55:45 [main] setup- OpenedNotepadTestFile1.txtfile from C:\gitHub\WinAutoTest\testfiles\
-[INFO ] 2018-03-21 14:55:46 [main] openPrintQueue- Opened printer queue => HPB8033E (HP OfficeJet 250 Mobile Series)
-[INFO ] 2018-03-21 14:55:47 [main] PrintNotePadFile- Clicked on File Menu Successfully in Notepad
-[INFO ] 2018-03-21 14:55:48 [main] PrintNotePadFile- Pressed Save button to Save the File
-[INFO ] 2018-03-21 14:55:50 [main] PrintNotePadFile- Clicked on File Menu Successfully in Notepad
-[INFO ] 2018-03-21 14:55:51 [main] PrintNotePadFile- Clicked on File -> Print option Successfully
-[INFO ] 2018-03-21 14:55:53 [main] PrintNotePadFile- Selected Printer Successfully
-[INFO ] 2018-03-21 14:55:54 [main] PrintNotePadFile- Pressed Print Button Successfully
-[INFO ] 2018-03-21 14:56:16 [main] SwitchToPrinterQueue- PrintQueue session created successfully
-[INFO ] 2018-03-21 14:56:16 [main] SwitchToPrinterQueue- Open printer queue is correct for the printer => HPB8033E (HP OfficeJet 250 Mobile Series)
-[INFO ] 2018-03-21 14:56:16 [main] ValidatePrintQueue- Expected queued job should be => NotepadTestFile1
-[INFO ] 2018-03-21 14:56:17 [main] ValidatePrintQueue- Found correct job in print queue => NotepadTestFile1
+[INFO ] 2018-04-27 13:22:12 [main] StartLogCollection- Started log tracing from PrintTraceCapture "logman -ets start WindowsippTrace -pf providers.cfg".
+[INFO ] 2018-04-27 13:22:14 [main] OpenNoteFile- OpenedNotepadTestFile1.txtfile from C:\Users\Amit\Documents\WinAutoTest\testfiles\
+[INFO ] 2018-04-27 13:22:16 [main] PrintNotePadFile- Clicked on File Menu in Notepad
+[INFO ] 2018-04-27 13:22:17 [main] PrintNotePadFile- Pressed Save button to Save the File
+[INFO ] 2018-04-27 13:22:18 [main] PrintNotePadFile- Clicked on File Menu in Notepad
+[INFO ] 2018-04-27 13:22:20 [main] PrintNotePadFile- Clicked on File -> Print option Successfully
+[INFO ] 2018-04-27 13:22:21 [main] GetDesktopSession- Desktop session created successfully
+[INFO ] 2018-04-27 13:22:21 [main] PrintNotePadFile- Looking for 'ipp: Officejet Pro 8600 [B80E15]'...
+[INFO ] 2018-04-27 13:22:25 [main] captureScreenShot- Capturing the screenshot now
+[INFO ] 2018-04-27 13:22:25 [main] getTestName- Getting test name:Test-01 : Notepad Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])
+[INFO ] 2018-04-27 13:22:25 [main] captureScreenShot- print:PrintFromNotepad.PrintNoteFile
+[INFO ] 2018-04-27 13:22:25 [main] captureScreenShot- Print Session:RemoteWebDriver:  on WINDOWS (cdf76476-690e-4aa8-b5f6-0a91839a0377)
+[INFO ] 2018-04-27 13:22:25 [main] captureScreenShot- Print status:fail
+[INFO ] 2018-04-27 13:22:42 [main] TearDown- PrintQueueSession has already been terminated.
+[INFO ] 2018-04-27 13:22:42 [main] StopLogCollection- Stopped log tracing from PrintTraceCapture "logman -ets stop WindowsippTrace".
+[INFO ] 2018-04-27 13:22:42 [main] getTestName- Getting test name:Test-01 : Notepad Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])
+[INFO ] 2018-04-27 13:22:42 [main] PrintTraceSave- PrintTrace captured file name: Test-01-PrintFromNotepad-27-Apr-2018__01_22_42PM.etl
+[INFO ] 2018-04-27 13:22:42 [main] PrintTraceSave- PrintTrace log capture is stored in location: C:\Users\Amit\Documents\WinAutoTest\logs\PrintTrace\27-Apr-2018\Test-01-PrintFromNotepad-27-Apr-2018__01_22_42PM.etl
+[INFO ] 2018-04-27 13:22:42 [main] StartLogCollection- Started log tracing from PrintTraceCapture "logman -ets start WindowsippTrace -pf providers.cfg".
+[INFO ] 2018-04-27 13:22:43 [main] OpenNoteFile- OpenedNotepadTestFile1.txtfile from C:\Users\Amit\Documents\WinAutoTest\testfiles\
+[INFO ] 2018-04-27 13:22:45 [main] PrintNotePadFile- Clicked on File Menu in Notepad
+[INFO ] 2018-04-27 13:22:46 [main] captureScreenShot- Capturing the screenshot now
+[INFO ] 2018-04-27 13:22:46 [main] getTestName- Getting test name:Test-02 : Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])
+[INFO ] 2018-04-27 13:22:46 [main] captureScreenShot- print:PrintFromNotepad.PrintNoteFile
+[INFO ] 2018-04-27 13:22:46 [main] captureScreenShot- Print Session:RemoteWebDriver:  on WINDOWS (fce950db-2f90-49fb-842c-25fef1a55f97)
+[INFO ] 2018-04-27 13:22:46 [main] captureScreenShot- Print status:fail
+[INFO ] 2018-04-27 13:22:46 [main] TearDown- NotepadSession has already been terminated.
+[INFO ] 2018-04-27 13:22:46 [main] TearDown- PrintQueueSession has already been terminated.
+[INFO ] 2018-04-27 13:22:46 [main] StopLogCollection- Stopped log tracing from PrintTraceCapture "logman -ets stop WindowsippTrace".
+[INFO ] 2018-04-27 13:22:46 [main] getTestName- Getting test name:Test-02 : Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])
+[INFO ] 2018-04-27 13:22:46 [main] PrintTraceSave- PrintTrace captured file name: Test-02-PrintFromNotepad-27-Apr-2018__01_22_46PM.etl
+[INFO ] 2018-04-27 13:22:46 [main] PrintTraceSave- PrintTrace log capture is stored in location: C:\Users\Amit\Documents\WinAutoTest\logs\PrintTrace\27-Apr-2018\Test-02-PrintFromNotepad-27-Apr-2018__01_22_46PM.etl
+[INFO ] 2018-04-27 13:22:46 [main] StartLogCollection- Started log tracing from PrintTraceCapture "logman -ets start WindowsippTrace -pf providers.cfg".
+[INFO ] 2018-04-27 13:22:47 [main] OpenNoteFile- OpenedNotepadTestFile1.txtfile from C:\Users\Amit\Documents\WinAutoTest\testfiles\
+[INFO ] 2018-04-27 13:22:49 [main] PrintNotePadFile- Clicked on File Menu in Notepad
+[INFO ] 2018-04-27 13:22:50 [main] captureScreenShot- Capturing the screenshot now
+[INFO ] 2018-04-27 13:22:50 [main] getTestName- Getting test name:Test-03 : Notepad Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY 7640 series [CCF025])
+[INFO ] 2018-04-27 13:22:50 [main] captureScreenShot- print:PrintFromNotepad.PrintNoteFile
+[INFO ] 2018-04-27 13:22:50 [main] captureScreenShot- Print Session:RemoteWebDriver:  on WINDOWS (efcedf20-d69b-4459-b08c-94a404c4c9c8)
+[INFO ] 2018-04-27 13:22:50 [main] captureScreenShot- Print status:fail
