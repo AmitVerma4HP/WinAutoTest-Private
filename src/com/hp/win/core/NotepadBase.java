@@ -3,9 +3,12 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -19,6 +22,7 @@ public class NotepadBase extends Win32Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
     public static RemoteWebDriver NotepadSession = null;
+    public static RemoteWebDriver PrintDialogSession = null;
     public static RemoteWebDriver PreferencesSession = null;
     public static RemoteWebDriver AdvancedSession = null;
 
@@ -45,21 +49,37 @@ public class NotepadBase extends Win32Base {
         log.info("Clicked on File -> Print option Successfully");
         Thread.sleep(1000);
 
+        PrintDialogSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(PrintDialogSession);
+        
         //Select WiFi Printer
-        log.info("Looking for " + ptr_name + "...");
-        NotepadSession.findElementByName(ptr_name).click();
-        log.info("Selected Printer Successfully");
-        Thread.sleep(1000); 
+        log.info("Looking for '" + ptr_name + "'...");
+        if(PrintDialogSession.findElementByName(ptr_name).isSelected()) {
+            log.info("'" + ptr_name + "' is already selected.");
+        }
+        else {
+            try {
+                PrintDialogSession.findElementByName(ptr_name).click();
+                log.info("Clicked on '" + ptr_name + "' successfully.");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
+                throw new RuntimeException(e);
+            }
+        }
 
-/*        // Select Page Range
-        log.info("Selecting page range...");
-        String pageRangeSel = "All";
-        SelectRadioButton_Win32(NotepadSession, pageRangeSel, "Page Range");*/
         
         
         // Open Preferences window
-        ClickButton(NotepadSession, "Preferences");
-        
+        ClickButton(PrintDialogSession, "Preferences");
+
+        // A new desktop session must be created every time a dialog box is created or destroyed
+        try {
+            PrintDialogSession.quit();
+        } catch (Exception e) {
+            log.info("PrintDialogSession already terminated.");
+        }
+
         
         // In order to access the Preferences dialog, we need to start a new desktop session
         PreferencesSession = GetDesktopSession(device_name);
@@ -78,9 +98,7 @@ public class NotepadBase extends Win32Base {
         // Now open the Advanced settings
                 ClickButton(PreferencesSession, "Advanced...");
         
-        
-        // A new desktop session must be created to access the Advanced dialog
-        // so the Preferences dialog session must be closed here
+        // Close the session for the Preferences dialog box
         try {
             PreferencesSession.quit();
         } catch (Exception e) {
@@ -88,14 +106,14 @@ public class NotepadBase extends Win32Base {
         }
         
         
+        // Open a session for the Advanced dialog box
         AdvancedSession = GetDesktopSession(device_name);
         Assert.assertNotNull(AdvancedSession);
         
         ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
         
         ClickButton(AdvancedSession, "OK");
-        
-        
+              
         // The Advanced desktop session must be closed here instead of at tear down
         try {
             AdvancedSession.quit();
@@ -106,16 +124,32 @@ public class NotepadBase extends Win32Base {
         
         // A new Preferences desktop session must be opened here in order to continue the test 
         PreferencesSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(PreferencesSession);
         
         // Close print option dialogs
         ClickButton(PreferencesSession, "OK");
 
-        // change back to notepad
-        //Tap on print icon (Give Print)        
-        ClickButton(PreferencesSession, "Print");
+
+        // Close the preferences session
+        try {
+            PreferencesSession.quit();
+        } catch (Exception e) {
+            log.info("PreferencesSession already terminated.");
+        }
         
-        // close the notepad app
-             
+        // Get a new print dialog session
+        PrintDialogSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(PrintDialogSession);
+        
+        //Tap on print icon (Give Print)        
+        ClickButton(PrintDialogSession, "Print");
+        
+        try {
+            PrintDialogSession.quit();
+        } catch (Exception e) {
+            log.info("PrintDialogSession already terminated.");
+        }
+     
     }
 
 
