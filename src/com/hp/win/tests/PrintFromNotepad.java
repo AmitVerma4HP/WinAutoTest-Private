@@ -69,7 +69,7 @@ public class PrintFromNotepad extends NotepadBase{
 
     
 
-	@AfterClass
+	@AfterClass(alwaysRun=true)
 	public static void TearDown() throws NoSuchSessionException, IOException, InterruptedException
 	{	        
 
