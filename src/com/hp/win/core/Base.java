@@ -64,8 +64,8 @@ public class Base {
 
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
-		        //session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
-		        session.findElementByName(buttonName).click();
+		        session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
+		        //session.findElementByName(buttonName).click();
 		        log.info("Clicked '" + buttonName + "' button successfully.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {

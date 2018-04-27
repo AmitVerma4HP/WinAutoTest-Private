@@ -54,7 +54,29 @@ public class NotepadBase extends Win32Base {
         // Open Preferences window
         ClickButton(NotepadSession, "Preferences");
 
+        
         // In order to access the Preferences dialog, we need to start a new desktop session
+        NotepadSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(NotepadSession);
+        
+        // Select Preferences on the Layout tab first
+        ChooseDuplexOrSimplex_Win32(NotepadSession, duplex_optn, device_name);
+        ChooseOrientation_Win32(NotepadSession, orientation, device_name);
+
+        // Select settings on Paper/Quality tab after the Layout tab
+        SelectPreferencesTab_Win32(NotepadSession, "Paper/Quality");
+        ChooseColorOrMono_Win32(NotepadSession, color_optn);
+        
+        ChoosePrintQuality_Win32(NotepadSession, prnt_quality);
+        
+        // Close print option dialogs
+        ClickButton(NotepadSession, "OK");
+
+        //Tap on print icon (Give Print)        
+        ClickButton(NotepadSession, "Print");
+        
+        
+/*        // In order to access the Preferences dialog, we need to start a new desktop session
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
@@ -66,10 +88,10 @@ public class NotepadBase extends Win32Base {
         SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
         ChooseColorOrMono_Win32(PreferencesSession, color_optn);
         
-        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
+        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);*/
 
         // Now open the Advanced settings
-        ClickButton(PreferencesSession, "Advanced...");
+        /*        ClickButton(PreferencesSession, "Advanced...");
         
         
         // A new desktop session must be created to access the Advanced dialog
@@ -98,14 +120,14 @@ public class NotepadBase extends Win32Base {
         
         
         // A new Preferences desktop session must be opened here in order to continue the test 
-        PreferencesSession = GetDesktopSession(device_name);
+        PreferencesSession = GetDesktopSession(device_name);*/
         
-        // Close print option dialogs
+/*        // Close print option dialogs
         ClickButton(PreferencesSession, "OK");
 
         //Tap on print icon (Give Print)        
-        ClickButton(PreferencesSession, "Print");
-     
+        ClickButton(PreferencesSession, "Print");*/
+             
     }
 
 
