@@ -49,6 +49,7 @@ public class NotepadBase extends Win32Base {
         log.info("Clicked on File -> Print option Successfully");
         Thread.sleep(1000);
 
+        log.info("Opening PrintDialogSession...");
         PrintDialogSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PrintDialogSession);
         
@@ -76,12 +77,14 @@ public class NotepadBase extends Win32Base {
         // A new desktop session must be created every time a dialog box is created or destroyed
         try {
             PrintDialogSession.quit();
+            log.info("Closed PrintDialogSession...");
         } catch (Exception e) {
             log.info("PrintDialogSession already terminated.");
         }
 
         
         // In order to access the Preferences dialog, we need to start a new desktop session
+        log.info("Opening PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
@@ -101,28 +104,33 @@ public class NotepadBase extends Win32Base {
         // Close the session for the Preferences dialog box
         try {
             PreferencesSession.quit();
+            log.info("Closed PreferencesSession...");
         } catch (Exception e) {
             log.info("PreferencesSession already terminated.");
         }
         
         
         // Open a session for the Advanced dialog box
+        log.info("Opening AdvancedSession...");
         AdvancedSession = GetDesktopSession(device_name);
         Assert.assertNotNull(AdvancedSession);
         
         ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
         
         ClickButton(AdvancedSession, "OK");
-              
-        // The Advanced desktop session must be closed here instead of at tear down
+        ClickButton(AdvancedSession, "OK");
+        ClickButton(AdvancedSession, "Print");
+        /*        // The Advanced desktop session must be closed here instead of at tear down
         try {
             AdvancedSession.quit();
+            log.info("Closed AdvancedSession...");
         } catch (Exception e) {
             log.info("AdvancedSession already terminated.");
         }
         
         
         // A new Preferences desktop session must be opened here in order to continue the test 
+        log.info("Opening PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
@@ -133,11 +141,13 @@ public class NotepadBase extends Win32Base {
         // Close the preferences session
         try {
             PreferencesSession.quit();
+            log.info("Closing PreferencesSession...");
         } catch (Exception e) {
             log.info("PreferencesSession already terminated.");
         }
         
         // Get a new print dialog session
+        log.info("Opening PrintDialogSession...");
         PrintDialogSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PrintDialogSession);
         
@@ -146,9 +156,10 @@ public class NotepadBase extends Win32Base {
         
         try {
             PrintDialogSession.quit();
+            log.info("Closed PrintDialogSession...");
         } catch (Exception e) {
             log.info("PrintDialogSession already terminated.");
-        }
+        }*/
      
     }
 
