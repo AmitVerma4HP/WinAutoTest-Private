@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,12 +17,14 @@ import org.testng.annotations.*;
 import com.hp.win.core.Win32Base;
 import com.hp.win.utility.ScreenshotUtility;
 
+import io.appium.java_client.windows.WindowsDriver;
+
 
 @Listeners({ScreenshotUtility.class})
 public class NotepadBase extends Win32Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
-    public static RemoteWebDriver NotepadSession = null;
+    public static WindowsDriver NotepadSession = null;
     public static RemoteWebDriver PrintDialogSession = null;
     public static RemoteWebDriver PreferencesSession = null;
     public static RemoteWebDriver AdvancedSession = null;
@@ -120,6 +123,12 @@ public class NotepadBase extends Win32Base {
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "Print");
+
+        // Use ALT + F4 hotkeys to close the notepad window 
+/*        AdvancedSession.getKeyboard().sendKeys(Keys.ALT, Keys.F4);
+        AdvancedSession.getKeyboard().pressKey(Keys.ALT);*/
+        
+        
         /*        // The Advanced desktop session must be closed here instead of at tear down
         try {
             AdvancedSession.quit();
@@ -165,7 +174,7 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to open Notepad test file
-    public static RemoteWebDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
+    public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 
         try {
             capabilities = new DesiredCapabilities();
@@ -174,7 +183,7 @@ public class NotepadBase extends Win32Base {
             capabilities.setCapability("appWorkingDir", testfiles_loc);
             capabilities.setCapability("platformName", "Windows");
             capabilities.setCapability("deviceName",device_name);
-            NotepadSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
+            NotepadSession = new WindowsDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
             Assert.assertNotNull(NotepadSession);
             NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);                                                  
         }catch(Exception e){
