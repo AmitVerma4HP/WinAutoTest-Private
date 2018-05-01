@@ -103,15 +103,23 @@ public class SettingBase extends Base {
 				Assert.assertNotNull(PrinterListItem);
 				log.info("Total Printer Discovered => "+PrinterListItem.size());
 				int printerFound=0;
-				int i = 1; 
+				int ippCount = 0; 
+				int i = 0;
 				for(WebElement el : PrinterListItem) {
-					
-					log.debug("Printer "+i+" => "+el.getText());
-					i++;														
+					if(el.getText().contains("ipp:")) {
+						ippCount++;
+						i++;
+						log.info("IPP Printer "+i+" => "+el.getText());
+					}
+				}
+				log.info("Total IPP Printers Discovered => "+ippCount);
+				
+				
+				for(WebElement el : PrinterListItem) {																						
 						if (el.getText().contains(ptr_name)) 
 						{
-							printerFound = 1;
-							break;
+							printerFound = 1;											
+							break;							
 						}						
 				}
 				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
