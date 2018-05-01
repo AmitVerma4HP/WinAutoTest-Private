@@ -133,11 +133,11 @@
 	</dependency>
 	
 	<!-- https://mvnrepository.com/artifact/org.monte/monte-screen-recorder -->
-	<dependency>
-	    <groupId>org.monte</groupId>
-	    <artifactId>monte-screen-recorder</artifactId>
-	    <version>0.7.7</version>
-	</dependency>
+<!-- 	<dependency> -->
+<!-- 	    <groupId>org.monte</groupId> -->
+<!-- 	    <artifactId>monte-screen-recorder</artifactId> -->
+<!-- 	    <version>0.7.7</version> -->
+<!-- 	</dependency> -->
 	
 	
   </dependencies>
