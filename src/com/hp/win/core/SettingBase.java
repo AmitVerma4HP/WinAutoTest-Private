@@ -143,14 +143,30 @@ public class SettingBase extends Base {
 	  
 	  //if IPP printer was found then determine whether it is already added or new one
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name) throws InterruptedException {	
+		  	
+		  	// Move mouse to the printer (PUT) in the list
+		  	
+		   /*
 		  	Actions action = new Actions(SettingSession);
-		    action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));			    
+		    action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));		    
 		    action.perform();
-		    log.info("Moved Mouse to Printer Name");
-		    SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+		    log.info("Moved Mouse to Printer Name => "+ptr_name);
+		    */
+		  	do
+		  	{
+		  	 SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+		  	 SettingSession.getKeyboard().releaseKey(Keys.ARROW_DOWN);
+		  	 log.info("Printer =>"+ptr_name+" Not Visible So Scrolling Down");
+		  	 Thread.sleep(1000);
+		  	}while(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed());
+		    //Its good to move little down in order to have printer's child buttons to be visible
+		  	SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
 		    Thread.sleep(2000);
 			SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+			//Thread.sleep(2000);
+			//SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
 			Thread.sleep(2000);
+			
 			if(SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).isDisplayed()) {
 				log.info("This IPP Printer => "+ptr_name+" is already added");
 				return true;
