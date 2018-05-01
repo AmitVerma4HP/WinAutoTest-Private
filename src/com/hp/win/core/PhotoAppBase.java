@@ -50,17 +50,17 @@ public class PhotoAppBase extends Base {
 		// Go to Folders Tab
 		PhotosSession.findElementByName("Folders").click();
 		log.info("Clicked on Folder Menu Successfully in PhotoApp");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Search for Saved Pictures folder.
 		PhotosSession.findElementByName("Search").sendKeys("testfiles");
 		log.info("Searching \"Test Folder - testfiles\"");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Click on Saved Pictures
 		PhotosSession.findElementByXPath("//Button[@Name = \"testfiles\"]").click();
 		log.info("Clicked on \"Test Folder - testfiles\"");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		// Select the Photo file
 		PhotosSession.findElementByXPath("//Button[@AutomationId = '" + test_filename + "']").click();
@@ -76,32 +76,27 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired printer from printers list combo box
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
+	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectDesiredPrinter_Photos(String ptr_name) throws MalformedURLException, InterruptedException {
 
 		WebElement PrinterListComboBox = PhotosSession.findElementByClassName("ComboBox");
 		Assert.assertNotNull(PrinterListComboBox);
-		if (!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) {
-			log.info("Desired printer is not selected so selecting it from drop down");
+		if (!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) 
+		{
+			log.info("Desired printer => "+ptr_name+" is not selected so selecting it from drop down");
 			PrinterListComboBox.click();
 			Thread.sleep(1000);
-
 			try {
 				PhotosSession.findElement(By.name(ptr_name)).click();
+				Thread.sleep(1000);
+				log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");
 			} catch (Exception e) {
-				log.info(
-						"Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
+				log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
 				e.printStackTrace();
-				log.info("Error selecting printer under test");
+				log.info("Error selecting printer under test so moving to next test");
 				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired printer =>" + PrinterListComboBox.getText().toString());
-			
+			}			
 		} else {
-			// PhotosSession.findElementByXPath("//ComboBoxItem[@Name =
-			// '"+ptr_name+"']").click();
 			log.info("Desired printer => " + PrinterListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 
@@ -109,7 +104,6 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Copies option
-	// Possible candidate for changing approach
 	public static void SelectCopies_Photos(String copies) throws MalformedURLException, InterruptedException {
 
 		// Clicking on Copies Edit box.
@@ -129,29 +123,27 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired orientation
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
 	public static void SelectOrientation_Photos(String orientation) throws MalformedURLException, InterruptedException {
 
 		WebElement OrientationListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Orientation']");
 		Assert.assertNotNull(OrientationListComboBox);
-		if (!OrientationListComboBox.getText().toString().contentEquals(orientation)) {
+		if (!OrientationListComboBox.getText().toString().contentEquals(orientation)) 
+		{
 			log.info("Desired Orientation option => " + orientation + " <= is not selected so selecting it from drop down");
 			OrientationListComboBox.click();
 			Thread.sleep(1000);
-			
 			try {
-				OrientationListComboBox.findElement(By.name(orientation)).click();
+				PhotosSession.findElementByName(orientation).click();
+				Thread.sleep(1000);
+				log.info("Selected desired orientation option *****" + OrientationListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info(
-						"Desired Orientation option is not found so make sure Printer Support this orientation option OR have typed the orientation option name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting orientation option");
-				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired orientation option *****" + OrientationListComboBox.getText().toString() + "*****");
-			
+				log.info("Desired Orientation option is not found so either 1) your Printer does not support desired orientation OR 2) you have typed the orientation value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting orientation option but continuing test with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails. 
+				OrientationListComboBox.click();
+			}			
 		} else {
 			log.info("Desired orientation option => " + OrientationListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
@@ -159,58 +151,56 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired paper size
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
+	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectPaperSize_Photos(String paper_size) throws MalformedURLException, InterruptedException {
 		
-			WebElement PaperSizeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Paper size']");
-			Assert.assertNotNull(PaperSizeListComboBox);
-			if (!PaperSizeListComboBox.getText().toString().contentEquals(paper_size)) {
-				log.info("Desired paper size => " + paper_size + " <= is not selected so selecting it from drop down");
-				PaperSizeListComboBox.click();
-				Thread.sleep(1000);
-				
-				try {
-					PaperSizeListComboBox.findElement(By.name(paper_size)).click();
-					// Its big List so if needed Scroll Down Twice (if needed) - TBD
-				} catch (Exception e) {
-					log.info("Desired Paper Size is not found so make sure Printer Support this paper size OR have typed the paper size name incorrectly in testsuite xml");
-					e.printStackTrace();
-					log.info("Error selecting desired paper size");
-					throw new RuntimeException(e);
-				}
+		WebElement PaperSizeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Paper size']");
+		Assert.assertNotNull(PaperSizeListComboBox);
+		if (!PaperSizeListComboBox.getText().toString().contentEquals(paper_size)) 
+		{
+			log.info("Desired paper size => " + paper_size + " <= is not selected so selecting it from drop down");
+			PaperSizeListComboBox.click();
+			Thread.sleep(1000);
+			try {
+				PhotosSession.findElementByName(paper_size).click();
 				Thread.sleep(1000);
 				log.info("Selected desired paper size *****" + PaperSizeListComboBox.getText().toString() + "*****");
-				
-			} else {
-				log.info("Desired paper size => " + PaperSizeListComboBox.getText().toString() + " <= is already selected so proceeding");
-			}
+			} catch (Exception e) {
+				log.info("Desired Paper Size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting paper size option but continuing test with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PaperSizeListComboBox.click();
+			}				
+		} else {
+			log.info("Desired paper size => " + PaperSizeListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
+	}
 	
 	// Method to select desired photo size
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
+	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectPhotoSize_Photos(String photo_size) throws MalformedURLException, InterruptedException {
 
 		WebElement PhotoSizeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Photo size']");
 		Assert.assertNotNull(PhotoSizeListComboBox);
-		if (!PhotoSizeListComboBox.getText().toString().contentEquals(photo_size)) {
+		if (!PhotoSizeListComboBox.getText().toString().contentEquals(photo_size)) 
+		{
 			log.info("Desired photo size => " + photo_size + " <= is not selected so selecting it from drop down");
 			PhotoSizeListComboBox.click();
 			Thread.sleep(1000);
-			
 			try {
-				PhotoSizeListComboBox.findElement(By.name(photo_size)).click();
-				// Its big List so if needed Scroll Down Twice (if needed) - TBD
+				PhotosSession.findElementByName(photo_size).click();
+				Thread.sleep(1000);
+				log.info("Selected desired photo size *****" + PhotoSizeListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Photo Size is not found so make sure Printer Support this photo size OR have typed the photo size name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting desired photo size");
-				throw new RuntimeException(e);
+				log.info("Desired Photo Size is not found so either 1) your Printer does not support desired photo size OR 2) you have typed the photo size value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting desired photo size but continuing with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PhotoSizeListComboBox.click();
 			}
-			Thread.sleep(1000);
-			log.info("Selected desired photo size *****" + PhotoSizeListComboBox.getText().toString() + "*****");
-			
 		} else {
 			log.info("Desired photo size => " + PhotoSizeListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
@@ -218,34 +208,27 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Fit
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
 	public static void SelectPhotoFit_Photos(String photo_fit) throws MalformedURLException, InterruptedException {
 
 		WebElement PhotoFitListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Fit']");
 		Assert.assertNotNull(PhotoFitListComboBox);
-		if (!PhotoFitListComboBox.getText().toString().contentEquals(photo_fit)) {
+		if (!PhotoFitListComboBox.getText().toString().contentEquals(photo_fit)) 
+		{
 			log.info("Desired photo fit => " + photo_fit + " <= is not selected so selecting it from drop down");
 			PhotoFitListComboBox.click();
-			Thread.sleep(1000);
-			
-			try {
-				PhotoFitListComboBox.findElement(By.name(photo_fit)).click();
-			} catch (Exception e) {
-				log.info("Desired Photo Fit is not found so make sure Printer Support this photo Fit OR have typed the photo Fit name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting desired photo fit");
-				/*Thread.sleep(1000);
-				if(PhotosSession.findElementByXPath("//TouchButton[@Name = 'Close App']").isDisplayed()){
-					PhotosSession.findElementByXPath("//TouchButton[@Name = 'Close App']").click();
-					}
-				PhotosSession.close();
-				Thread.sleep(1000);*/
-				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired photo fit *****" + PhotoFitListComboBox.getText().toString() + "*****");
-			
+			Thread.sleep(1000);										
+				try {
+					PhotosSession.findElementByName(photo_fit).click();
+					Thread.sleep(1000);
+					log.info("Selected desired photo fit *****" + PhotoFitListComboBox.getText().toString() + "*****");
+				} catch (Exception e) {
+					log.info("Desired Photo Fit is not found so either 1) your Printer does not support desired photo fit OR 2) you have typed the photo fit value incorrectly in testsuite xml");
+					//e.printStackTrace();
+					log.info("Error selecting desired photo fit but continuing with rest of the print options");
+					//throw new RuntimeException(e);
+					//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+					PhotoFitListComboBox.click();
+				}			
 		} else {
 			log.info("Desired photo fit => " + PhotoFitListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
@@ -253,35 +236,33 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Margins
-	// Possible candidate for re-factoring when there are multiple application
-	// in automation
-	public static void SelectPageMargins_Photos(String page_margins)
-			throws MalformedURLException, InterruptedException {
+	public static void SelectPageMargins_Photos(String page_margins)throws MalformedURLException, InterruptedException {
 
 		WebElement PhotoPageMarginListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Page Margins']");
 		Assert.assertNotNull(PhotoPageMarginListComboBox);
-		if (!PhotoPageMarginListComboBox.getText().toString().contentEquals(page_margins)) {
+		if (!PhotoPageMarginListComboBox.getText().toString().contentEquals(page_margins)) 
+		{
 			log.info("Desired Photo Margins => " + page_margins + " <= is not selected so selecting it from drop down");
 			PhotoPageMarginListComboBox.click();
 			Thread.sleep(1000);
-			
 			try {
-				PhotoPageMarginListComboBox.findElement(By.name(page_margins)).click();
+				PhotosSession.findElementByName(page_margins).click();
+				Thread.sleep(1000);
+				log.info("Selected desired photo margins *****" + PhotoPageMarginListComboBox.getText().toString() + "*****");		
 			} catch (Exception e) {
-				log.info("Desired Photo Margins is not found so make sure Printer Support this photo margins OR have typed the photo margins name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting desired photo fit");
-				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired photo fit *****" + PhotoPageMarginListComboBox.getText().toString() + "*****");
-			
+				log.info("Desired Page Margins is not found so either 1) your Printer does not support desired page margins OR 2) you have typed the page margins value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting desired photo fit but continuing with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PhotoPageMarginListComboBox.click();
+			}			
 		} else {
 			log.info("Desired photo fit => " + PhotoPageMarginListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
 
-	
+	// Method to select More Oprions link to access more print options.
 	public static int OpenMoreSettings_Photos() throws InterruptedException {
 		try {
 			PhotosSession.findElementByName("More settings").click();
@@ -294,14 +275,14 @@ public class PhotoAppBase extends Base {
 		
 	}
 
-	
+	// Method to return from More Oprions screen to access print button.
 	public static void CloseMoreSettings_Photos() throws InterruptedException {
 		PhotosSession.findElementByXPath("//Button[@Name = 'Ok']").click();
 		log.info("Clicked 'OK' button successfully.");
 		Thread.sleep(2000);
 	}
 
-	
+	// Method to select Color options.
 	public static void SelectColorOrMono_Photos(String color_optn) throws InterruptedException {
 					   
 		WebElement PhotoColorModeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Color mode']");
@@ -311,30 +292,27 @@ public class PhotoAppBase extends Base {
 	        log.info("Desired photo color mode => "+color_optn+" <= is not selected so selecting it from drop down");
 	        PhotoColorModeListComboBox.click();
 	        Thread.sleep(1000);
-	        
-          try {
-        	  PhotoColorModeListComboBox.findElement(By.name(color_optn)).click();
-               log.info("'" + color_optn + "' is selected successfully.");
+	        try {
+				PhotosSession.findElementByName(color_optn).click();
+				Thread.sleep(1000);
+				log.info("Selected desired Color Option *****" + PhotoColorModeListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Photo Color mode is not found so make sure Printer Support this photo color mode OR have typed the photo color mode name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting desired color mode");     
-	            throw new RuntimeException(e);
-            }
-         
+	        	log.info("Desired Color Option is not found so either 1) your Printer does not support desired color option OR 2) you have typed the color option value incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting desired color mode but continuing with rest of the print options");     
+	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+	            PhotoColorModeListComboBox.click();
+            }         
         }else {
 			log.info("Desired photo color mode  => " + PhotoColorModeListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
 
-		
 	// Method to select desired duplex option
-	// Possible candidate for re-factoring when there are multiple application in automation
-	public static void SelectDuplexOption_Photos(String duplex_optn)
-			throws MalformedURLException, InterruptedException {
+	public static void SelectDuplexOption_Photos(String duplex_optn)throws MalformedURLException, InterruptedException {
 		
 		String duplex_sel = duplex_optn.toLowerCase();
-
 		if (duplex_sel.equals("none")) {
 			duplex_sel = "one side";
 		} else if(duplex_sel.equals("shortedge")) {
@@ -345,22 +323,23 @@ public class PhotoAppBase extends Base {
 
 		WebElement PhotoDuplexListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Duplex printing']");
 		Assert.assertNotNull(PhotoDuplexListComboBox);
-		if (!PhotoDuplexListComboBox.getText().toString().contentEquals(duplex_sel)) {
+		if (!PhotoDuplexListComboBox.getText().toString().contentEquals(duplex_sel)) 
+		{
 			log.info("Desired duplex option => " + duplex_sel + " <= is not selected so selecting it from drop down");
 			PhotoDuplexListComboBox.click();
 			Thread.sleep(1000);
-			
 			try {
 				PhotosSession.findElementByXPath("//*[contains(@Name,'"+duplex_sel+"')]").click();
+				Thread.sleep(1000);
+				log.info("Selected desired duplex option *****" + PhotoDuplexListComboBox.getText().toString() + " - " +duplex_optn +"*****");
 			} catch (Exception e) {
-				log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting duplex option");
-				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired duplex option *****" + PhotoDuplexListComboBox.getText().toString() + " - " +duplex_optn +"*****");
-			
+				log.info("Desired Duplex Option is not found so either 1) your Printer does not support desired duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting duplex option but continuing with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PhotoDuplexListComboBox.click();
+			}			
 		} else {
 			log.info("Desired duplex option => " + PhotoDuplexListComboBox.getText().toString()	+ " <= is already selected so proceeding");
 		}
@@ -368,27 +347,28 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Borderless Printing Option
-	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectBorderless_Photos(String borderless) throws MalformedURLException, InterruptedException {
 
 		WebElement PhotoBorderlessListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Borderless printing']");
 		Assert.assertNotNull(PhotoBorderlessListComboBox);
-		if (!PhotoBorderlessListComboBox.getText().toString().contentEquals(borderless)) {
+		if (!PhotoBorderlessListComboBox.getText().toString().contentEquals(borderless)) 
+		{
 			log.info("Desired Borderless option => " + borderless + " <= is not selected so selecting it from drop down");
 			PhotoBorderlessListComboBox.click();
 			Thread.sleep(1000);
-			
 			try {
-				PhotoBorderlessListComboBox.findElement(By.name(borderless)).click();
+				PhotosSession.findElementByName(borderless).click();
+				Thread.sleep(1000);
+				log.info("Selected desired borderless option *****" + PhotoBorderlessListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Borderless option is not found so make sure Printer Support this photo borderless option OR have typed the photo borderless name incorrectly in testsuite xml");
-				e.printStackTrace();
-				log.info("Error selecting desired Borderless option");
-				throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected desired borderless option *****" + PhotoBorderlessListComboBox.getText().toString() + "*****");
-		
+				log.info("Desired Borderless option is not found so either 1) your Printer does not support desired borderless option OR 2) you have typed the borderless option value incorrectly in testsuite xml");
+				//e.printStackTrace();
+				log.info("Error selecting desired Borderless option but continuing with rest of the print options");
+				//throw new RuntimeException(e);
+				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+				PhotoBorderlessListComboBox.click();
+				
+			}		
 		} else {
 			log.info("Desired Borderless option => " + PhotoBorderlessListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
@@ -396,81 +376,81 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Paper Tray Option
-	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectPaperTray_Photos(String paper_tray) throws InterruptedException {
 		   
 		WebElement PhotoPaperTrayListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Paper tray']");
 		Assert.assertNotNull(PhotoPaperTrayListComboBox);           
-        if(!PhotoPaperTrayListComboBox.getText().toString().contentEquals(paper_tray)) {
+        if(!PhotoPaperTrayListComboBox.getText().toString().contentEquals(paper_tray)) 
+		{
 	        log.info("Desired photo paper tray => "+paper_tray+" <= is not selected so selecting it from drop down");
 	        PhotoPaperTrayListComboBox.click();
 	        Thread.sleep(1000);
-	        
-          try {
-        	  PhotoPaperTrayListComboBox.findElement(By.name(paper_tray)).click();              
+	        try {
+				PhotosSession.findElementByName(paper_tray).click();
+				Thread.sleep(1000);
+				log.info("Selected desired paper tray option *****" + PhotoPaperTrayListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Photo Paper tray is not found so make sure Printer Support this photo paper tray option OR have typed the photo paper tray name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting desired Paper Tray");     
-	            throw new RuntimeException(e);
-            }   
-          	Thread.sleep(1000);
-			log.info("Selected desired paper tray option *****" + PhotoPaperTrayListComboBox.getText().toString() + "*****");
-			
+	        	log.info("Desired Photo Paper tray is not found so either 1) your Printer does not support desired paper tray OR 2) you have typed the paper tray incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting desired Paper Tray but continuing with rest of the print options");     
+				//throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+	            PhotoPaperTrayListComboBox.click();
+            }   			
         }else {
 			log.info("Desired Paper Tray option => " + PhotoPaperTrayListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
 	
 	// Method to select desired Paper Type Option
-	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectPaperType_Photos(String paper_type) throws InterruptedException {
 		   
 		WebElement PhotoPaperTypeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Paper type']");
 		Assert.assertNotNull(PhotoPaperTypeListComboBox);           
-        if(!PhotoPaperTypeListComboBox.getText().toString().contentEquals(paper_type)) {
+        if(!PhotoPaperTypeListComboBox.getText().toString().contentEquals(paper_type)) 
+		{
 	        log.info("Desired photo paper type => "+paper_type+" <= is not selected so selecting it from drop down");
 	        PhotoPaperTypeListComboBox.click();
 	        Thread.sleep(1000);
-	        
-          try {
-        	  PhotoPaperTypeListComboBox.findElement(By.name(paper_type)).click();              
+	        try {
+				PhotosSession.findElementByName(paper_type).click();
+				Thread.sleep(1000);
+				log.info("Selected desired paper type option *****" + PhotoPaperTypeListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Photo Paper type is not found so make sure Printer Support this photo paper type option OR have typed the photo paper type name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting desired Paper Type");     
-	            throw new RuntimeException(e);
-            }   
-          	Thread.sleep(1000);
-			log.info("Selected desired paper type option *****" + PhotoPaperTypeListComboBox.getText().toString() + "*****");
-			
+	        	log.info("Desired Paper type is not found so either 1) your Printer does not support desired paper type OR 2) you have typed the paper type incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting desired Paper Type but continuing with rest of the print options");     
+				//throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+	            PhotoPaperTypeListComboBox.click();
+            }   			
         }else {
 			log.info("Desired Paper Type option => " + PhotoPaperTypeListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
 	
 	// Method to select desired Output Quality Option
-	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectOutputQuality_Photos(String output_qlty) throws InterruptedException {
 		   
 		WebElement PhotoOutputQualityListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Output quality']");
 		Assert.assertNotNull(PhotoOutputQualityListComboBox);           
-        if(!PhotoOutputQualityListComboBox.getText().toString().contentEquals(output_qlty)) {
+        if(!PhotoOutputQualityListComboBox.getText().toString().contentEquals(output_qlty)) 
+		{
 	        log.info("Desired photo output quality => "+output_qlty+" <= is not selected so selecting it from drop down");
 	        PhotoOutputQualityListComboBox.click();
 	        Thread.sleep(1000);
-	        
-          try {
-        	  PhotoOutputQualityListComboBox.findElement(By.name(output_qlty)).click();              
-            } catch(Exception e){
-	        	log.info("Desired Photo Output Quality is not found so make sure Printer Support this photo output quality option OR have typed the photo output quality name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting desired Photo Output Quality");     
-	            throw new RuntimeException(e);
-            }   
-          	Thread.sleep(1000);
-			log.info("Selected desired Photo Output Quality option *****" + PhotoOutputQualityListComboBox.getText().toString() + "*****");
-			
+	        try {
+				PhotosSession.findElementByName(output_qlty).click();
+				Thread.sleep(1000);
+				log.info("Selected desired Photo Output Quality option *****" + PhotoOutputQualityListComboBox.getText().toString() + "*****");
+			} catch(Exception e){
+	        	log.info("Desired Photo Output Quality is not found so either 1) your Printer does not support desired output quality OR 2) you have typed the output quality tray incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting desired Photo Output Quality but continuing with rest of the print options");     
+	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+	            PhotoOutputQualityListComboBox.click();
+            }   			
         }else {
 			log.info("Desired Photo Output Quality option => " + PhotoOutputQualityListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
@@ -478,27 +458,27 @@ public class PhotoAppBase extends Base {
 	
 	
 	// Method to select desired Stapling Option
-	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectStaplingOption_Photos(String stapling_optn) throws InterruptedException {
 		   
 		WebElement SelectStaplingOption_Photos = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Stapling']");
 		Assert.assertNotNull(SelectStaplingOption_Photos);           
-        if(!SelectStaplingOption_Photos.getText().toString().contentEquals(stapling_optn)) {
+        if(!SelectStaplingOption_Photos.getText().toString().contentEquals(stapling_optn)) 
+		{
 	        log.info("Desired photo Stapling Option => "+stapling_optn+" <= is not selected so selecting it from drop down");
 	        SelectStaplingOption_Photos.click();
 	        Thread.sleep(1000);
-	        
-          try {
-        	  SelectStaplingOption_Photos.findElement(By.name(stapling_optn)).click();              
+	        try {
+				PhotosSession.findElementByName(stapling_optn).click();
+				Thread.sleep(1000);
+				log.info("Selected desired Photo Stapling Option *****" + SelectStaplingOption_Photos.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Photo Stapling Option is not found so make sure Printer Support this photo Stapling option OR have typed the photo Stapling option name incorrectly in testsuite xml");
-	        	e.printStackTrace();
-	            log.info("Error selecting desired Photo Stapling Option");     
-	            throw new RuntimeException(e);
-            }   
-          	Thread.sleep(1000);
-			log.info("Selected desired Photo Stapling Option *****" + SelectStaplingOption_Photos.getText().toString() + "*****");
-			
+	        	log.info("Desired Photo Stapling Option is not found so either 1) your Printer does not support desired stapling option OR 2) you have typed the stapling option incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting desired Photo Stapling Option but continuing with rest of the print options");     
+	            //throw new RuntimeException(e);
+	            //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
+	            SelectStaplingOption_Photos.click();
+            } 	
         }else {
 			log.info("Desired Photo Stapling Option => " + SelectStaplingOption_Photos.getText().toString() + " <= is already selected so proceeding");
 		}

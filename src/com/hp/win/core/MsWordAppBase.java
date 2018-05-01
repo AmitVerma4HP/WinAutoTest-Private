@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
-import com.hp.win.utility.ReadPropertyFile;
 
 
 
@@ -26,15 +25,13 @@ public class MsWordAppBase extends Base {
 	
 	  
 	 // Method to open MS Word test file
-	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename) throws InterruptedException, IOException {
-				
-		 ReadPropertyFile dataFile = new ReadPropertyFile();
-		 Thread.sleep(2000);
-		 log.info("Word location: " + dataFile.getMsWordLocation());
+	 public static RemoteWebDriver OpenMsWordFile(String device_name, String test_filename,String word2016_exe_loc) throws InterruptedException, IOException {		
+		
+		 log.info("Word location: " +word2016_exe_loc);
 
 			   try {
 			    	capabilities = new DesiredCapabilities();
-			        capabilities.setCapability("app", dataFile.getMsWordLocation());
+			        capabilities.setCapability("app", word2016_exe_loc);
 			        capabilities.setCapability("appArguments",test_filename );
 			        capabilities.setCapability("appWorkingDir", testfiles_loc);
 			        capabilities.setCapability("platformName", "Windows");
@@ -55,7 +52,7 @@ public class MsWordAppBase extends Base {
 			    
 			    try {
 			    capabilities = new DesiredCapabilities();
-		        capabilities.setCapability("app", dataFile.getMsWordLocation());
+		        capabilities.setCapability("app", word2016_exe_loc);
 		        capabilities.setCapability("appArguments",test_filename );
 		        capabilities.setCapability("appWorkingDir", testfiles_loc);
 		        capabilities.setCapability("platformName", "Windows");
@@ -90,14 +87,14 @@ public class MsWordAppBase extends Base {
 		        Thread.sleep(1000);
 		        try {
 		        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
+		        	Thread.sleep(1000);
+		        	log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");		        	
 		        	}catch(Exception e){
 		        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
 		        	e.printStackTrace();
-		            log.info("Error selecting printer under test");     
+		            log.info("Error selecting printer under test so moving to next test");     
 		            throw new RuntimeException(e);
-		        	}
-		        Thread.sleep(1000);
-		        log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");
+		        	}		        		        
 		    } else {
 		    	log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
@@ -116,25 +113,27 @@ public class MsWordAppBase extends Base {
 		        
 		        // if paper size is not visible then WinAppDriver auto scroll to make list item visible and then selects it.
 		        PaperSizeListComboBox.click();
-		        Thread.sleep(1000);
+		        Thread.sleep(1000);		        
 		        try {
-		        	PaperSizeListComboBox.findElement(By.name(paper_size)).click();		        	
+		        	PaperSizeListComboBox.findElement(By.name(paper_size)).click();
+		        	Thread.sleep(1000);
+		        	log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        	log.info("Desired Paper Size is not found so make sure Printer Support this paper size OR have typed the paper size name incorrectly in testsuite xml");
-		        	e.printStackTrace();
-		            log.info("Error selecting desired paper size");     
-		            throw new RuntimeException(e);
-		        	}
-		        Thread.sleep(1000);
-		        log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
+		        		log.info("Desired paper size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting paper size option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
+		        	}		     
+		        
 		     } else {
 		    	log.info("Desired paper size => " +PaperSizeListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
 	 }
 	 
 	 
-	 
-			 public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
+	
+	// Method to select desired duplex option
+	public static void SelectDuplexOption_Msword(String duplex_option) throws MalformedURLException, InterruptedException {
 				 
 			WebElement DuplexListComboBox = MsWordSession.findElementByName("Two-Sided Printing");		 		
 			Assert.assertNotNull(DuplexListComboBox);  
@@ -144,27 +143,29 @@ public class MsWordAppBase extends Base {
 			{
 			try {	        		
 				DuplexListComboBox.findElement(By.xpath("//ListItem[@HelpText ='Flip pages on long edge']")).click();
-				Thread.sleep(1000);				
+				Thread.sleep(1000);
+				log.info("Selected => ***** Duplex LongEdge ***** Option");
 				}catch(Exception e){
-		        log.info("Error selecting duplex long edge option");
-		       	e.printStackTrace();
-		        throw new RuntimeException(e);
-				}
-			Thread.sleep(1000);
-			log.info("Selected => ***** Duplex LongEdge ***** Option");
+					log.info("Longedge duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+		        	//e.printStackTrace();
+		            log.info("Error selecting Longedge duplex option but continuing the  test with rest of the print options");     
+		            //throw new RuntimeException(e);
+				}		
+			
 			} 
 		else if(duplex_option.toLowerCase().contains("short"))
 			{
 			try {
 				DuplexListComboBox.findElement(By.xpath("//ListItem[@HelpText ='Flip pages on short edge']")).click();
-				Thread.sleep(1000);				
+				Thread.sleep(1000);
+				log.info("Selected => ***** Duplex ShortEdge ***** Option");
 				}catch(Exception e){
-		        log.info("Error selecting duplex short option");
-		       	e.printStackTrace();
-		        throw new RuntimeException(e);
-			}
-			Thread.sleep(1000);
-			log.info("Selected => ***** Duplex ShortEdge ***** Option");
+					log.info("Shortedge duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+		        	//e.printStackTrace();
+		            log.info("Error selecting Shortedge duplex option but continuing the  test with rest of the print options");     
+		            //throw new RuntimeException(e);
+				}			
+			
 			}
 		else {
 			try {
@@ -172,10 +173,10 @@ public class MsWordAppBase extends Base {
 			Thread.sleep(1000);
 			log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
 			}catch(Exception e){
-			log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-			e.printStackTrace();
-		    log.info("Error selecting duplex option");     
-		    throw new RuntimeException(e);
+				log.info("Desired duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+	        	//e.printStackTrace();
+	            log.info("Error selecting duplex option but continuing the test with rest of the print options");     
+	            //throw new RuntimeException(e);
 				}
 			}   
 		}
@@ -190,21 +191,21 @@ public class MsWordAppBase extends Base {
 	        Assert.assertNotNull(OrientationListComboBox);           
 	        if(!OrientationListComboBox.getText().toString().contentEquals(orientation)) 
 	        {
-		        log.info("Desired duplex option => "+orientation+" <= is not selected so selecting it from drop down");
+		        log.info("Desired orientation option => "+orientation+" <= is not selected so selecting it from drop down");
 		        OrientationListComboBox.click();
 		        Thread.sleep(1000);
 		        try {		        	
-		        	OrientationListComboBox.findElement(By.name(orientation)).click();		        	
+		        	OrientationListComboBox.findElement(By.name(orientation)).click();
+		        	Thread.sleep(1000);
+				    log.info("Selected orientation option *****" +OrientationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-		        	e.printStackTrace();
-		            log.info("Error selecting duplex option");     
-		            throw new RuntimeException(e);
-		        	}
-		        Thread.sleep(1000);
-		        log.info("Selected desired duplex option *****" +OrientationListComboBox.getText().toString()+"*****");
+		        		log.info("Desired orientation option is not found so either 1) your Printer does not Support desired orientation option OR 2) you have typed the orientation option value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting orientation option but continuing with rest of the print options");     
+			            //throw new RuntimeException(e);
+		        		}		      
 		     } else {
-		    	log.info("Desired duplex option => " +OrientationListComboBox.getText().toString()+" <= is already selected so proceeding");
+		    	log.info("Desired orientation option => " +OrientationListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
 	 }
 	 
@@ -218,21 +219,21 @@ public class MsWordAppBase extends Base {
 	        Assert.assertNotNull(CollationListComboBox);           
 	        if(!CollationListComboBox.getText().toString().contentEquals(collation)) 
 	        {
-		        log.info("Desired duplex option => "+collation+" <= is not selected so selecting it from drop down");
+		        log.info("Desired collation option => "+collation+" <= is not selected so selecting it from drop down");
 		        CollationListComboBox.click();
 		        Thread.sleep(1000);
 		        try {
-		        	CollationListComboBox.findElement(By.name(collation)).click();		        	
+		        	CollationListComboBox.findElement(By.name(collation)).click();		
+		        	Thread.sleep(1000);
+			        log.info("Selected collation option *****" +CollationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        	log.info("Desired duplex option is not found so make sure Printer Support this duplex option OR have typed the duplex option name incorrectly in testsuite xml");
-		        	e.printStackTrace();
-		            log.info("Error selecting duplex option");     
-		            throw new RuntimeException(e);
-		        	}
-		        Thread.sleep(1000);
-		        log.info("Selected desired duplex option *****" +CollationListComboBox.getText().toString()+"*****");
+		        	log.info("Desired collation option is not found so either 1) your Printer does not Support collation option OR 2) you have typed the collation option value incorrectly in testsuite xml");
+		        	//e.printStackTrace();
+		            log.info("Error selecting collation option but continuing with rest of the print options");     
+		            //throw new RuntimeException(e);
+		        	}		        
 		     } else {
-		    	log.info("Desired duplex option => " +CollationListComboBox.getText().toString()+" <= is already selected so proceeding");
+		    	log.info("Desired collation option => " +CollationListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
 	 }
 	 
@@ -303,17 +304,17 @@ public class MsWordAppBase extends Base {
 			        	PrintPagesComboBox.click();
 			        	Thread.sleep(1000);
 			        	PrintPagesComboBox.findElement(By.name(pages_to_print)).click();
-			        	//log.info("Selected desired pages to print option ***** "+pages_to_print+" *****");     	
+			        	Thread.sleep(1000);
+				        log.info("Selected desired pages to print option *****" +PrintPagesComboBox.getText().toString()+"*****");			        
 			        }
 		        
 		          }catch(Exception e){
-			        	log.info("Desired pages to print option is not found so check you have selected relevant test file OR have typed the pages to print option name incorrectly in testsuite xml");
-			        	e.printStackTrace();
-			            log.info("Error selecting pages to print option");     
-			            throw new RuntimeException(e);
+			        	log.info("Desired pages to print option is not found so 1) check you have selected relevant multipage test file OR 2) typed the pages to print option value correctly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting pages to print option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
 			        }
-		        Thread.sleep(1000);
-		        log.info("Selected desired pages to print option *****" +PrintPagesComboBox.getText().toString()+"*****");
+		        
 		  } 
 	      else 
 		  {
@@ -321,5 +322,61 @@ public class MsWordAppBase extends Base {
 		  }
 	 }
 	 
+	 
+	 
+	 // Method to select desired Print Margin option  
+	 public static void SelectMargins_Msword(String margin) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement PrintMarginComboBox = MsWordSession.findElementByName("Margins");		 		
+	        Assert.assertNotNull(PrintMarginComboBox);
+	        
+	        if(!PrintMarginComboBox.getText().toString().contains(margin)) 
+	        {
+	        	log.info("Desired margin option => "+margin+" <= is not selected so selecting it from drop down");
+	        	PrintMarginComboBox.click();
+			    Thread.sleep(1000);
+			        try {
+			        	PrintMarginComboBox.findElement(By.xpath("//ListItem[contains(@Name,'"+margin+"')]")).click();	
+			        	Thread.sleep(1000);
+					    log.info("Selected margin option *****" +PrintMarginComboBox.getText().toString()+"*****");
+			        	}catch(Exception e){
+			        	log.info("Desired margin option is not found so 1) make sure Printer Support this margin option OR 2) have typed the margin option value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting margin option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
+			        	}
+			       
+			     } else {
+			    	log.info("Desired margin option => " +PrintMarginComboBox.getText().toString()+" <= is already selected so proceeding");
+		        }
+	 }
+	 
+	 
+	 // Method to select desired "Pages per Sheet" option  
+	 public static void SelectPagesPerSheet_Msword(String pages_per_sheet) throws MalformedURLException, InterruptedException {
+		 		 
+		 	WebElement PagesPerSheetComboBox = MsWordSession.findElementByName("Pages Per Sheet");		 		
+	        Assert.assertNotNull(PagesPerSheetComboBox);
+	        
+	        if(!PagesPerSheetComboBox.getText().toString().contentEquals(pages_per_sheet)) 
+	        {
+	        	log.info("Desired PagesPerSheet option => "+pages_per_sheet+" <= is not selected so selecting it from drop down");
+	        	PagesPerSheetComboBox.click();
+			    Thread.sleep(1000);
+			        try {
+			        	PagesPerSheetComboBox.findElement(By.xpath("//ListItem[@Name ='"+pages_per_sheet+"']")).click();	
+			        	Thread.sleep(1000);
+					    log.info("Selected PagesPerSheet option *****" +PagesPerSheetComboBox.getText().toString()+"*****");
+			        	}catch(Exception e){
+			        	log.info("Desired PagesPerSheet option is not found so 1) make sure Printer Support this PagesPerSheet option OR 2) have typed the PagesPerSheet option value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting PagesPerSheet option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
+			        	}
+			       
+			     } else {
+			    	log.info("Desired margin option => " +PagesPerSheetComboBox.getText().toString()+" <= is already selected so proceeding");
+		        }
+	 }
 
 }

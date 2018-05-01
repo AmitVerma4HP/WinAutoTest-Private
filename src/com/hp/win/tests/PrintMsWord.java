@@ -20,24 +20,24 @@ public class PrintMsWord extends MsWordAppBase{
 	private static String currentClass;	
 
     @BeforeClass
-	@Parameters({"device_name", "ptr_name", "test_filename"})
-    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename) 
+	@Parameters({"device_name", "ptr_name", "test_filename","word2016_exe_loc"})
+    public static void setup(String device_name, String ptr_name, @Optional("MicrosoftWord2016_Portrait_MultiPage_TestFile.docx")String test_filename,String word2016_exe_loc) 
     		throws InterruptedException, IOException {
         	
     	currentClass = PrintMsWord.class.getSimpleName();
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
-   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename);    		
+   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename,word2016_exe_loc);    		
         Thread.sleep(1000); 
     }
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","paper_size","duplex_option","orientation","collation","copies","pages_to_print","page_count"})
+	@Parameters({"device_name","ptr_name","paper_size","duplex_option","orientation","collation","copies","pages_to_print","page_count","margin","pages_per_sheet"})
     public void PrintMsWordFile(String device_name,String ptr_name, @Optional("Letter")String paper_size,@Optional("Print One Sided")String duplex_option,
     	@Optional("Portrait Orientation")String orientation,@Optional("Collated")String collation,@Optional("1")String copies,
-    	@Optional("Print All Pages")String pages_to_print, @Optional("NA")String page_count) throws InterruptedException, IOException    {
+    	@Optional("Print All Pages")String pages_to_print, @Optional("NA")String page_count,@Optional("Normal")String margin,@Optional("1 Page Per Sheet")String pages_per_sheet) throws InterruptedException, IOException    {
 		
 		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -67,7 +67,15 @@ public class PrintMsWord extends MsWordAppBase{
 		
 		// Select Desired Pages to Print Value
 		MsWordAppBase.SelectPagesToPrint_Msword(pages_to_print, page_count);
-				
+		
+		
+		// Select Desired Print Margin
+		MsWordAppBase.SelectMargins_Msword(margin);
+		
+		// Select Desired Print Margin
+		MsWordAppBase.SelectPagesPerSheet_Msword(pages_per_sheet);		
+		Thread.sleep(1000);		
+		
 		//After all print settings give print 
 		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	
 		Thread.sleep(1000);
@@ -160,7 +168,8 @@ public class PrintMsWord extends MsWordAppBase{
         				log.info("Found alert dialog to save test file");
 						MsWordSession.findElementByName("Don't Save").click();
 					}
-        		}catch(NoSuchElementException e) {
+        		//this could cause either NoSuchElementException or NoSuchWindowException so better use Exception object
+        		}catch(Exception e) {
         				log.info("There is no alert dialog to save test file so continuing test without taking any action");
         		}
         		MsWordSession.quit();

@@ -59,30 +59,41 @@ public class Win32Base extends Base {
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> nameList = dialogSession.findElementsByName(boxName);
 
+        // If there are elements that have the name we are looking for...
         if(nameList.size() != 0) {
-            for (WebElement el : nameList) {
-                //log.info("Looking for " + el.getText().toString()); - Use as trace in log to confirm elements in list - EMC
-                if(el.getAttribute("Name").toString().equals(boxName)) {
-                    if(el.getAttribute("LocalizedControlType").equals("combo box")) {
+
+            // Look for those elements in the list
+            for (WebElement li : nameList) {
+                
+                // If we find an element in the list that has the name we are looking for...
+                if(li.getAttribute("Name").toString().equals(boxName)) {
+                    
+                    // If that element is a combo box...
+                    if(li.getAttribute("LocalizedControlType").equals("combo box")) {
+                        
+                        // Click on the combo box
                         try {
-                            log.info("Going to click on '" + el.getAttribute("Name").toString() + "' combo box...");
-                            el.click();
+                            log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
+                            li.click();
                             Thread.sleep(1000);
                             break;
                         } catch (Exception e) {
                             log.info("Unable to click on the combo box.");
                             throw new RuntimeException(e);
                         }
+                        
                     }
+                
+                // If there is an element with the name we're looking for, but there is no combo box...
                 } else
                 {
-                    log.info("Printer does not support '" + boxName + ".'. Confirm printer's available settings.");
+                    log.info("Cannot find a combo box with the name '" + boxName + "'.");
                     return;
                 }
             }
         
+            // Find the desired list item and click on it
             WebElement listItem = dialogSession.findElementByName(listSel);
-
             try {
                 log.info("Going to click on '" + listItem.getText().toString() + "'");
                 listItem.click();
@@ -91,9 +102,13 @@ public class Win32Base extends Base {
                 log.info("Unable to click on list item.");
                 throw new RuntimeException(e);
             }
+            
         }
+        
+        // If there are no elements that have the name we're looking for...
         else {
-            log.info("Printer does not support '" + boxName + ".'. Confirm printer's available settings.");
+            log.info("Printer does not support '" + boxName + "'. Confirm printer's available settings.");
+            return;
         }
     }
 
@@ -114,7 +129,7 @@ public class Win32Base extends Base {
             return;
         }
     }
-
+    
     
     // Method to select print orientation
     public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {

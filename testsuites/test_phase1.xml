@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MSWord 2016 , Notepad and Photos Test suite - Printing Tests">
+		<parameter name="word2016_exe_loc" value="C:\Program Files (x86)\Microsoft Office\root\Office16\WINWORD.EXE" />
+		<parameter name="device_name" value="VERAMIT6" />
+		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />		
+ 
+ <!-- ********************************************** Instructions to follow ****************************************************-->
+ <!-- For Printing MSWORD 2016 test files -->
+ <!-- Note: parameter page_count needed only if pages_to_print set to "Custom Print" -->
+ <!-- Supported Parameters:  -->
+	 <!-- MUST		word2016_exe_loc = <WINWORD.EXE location from your PC> -->
+	 <!-- MUST		device_name = <Your Windows PC Name> -->
+	 <!-- MUST 		ptr_name 	= <Printer name as it shows in discovery-->
+	 <!-- OPTIONAL	paper_size 	= <One Supported Paper Size> , DEFAULT = "Letter" -->
+	 <!-- OPTIONAL	duplex_option = <"Print One Sided", "DuplexLongEdge", "DuplexShortEdge","Manually Print on Both Sides"> , DEFAULT = "Print One Sided" -->
+	 <!-- OPTIONAL	orientation = <"Portrait Orientation","Landscape Orientation"> , DEFAULT = "Portrait Orientation" -->
+	 <!-- OPTIONAL	collation = <"Collated","Uncollated"> , DEFAULT = "Collated" -->
+	 <!-- OPTIONAL	copies = <Any number between 1-32767> , DEFAULT = "1" -->
+	 <!-- OPTIONAL	pages_to_print = <"Print All Pages","Print Current Page","Custom Print"> , DEFAULT = "Print All Pages" -->
+	 <!-- OPTIONAL	page_count = <Page range like 1,2 or 1-3 etc.> , DEFAULT = "NA" -->
+	 <!-- OPTIONAL	margin = <"Normal","Narrow","Moderate","Wide","Mirrored","Office 2003 Default"> , DEFAULT = "Normal" -->
+	 <!-- OPTIONAL	pages_per_sheet = <"1 Page Per Sheet","2 Pages Per Sheet","4 Pages Per Sheet","6 Pages Per Sheet","8 Pages Per Sheet","16 Pages Per Sheet">, DEFAULT = "1 Page Per Sheet" -->
+	 <!-- OPTIONAL	TDB = <TDB> , DEFAULT = TBD -->
+	 
+ 
+ <!-- For Printing Notepad test files -->
+ <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
+ <!-- Supported Parameters:  																	-->
+	 <!-- MUST		device_name    = <Your Windows PC Name> 										-->
+	 <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
+	 <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
+	 <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">  , DEFAULT = "None"  -->
+	 <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
+	 <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+	 <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
+	 <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "NotepadTestFile1.txt"    -->
+	 <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
+ 
+ 
+<!-- For Printing Photo test files -->
+<!-- Note: Before initiating the test, import the Test Folder(testfiles) into Photos App. -->
+<!-- Supported Test Parameters:  -->
+	<!-- MUST          device_name = <Your Windows PC Name> -->
+	<!-- MUST          ptr_name     = <Printer name as it shows in discovery-->
+	<!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
+	<!-- OPTIONAL      duplex_optn = <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
+	<!-- OPTIONAL      orientation = <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
+	<!-- OPTIONAL      photo_size = <Photo size list> , DEFAULT = "Full page" -->
+	<!-- OPTIONAL      copies = <Any number between 1-32767> , DEFAULT = "1" -->
+	<!-- OPTIONAL      photo_fit = <"Fill page","Shrink to fit"> , DEFAULT = "Fill page" -->
+	<!-- OPTIONAL      borderless = <"On", "Off"> , DEFAULT = "On" -->
+	<!-- OPTIONAL      page_margins = <"Normal", "Uniform"> , DEFAULT = "Normal" -->
+	<!-- OPTIONAL      colot_optn = <"Color", "Monochrome"> , DEFAULT = "Color" -->
+	<!-- OPTIONAL      paper_tray = <"Auto select", "Auto", "Tray 2", "Tray 1", "Main", "Photo"etc (Depending on printer)> , DEFAULT = "Auto select" -->
+	<!-- OPTIONAL      paper_type = <"Plain Paper", "Photo paper"> , DEFAULT = "Plain Paper" -->
+	<!-- OPTIONAL      output_qlty = <"Normal", "Draft", "High quality"> , DEFAULT = "Normal" -->
+	<!-- OPTIONAL      stapling_optn = <"Staple", "Top left", "Top right"> , DEFAULT = "Staple" -->
+	<!-- OPTIONAL      TDB = <TDB> , DEFAULT = TBD -->
+ 
+ 
+ 
+  <!-- ********************************************** START: PRINTING MSWORD TEST FILE *********************************************************** -->
+  
+	<test verbose="2" name="Test-01 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print ShortEdge" />
+     	<parameter name="orientation" value="Portrait Orientation" />
+     	<parameter name="collation" value="Collated" />
+     	<parameter name="copies" value="2" />    	 		
+ 		<parameter name="margin" value="Narrow" />
+ 		<parameter name="pages_per_sheet" value="2 Pages Per Sheet" />      	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+  
+  
+  <test verbose="2" name="Test-02 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print ShortEdge" />
+     	<parameter name="orientation" value="Landscape Orientation" />     	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+
+
+  <test verbose="2" name="Test-03 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print LongEdge" />
+     	<parameter name="orientation" value="Landscape Orientation" />     	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+  
+  
+  <test verbose="2" name="Test-04 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print LongEdge" />
+     	<parameter name="copies" value="5" />
+     	<parameter name="orientation" value="Landscape Orientation" />     	      	
+     	<parameter name="test_filename" value="MSWord2016_4Pages-ISO_IEC_24735_2009_Test_Pages.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+  
+  
+  <test verbose="2" name="Test-05 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print One Sided" />    	     	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+  
+  
+  <test verbose="2" name="Test-06 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print ShortEdge" />    	     	      	
+     	<parameter name="test_filename" value="MSWord2016_4Pages-ISO_IEC_24735_2009_Test_Pages.docx" />		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+
+
+  <test verbose="2" name="Test-07 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="duplex_option" value="Print ShortEdge" />
+     	<parameter name="pages_to_print" value="Custom Print" />  
+	   	<parameter name="page_count" value="1-3" />    	     	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+
+
+  <test verbose="2" name="Test-08 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="Letter" />     	  
+     	<parameter name="pages_to_print" value="Custom Print" />  
+	   	<parameter name="page_count" value="1,4" />    	  	     	      	
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+
+
+  <test verbose="2" name="Test-09 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="A4" />
+     	<parameter name="duplex_option" value="Print LongEdge" />    	     	      	
+     	<parameter name="test_filename" value="MSWord2016_4Pages-ISO_IEC_24735_2009_Test_Pages.docx" />		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test>
+
+
+  <test verbose="2" name="Test-10 : Printing Test MSWord test file - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">
+     	<parameter name="paper_size" value="A4" />
+     	<parameter name="duplex_option" value="Print One Sided" />
+     	<parameter name="orientation" value="Landscape Orientation" />
+     	<parameter name="collation" value="Uncollated" />
+     	<parameter name="copies" value="5" />
+     	<parameter name="margin" value="Mirrored" />	   	    	       	 
+     	<parameter name="test_filename" value="MicrosoftWord2016_Portrait_MultiPage_TestFile.docx" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintMsWord"/>
+    </classes>
+  </test> 
+
+ 
+<!-- ********************************************** END: PRINTING MSWORD TEST FILE *********************************************************** --> 
+  
+ 
+ 
+<!-- ********************************************** START: PRINTING NOTEPAD TEST FILE *********************************************************** -->
+  
+
+  <test verbose="2" name="Test-01 : Notepad Duplex Short Edge Color - Device Under test  => Printer Under Test - ipp: HP LaserJet M605 [04F7AB]">     
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Flip on Short Edge" />
+     	<parameter name="color_optn" value="Color" />
+     	<!-- <parameter name="prnt_quality" value="Draft" /> -->
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+
+
+    <test verbose="2" name="Test-02 : Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
+    
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="duplex_optn" value="Flip on Long Edge" />
+     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Better" />
+     	<parameter name="paper_size" value="Legal" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+
+
+
+
+    <test verbose="2" name="Test-03 : Notepad Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY 7640 series [CCF025])">
+    
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Flip on Short Edge" />
+     	<parameter name="color_optn" value="Color" />
+     	<parameter name="prnt_quality" value="Best" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+
+
+
+
+    <test verbose="2" name="Test-04 : Notepad Simplex Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Pro MFP 772-222 [64425B])">
+    
+		<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="None" />
+     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Draft" />
+		<parameter name="paper_size" value="A4" />
+		<parameter name="test_filename" value="NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+   </test>
+  
+
+<!-- ********************************************** END: PRINTING NOTEPAD TEST FILE *********************************************************** -->  
+
+
+<!-- ********************************************** START: PRINTING PHOTO TEST FILE *********************************************************** -->
+  
+   <test verbose="2" name="Test-01 : Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+     	<parameter name="test_filename" value="Rose_Portrait.jpg" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="paper_size" value="Letter" />
+		<parameter name="photo_size" value="4 x 6 in." />
+		<parameter name="photo_fit" value="Fill page" />
+		<parameter name="page_margins" value="Normal" />
+		<parameter name="color_optn" value="Monochrome" />
+		<parameter name="duplex_optn" value="Longedge" />
+		<parameter name="borderless" value="On" />
+		<parameter name="paper_tray" value="Auto select" />
+		<parameter name="paper_type" value="Plain Paper" />
+		<parameter name="output_qlty" value="High quality" />
+		<parameter name="stapling_optn" value="Top left" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromPhotos"/>
+    </classes>
+  </test>
+ 
+  <test verbose="2" name="Test-02 : Printing Test from Photos - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP ENVY 7640 series [4FA898])">
+
+       	<parameter name="test_filename" value="Tiger_Portrait.jpg" />
+     	<parameter name="copies" value="1" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="photo_size" value="5 x 7 in." />
+		<parameter name="photo_fit" value="Shrink to fit" />
+		<parameter name="page_margins" value="Normal" />
+		<parameter name="color_optn" value="Monochrome" />
+		<parameter name="duplex_optn" value="Shortedge" />
+		<parameter name="borderless" value="Off" />
+		<parameter name="paper_tray" value="Photo" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromPhotos"/>
+    </classes>
+  </test>
+ 
+
+<!-- ********************************************** END: PRINTING PHOTO TEST FILE *********************************************************** -->
+  </suite>
+  
+   
+ 
