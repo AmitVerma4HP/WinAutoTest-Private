@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -83,7 +85,7 @@ public class SettingBase extends Base {
 			return SettingSession;
 		  }
 	  
-	  
+	  	  
 	  // Method to discover target printer
 	  public static void FindPrinter(String ptr_name) throws InterruptedException {
 		  
@@ -100,8 +102,8 @@ public class SettingBase extends Base {
 				
 				// Store all printers in a List				
 				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
-				Assert.assertNotNull(PrinterListItem);
-				log.info("Total Printer Discovered => "+PrinterListItem.size());
+				Assert.assertNotNull(PrinterListItem);				
+				boolean printerAdded = false;
 				int printerFound=0;
 				int ippCount = 0; 
 				int i = 0;
@@ -118,14 +120,48 @@ public class SettingBase extends Base {
 				for(WebElement el : PrinterListItem) {																						
 						if (el.getText().contains(ptr_name)) 
 						{
-							printerFound = 1;											
+							printerFound = 1;						
+							printerAdded = IsPrinterAlreadyAdded(ptr_name);						
 							break;							
 						}						
 				}
 				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
 				log.info("Found Target Printer => "+ptr_name);
+				
+				// If printer is not added then Add it
+				if(!printerAdded) {
+					try {
+					SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
+					log.info("Clicked on Add device for Printer => "+ptr_name);
+					}catch (Exception e) {
+						log.info("Error in adding printer =>"+ptr_name);
+						throw new RuntimeException(e);
+					}
+				}
 		  
 	  }
+	  
+	  //if IPP printer was found then determine whether it is already added or new one
+	  public static boolean IsPrinterAlreadyAdded(String ptr_name) throws InterruptedException {	
+		  	Actions action = new Actions(SettingSession);
+		    action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));			    
+		    action.perform();
+		    log.info("Moved Mouse to Printer Name");
+		    SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+		    Thread.sleep(2000);
+			SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+			Thread.sleep(2000);
+			if(SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).isDisplayed()) {
+				log.info("This IPP Printer => "+ptr_name+" is already added");
+				return true;
+			}else
+				{						
+				log.info("This IPP Printer => "+ptr_name+" not added yet");
+				return false;
+				}	
+		  
+	  } 
+
 	  
 	
 
