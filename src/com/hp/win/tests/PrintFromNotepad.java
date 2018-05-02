@@ -2,16 +2,22 @@ package com.hp.win.tests;
 
 
 import java.io.IOException;
+import java.net.URL;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.NotepadBase;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
+
+import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.WindowsElement;
 
 
 @Listeners({ScreenshotUtility.class})
@@ -65,6 +71,32 @@ public class PrintFromNotepad extends NotepadBase{
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
 	    
+	    // Get the Notepad handle so that we can switch back to the app and close it
+        try {
+            
+            DesktopSession = Base.GetDesktopSession(device_name);
+            
+            //Get handle to Notepad window
+            WebElement notepadWindow = DesktopSession.findElementByClassName("Notepad");
+            String nativeWindowHandle = notepadWindow.getAttribute("NativeWindowHandle");
+            int notepadWindowHandle = Integer.parseInt(nativeWindowHandle);
+            log.debug("int value:" + nativeWindowHandle);
+            String notepadTopWindowHandle  = hex.concat(Integer.toHexString(notepadWindowHandle));
+            log.debug("Hex Value:" + notepadTopWindowHandle);
+
+            // Create a NotepadSession by attaching to an existing application top level window handle
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability("appTopLevelWindow", notepadTopWindowHandle);
+            capabilities.setCapability("platformName", "Windows");
+            capabilities.setCapability("deviceName", device_name);
+            NotepadSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+            }catch(Exception e){
+                e.printStackTrace();
+                log.info("Error getting Notepad session");
+                throw new RuntimeException(e);
+                }
+        log.info("Notepad session created successfully");
+	    
 	}
 
     
@@ -73,7 +105,6 @@ public class PrintFromNotepad extends NotepadBase{
 	public static void TearDown() throws NoSuchSessionException, IOException, InterruptedException
 	{	        
 
-        // Leaving this here just in case it is necessary - EMC
 	    try {
 	        NotepadSession.close();
 	        NotepadSession.quit();
@@ -83,6 +114,7 @@ public class PrintFromNotepad extends NotepadBase{
 	    }
 
 	    try {
+	        DesktopSession.close();
 	        DesktopSession.quit();
 	    } catch (Exception e)
 	    {
@@ -90,14 +122,15 @@ public class PrintFromNotepad extends NotepadBase{
 	    }
 
 	    try {
+	        PrintQueueSession.close();
 	        PrintQueueSession.quit();
 	    } catch (Exception e)
 	    {
 	        log.info("PrintQueueSession has already been terminated.");
 	    }
 
-      //Stop PrintTrace log capturing.
-    	PrintTraceCapture.StopLogCollection(currentClass);	
+	    //Stop PrintTrace log capturing.
+	    PrintTraceCapture.StopLogCollection(currentClass);	
 
 	}
 
