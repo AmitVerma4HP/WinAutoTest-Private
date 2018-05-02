@@ -130,5 +130,34 @@ public class Base {
 	    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
 		    log.info("Opened printer queue is correct for the printer => "+ptr_name);
 		}
+		
+		
+	      // Method to switch to a new app window
+        public static void BringWindowToFront(String device_name, WindowsDriver session) throws MalformedURLException {
+            try {
+            
+                DesktopSession = Base.GetDesktopSession(device_name);
+                
+                //Get handle to PrinterQueue window
+                WebElement sessionWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
+                String nativeWindowHandle = sessionWindow.getAttribute("NativeWindowHandle");
+                int sessionWindowHandle = Integer.parseInt(nativeWindowHandle);
+                log.debug("int value:" + nativeWindowHandle);
+                String sessionTopWindowHandle  = hex.concat(Integer.toHexString(sessionWindowHandle));
+                log.debug("Hex Value:" + sessionTopWindowHandle);
+    
+                // Create an app session by attaching to an existing application top level window handle
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setCapability("appTopLevelWindow", sessionTopWindowHandle);
+                capabilities.setCapability("platformName", "Windows");
+                capabilities.setCapability("deviceName", device_name);
+                session = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    log.info("Error getting session window handle");
+                    throw new RuntimeException(e);
+                    }
+            log.info("Successfully switched to different window.");
+        }
 	
 }

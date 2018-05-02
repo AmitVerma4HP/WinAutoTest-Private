@@ -18,6 +18,7 @@ import com.hp.win.utility.ScreenshotUtility;
 public class PrintFromOneNote extends OneNoteBase{
 	private static final Logger log = LogManager.getLogger(PrintFromOneNote.class);
 	private static String currentClass;
+	private static String device_under_test; // Use this parameter for BringWindowToFront() method when necessary
 	
 	
     @BeforeClass
@@ -25,7 +26,8 @@ public class PrintFromOneNote extends OneNoteBase{
     public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
 
         currentClass = PrintFromOneNote.class.getSimpleName();
-    
+        device_under_test = device_name;
+        
         //Start PrintTrace log capturing 
         PrintTraceCapture.StartLogCollection(currentClass); 
         OneNoteSession = OneNoteBase.OpenOneNoteApp(device_name, test_filename);
@@ -39,21 +41,33 @@ public class PrintFromOneNote extends OneNoteBase{
     @Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "device_name", "test_filename" })
     public void PrintOneNote(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException
     {   
-        // Method to Print Notepad File to Printer Under Test
+        // Method to Print OneNote File to Printer Under Test
         //PrintOneNoteFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, device_name);
         OneNoteBase.PrintOneNoteFile(ptr_name, test_filename, device_name);
+        
     }
     
     
-    @AfterClass
+    @AfterClass(alwaysRun=true)
     public static void TearDown() throws NoSuchSessionException, IOException, InterruptedException
     {           
-
+        
+        log.info("Closing OneNote session...");
         try {
+            OneNoteSession.close();
             OneNoteSession.quit();
+            log.info("Successfully closed OneNote.");
         } catch (Exception e)
         {
-            log.info("NotepadSession has already been terminated.");
+            log.info("Couldn't close OneNote immediately. Going to grab the window handle...");
+            Base.BringWindowToFront(device_under_test, OneNoteSession);
+            try {
+                OneNoteSession.close();
+                OneNoteSession.quit();
+                log.info("Successfully closed OneNote.");
+            } catch(Exception e1) {
+                log.info("OneNoteSession has already been terminated.");
+            }
         }
 
 /*        try {
@@ -61,9 +75,9 @@ public class PrintFromOneNote extends OneNoteBase{
         } catch (Exception e)
         {
             log.info("DesktopSession has already been terminated.");
-        }
+        }*/
 
-        try {
+/*        try {
             PrintQueueSession.quit();
         } catch (Exception e)
         {
