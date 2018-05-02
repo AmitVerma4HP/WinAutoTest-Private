@@ -51,9 +51,9 @@ public class DiscoverPrinterInSettings extends SettingBase {
 		// Method to Discover Printer Under Test		
 		@Test
 		@Parameters({"ptr_name"})
-	    public void DiscoverPrinter(String ptr_name) throws InterruptedException, IOException
+	    public void DiscoverAdd_Printer(String ptr_name) throws InterruptedException, IOException
 	    {   
-			SettingBase.FindPrinter(ptr_name);
+			SettingBase.DiscoverAddPrinter(ptr_name);
 								
 	    }
 			

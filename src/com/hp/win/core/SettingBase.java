@@ -87,8 +87,11 @@ public class SettingBase extends Base {
 	  
 	  	  
 	  // Method to discover target printer
-	  public static void FindPrinter(String ptr_name) throws InterruptedException {
+	  public static void DiscoverAddPrinter(String ptr_name) throws InterruptedException {
 		  
+		  	// If printer does not exists already then discover and add it
+		  	if (!IsPrinterAlreadyAdded(ptr_name)) {
+		  	log.info("Printer does not exists already so going for discovering & add");		  	
 		  	SettingSession.findElementByName("Add a printer or scanner").click();
 			Thread.sleep(1000);
 			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
@@ -120,26 +123,46 @@ public class SettingBase extends Base {
 				for(WebElement el : PrinterListItem) {																						
 						if (el.getText().contains(ptr_name)) 
 						{
-							printerFound = 1;						
-							printerAdded = IsPrinterAlreadyAdded(ptr_name);						
+							printerFound = 1;											
 							break;							
 						}						
 				}
 				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
-				log.info("Found Target Printer => "+ptr_name);
+				log.info("Found Target Printer => "+ptr_name);				
 				
-				// If printer is not added then Add it
-				if(!printerAdded) {
-					try {
-					SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
-					log.info("Clicked on Add device for Printer => "+ptr_name);
-					}catch (Exception e) {
-						log.info("Error in adding printer =>"+ptr_name);
-						throw new RuntimeException(e);
-					}
+				if(AddPrinter(ptr_name)) {
+					log.info("Printer added successfully");
+				} else {
+					log.info("Printer could not be added");
 				}
+					
+			} else {
+				log.info("Printer you are looking for was already added previously so SKIPPING Add Printer");
+			}
 		  
 	  }
+	  
+	  
+	  // Add Printer from discovered printer list
+	  public static boolean AddPrinter(String ptr_name) {
+			
+		    boolean printerAdded = false;
+		    // Scroll to the printer
+		    
+		    //Click on Add Device to Add Discovered Printer
+			try {
+			SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
+			log.info("Clicked on Add device for Printer => "+ptr_name);
+			printerAdded = true;
+			}catch (Exception e) {
+				log.info("Error in adding printer =>"+ptr_name);
+				throw new RuntimeException(e);
+			}
+			
+			//Check successful addition and then change printerAdd = 1
+			return printerAdded; 
+	  }
+	  
 	  
 	  //if IPP printer was found then determine whether it is already added or new one
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name) throws InterruptedException {	
@@ -155,18 +178,45 @@ public class SettingBase extends Base {
 		  	do
 		  	{
 		  	 SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-		  	 SettingSession.getKeyboard().releaseKey(Keys.ARROW_DOWN);
+		  	 //SettingSession.getKeyboard().releaseKey(Keys.ARROW_DOWN);
 		  	 log.info("Printer =>"+ptr_name+" Not Visible So Scrolling Down");
 		  	 Thread.sleep(1000);
 		  	}while(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed());
 		    //Its good to move little down in order to have printer's child buttons to be visible
 		  	SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-		    Thread.sleep(2000);
-			SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
-			//Thread.sleep(2000);
-			//SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-			Thread.sleep(2000);
+		    Thread.sleep(2000);	
 			
+			//Better logic could be just see if printer is visible in already added printer list
+			// Store all printers in a List				
+			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+			Assert.assertNotNull(PrinterListItem);				
+			boolean printerExists=false;
+			int ippExistingCount = 0; 
+			int i = 0;
+			for(WebElement el : PrinterListItem) {
+				if(el.getText().contains("ipp:")) {
+					ippExistingCount++;
+					i++;
+					log.info("Already Added IPP Printer "+i+" => "+el.getText());
+				}
+			}
+			log.info("Total Added IPP Printers Exists => "+ippExistingCount);
+			
+			
+			for(WebElement el : PrinterListItem) {																						
+					if (el.getText().contains(ptr_name)) 
+					{
+						printerExists = true;
+						break;							
+					}						
+			}
+			
+			return printerExists;
+			
+			
+			//Older logic to determine if printer was already added
+			
+			/*
 			if(SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).isDisplayed()) {
 				log.info("This IPP Printer => "+ptr_name+" is already added");
 				return true;
@@ -175,7 +225,7 @@ public class SettingBase extends Base {
 				log.info("This IPP Printer => "+ptr_name+" not added yet");
 				return false;
 				}	
-		  
+		  */
 	  } 
 
 	  
