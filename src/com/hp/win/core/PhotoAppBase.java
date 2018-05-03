@@ -483,4 +483,10 @@ public class PhotoAppBase extends Base {
 			log.info("Desired Photo Stapling Option => " + SelectStaplingOption_Photos.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
+
+
+	public static Object OpenEdgeApp(String device_name, String web_url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
