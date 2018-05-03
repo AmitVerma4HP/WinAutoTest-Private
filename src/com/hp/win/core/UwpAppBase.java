@@ -22,6 +22,7 @@ import io.appium.java_client.windows.WindowsElement;
 public class UwpAppBase extends Base {
 		private static final Logger log = LogManager.getLogger(UwpAppBase.class);
 		public static RemoteWebDriver Session = null;
+		public static RemoteWebDriver WindowsAddSession = null;
 				
 		
 	// Method to open Photos test file
@@ -43,7 +44,34 @@ public class UwpAppBase extends Base {
 			log.info("Error opening Photos app");
 			throw new RuntimeException(e);
 		}
+		
+		// Adding the Test Folder to the Photos app
+		Session.findElementByName("Import").click();
+		Thread.sleep(1000);
+		
+		Session.findElementByName("From a folder").click();
+		Thread.sleep(2000);
+		
+		log.info("Opening WindowsAddSession...");
+		WindowsAddSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(WindowsAddSession);
 				
+        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
+        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
+        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
+		Thread.sleep(1000);
+
+		WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
+		Thread.sleep(1000);
+		log.info("Added the Test Folder to the Photos app successfully");
+		
+		 try {
+			 WindowsAddSession.quit();
+            log.info("Closed WindowsAddSession...");
+        } catch (Exception e) {
+            log.info("WindowsAddSession already terminated.");
+        }
+		
 		log.info("Opened Session successfully");
 		return Session;
 
