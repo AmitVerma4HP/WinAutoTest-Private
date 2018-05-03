@@ -26,7 +26,7 @@ public class UwpAppBase extends Base {
 		
 	// Method to open Photos test file
 	public static RemoteWebDriver OpenPhotosFile(String device_name, String test_filename)
-			throws MalformedURLException {
+			throws MalformedURLException, InterruptedException {
 
 		try {
 			capabilities = new DesiredCapabilities();
@@ -39,17 +39,11 @@ public class UwpAppBase extends Base {
 			Assert.assertNotNull(Session);
 			Session.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.info("Error opening Photos app");
+			throw new RuntimeException(e);
 		}
-
-	/*	// Adding the Test Folder to the photos App
-			Session.findElementByName("Import").click();
-			Session.findElementByXPath("//MenuFlyoutItem[starts-with(@Name, \"From a folder\")]").click();
-			log.info("Clicked on Folder Menu Successfully in PhotoApp");
-			Thread.sleep(2000);
-*/		
-		
-		
+				
 		log.info("Opened Session successfully");
 		return Session;
 

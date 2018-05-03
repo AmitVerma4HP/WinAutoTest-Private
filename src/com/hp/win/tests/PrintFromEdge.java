@@ -107,13 +107,6 @@ import java.io.IOException;
 		int MoreSettings = UwpAppBase.OpenMoreSettings();
 		if	(MoreSettings == 1){	
 			
-			//Select Desired Paper Size Option
-			if (MsEdgeSession.findElementsByName("Paper size").size()!=0){
-				UwpAppBase.SelectPaperSize_Uwp(MsEdgeSession,paper_size);
-			}else{
-				log.info("The desired Paper Size feature is not supported by the printer ");
-			}
-			
 			//Select Desired Duplex Option.			
 			if (MsEdgeSession.findElementsByName("Duplex printing").size()!=0){
 				UwpAppBase.SelectDuplexOption_Uwp(MsEdgeSession,duplex_optn);
@@ -121,6 +114,20 @@ import java.io.IOException;
 				log.info("The desired Duplexing feature is not supported by the printer ");
 			}
 			
+			//Select Desired Collation Option.			
+			if (MsEdgeSession.findElementsByName("Collation").size()!=0){
+				UwpAppBase.SelectCollation_Uwp(MsEdgeSession,collation_optn);
+			}else{
+				log.info("The desired Collation feature is not supported by the printer ");
+			}
+			
+			//Select Desired Paper Size Option
+			if (MsEdgeSession.findElementsByName("Paper size").size()!=0){
+				UwpAppBase.SelectPaperSize_Uwp(MsEdgeSession,paper_size);
+			}else{
+				log.info("The desired Paper Size feature is not supported by the printer ");
+			}
+						
 			//Select Desired Paper Type Option.			
 			if (MsEdgeSession.findElementsByName("Paper type").size()!=0){
 				UwpAppBase.SelectPaperType_Uwp(MsEdgeSession,paper_type);
@@ -155,14 +162,7 @@ import java.io.IOException;
 			}else{
 				log.info("The desired Stapling feature is not supported by the printer ");
 			}
-			
-			//Select Desired Collation Option.			
-			if (MsEdgeSession.findElementsByName("Collation").size()!=0){
-				UwpAppBase.SelectCollation_Uwp(MsEdgeSession,collation_optn);
-			}else{
-				log.info("The desired Collation feature is not supported by the printer ");
-			}
-			
+						
 			//Closing more settings after accessing more printing options.
 			UwpAppBase.CloseMoreSettings();
 			
@@ -192,9 +192,9 @@ import java.io.IOException;
 	    log.info("Expected queued job should be => "+web_url);
 	    //Validate Print Job Queued up
 	    try {
-	    	String printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toLowerCase().toString();
-	    	log.info(printJob);
-	    	Assert.assertTrue(web_url.contains(printJob));
+	    	String[] printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toLowerCase().toString().split(" ");
+	    	log.info(printJob[0]);
+	    	Assert.assertTrue(web_url.contains(printJob[0]));
 	    	//Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(expectedPrintjob));
 	    }catch(NoSuchElementException e) {
 	    	log.info("Expected Print job is not found in print queue");
