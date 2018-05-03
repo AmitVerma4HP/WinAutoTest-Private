@@ -77,9 +77,8 @@ public class ScreenshotUtility implements ITestListener {
 		log.info("print:" + passfailMethod);
 
 		// Conditions to capture the appropriate Session to use in capturing the screenshot.
-		if (passfailMethod.contains("Photos")) {
-			//curSession = Base.PhotosSession;
-			curSession = PhotoAppBase.PhotosSession;
+		if (passfailMethod.contains("Photos") || passfailMethod.contains("Edge")) {
+			curSession = UwpAppBase.Session;
 		} else if (passfailMethod.contains("MsWord")) {
 			curSession = MsWordAppBase.MsWordSession;
 		} else if (passfailMethod.contains("Note")) {
