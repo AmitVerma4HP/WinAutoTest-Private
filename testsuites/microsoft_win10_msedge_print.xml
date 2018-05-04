@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Edge Test suite - Printing Tests">
+    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
+  		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
  
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
@@ -30,8 +32,6 @@
 <!-- **************************************** PRINTING TESTS ******************************************************** -->
   
    <test verbose="2" name="Test-01 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
-    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
-  		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
      	<parameter name="web_url" value="www.google.com" />
      	<parameter name="copies" value="2" />
      	<parameter name="orientation" value="Landscape" />
@@ -55,8 +55,6 @@
     </test>
  
      <test verbose="2" name="Test-02 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
-    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
-  		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
      	<parameter name="web_url" value="www.cnn.com" />
      	<parameter name="copies" value="1" />
      	<parameter name="orientation" value="Portrait" />
