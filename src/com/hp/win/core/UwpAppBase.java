@@ -40,25 +40,38 @@ public class UwpAppBase extends Base {
 			throw new RuntimeException(e);
 		}
 		
-		// Adding the Test Folder to the Photos app
-		Session.findElementByName("Import").click();
+		// Search for Saved Pictures folder.
+		Session.findElementByName("Search").sendKeys("testfiles");
 		Thread.sleep(1000);
 		
-		Session.findElementByName("From a folder").click();
-		Thread.sleep(1000);
-		
-		log.info("Opening WindowsAddSession...");
-		WindowsAddSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(WindowsAddSession);
-				
-        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
-        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
-        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
-		Thread.sleep(1000);
-
-		WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
-		Thread.sleep(1000);
-		log.info("Added the Test Folder to the Photos app successfully");
+		if(Session.findElementsByName("testfiles").size()==0)
+		{
+			// Adding the Test Folder to the Photos app
+			Session.findElementByName("Import").click();
+			Thread.sleep(1000);
+			
+			Session.findElementByName("From a folder").click();
+			Thread.sleep(1000);
+			
+			log.info("Opening WindowsAddSession...");
+			WindowsAddSession = GetDesktopSession(device_name);
+	        Assert.assertNotNull(WindowsAddSession);
+					
+	        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
+	        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
+	        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
+			Thread.sleep(1000);
+	
+			WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
+			Thread.sleep(1000);
+			log.info("Added Test Folder => \"testfiles\" to the Photos app successfully");
+			
+			Session.findElementByName("Search").clear();
+		}else{
+			log.info("Test Folder => \"testfiles\" has already been imported");
+			Session.findElementByName("Search").clear();
+			
+		}
 		
 		try {
 			WindowsAddSession.quit();
