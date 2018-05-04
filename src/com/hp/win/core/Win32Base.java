@@ -32,7 +32,8 @@ public class Win32Base extends Base {
 
     }
    
-    public static boolean ConfirmGroupExists_Win32(RemoteWebDriver session, String groupName){
+    @SuppressWarnings("unused")
+	public static boolean ConfirmGroupExists_Win32(RemoteWebDriver session, String groupName){
         
         boolean exists = false;
         

@@ -3,13 +3,11 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -24,7 +22,8 @@ import io.appium.java_client.windows.WindowsDriver;
 public class NotepadBase extends Win32Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
-    public static WindowsDriver NotepadSession = null;
+    @SuppressWarnings("rawtypes")
+	public static WindowsDriver NotepadSession = null;
     public static RemoteWebDriver PrintDialogSession = null;
     public static RemoteWebDriver PreferencesSession = null;
     public static RemoteWebDriver AdvancedSession = null;
@@ -174,7 +173,8 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to open Notepad test file
-    public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
+    @SuppressWarnings("rawtypes")
+	public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 
         try {
             capabilities = new DesiredCapabilities();
