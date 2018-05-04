@@ -132,14 +132,18 @@ public class Base {
 		}
 		
 		
-	      // Method to switch to a new app window
+	    // Method to switch to a new app window
+		// NOTE THIS HAS BEEN TEMPORARILY HARD CODED FOR ONENOTE
+		// I tried moving it back to OneNoteBase.java and the test kept failing
+		// This will be resolved in the next iteration
         public static void BringWindowToFront(String device_name, WindowsDriver session) throws MalformedURLException {
             try {
             
                 DesktopSession = Base.GetDesktopSession(device_name);
                 
                 //Get handle to PrinterQueue window
-                WebElement sessionWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
+                WebElement sessionWindow = DesktopSession.findElementByClassName("Framework::CFrame");
+                log.info("Found window '" + sessionWindow.getAttribute("Name").toString() + "'.");
                 String nativeWindowHandle = sessionWindow.getAttribute("NativeWindowHandle");
                 int sessionWindowHandle = Integer.parseInt(nativeWindowHandle);
                 log.debug("int value:" + nativeWindowHandle);
