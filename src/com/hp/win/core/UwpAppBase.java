@@ -665,7 +665,7 @@ public class UwpAppBase extends Base {
 	 // Method to select desired Collation option  
 	 public static void SelectCollation_Uwp(RemoteWebDriver Session, String collation) throws MalformedURLException, InterruptedException {
 	 		 
-	 	WebElement CollationListComboBox = Session.findElementByName("Collation");		 		
+	 	WebElement CollationListComboBox = Session.findElementByXPath("//ComboBox[@Name = 'Collation']"); 		
         Assert.assertNotNull(CollationListComboBox);           
         if(!CollationListComboBox.getText().toString().contentEquals(collation)) 
         {
