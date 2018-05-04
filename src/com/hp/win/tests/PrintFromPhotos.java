@@ -48,7 +48,12 @@ import java.io.IOException;
 		UwpAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
 
 		//Enter desired Copies value.
-		UwpAppBase.SelectCopies_Uwp(PhotosSession,copies);
+		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Copies']").size()!=0){
+			UwpAppBase.SelectCopies_Uwp(PhotosSession,copies);
+		}else{
+			log.info("The desired Copies selection feature is not supported by the printer ");
+		}
+	
 		
 		//Select Desired Orientation Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){

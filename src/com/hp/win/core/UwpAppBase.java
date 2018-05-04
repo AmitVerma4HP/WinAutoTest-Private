@@ -3,7 +3,6 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,15 +13,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
-import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
-
-
 
 public class UwpAppBase extends Base {
-		private static final Logger log = LogManager.getLogger(UwpAppBase.class);
-		public static RemoteWebDriver Session = null;
-		public static RemoteWebDriver WindowsAddSession = null;
+	private static final Logger log = LogManager.getLogger(UwpAppBase.class);
+	public static RemoteWebDriver Session = null;
+	public static RemoteWebDriver WindowsAddSession = null;
 				
 		
 	// Method to open Photos test file
@@ -50,7 +45,7 @@ public class UwpAppBase extends Base {
 		Thread.sleep(1000);
 		
 		Session.findElementByName("From a folder").click();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		
 		log.info("Opening WindowsAddSession...");
 		WindowsAddSession = GetDesktopSession(device_name);
@@ -65,11 +60,11 @@ public class UwpAppBase extends Base {
 		Thread.sleep(1000);
 		log.info("Added the Test Folder to the Photos app successfully");
 		
-		 try {
-			 WindowsAddSession.quit();
-            log.info("Closed WindowsAddSession...");
+		try {
+			WindowsAddSession.quit();
+            log.debug("Closed WindowsAddSession...");
         } catch (Exception e) {
-            log.info("WindowsAddSession already terminated.");
+        	log.info("WindowsAddSession already terminated.");
         }
 		
 		log.info("Opened Session successfully");
@@ -80,11 +75,7 @@ public class UwpAppBase extends Base {
 	
 	// Method to print from Photos
 	public static void PrintPhoto(String ptr_name, String test_filename) throws InterruptedException {
-		// Go to Folders Tab
-		Session.findElementByName("Folders").click();
-		log.info("Clicked on Folder Menu Successfully in PhotoApp");
-		Thread.sleep(2000);
-
+			
 		// Search for Saved Pictures folder.
 		Session.findElementByName("Search").sendKeys("testfiles");
 		log.info("Searching \"Test Folder - testfiles\"");
@@ -148,7 +139,7 @@ public class UwpAppBase extends Base {
 		// Tap on Print icon
 		Session.findElementByName("Print").click();
 		log.info("Clicked on Print button Successfully to launch the print options screen");
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 	}
 
 	

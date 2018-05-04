@@ -66,7 +66,12 @@ import java.io.IOException;
 		}
 		
 		//Enter desired Copies value.
-		UwpAppBase.SelectCopies_Uwp(MsEdgeSession,copies);
+		if (MsEdgeSession.findElementsByName("Copies").size()!=0){
+			UwpAppBase.SelectCopies_Uwp(MsEdgeSession,copies);
+		}else{
+			log.info("The desired Copies selection feature is not supported by the printer ");
+		}
+		
 					
 		//Select Desired Pages(page range) Option.
 		if (MsEdgeSession.findElementsByName("Pages").size()!=0){
