@@ -87,8 +87,8 @@ public class SettingBase extends Base {
 	  
 	  	  
 	  // Method to discover target printer
-	  public static void DiscoverAddPrinter(String ptr_name) throws InterruptedException {
-		  
+	  public static boolean DiscoverPrinter(String ptr_name) throws InterruptedException {
+		  	boolean printerFound=false;
 		  	// If printer does not exists already then discover and add it
 		  	if (!IsPrinterAlreadyAdded(ptr_name)) {
 		  	log.info("Printer does not exists already so going for discovering & add");		  	
@@ -105,9 +105,7 @@ public class SettingBase extends Base {
 				
 				// Store all printers in a List				
 				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
-				Assert.assertNotNull(PrinterListItem);				
-				boolean printerAdded = false;
-				int printerFound=0;
+				Assert.assertNotNull(PrinterListItem);					
 				int ippCount = 0; 
 				int i = 0;
 				for(WebElement el : PrinterListItem) {
@@ -123,30 +121,26 @@ public class SettingBase extends Base {
 				for(WebElement el : PrinterListItem) {																						
 						if (el.getText().contains(ptr_name)) 
 						{
-							printerFound = 1;											
+							printerFound = true;											
 							break;							
 						}						
 				}
 				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
-				log.info("Found Target Printer => "+ptr_name);				
-				
-				if(AddPrinter(ptr_name)) {
-					log.info("Printer added successfully");
-				} else {
-					log.info("Printer could not be added");
-				}
-					
+				log.info("Found Target Printer => "+ptr_name);					
 			} else {
-				log.info("Printer you are looking for was already added previously so SKIPPING Add Printer");
+				log.info("Printer you are looking for was already added previously so SKIPPING Printer Discovery");
+				// Can also go for remove printer and then discover
 			}
-		  
+		  	return printerFound;
 	  }
 	  
 	  
-	  // Add Printer from discovered printer list
-	  public static boolean AddPrinter(String ptr_name) {
-			
-		    boolean printerAdded = false;
+	  // Add Printer from discovered printer list - 1) IsAlreadyAdded if not then Discover and Add
+	  public static boolean AddPrinter(String ptr_name) throws InterruptedException {
+		  	boolean printerAdded = false;
+		  	//if printer discovery is successful then add it
+		  	if(DiscoverPrinter(ptr_name)) {
+		    
 		    // Scroll to the printer
 		    
 		    //Click on Add Device to Add Discovered Printer
@@ -160,7 +154,10 @@ public class SettingBase extends Base {
 			}
 			
 			//Check successful addition and then change printerAdd = 1
-			return printerAdded; 
+			 
+		  	}
+			
+		  	return printerAdded;
 	  }
 	  
 	  
@@ -175,17 +172,7 @@ public class SettingBase extends Base {
 		    action.perform();
 		    log.info("Moved Mouse to Printer Name => "+ptr_name);
 		    */
-		  	do
-		  	{
-		  	 SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-		  	 //SettingSession.getKeyboard().releaseKey(Keys.ARROW_DOWN);
-		  	 log.info("Printer =>"+ptr_name+" Not Visible So Scrolling Down");
-		  	 Thread.sleep(1000);
-		  	}while(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed());
-		    //Its good to move little down in order to have printer's child buttons to be visible
-		  	SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-		    Thread.sleep(2000);	
-			
+				
 			//Better logic could be just see if printer is visible in already added printer list
 			// Store all printers in a List				
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");

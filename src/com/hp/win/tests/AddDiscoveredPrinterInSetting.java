@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -52,9 +51,9 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 		// Method to Discover Printer Under Test		
 		@Test
 		@Parameters({"ptr_name"})
-	    public void DiscoverPrinter(String ptr_name) throws InterruptedException, IOException
+	    public void Discover_Printer(String ptr_name) throws InterruptedException, IOException
 	    {   
-			SettingBase.FindPrinter(ptr_name);
+			SettingBase.DiscoverPrinter(ptr_name);
 								
 	    }
 		
@@ -62,21 +61,11 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 		// Method to Add Printer (if not already added) Under Test
 		@Test(dependsOnMethods={"DiscoverPrinter"})
 		@Parameters({"ptr_name"})
-	    public void AddPrinter(String ptr_name) throws InterruptedException, IOException
+	    public void Add_Printer(String ptr_name) throws InterruptedException, IOException
 	    {   
-			Thread.sleep(1000);
-			SettingSession.findElementByXPath("//*[contains(@Name,'"+ptr_name+"')]").click();
-			Thread.sleep(1000);
 			
-			try {
-				// if Add device option is seen that means printer is not already added else printer is already added
-				SettingSession.findElementByName("Add device").click();
-				log.info("Clicked on \"Add device\"");
-				}catch(NoSuchElementException e) {
-					log.info("\"Add device\" option not found so looks like printer is already added so just continue the test");
-				}
-			
-			}
+			SettingBase.AddPrinter(ptr_name);
+	    }
 			
 			
 			
