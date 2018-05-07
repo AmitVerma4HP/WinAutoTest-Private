@@ -31,15 +31,15 @@ public class PrintFromOneNote extends OneNoteBase{
 	
 	
     @BeforeClass
-    @Parameters({ "device_name", "ptr_name", "test_filename" })
-    public static void setup(String device_name, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
+    @Parameters({ "device_name", "oneNote2016_exe_loc", "ptr_name", "test_filename" })
+    public static void setup(String device_name, String oneNote2016_exe_loc, String ptr_name, @Optional("NotepadTestFile1.txt")String test_filename) throws InterruptedException, IOException {
 
         currentClass = PrintFromOneNote.class.getSimpleName();
         device_under_test = device_name;
         
         //Start PrintTrace log capturing 
         PrintTraceCapture.StartLogCollection(currentClass); 
-        OneNoteSession = OneNoteBase.OpenOneNoteApp(device_name, test_filename);
+        OneNoteSession = OneNoteBase.OpenOneNoteApp(device_name, oneNote2016_exe_loc, test_filename);
        
         Thread.sleep(1000);                         
                     
@@ -48,7 +48,7 @@ public class PrintFromOneNote extends OneNoteBase{
     
     @Test
     @Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "device_name", "test_notebook", "test_filename" })
-    public void PrintOneNote(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name, @Optional("Open Notebook.onetoc2")String test_notebook, @Optional("OneNoteTest2")String test_filename) throws InterruptedException, IOException
+    public void PrintOneNote(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name, @Optional("TestNotebook1.onetoc2")String test_notebook, @Optional("OneNoteTest1")String test_filename) throws InterruptedException, IOException
     {   
 
         // Method to Print OneNote File to Printer Under Test

@@ -2,6 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 OneNote 2016 Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+ 		<parameter name="oneNote2016_exe_loc" value="C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe" />
      	<!-- <parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> -->
      	<!-- <parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" /> -->
 		<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
@@ -19,8 +20,8 @@
  <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
  <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
  <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
- <!-- OPTIONAL	test_notebook  = <Full name of notebook to use in test>	 , DEFAULT = "Open Notebook.onetoc2"    -->
- <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "OneNoteTest2"    -->
+ <!-- OPTIONAL	test_notebook  = <Full name of notebook to use in test>	 , DEFAULT = "OneNoteTestNotebook1\TestNotebook1.onetoc2"    -->
+ <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "OneNoteTest1"    -->
  <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
 
  
@@ -29,76 +30,73 @@
 
 
 
-<!-- ************************* COMMENTED OUT: OJ 8600 on R12 ************************* -->
-    <test verbose="2" name="Test-01 : OneNote 2016 Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (See test parameters)">
+<!-- ************************* TEST 01 ************************* -->
+    <test verbose="2" name="Test-01 : OneNote 2016 Duplex Short Edge Color - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
 <!--      	<parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" /> -->
-<!--      	<parameter name="orientation" value="Portrait" />
+     	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Draft" />
-     	<parameter name="paper_size" value="Letter" /> -->
-     	<parameter name="test_filename" value="OneNoteTest2" />
-     	<parameter name="test_notebook" value="Open Notebook.onetoc2" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
   </test>
-<!-- ************************* COMMENTED OUT: OJ 8600 on R12 ************************* -->
+<!-- ************************* TEST 01 ************************* -->
   
   
-<!-- ************************* COMMENTED OUT: PageWide Color Flow 785 on R12 ************************* -->
-      <test verbose="2" name="Test-02 : OneNote 2016 Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (See test parameters)">
-<!--      	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
+<!-- ************************* TEST 02 ************************* -->
+<!--       <test verbose="2" name="Test-02 : OneNote 2016 Duplex Long Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
      	<parameter name="orientation" value="Landscape" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Better" />
-     	<parameter name="paper_size" value="Legal" /> -->
-     	<parameter name="test_filename" value="OneNoteTest2" />
-     	<parameter name="test_notebook" value="Open Notebook.onetoc2" />
+     	<parameter name="paper_size" value="Legal" />
+     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-  </test>
-<!-- ************************* COMMENTED OUT: PageWide Color Flow 785 on R12 ************************* -->
+  </test> -->
+<!-- ************************* TEST 02 ************************* -->
 
 
-<!-- ************************* COMMENTED OUT: ENVY 7640 on R12 ************************* -->
-        <test verbose="2" name="Test-03 : OneNote 2016 Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (See test parameters)">
-<!--      	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+<!-- ************************* TEST 03 ************************* -->
+<!--         <test verbose="2" name="Test-03 : OneNote 2016 Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Best" />
-     	<parameter name="paper_size" value="Letter" /> -->
-     	<parameter name="test_filename" value="OneNoteTest2" />
-     	<parameter name="test_notebook" value="Open Notebook.onetoc2" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-  </test>
-<!-- ************************* COMMENTED OUT: ENVY 7640 on R12 ************************* -->
+  </test> -->
+<!-- ************************* TEST 03 ************************* -->
 
 
-<!-- ************************* COMMENTED OUT: PageWide Pro MFP 772-777 on R12 ************************* -->  
-        <test verbose="2" name="Test-04 : OneNote 2016 Simplex Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (See test parameters)">
-<!--      	<parameter name="ptr_name" value="ipp: HP PageWide Pro MFP 772-777 [64425B]" />
+<!-- ************************* TEST 04 ************************* -->  
+<!--         <test verbose="2" name="Test-04 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="None" />
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Draft" />
-		<parameter name="paper_size" value="A4" /> -->
-		<parameter name="test_filename" value="OneNoteTest2" />
-		<parameter name="test_notebook" value="Open Notebook.onetoc2" />
+		<parameter name="paper_size" value="A4" />
+		<parameter name="test_filename" value="OneNoteTest1" />
+		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-   </test>
-<!-- ************************* COMMENTED OUT: PageWide Pro MFP 772-777 on R12 ************************* -->
+   </test> -->
+<!-- ************************* TEST 04 ************************* -->
 
 
 

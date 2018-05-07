@@ -34,11 +34,11 @@ public class OneNoteBase extends Win32Base {
     
 
     // Method to open OneNote app
-    public static WindowsDriver OpenOneNoteApp(String device_name, String test_notebook) throws MalformedURLException, InterruptedException, IOException {
+    public static WindowsDriver OpenOneNoteApp(String device_name, String oneNote2016_exe_loc, String test_notebook) throws MalformedURLException, InterruptedException, IOException {
            
         try {
             capabilities = new DesiredCapabilities();
-            capabilities.setCapability("app", "C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe");        
+            capabilities.setCapability("app", oneNote2016_exe_loc);
             capabilities.setCapability("platformName", "Windows");
             capabilities.setCapability("deviceName",device_name);
         
@@ -94,7 +94,7 @@ public class OneNoteBase extends Win32Base {
             }
         }
         
-/*        // Open Preferences window
+        // Open Preferences window
         ClickButton(PrintDialogSession, "Preferences");
 
         // A new desktop session must be created every time a dialog box is created or destroyed
@@ -113,16 +113,29 @@ public class OneNoteBase extends Win32Base {
         
         // Select Preferences on the Layout tab first
         ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
-        ChooseOrientation_Win32(PreferencesSession, orientation, device_name);*/
+        ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
 
-/*        // Select settings on Paper/Quality tab after the Layout tab
+        // Select settings on Paper/Quality tab after the Layout tab
         SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
         ChooseColorOrMono_Win32(PreferencesSession, color_optn);
         
-        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);*/
+        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
-/*        // Now open the Advanced settings
-                ClickButton(PreferencesSession, "Advanced...");
+        try {
+            PreferencesSession.quit();
+            log.info("Successfully quit PreferencesSession. Going to open a new session now.");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            log.info("Something else is wrong with PreferencesSession...");
+            throw new RuntimeException(e);
+        }
+        
+        PreferencesSession = Base.GetDesktopSession(device_name);
+        Assert.assertNotNull(PreferencesSession);
+        
+        // Now open the Advanced settings
+        ClickButton(PreferencesSession, "Advanced...");
         
         // Close the session for the Preferences dialog box
         try {
@@ -142,17 +155,8 @@ public class OneNoteBase extends Win32Base {
         
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "OK");
-        ClickButton(AdvancedSession, "Print");*/
-        
-/*        ClickButton(PreferencesSession, "OK");
-        ClickButton(PreferencesSession, "Print");
+        ClickButton(AdvancedSession, "Print");
 
-        try {
-            PreferencesSession.quit();
-            log.info("Closed PreferencesSession...");
-        } catch (Exception e) {
-            log.info("PreferencesSession already terminated.");
-        }*/
         
         OneNoteSession = (WindowsDriver) Base.GetDesktopSession(device_name);
         Assert.assertNotNull(OneNoteSession);
@@ -197,7 +201,8 @@ public class OneNoteBase extends Win32Base {
             log.info("Used keyboard shortcuts to edit address.");
             
             // Type in the path to the file and open the folder
-            FileBrowseSession.getKeyboard().sendKeys(testfiles_loc.concat("OneNoteTestNotebook"));
+            //FileBrowseSession.getKeyboard().sendKeys(testfiles_loc.concat("OneNoteTestNotebook"));
+            FileBrowseSession.getKeyboard().sendKeys(testfiles_loc);
             FileBrowseSession.getKeyboard().pressKey(Keys.ENTER);
             FileBrowseSession.getKeyboard().releaseKey(Keys.ENTER);
             log.info("Used keyboard to open file folder.");

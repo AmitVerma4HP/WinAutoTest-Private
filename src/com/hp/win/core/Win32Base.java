@@ -121,6 +121,7 @@ public class Win32Base extends Base {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
             } catch (Exception e) {
+                e.printStackTrace();
                 log.info("Couldn't click on '" + settingsSel + "' button.");
                 throw new RuntimeException(e);
             }
