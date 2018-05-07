@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 PDF via Edge Test suite - Printing Tests">
+ 
+<!-- Supported Test Parameters:  -->
+<!-- MUST          device_name 	= <Your Windows PC Name> -->
+<!-- MUST          ptr_name     = <Printer name as it shows in discovery-->
+<!-- MUST          web_url     	= <URL of the web page that is to be printed, e.g: www.cnn.com, www.foxnews.com -->
+<!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
+<!-- OPTIONAL      duplex_optn 	= <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
+<!-- OPTIONAL      orientation 	= <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
+<!-- OPTIONAL      photo_size 	= <Photo size list> , DEFAULT = "Full page" -->
+<!-- OPTIONAL      copies 		= <Any number between 1-32767> , DEFAULT = "1" -->
+<!-- OPTIONAL      photo_fit 	= <"Fill page","Shrink to fit"> , DEFAULT = "Fill page" -->
+<!-- OPTIONAL      borderless 	= <"On", "Off"> , DEFAULT = "On" -->
+<!-- OPTIONAL      page_margins = <"Normal", "Narrow", "Moderate", "Wide" > , DEFAULT = "Normal" -->
+<!-- OPTIONAL      color_optn 	= <"Color", "Monochrome"> , DEFAULT = "Color" -->
+<!-- OPTIONAL      paper_tray 	= <"Auto select", "Auto", "Tray 2", "Tray 1", "Main", "Photo"etc (Depending on printer)> , DEFAULT = "Auto select" -->
+<!-- OPTIONAL      paper_type 	= <"Plain Paper", "Photo paper"> , DEFAULT = "Plain Paper" -->
+<!-- OPTIONAL      output_qlty 	= <"Normal", "Draft", "High quality"> , DEFAULT = "Normal" -->
+<!-- OPTIONAL      stapling_optn= <"Staple", "Top left", "Top right"> , DEFAULT = "Staple" -->
+<!-- OPTIONAL      headerandfooter_optn = <"On", "Off"> , DEFAULT = "Off" -->
+<!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
+<!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
+
+<!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
+
+
+
+<!-- **************************************** PRINTING TESTS ******************************************************** -->
+  
+   <test verbose="2" name="Test-01 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
+  		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
+     	<parameter name="test_filename" value="File2.jpeg" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="paper_size" value="A4" />
+		<parameter name="page_margins" value="Moderate" />
+		<parameter name="color_optn" value="Monochrome" />
+		<parameter name="duplex_optn" value="Shortedge" />
+		<parameter name="borderless" value="On" />
+		<parameter name="paper_tray" value="Tray 1" />
+		<parameter name="paper_type" value="Photo Paper" />
+		<parameter name="output_qlty" value="Draft" />
+		<parameter name="stapling_optn" value="Top left" />
+		<parameter name="headerandfooter_optn" value="On" />
+		<parameter name="scale_optn" value="100%" />
+		<parameter name="page_range" value="1-2" />
+		<parameter name="collation_optn" value="Collated" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+    </classes>
+    </test>
+ 
+     <test verbose="2" name="Test-02 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
+  		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
+     	<parameter name="test_filename" value="File2.jpeg" />
+     	<parameter name="copies" value="1" />
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="paper_size" value="Letter" />
+		<parameter name="page_margins" value="Normal" />
+		<parameter name="color_optn" value="Color" />
+		<parameter name="duplex_optn" value="Longedgeedge" />
+		<parameter name="borderless" value="Off" />
+		<parameter name="paper_tray" value="Auto select" />
+		<parameter name="paper_type" value="Plain` Paper" />
+		<parameter name="output_qlty" value="Draft" />
+		<parameter name="stapling_optn" value="Top left" />
+		<parameter name="headerandfooter_optn" value="Off" />
+		<parameter name="scale_optn" value="Shrink to fit" />
+		<parameter name="page_range" value="2-4" />
+		<parameter name="collation_optn" value="Uncollated" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+    </classes>
+    </test>
+ 
+ <!-- **************************************** PRINTING TESTS ******************************************************** -->
+  
+  </suite>
+  
+   

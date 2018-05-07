@@ -6,49 +6,52 @@ import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
 import com.hp.win.core.UwpAppBase;
+import com.hp.win.core.UwpAppBase;
 import com.hp.win.utility.ScreenshotUtility;
+
+import io.appium.java_client.windows.WindowsDriver;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hp.win.utility.*;							
 
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
-	public class PrintFromEdge extends UwpAppBase {
-		private static final Logger log = LogManager.getLogger(PrintFromEdge.class);
+	public class PrintPdfFromEdge extends UwpAppBase {
+		private static final Logger log = LogManager.getLogger(PrintPdfFromEdge.class);
 		private static String currentClass;	
 		public static RemoteWebDriver MsEdgeSession = null;
 		public static String expectedPrintjob;
 		
 		@BeforeClass
-		@Parameters({ "device_name", "ptr_name", "web_url"})
-	    public static void setup(String device_name, String ptr_name, String web_url) throws InterruptedException, IOException { 
+		@Parameters({ "device_name", "ptr_name", "test_filename"})
+	    public static void setup(String device_name, String ptr_name, String test_filename) throws InterruptedException, IOException { 
 	       
-		currentClass = PrintFromEdge.class.getSimpleName();
+		currentClass = PrintPdfFromEdge.class.getSimpleName();
 				
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
-	    MsEdgeSession = EdgeAppBase.OpenEdgeApp(device_name, web_url);
+	    MsEdgeSession = EdgeAppBase.OpenPdfEdgeApp(device_name, test_filename);
 	    Thread.sleep(2000);
-	    
-	    String expectedPrintjob = MsEdgeSession.getTitle().toString();	
-	    log.info("Expected Print Job: " + expectedPrintjob);
+	  
 	    }
 	
 		
 	@Test
-	@Parameters({ "ptr_name", "web_url","copies","page_range","orientation","paper_size","page_margins","color_optn","duplex_optn","borderless","paper_tray","paper_type","output_qlty","stapling_optn","headerandfooter_optn","scale_optn","collation_optn"})
-    public void PrintEdge(String ptr_name, String web_url, @Optional("1")String copies,@Optional("All pages")String page_range, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Normal")String page_margins,  @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("On")String borderless,  @Optional("Auto select")String paper_tray, @Optional("Plain Paper")String paper_type, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("On")String headerandfooter_optn, @Optional("Shrink to fit")String scale_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "test_filename","copies","page_range","orientation","paper_size","page_margins","color_optn","duplex_optn","borderless","paper_tray","paper_type","output_qlty","stapling_optn","headerandfooter_optn","scale_optn","collation_optn"})
+    public void PrintEdge(String ptr_name, String test_filename, @Optional("1")String copies,@Optional("All pages")String page_range, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Normal")String page_margins,  @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("On")String borderless,  @Optional("Auto select")String paper_tray, @Optional("Plain Paper")String paper_type, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("On")String headerandfooter_optn, @Optional("Shrink to fit")String scale_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
     {
 		
 		// Method to Print Web page to Printer Under Test
-		EdgeAppBase.PrintEdge(ptr_name,web_url);
+		EdgeAppBase.PrintEdge(ptr_name, test_filename);
 		
 		// Method to select the desired printer.
 		UwpAppBase.SelectDesiredPrinter(MsEdgeSession, ptr_name);
@@ -180,8 +183,8 @@ import java.io.IOException;
  
 		
 	@Test(dependsOnMethods = { "PrintEdge" })
-	@Parameters({ "device_name", "ptr_name", "web_url"})
-	public void ValidatePrintQueue(String device_name, String ptr_name, String web_url) throws IOException, InterruptedException 
+	@Parameters({ "device_name", "ptr_name", "test_filename"})
+	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
 		// Open Print Queue
 		Base.OpenPrintQueue(ptr_name);
@@ -189,13 +192,12 @@ import java.io.IOException;
 		// Method to attach session to Printer Queue Window
 		Base.SwitchToPrinterQueue(device_name,ptr_name);
 		
-	    log.info("Expected queued job should be => "+web_url);
-	    //Validate Print Job Queued up
+		log.info("Expected queued job should be => "+test_filename);
+	    
+		 //Validate Print Job Queued up
 	    try {
-	    	String[] printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toLowerCase().toString().split(" ");
-	    	log.info(printJob[0]);
-	    	Assert.assertTrue(web_url.contains(printJob[0]));
-	    	//Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(expectedPrintjob));
+	    	//Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
+	    	Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains("PDF"));
 	    }catch(NoSuchElementException e) {
 	    	log.info("Expected Print job is not found in print queue");
 	     	throw new RuntimeException(e);
@@ -204,12 +206,12 @@ import java.io.IOException;
 	    	throw new RuntimeException(e);
 	    }
 	    
-	    log.info("Found correct job in print queue => "+web_url);
+	    //log.info("Found correct job in print queue => "+test_filename);
+	    log.info("Found PDF job in print queue");
 	    PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    
 	}
-
     
     @AfterClass(alwaysRun=true)
     public static void TearDown() throws IOException, InterruptedException 

@@ -4,6 +4,7 @@ package com.hp.win.tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.PhotoAppBase;
 import com.hp.win.core.UwpAppBase;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -30,7 +31,7 @@ import java.io.IOException;
 				
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
-	    PhotosSession = UwpAppBase.OpenPhotosFile(device_name, test_filename);
+	    PhotosSession = PhotoAppBase.OpenPhotosFile(device_name, test_filename);
 	    Thread.sleep(1000);
          
 	    }
@@ -42,7 +43,7 @@ import java.io.IOException;
     {
     	
 		// Method to Print Photo File to Printer Under Test
-		UwpAppBase.PrintPhoto(ptr_name,test_filename);
+		PhotoAppBase.PrintPhoto(ptr_name,test_filename);
 		
 		// Method to select the desired printer.
 		UwpAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
@@ -71,7 +72,7 @@ import java.io.IOException;
 		
 		//Select Desired Photo Size Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Photo size']").size()!=0){
-			UwpAppBase.SelectPhotoSize_Uwp(PhotosSession, photo_size);
+			PhotoAppBase.SelectPhotoSize_Photos(PhotosSession, photo_size);
 		}else{
 			log.info("The desired Photo Size feature is not supported by the printer ");
 		}
@@ -85,7 +86,7 @@ import java.io.IOException;
 		
 		//Select Desired Photo Fit Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Fit']").size()!=0){
-			UwpAppBase.SelectPhotoFit_Uwp(PhotosSession, photo_fit);
+			PhotoAppBase.SelectPhotoFit_Photos(PhotosSession, photo_fit);
 		}else{
 			log.info("The desired Photo Fit feature is not supported by the printer ");
 		}
@@ -98,7 +99,7 @@ import java.io.IOException;
 		}
 		
 		//Opening more settings to access more printing options.
-		int MoreSettings = UwpAppBase.OpenMoreSettings();
+		int MoreSettings = UwpAppBase.OpenMoreSettings(PhotosSession);
 		if	(MoreSettings == 1){	
 			
 			//Select Desired Duplex Option.			
@@ -144,7 +145,7 @@ import java.io.IOException;
 			}
 			
 			//Closing more settings after accessing more printing options.
-			UwpAppBase.CloseMoreSettings();
+			UwpAppBase.CloseMoreSettings(PhotosSession);
 			
 		}else{
 			log.info("More Settings page could not be opened");

@@ -18,144 +18,8 @@ public class UwpAppBase extends Base {
 	private static final Logger log = LogManager.getLogger(UwpAppBase.class);
 	public static RemoteWebDriver Session = null;
 	public static RemoteWebDriver WindowsAddSession = null;
-				
 		
-	// Method to open Photos test file
-	public static RemoteWebDriver OpenPhotosFile(String device_name, String test_filename)
-			throws MalformedURLException, InterruptedException {
 
-		try {
-			capabilities = new DesiredCapabilities();
-			capabilities.setCapability("app", "Microsoft.Windows.Photos_8wekyb3d8bbwe!App");
-			capabilities.setCapability("appArguments", test_filename);
-			capabilities.setCapability("appWorkingDir", testfiles_loc);
-			capabilities.setCapability("platformName", "Windows");
-			capabilities.setCapability("deviceName", device_name);
-			Session = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
-			Assert.assertNotNull(Session);
-			Session.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("Error opening Photos app");
-			throw new RuntimeException(e);
-		}
-		
-		// Search for Saved Pictures folder.
-		Session.findElementByName("Search").sendKeys("testfiles");
-		Thread.sleep(1000);
-		
-		if(Session.findElementsByName("testfiles").size()==0)
-		{
-			// Adding the Test Folder to the Photos app
-			Session.findElementByName("Import").click();
-			Thread.sleep(1000);
-			
-			Session.findElementByName("From a folder").click();
-			Thread.sleep(1000);
-			
-			log.info("Opening WindowsAddSession...");
-			WindowsAddSession = GetDesktopSession(device_name);
-	        Assert.assertNotNull(WindowsAddSession);
-					
-	        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
-	        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
-	        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
-			Thread.sleep(1000);
-	
-			WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
-			Thread.sleep(1000);
-			log.info("Added Test Folder => \"testfiles\" to the Photos app successfully");
-			
-			Session.findElementByName("Search").clear();
-		}else{
-			log.info("Test Folder => \"testfiles\" has already been imported");
-			Session.findElementByName("Search").clear();
-			
-		}
-		
-		try {
-			WindowsAddSession.quit();
-            log.debug("Closed WindowsAddSession...");
-        } catch (Exception e) {
-        	log.info("WindowsAddSession already terminated.");
-        }
-		
-		log.info("Opened Session successfully");
-		return Session;
-
-	}
-
-	
-	// Method to print from Photos
-	public static void PrintPhoto(String ptr_name, String test_filename) throws InterruptedException {
-			
-		// Search for Saved Pictures folder.
-		Session.findElementByName("Search").sendKeys("testfiles");
-		log.info("Searching \"Test Folder - testfiles\"");
-		Thread.sleep(2000);
-
-		// Click on Saved Pictures
-		Session.findElementByXPath("//Button[@Name = \"testfiles\"]").click();
-		log.info("Clicked on \"Test Folder - testfiles\"");
-		Thread.sleep(2000);
-
-		// Select the Photo file
-		Session.findElementByXPath("//Button[@AutomationId = '" + test_filename + "']").click();
-		log.info("Selected the Photo file for printing");
-		Thread.sleep(1000);
-
-		// Tap on Print icon
-		Session.findElementByName("Print").click();
-		log.info("Clicked on Print Icon Successfully in PhotoApp");
-		Thread.sleep(1000);
-
-	}
-
-	
-	// Method to open MsEdge browser with desired URL.
-	public static RemoteWebDriver OpenEdgeApp(String device_name, String web_url)
-			throws MalformedURLException {
-
-		try {
-			capabilities = new DesiredCapabilities();
-			capabilities.setCapability("app", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge");
-			capabilities.setCapability("appArguments", web_url);
-			capabilities.setCapability("platformName", "Windows");
-			capabilities.setCapability("deviceName", device_name);
-			Session = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
-			Assert.assertNotNull(Session);
-			Session.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-			Thread.sleep(1000);
-		} catch (Exception e) {
-			log.info("Error opening Edge app");
-		}
-		
-		if(Session.findElementByName("Search or enter web address").getText().contains(web_url)){
-			log.info("Opened expected "+web_url+" from Edge browser");
-		}else{
-			log.info("Error in launching expected URL: " +web_url );
-			Session.close();
-		}		
-		
-		log.info("Opened MsEdgeSession successfully");
-		return Session;
-		
-	}
-	
-	
-	// Method to print web page from MsEdge Browser
-	public static void PrintEdge(RemoteWebDriver Session, String ptr_name) throws InterruptedException {
-		// Go to More settings at the top right corner.
-		Session.findElementByName("Settings and more").click();
-		Thread.sleep(1000);
-		
-		// Tap on Print icon
-		Session.findElementByName("Print").click();
-		log.info("Clicked on Print button Successfully to launch the print options screen");
-		Thread.sleep(1000);
-	}
-
-	
 	// Method to select desired printer from printers list combo box
 	// Possible candidate for re-factoring when there are multiple application in automation
 	public static void SelectDesiredPrinter(RemoteWebDriver Session, String ptr_name) throws MalformedURLException, InterruptedException {
@@ -260,63 +124,6 @@ public class UwpAppBase extends Base {
 	}
 	
 	
-	// Method to select desired photo size
-	// Possible candidate for re-factoring when there are multiple application in automation
-	public static void SelectPhotoSize_Uwp(RemoteWebDriver Session, String photo_size) throws MalformedURLException, InterruptedException {
-
-		WebElement PhotoSizeListComboBox = Session.findElementByXPath("//ComboBox[@Name = 'Photo size']");
-		Assert.assertNotNull(PhotoSizeListComboBox);
-		if (!PhotoSizeListComboBox.getText().toString().contentEquals(photo_size)) 
-		{
-			log.info("Desired photo size => " + photo_size + " <= is not selected so selecting it from drop down");
-			PhotoSizeListComboBox.click();
-			Thread.sleep(1000);
-			try {
-				Session.findElementByName(photo_size).click();
-				Thread.sleep(2000);
-				log.info("Selected desired photo size *****" + PhotoSizeListComboBox.getText().toString() + "*****");
-			} catch (Exception e) {
-				log.info("Desired Photo Size is not found so either 1) your Printer does not support desired photo size OR 2) you have typed the photo size value incorrectly in testsuite xml");
-				//e.printStackTrace();
-				log.info("Error selecting desired photo size but continuing with rest of the print options");
-				//throw new RuntimeException(e);
-				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
-				PhotoSizeListComboBox.click();
-			}
-		} else {
-			log.info("Desired photo size => " + PhotoSizeListComboBox.getText().toString() + " <= is already selected so proceeding");
-		}
-	}
-
-	
-	// Method to select desired Fit
-	public static void SelectPhotoFit_Uwp(RemoteWebDriver Session, String photo_fit) throws MalformedURLException, InterruptedException {
-		
-		WebElement PhotoFitListComboBox = Session.findElementByXPath("//ComboBox[@Name = 'Fit']");
-		Assert.assertNotNull(PhotoFitListComboBox);
-		if (!PhotoFitListComboBox.getText().toString().contentEquals(photo_fit)) 
-		{
-			log.info("Desired photo fit => " + photo_fit + " <= is not selected so selecting it from drop down");
-			PhotoFitListComboBox.click();
-			Thread.sleep(1000);										
-				try {
-					Session.findElementByName(photo_fit).click();
-					Thread.sleep(2000);
-					log.info("Selected desired photo fit *****" + PhotoFitListComboBox.getText().toString() + "*****");
-				} catch (Exception e) {
-					log.info("Desired Photo Fit is not found so either 1) your Printer does not support desired photo fit OR 2) you have typed the photo fit value incorrectly in testsuite xml");
-					//e.printStackTrace();
-					log.info("Error selecting desired photo fit but continuing with rest of the print options");
-					//throw new RuntimeException(e);
-					//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
-					PhotoFitListComboBox.click();
-				}			
-		} else {
-			log.info("Desired photo fit => " + PhotoFitListComboBox.getText().toString() + " <= is already selected so proceeding");
-		}
-	}
-
-	
 	// Method to select desired Margins
 	public static void SelectPageMargins_Uwp(RemoteWebDriver Session, String page_margins)throws MalformedURLException, InterruptedException {
 
@@ -346,7 +153,7 @@ public class UwpAppBase extends Base {
 
 	
 	// Method to select More Options link to access more print options.
-	public static int OpenMoreSettings() throws InterruptedException {
+	public static int OpenMoreSettings(RemoteWebDriver Session) throws InterruptedException {
 		try {
 			Session.findElementByName("More settings").click();
 			log.info("Clicked 'More Settings' link successfully");
@@ -361,7 +168,7 @@ public class UwpAppBase extends Base {
 
 	
 	// Method to return from More Options screen to access print button.
-	public static void CloseMoreSettings() throws InterruptedException {
+	public static void CloseMoreSettings(RemoteWebDriver Session) throws InterruptedException {
 		Session.findElementByXPath("//Button[@Name = 'Ok']").click();
 		log.info("Clicked 'OK' button successfully.");
 		Thread.sleep(2000);
