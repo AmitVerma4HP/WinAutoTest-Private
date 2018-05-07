@@ -5,7 +5,7 @@
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
 <!-- MUST          ptr_name     = <Printer name as it shows in discovery-->
-<!-- MUST          web_url     	= <URL of the web page that is to be printed, e.g: www.cnn.com, www.foxnews.com -->
+<!-- MUST          test_filename= < Pdf file that is to be printed -->
 <!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
 <!-- OPTIONAL      duplex_optn 	= <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
 <!-- OPTIONAL      orientation 	= <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
