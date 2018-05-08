@@ -47,10 +47,9 @@
 		<parameter name="headerandfooter_optn" value="On" />
 		<parameter name="scale_optn" value="100%" />
 		<parameter name="page_range" value="1-2" />
-		<parameter name="collation_optn" value="Collated" />
-		
+		<parameter name="collation_optn" value="Collated" />		
     <classes>
-         <class name="com.hp.win.tests.PrintFromEdge"/>
+         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
     </classes>
     </test>
  
@@ -70,10 +69,9 @@
 		<parameter name="headerandfooter_optn" value="Off" />
 		<parameter name="scale_optn" value="Shrink to fit" />
 		<parameter name="page_range" value="2-4" />
-		<parameter name="collation_optn" value="Uncollated" />
-		
+		<parameter name="collation_optn" value="Uncollated" />		
     <classes>
-         <class name="com.hp.win.tests.PrintFromEdge"/>
+         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
     </classes>
     </test>
  
