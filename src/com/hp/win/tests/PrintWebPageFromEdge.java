@@ -9,18 +9,20 @@ import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hp.win.utility.*;							
 
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
-	public class PrintFromEdge extends EdgeAppBase {
-		private static final Logger log = LogManager.getLogger(PrintFromEdge.class);
+	public class PrintWebPageFromEdge extends EdgeAppBase {
+		private static final Logger log = LogManager.getLogger(PrintWebPageFromEdge.class);
 		private static String currentClass;	
 		public static RemoteWebDriver MsEdgeSession = null;
 		public static String expectedPrintjob;
@@ -29,7 +31,7 @@ import java.io.IOException;
 		@Parameters({ "device_name", "ptr_name", "web_url"})
 	    public static void setup(String device_name, String ptr_name, String web_url) throws InterruptedException, IOException { 
 	       
-		currentClass = PrintFromEdge.class.getSimpleName();
+		currentClass = PrintWebPageFromEdge.class.getSimpleName();
 				
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
