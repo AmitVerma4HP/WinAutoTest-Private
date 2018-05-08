@@ -6,15 +6,10 @@ import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
 import com.hp.win.utility.ScreenshotUtility;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hp.win.utility.*;							
 
