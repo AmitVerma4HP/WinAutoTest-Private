@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -15,7 +14,7 @@ import org.testng.Assert;
 
 
 
-public class PhotoAppBase extends Base {
+public class PhotoAppBase extends UwpAppBase {
 		private static final Logger log = LogManager.getLogger(PhotoAppBase.class);
 		public static RemoteWebDriver PhotosSession = null;
 		public static RemoteWebDriver WindowsAddSession = null;
@@ -115,9 +114,8 @@ public class PhotoAppBase extends Base {
 	
 	// Method to select desired photo size
 	// Possible candidate for re-factoring when there are multiple application in automation
-	public static void SelectPhotoSize_Photos(RemoteWebDriver Session, String photo_size) throws MalformedURLException, InterruptedException {
+	public static void SelectPhotoSize_Photos(RemoteWebDriver PhotosSession, String photo_size) throws MalformedURLException, InterruptedException {
 		
-		PhotosSession = Session;
 		WebElement PhotoSizeListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Photo size']");
 		Assert.assertNotNull(PhotoSizeListComboBox);
 		if (!PhotoSizeListComboBox.getText().toString().contentEquals(photo_size)) 
@@ -144,9 +142,8 @@ public class PhotoAppBase extends Base {
 
 	
 	// Method to select desired Fit
-	public static void SelectPhotoFit_Photos(RemoteWebDriver Session, String photo_fit) throws MalformedURLException, InterruptedException {
+	public static void SelectPhotoFit_Photos(RemoteWebDriver photosSession, String photo_fit) throws MalformedURLException, InterruptedException {
 			
-		PhotosSession = Session;
 		WebElement PhotoFitListComboBox = PhotosSession.findElementByXPath("//ComboBox[@Name = 'Fit']");
 		Assert.assertNotNull(PhotoFitListComboBox);
 		if (!PhotoFitListComboBox.getText().toString().contentEquals(photo_fit)) 

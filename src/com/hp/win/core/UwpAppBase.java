@@ -17,7 +17,6 @@ import org.testng.Assert;
 public class UwpAppBase extends Base {
 	private static final Logger log = LogManager.getLogger(UwpAppBase.class);
 	public static RemoteWebDriver Session = null;
-	public static RemoteWebDriver WindowsAddSession = null;
 		
 
 	// Method to select desired printer from printers list combo box

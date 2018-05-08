@@ -5,7 +5,6 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
-import com.hp.win.core.UwpAppBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +19,7 @@ import com.hp.win.utility.*;
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
-	public class PrintFromEdge extends UwpAppBase {
+	public class PrintFromEdge extends EdgeAppBase {
 		private static final Logger log = LogManager.getLogger(PrintFromEdge.class);
 		private static String currentClass;	
 		public static RemoteWebDriver MsEdgeSession = null;
@@ -51,18 +50,18 @@ import java.io.IOException;
 		EdgeAppBase.PrintEdge(ptr_name,web_url);
 		
 		// Method to select the desired printer.
-		UwpAppBase.SelectDesiredPrinter(MsEdgeSession, ptr_name);
+		EdgeAppBase.SelectDesiredPrinter(MsEdgeSession, ptr_name);
 		
 		//Select Desired Orientation Option.
 		if (MsEdgeSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
-			UwpAppBase.SelectOrientation_Uwp(MsEdgeSession,orientation);
+			EdgeAppBase.SelectOrientation_Uwp(MsEdgeSession,orientation);
 		}else{
 			log.info("The desired Orientation feature is not supported by the printer ");
 		}
 		
 		//Enter desired Copies value.
 		if (MsEdgeSession.findElementsByName("Copies").size()!=0){
-			UwpAppBase.SelectCopies_Uwp(MsEdgeSession,copies);
+			EdgeAppBase.SelectCopies_Uwp(MsEdgeSession,copies);
 		}else{
 			log.info("The desired Copies selection feature is not supported by the printer ");
 		}
@@ -70,101 +69,101 @@ import java.io.IOException;
 					
 		//Select Desired Pages(page range) Option.
 		if (MsEdgeSession.findElementsByName("Pages").size()!=0){
-			UwpAppBase.SelectPageRange_Uwp(MsEdgeSession,page_range);
+			EdgeAppBase.SelectPageRange_Uwp(MsEdgeSession,page_range);
 		}else{
 			log.info("The desired Pages(Page Range) feature is not supported by the printer ");
 		}
 		
 		//Select Desired Scaling Option.
 		if (MsEdgeSession.findElementsByName("Scale").size()!=0){
-			UwpAppBase.SelectScale_Uwp(MsEdgeSession,scale_optn);
+			EdgeAppBase.SelectScale_Uwp(MsEdgeSession,scale_optn);
 		}else{
 			log.info("The desired Scaling feature is not supported by the printer ");
 		}
 		
 		//Select Desired Page Margins Option.
 		if (MsEdgeSession.findElementsByName("Margins").size()!=0){
-			UwpAppBase.SelectPageMargins_Uwp(MsEdgeSession,page_margins);
+			EdgeAppBase.SelectPageMargins_Uwp(MsEdgeSession,page_margins);
 		}else{
 			log.info("The desired Page Margin feature is not supported by the printer ");
 		}
 		
 		//Select Desired Borderless Printing Option.
 		if (MsEdgeSession.findElementsByName("Borderless printing").size()!=0){
-			UwpAppBase.SelectBorderless_Uwp(MsEdgeSession,borderless);
+			EdgeAppBase.SelectBorderless_Uwp(MsEdgeSession,borderless);
 		}else{
 			log.info("The desired Borderless feature is not supported by the printer ");
 		}
 		
 		//Select Desired Header and Footer Option.
 		if (MsEdgeSession.findElementsByName("Headers and footers").size()!=0){
-			UwpAppBase.SelectHeadersAndFooters_Uwp(MsEdgeSession,headerandfooter_optn);
+			EdgeAppBase.SelectHeadersAndFooters_Uwp(MsEdgeSession,headerandfooter_optn);
 		}else{
 			log.info("The desired Header and Footer feature is not supported by the printer ");
 		}
 		
 		//Opening more settings to access more printing options.
-		int MoreSettings = UwpAppBase.OpenMoreSettings(MsEdgeSession);
+		int MoreSettings = EdgeAppBase.OpenMoreSettings(MsEdgeSession);
 		if	(MoreSettings == 1){	
 			
 			//Select Desired Duplex Option.			
 			if (MsEdgeSession.findElementsByName("Duplex printing").size()!=0){
-				UwpAppBase.SelectDuplexOption_Uwp(MsEdgeSession,duplex_optn);
+				EdgeAppBase.SelectDuplexOption_Uwp(MsEdgeSession,duplex_optn);
 			}else{
 				log.info("The desired Duplexing feature is not supported by the printer ");
 			}
 			
 			//Select Desired Collation Option.			
 			if (MsEdgeSession.findElementsByName("Collation").size()!=0){
-				UwpAppBase.SelectCollation_Uwp(MsEdgeSession,collation_optn);
+				EdgeAppBase.SelectCollation_Uwp(MsEdgeSession,collation_optn);
 			}else{
 				log.info("The desired Collation feature is not supported by the printer ");
 			}
 			
 			//Select Desired Paper Size Option
 			if (MsEdgeSession.findElementsByName("Paper size").size()!=0){
-				UwpAppBase.SelectPaperSize_Uwp(MsEdgeSession,paper_size);
+				EdgeAppBase.SelectPaperSize_Uwp(MsEdgeSession,paper_size);
 			}else{
 				log.info("The desired Paper Size feature is not supported by the printer ");
 			}
 						
 			//Select Desired Paper Type Option.			
 			if (MsEdgeSession.findElementsByName("Paper type").size()!=0){
-				UwpAppBase.SelectPaperType_Uwp(MsEdgeSession,paper_type);
+				EdgeAppBase.SelectPaperType_Uwp(MsEdgeSession,paper_type);
 			}else{
 				log.info("The desired Paper Type feature is not supported by the printer ");
 			}
 			
 			//Select Desired Paper Tray Option.			
 			if (MsEdgeSession.findElementsByName("Paper tray").size()!=0){
-				UwpAppBase.SelectPaperTray_Uwp(MsEdgeSession,paper_tray);
+				EdgeAppBase.SelectPaperTray_Uwp(MsEdgeSession,paper_tray);
 			}else{
 				log.info("The desired Paper Tray feature is not supported by the printer ");
 			}
 							
 			//Select Desired Output Quality Option.			
 			if (MsEdgeSession.findElementsByName("Output quality").size()!=0){
-				UwpAppBase.SelectOutputQuality_Uwp(MsEdgeSession,output_qlty);
+				EdgeAppBase.SelectOutputQuality_Uwp(MsEdgeSession,output_qlty);
 			}else{
 				log.info("The desired Output Quality feature is not supported by the printer ");
 			}
 			
 			//Select Desired Color Mode Option.			
 			if (MsEdgeSession.findElementsByName("Color mode").size()!=0){
-				UwpAppBase.SelectColorOrMono_Uwp(MsEdgeSession,color_optn);
+				EdgeAppBase.SelectColorOrMono_Uwp(MsEdgeSession,color_optn);
 			}else{
 				log.info("The desired Color Mode feature is not supported by the printer ");
 			}
 			
 			//Select Desired Stapling Option.			
 			if (MsEdgeSession.findElementsByName("Stapling").size()!=0){
-				UwpAppBase.SelectStaplingOption_Uwp(MsEdgeSession,stapling_optn);
+				EdgeAppBase.SelectStaplingOption_Uwp(MsEdgeSession,stapling_optn);
 			}else{
 				log.info("The desired Stapling feature is not supported by the printer ");
 			}
 						
 			//Closing more settings after accessing more printing options.
-			UwpAppBase.CloseMoreSettings(MsEdgeSession);
+			EdgeAppBase.CloseMoreSettings(MsEdgeSession);
 			
 		}else{
 			log.info("More Settings page could not be opened");
