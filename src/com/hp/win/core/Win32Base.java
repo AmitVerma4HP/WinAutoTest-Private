@@ -4,8 +4,12 @@ import java.net.MalformedURLException;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 
 
@@ -13,9 +17,15 @@ public class Win32Base extends Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
 
+    public static WebDriverWait wait;
+    
     // Method to select the necessary tab to change the print preference options
     public static void SelectPreferencesTab_Win32(RemoteWebDriver session, String desiredTab) throws InterruptedException {
 
+        wait = new WebDriverWait(session, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
+        log.info("Waited for combo box to become clickable.");
+        
         try {
             if(session.findElementByName(desiredTab).isSelected()) {
                 log.info("'" + desiredTab + "' tab is already selected.");
@@ -52,11 +62,15 @@ public class Win32Base extends Base {
         return exists;
     }
     
+    public static void ConfirmDialogBox(RemoteWebDriver session, String dialogTitle) {
+        Assert.assertNotNull(session.findElementByName(dialogTitle));
+        log.info("Confirmed dialog box '" + session.findElementByName(dialogTitle).getAttribute("Name").toString() + "' is on top.");
+    }
     
     // Method to select a list item from a combo box drop down menu
     // -- also confirms if the setting is available
     public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
-
+       
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> nameList = dialogSession.findElementsByName(boxName);
 
@@ -75,6 +89,7 @@ public class Win32Base extends Base {
                         // Click on the combo box
                         try {
                             log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
+                            
                             li.click();
                             Thread.sleep(1000);
                             break;
@@ -118,6 +133,11 @@ public class Win32Base extends Base {
     public static void SelectRadioButton_Win32(RemoteWebDriver session, String settingsSel, String radioGroup) {
         
         if (ConfirmGroupExists_Win32(session, radioGroup)){
+            
+            wait = new WebDriverWait(session, 30);
+            wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
+            log.info("Waited for combo box to become clickable.");
+            
             try {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");

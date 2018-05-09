@@ -7,9 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import io.appium.java_client.windows.WindowsDriver;
@@ -64,6 +67,11 @@ public class Base {
 
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
+		        
+		        WebDriverWait wait = new WebDriverWait(session, 30);
+		        wait.until(ExpectedConditions.elementToBeClickable(By.name(buttonName)));
+		        log.info("Waiting until '" + buttonName + "' button is clickable.");
+		        
 		        // There is something strange about clicking buttons with findElementByName() - Appium thinks the button
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
 		        // the button's name is unique or not - EMC
@@ -72,8 +80,18 @@ public class Base {
 		        log.info("Clicked '" + buttonName + "' button successfully.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {
-		        log.info("Could not click on '" + buttonName + "' button.");
-		        throw new RuntimeException(e);
+		        log.info("Could not find button using xpath. Going to try finding button by name.");
+		        try {
+		            session.findElementByName(buttonName).click();
+		            log.info("Clicked '" + buttonName + "' button successfully.");
+		            Thread.sleep(1000);
+		        }
+		        catch (Exception e1) {
+		              log.info("Could not click on '" + buttonName + "' button.");
+		              throw new RuntimeException(e1);
+		        }
+/*		        log.info("Could not click on '" + buttonName + "' button.");
+		        throw new RuntimeException(e);*/
 		    }
 		}
 		
@@ -133,16 +151,13 @@ public class Base {
 		
 		
 	    // Method to switch to a new app window
-		// NOTE THIS HAS BEEN TEMPORARILY HARD CODED FOR ONENOTE
-		// I tried moving it back to OneNoteBase.java and the test kept failing
-		// This will be resolved in the next iteration
-        public static void BringWindowToFront(String device_name, WindowsDriver session) throws MalformedURLException {
+        public static void BringWindowToFront(String device_name, WindowsDriver session, String className) throws MalformedURLException {
             try {
             
                 DesktopSession = Base.GetDesktopSession(device_name);
                 
                 //Get handle to PrinterQueue window
-                WebElement sessionWindow = DesktopSession.findElementByClassName("Framework::CFrame");
+                WebElement sessionWindow = DesktopSession.findElementByClassName(className);
                 log.info("Found window '" + sessionWindow.getAttribute("Name").toString() + "'.");
                 String nativeWindowHandle = sessionWindow.getAttribute("NativeWindowHandle");
                 int sessionWindowHandle = Integer.parseInt(nativeWindowHandle);
