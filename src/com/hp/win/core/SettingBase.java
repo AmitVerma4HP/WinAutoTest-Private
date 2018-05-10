@@ -12,6 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import io.appium.java_client.windows.WindowsDriver;
@@ -23,6 +25,7 @@ public class SettingBase extends Base {
 		private static final Logger log = LogManager.getLogger(SettingBase.class);
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static RemoteWebDriver SettingSession = null;
+		static WebDriverWait wait;
 		
 		
 	  // Method to Get Cortana Session	
@@ -89,9 +92,9 @@ public class SettingBase extends Base {
 	  // Method to discover target printer
 	  public static boolean DiscoverPrinter(String ptr_name) throws InterruptedException {
 		  	boolean printerFound=false;
-		  	// If printer does not exists already then discover and add it
+		  	// Check if printer is already added
 		  	if (!IsPrinterAlreadyAdded(ptr_name)) {
-		  	log.info("Printer does not exists already so going for discovering & add");		  	
+		  	log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");		  	
 		  	SettingSession.findElementByName("Add a printer or scanner").click();
 			Thread.sleep(1000);
 			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
@@ -119,13 +122,17 @@ public class SettingBase extends Base {
 				
 				
 				for(WebElement el : PrinterListItem) {																						
-						if (el.getText().contains(ptr_name)) 
+						if (el.getText().contains(ptr_name))
 						{
-							printerFound = true;											
+							printerFound = true;
+							log.debug("Get Text Retuns =>"+el.getText());
+							log.debug("Get Text lenght =>"+el.getText().length());
+							log.debug("ptr_name => "+ptr_name);
+							log.debug("ptr_name lenght => "+ptr_name.length());
 							break;							
 						}						
 				}
-				Assert.assertEquals(printerFound,1,"Didnt find Target Printer => "+ptr_name);
+				Assert.assertEquals(printerFound,true,"Didnt find Target Printer => "+ptr_name);
 				log.info("Found Target Printer => "+ptr_name);					
 			} else {
 				log.info("Printer you are looking for was already added previously so SKIPPING Printer Discovery");
@@ -136,28 +143,48 @@ public class SettingBase extends Base {
 	  
 	  
 	  // Add Printer from discovered printer list - 1) IsAlreadyAdded if not then Discover and Add
-	  public static boolean AddPrinter(String ptr_name) throws InterruptedException {
+	  public static void AddPrinter(String ptr_name) throws InterruptedException {
 		  	boolean printerAdded = false;
 		  	//if printer discovery is successful then add it
 		  	if(DiscoverPrinter(ptr_name)) {
 		    
-		    // Scroll to the printer
+		    // Scroll to the discovered printer
+		  	Actions action = new Actions(SettingSession);
+			action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));		    
+			action.perform();
+			SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+			log.info("Moved Mouse to Printer Name => "+ptr_name);
+			
+			//Click on Discovered Printer
+			try {
+				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+			}catch (Exception e) {
+				log.info("Error in clicking on the printer =>"+ptr_name);
+				throw new RuntimeException(e);
+			}
 		    
 		    //Click on Add Device to Add Discovered Printer
 			try {
 			SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
 			log.info("Clicked on Add device for Printer => "+ptr_name);
-			printerAdded = true;
+			
+			// Wait until you see printer shows status as "Ready" indicating it is added successfully
+			log.info("Waiting until printer gets added");
+    	    wait = new WebDriverWait(SettingSession, 60);
+    	    wait.until(ExpectedConditions.textToBePresentInElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")), "Ready"));    	    
+			printerAdded = true;			
 			}catch (Exception e) {
 				log.info("Error in adding printer =>"+ptr_name);
 				throw new RuntimeException(e);
 			}
 			
+			Assert.assertEquals(printerAdded,true,"Failed to Add Target Printer => "+ptr_name);
+			log.info("Added Target Printer => "+ptr_name+" Successfully");
+			
 			//Check successful addition and then change printerAdd = 1
 			 
 		  	}
-			
-		  	return printerAdded;
+					  
 	  }
 	  
 	  
@@ -215,6 +242,12 @@ public class SettingBase extends Base {
 		  */
 	  } 
 
+	  
+	 //if IPP printer was found then remove it
+	  public static boolean RemoveAlreadyAddedPrinter(String ptr_name) throws InterruptedException {
+		return false;	
+		  
+	  }
 	  
 	
 

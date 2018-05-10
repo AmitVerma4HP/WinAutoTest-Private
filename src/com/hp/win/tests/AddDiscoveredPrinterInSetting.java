@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -47,23 +48,13 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 	    	    
 	    }
 		
-		
-		// Method to Discover Printer Under Test		
-		@Test
-		@Parameters({"ptr_name"})
-	    public void Discover_Printer(String ptr_name) throws InterruptedException, IOException
-	    {   
-			SettingBase.DiscoverPrinter(ptr_name);
-								
-	    }
-		
+	
 		
 		// Method to Add Printer (if not already added) Under Test
-		@Test(dependsOnMethods={"DiscoverPrinter"})
+		@Test
 		@Parameters({"ptr_name"})
 	    public void Add_Printer(String ptr_name) throws InterruptedException, IOException
-	    {   
-			
+	    {   			
 			SettingBase.AddPrinter(ptr_name);
 	    }
 			
@@ -73,21 +64,32 @@ public class AddDiscoveredPrinterInSetting extends SettingBase {
 		public static void TearDown()
 		{	        
 		          
-		        	
-		   if(DesktopSession!=null)
-		   {
-			   DesktopSession.quit();
+		   try {
+				   if(DesktopSession!=null)
+				   {
+					   DesktopSession.quit();
+				   }
+		   }catch (NoSuchSessionException e) {
+			   log.info("Desktop Session is already terminated");
 		   }
-		   
-		   if(CortanaSession!=null)
-		   {
-		   	  CortanaSession.quit();
+				   
+		   try {
+				   if(CortanaSession!=null)
+				   {
+				   	  CortanaSession.quit();
+				   }
+		   }catch (NoSuchSessionException e) {
+			   log.info("Desktop Session is already terminated");
 		   }
-		   
-		   if(SettingSession!=null)
-		   {
-			  SettingSession.close();
-			  SettingSession.quit();
+				
+		try {
+				   if(SettingSession!=null)
+				   {
+					  SettingSession.close();
+					  SettingSession.quit();
+				   }
+		   }catch (NoSuchSessionException e) {
+			   log.info("Desktop Session is already terminated");
 		   }
 		        	        
 		}
