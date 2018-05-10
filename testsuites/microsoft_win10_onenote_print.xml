@@ -21,7 +21,7 @@
  <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
  <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
  <!-- OPTIONAL	test_notebook  = <Full name of notebook to use in test>	 , DEFAULT = "OneNoteTestNotebook1\TestNotebook1.onetoc2"    -->
- <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "OneNoteTest1"    -->
+ <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "OneNoteTestFile1"    -->
  <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
 
  
@@ -38,7 +38,7 @@
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_filename" value="OneNoteTestFile1" />
      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
@@ -49,53 +49,53 @@
   
   
 <!-- ************************* TEST 02 ************************* -->
-<!--       <test verbose="2" name="Test-02 : OneNote 2016 Duplex Long Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+      <test verbose="2" name="Test-02 : OneNote 2016 Duplex Long Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
      	<parameter name="orientation" value="Landscape" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Better" />
      	<parameter name="paper_size" value="Legal" />
-     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_filename" value="OneNoteTestFile1" />
      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-  </test> -->
+  </test>
 <!-- ************************* TEST 02 ************************* -->
 
 
 <!-- ************************* TEST 03 ************************* -->
-<!--         <test verbose="2" name="Test-03 : OneNote 2016 Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+        <test verbose="2" name="Test-03 : OneNote 2016 Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Best" />
      	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="OneNoteTest1" />
+     	<parameter name="test_filename" value="OneNoteTestFile1" />
      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-  </test> -->
+  </test>
 <!-- ************************* TEST 03 ************************* -->
 
 
 <!-- ************************* TEST 04 ************************* -->  
-<!--         <test verbose="2" name="Test-04 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+        <test verbose="2" name="Test-04 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="None" />
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Draft" />
 		<parameter name="paper_size" value="A4" />
-		<parameter name="test_filename" value="OneNoteTest1" />
+		<parameter name="test_filename" value="OneNoteTestFile1" />
 		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-   </test> -->
+   </test>
 <!-- ************************* TEST 04 ************************* -->
 
 

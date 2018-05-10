@@ -68,7 +68,7 @@ public class Base {
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
 		        
-		        WebDriverWait wait = new WebDriverWait(session, 30);
+		        WebDriverWait wait = new WebDriverWait(session, 10);
 		        wait.until(ExpectedConditions.elementToBeClickable(By.name(buttonName)));
 		        log.info("Waiting until '" + buttonName + "' button is clickable.");
 		        
@@ -151,7 +151,7 @@ public class Base {
 		
 		
 	    // Method to switch to a new app window
-        public static void BringWindowToFront(String device_name, WindowsDriver session, String className) throws MalformedURLException {
+        public static void BringWindowToFront(String device_name, RemoteWebDriver session, String className) throws MalformedURLException {
             try {
             
                 DesktopSession = Base.GetDesktopSession(device_name);

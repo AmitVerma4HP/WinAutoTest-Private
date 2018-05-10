@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import io.appium.java_client.windows.WindowsDriver;
+
 
 
 public class Win32Base extends Base {
@@ -62,8 +64,38 @@ public class Win32Base extends Base {
         return exists;
     }
     
-    public static void ConfirmDialogBox(RemoteWebDriver session, String dialogTitle) {
-        Assert.assertNotNull(session.findElementByName(dialogTitle));
+    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) {
+        log.info("Checking that the dialog we are using is in focus and can be interacted with.");
+        List<WebElement> titles = session.findElementsByName(dialogTitle);
+        for(WebElement title : titles) {
+            String type = title.getAttribute("LocalizedControlType").toString();
+            if(type.equals("dialog")) {
+                Assert.assertNotNull(session.findElementByName(dialogTitle));
+                if(session.findElementByName(dialogTitle).getAttribute("HasKeyboardFocus").equals("False")) {
+                    log.info("Dialog not in focus. Will try to bring into focus.");
+                    try {
+                        session.findElementByName(dialogTitle).click();
+                    } catch (Exception e) {
+                        log.info("Could not bring dialog into focus.");
+                        throw new RuntimeException(e);
+                    }
+                    
+                }
+                break;
+            }
+        }
+/*        //Assert.assertNotNull(session.findElementByName(dialogTitle));
+        if(session.findElementByName(dialogTitle).getAttribute("HasKeyboardFocus").equals("False")) {
+            log.info("Dialog not in focus. Will try to bring into focus.");
+            try {
+                session.findElementByName(dialogTitle).click();
+            } catch (Exception e) {
+                log.info("Could not bring dialog into focus.");
+                throw new RuntimeException(e);
+            }
+            
+        }*/
+        
         log.info("Confirmed dialog box '" + session.findElementByName(dialogTitle).getAttribute("Name").toString() + "' is on top.");
     }
     
