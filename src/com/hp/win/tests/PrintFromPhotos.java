@@ -4,6 +4,7 @@ package com.hp.win.tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.PhotoAppBase;
 import com.hp.win.core.UwpAppBase;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -17,7 +18,7 @@ import com.hp.win.utility.*;
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
-	public class PrintFromPhotos extends UwpAppBase {
+	public class PrintFromPhotos extends PhotoAppBase {
 		private static final Logger log = LogManager.getLogger(PrintFromPhotos.class);
 		private static String currentClass;							
 		public static RemoteWebDriver PhotosSession = null;
@@ -30,7 +31,7 @@ import java.io.IOException;
 				
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
-	    PhotosSession = UwpAppBase.OpenPhotosFile(device_name, test_filename);
+	    PhotosSession = PhotoAppBase.OpenPhotosFile(device_name, test_filename);
 	    Thread.sleep(1000);
          
 	    }
@@ -42,14 +43,14 @@ import java.io.IOException;
     {
     	
 		// Method to Print Photo File to Printer Under Test
-		UwpAppBase.PrintPhoto(ptr_name,test_filename);
+		PhotoAppBase.PrintPhoto(ptr_name,test_filename);
 		
 		// Method to select the desired printer.
-		UwpAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
+		PhotoAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
 
 		//Enter desired Copies value.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Copies']").size()!=0){
-			UwpAppBase.SelectCopies_Uwp(PhotosSession,copies);
+			PhotoAppBase.SelectCopies_Uwp(PhotosSession,copies);
 		}else{
 			log.info("The desired Copies selection feature is not supported by the printer ");
 		}
@@ -57,94 +58,94 @@ import java.io.IOException;
 		
 		//Select Desired Orientation Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
-			UwpAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
+			PhotoAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
 		}else{
 			log.info("The desired Orientation feature is not supported by the printer ");
 		}
 		
 		//Select Desired Paper Size Option
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper size']").size()!=0){
-			UwpAppBase.SelectPaperSize_Uwp(PhotosSession, paper_size);
+			PhotoAppBase.SelectPaperSize_Uwp(PhotosSession, paper_size);
 		}else{
 			log.info("The desired Paper Size feature is not supported by the printer ");
 		}
 		
 		//Select Desired Photo Size Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Photo size']").size()!=0){
-			UwpAppBase.SelectPhotoSize_Uwp(PhotosSession, photo_size);
+			PhotoAppBase.SelectPhotoSize_Photos(PhotosSession, photo_size);
 		}else{
 			log.info("The desired Photo Size feature is not supported by the printer ");
 		}
 		
 		//Select Desired Page Margins Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Page Margins']").size()!=0){
-			UwpAppBase.SelectPageMargins_Uwp(PhotosSession, page_margins);
+			PhotoAppBase.SelectPageMargins_Uwp(PhotosSession, page_margins);
 		}else{
 			log.info("The desired Page Margin feature is not supported by the printer ");
 		}
 		
 		//Select Desired Photo Fit Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Fit']").size()!=0){
-			UwpAppBase.SelectPhotoFit_Uwp(PhotosSession, photo_fit);
+			PhotoAppBase.SelectPhotoFit_Photos(PhotosSession, photo_fit);
 		}else{
 			log.info("The desired Photo Fit feature is not supported by the printer ");
 		}
 					
 		//Select Desired Borderless Printing Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Borderless printing']").size()!=0){
-			UwpAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
+			PhotoAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
 		}else{
 			log.info("The desired Borderless feature is not supported by the printer ");
 		}
 		
 		//Opening more settings to access more printing options.
-		int MoreSettings = UwpAppBase.OpenMoreSettings();
+		int MoreSettings = UwpAppBase.OpenMoreSettings(PhotosSession);
 		if	(MoreSettings == 1){	
 			
 			//Select Desired Duplex Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Duplex printing']").size()!=0){
-				UwpAppBase.SelectDuplexOption_Uwp(PhotosSession, duplex_optn);
+				PhotoAppBase.SelectDuplexOption_Uwp(PhotosSession, duplex_optn);
 			}else{
 				log.info("The desired Duplexing feature is not supported by the printer ");
 			}
 			
 			//Select Desired Paper Type Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper type']").size()!=0){
-				UwpAppBase.SelectPaperType_Uwp(PhotosSession, paper_type);
+				PhotoAppBase.SelectPaperType_Uwp(PhotosSession, paper_type);
 			}else{
 				log.info("The desired Paper Type feature is not supported by the printer ");
 			}
 			
 			//Select Desired Paper Tray Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper tray']").size()!=0){
-				UwpAppBase.SelectPaperTray_Uwp(PhotosSession, paper_tray);
+				PhotoAppBase.SelectPaperTray_Uwp(PhotosSession, paper_tray);
 			}else{
 				log.info("The desired Paper Tray feature is not supported by the printer ");
 			}
 							
 			//Select Desired Output Quality Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Output quality']").size()!=0){
-				UwpAppBase.SelectOutputQuality_Uwp(PhotosSession, output_qlty);
+				PhotoAppBase.SelectOutputQuality_Uwp(PhotosSession, output_qlty);
 			}else{
 				log.info("The desired Paper Type feature is not supported by the printer ");
 			}
 			
 			//Select Desired Color Mode Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Color mode']").size()!=0){
-				UwpAppBase.SelectColorOrMono_Uwp(PhotosSession, color_optn);
+				PhotoAppBase.SelectColorOrMono_Uwp(PhotosSession, color_optn);
 			}else{
 				log.info("The desired Color feature is not supported by the printer ");
 			}
 			
 			//Select Desired Stapling Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Stapling']").size()!=0){
-				UwpAppBase.SelectStaplingOption_Uwp(PhotosSession, stapling_optn);
+				PhotoAppBase.SelectStaplingOption_Uwp(PhotosSession, stapling_optn);
 			}else{
 				log.info("The desired Stapling feature is not supported by the printer ");
 			}
 			
 			//Closing more settings after accessing more printing options.
-			UwpAppBase.CloseMoreSettings();
+			PhotoAppBase.CloseMoreSettings(PhotosSession);
 			
 		}else{
 			log.info("More Settings page could not be opened");

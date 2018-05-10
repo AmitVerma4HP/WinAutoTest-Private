@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Microsoft Win10 Edge Test suite - Printing Tests">
-    	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
+<suite name="Microsoft Win10 PDF via Edge Test suite - Printing Tests">
+		<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
   		<parameter name="ptr_name" value="ipp: HP LaserJet M605 [04F7AB]" />
  
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
 <!-- MUST          ptr_name     = <Printer name as it shows in discovery-->
-<!-- MUST          web_url     	= <URL of the web page that is to be printed, e.g: www.cnn.com, www.foxnews.com -->
+<!-- MUST          test_filename= < Pdf file that is to be printed -->
 <!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
 <!-- OPTIONAL      duplex_optn 	= <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
 <!-- OPTIONAL      orientation 	= <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
@@ -31,8 +31,8 @@
 
 <!-- **************************************** PRINTING TESTS ******************************************************** -->
   
-   <test verbose="2" name="Test-01 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
-     	<parameter name="web_url" value="www.google.com" />
+   <test verbose="2" name="Test-01 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">    
+     	<parameter name="test_filename" value="File11.pdf" />
      	<parameter name="copies" value="2" />
      	<parameter name="orientation" value="Landscape" />
      	<parameter name="paper_size" value="A4" />
@@ -47,14 +47,15 @@
 		<parameter name="headerandfooter_optn" value="On" />
 		<parameter name="scale_optn" value="100%" />
 		<parameter name="page_range" value="1-2" />
-		<parameter name="collation_optn" value="Collated" />		
+		<parameter name="collation_optn" value="Collated" />
+		
     <classes>
-         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
     </classes>
     </test>
  
      <test verbose="2" name="Test-02 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
-     	<parameter name="web_url" value="www.cnn.com" />
+     	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
      	<parameter name="copies" value="1" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="paper_size" value="Letter" />
@@ -69,9 +70,10 @@
 		<parameter name="headerandfooter_optn" value="Off" />
 		<parameter name="scale_optn" value="Shrink to fit" />
 		<parameter name="page_range" value="2-4" />
-		<parameter name="collation_optn" value="Uncollated" />		
+		<parameter name="collation_optn" value="Uncollated" />
+		
     <classes>
-         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
     </classes>
     </test>
  
