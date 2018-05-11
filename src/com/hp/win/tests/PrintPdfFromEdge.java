@@ -177,18 +177,20 @@ import java.io.IOException;
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
+		String expectedJob = MsEdgeSession.getTitle().toString().substring(0,25).trim();
+		log.info("Expected queued job should be => "+expectedJob);
+		
 		// Open Print Queue
 		Base.OpenPrintQueue(ptr_name);
 				
 		// Method to attach session to Printer Queue Window
 		Base.SwitchToPrinterQueue(device_name,ptr_name);
-		
-		log.info("Expected queued job should be => "+test_filename);
-	    
+			    
 		 //Validate Print Job Queued up
 	    try {
-	    	//Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
-	    	Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains("PDF"));
+	    	String printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toString();
+	    	Assert.assertTrue((printJob.contains(expectedJob)) || (printJob.contains("PDF")));
+	    	log.info("Found expected job in print queue => "+printJob);
 	    }catch(NoSuchElementException e) {
 	    	log.info("Expected Print job is not found in print queue");
 	     	throw new RuntimeException(e);
@@ -197,8 +199,6 @@ import java.io.IOException;
 	    	throw new RuntimeException(e);
 	    }
 	    
-	    //log.info("Found correct job in print queue => "+test_filename);
-	    log.info("Found PDF job in print queue");
 	    PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    
