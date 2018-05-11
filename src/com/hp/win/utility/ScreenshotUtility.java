@@ -88,8 +88,9 @@ public class ScreenshotUtility implements ITestListener {
 			curSession = Base.DesktopSession;
 		} else if (passfailMethod.contains("Queue")) {
 			curSession = Base.PrintQueueSession;
+		} else if (passfailMethod.contains("Add")) {
+			curSession = Base.DesktopSession;
 		}
-
 		log.info("Print Session:" + curSession);
 		log.info("Print status:" + status);
 		

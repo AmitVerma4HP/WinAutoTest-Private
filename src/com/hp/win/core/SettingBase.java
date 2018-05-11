@@ -89,72 +89,73 @@ public class SettingBase extends Base {
 		  }
 	  
 	  	  
-	  // Method to discover target printer
-	  public static boolean DiscoverPrinter(String ptr_name) throws InterruptedException {
-		  	boolean printerFound=false;
+	  // Method to discover target printer - checks if already added then removes and then adds
+	  public static void DiscoverRemoveAddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
+		  	
 		  	// Check if printer is already added
-		  	if (!IsPrinterAlreadyAdded(ptr_name)) {
-		  	log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");		  	
-		  	SettingSession.findElementByName("Add a printer or scanner").click();
-			Thread.sleep(1000);
-			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
-			Thread.sleep(1000);
-			
-			do {
-				log.info("Printer Discovery is in Progress");				
-				Thread.sleep(3000);				
-				}while(SettingSession.findElementsByName("Searching for printers and scanners").size()!=0);
-				log.info("Printer Discovery completed");
-				
-				// Store all printers in a List				
-				List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
-				Assert.assertNotNull(PrinterListItem);					
-				int ippCount = 0; 
-				int i = 0;
-				for(WebElement el : PrinterListItem) {
-					if(el.getText().contains("ipp:")) {
-						ippCount++;
-						i++;
-						log.info("IPP Printer "+i+" => "+el.getText());
-					}
-				}
-				log.info("Total IPP Printers Discovered => "+ippCount);
-				
-				
-				for(WebElement el : PrinterListItem) {																						
-						if (el.getText().contains(ptr_name))
-						{
-							printerFound = true;
-							log.debug("Get Text Retuns =>"+el.getText());
-							log.debug("Get Text lenght =>"+el.getText().length());
-							log.debug("ptr_name => "+ptr_name);
-							log.debug("ptr_name lenght => "+ptr_name.length());
-							break;							
-						}						
-				}
-				Assert.assertEquals(printerFound,true,"Didnt find Target Printer => "+ptr_name);
-				log.info("Found Target Printer => "+ptr_name);					
+		  	if (!IsPrinterAlreadyAdded(ptr_name, device_name)) {
+		  		log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");	
+		  		
+		  		 // Perform discovery
+		  		PerformDiscovery(ptr_name, device_name);
+		  		
+				// Find Target Printer in the List of Printer
+		  		FindTargetPrinterInList(ptr_name, device_name);		  		
+		  		
+		  		//Then Add Printer
+		  		AddPrinter(ptr_name,device_name);
+									
 			} else {
-				log.info("Printer you are looking for was already added previously so SKIPPING Printer Discovery");
-				// Can also go for remove printer and then discover
+				log.info("Printer you are looking for was already added previously so Removing this printer =>"+ptr_name);
+				// Remove the already added printers
+				RemoveAlreadyAddedPrinter(ptr_name,device_name);	
+				Thread.sleep(2000);
+				
+				// If called for AddPrinter tests then Go for discovery and add printer again.
+				AddPrinter(ptr_name,device_name);
+				
+				// If called for Discovery tests then Go for only discovery
+				
 			}
-		  	return printerFound;
+		  	
+	  }
+	  
+	  
+	  // Method to discover target printer - checks if already added then removes and then adds
+	  public static void DiscoverRemoveDiscoverPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
+		  	
+		  	// Check if printer is already added
+		  	if (!IsPrinterAlreadyAdded(ptr_name, device_name)) {
+		  		log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");	
+		  		
+		  		 // Perform discovery
+		  		PerformDiscovery(ptr_name, device_name);
+		  		
+				// Find Target Printer in the List of Printer
+		  		FindTargetPrinterInList(ptr_name, device_name);
+						
+									
+			} else {
+				log.info("Printer you are looking for was already added previously so Removing this printer =>"+ptr_name);
+				// Remove the already added printers
+				RemoveAlreadyAddedPrinter(ptr_name,device_name);	
+				Thread.sleep(2000);
+								
+				// Now  Go for only discovery
+				DiscoverRemoveDiscoverPrinter(ptr_name, device_name);
+				
+			}
+		  	
 	  }
 	  
 	  
 	  // Add Printer from discovered printer list - 1) IsAlreadyAdded if not then Discover and Add
-	  public static void AddPrinter(String ptr_name) throws InterruptedException {
+	  public static void AddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
 		  	boolean printerAdded = false;
-		  	//if printer discovery is successful then add it
-		  	if(DiscoverPrinter(ptr_name)) {
-		    
-		    // Scroll to the discovered printer
-		  	Actions action = new Actions(SettingSession);
-			action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));		    
-			action.perform();
-			SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
-			log.info("Moved Mouse to Printer Name => "+ptr_name);
-			
+		  	//Discover printer , if already added then remove it and then discover
+		  	DiscoverRemoveAddPrinter(ptr_name,device_name);
+		  	MoveMousePointerToPrinter(ptr_name);
+		  		
 			//Click on Discovered Printer
 			try {
 				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
@@ -162,46 +163,34 @@ public class SettingBase extends Base {
 				log.info("Error in clicking on the printer =>"+ptr_name);
 				throw new RuntimeException(e);
 			}
-		    
-		    //Click on Add Device to Add Discovered Printer
+			   
+			//Click on Add Device to Add Discovered Printer
 			try {
-			SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
-			log.info("Clicked on Add device for Printer => "+ptr_name);
-			
-			// Wait until you see printer shows status as "Ready" indicating it is added successfully
-			log.info("Waiting until printer gets added");
-    	    wait = new WebDriverWait(SettingSession, 60);
-    	    wait.until(ExpectedConditions.textToBePresentInElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")), "Ready"));    	    
-			printerAdded = true;			
-			}catch (Exception e) {
-				log.info("Error in adding printer =>"+ptr_name);
-				throw new RuntimeException(e);
-			}
-			
-			Assert.assertEquals(printerAdded,true,"Failed to Add Target Printer => "+ptr_name);
-			log.info("Added Target Printer => "+ptr_name+" Successfully");
-			
-			//Check successful addition and then change printerAdd = 1
-			 
-		  	}
+				SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
+				log.info("Clicked on Add device for Printer => "+ptr_name);
+				
+				// Wait until you see printer shows status as "Ready" indicating it is added successfully
+				log.info("Waiting until printer gets added");
+	    	    wait = new WebDriverWait(SettingSession, 60);
+	    	    wait.until(ExpectedConditions.textToBePresentInElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")), "Ready"));    	    
+				printerAdded = true;			
+				}catch (Exception e) {
+					log.info("Error in adding printer =>"+ptr_name);
+					throw new RuntimeException(e);
+				}
+				
+				Assert.assertEquals(printerAdded,true,"Failed to Add Target Printer => "+ptr_name);
+				log.info("Added Target Printer => "+ptr_name+" Successfully");				
 					  
 	  }
 	  
 	  
 	  //if IPP printer was found then determine whether it is already added or new one
-	  public static boolean IsPrinterAlreadyAdded(String ptr_name) throws InterruptedException {	
-		  	
-		  	// Move mouse to the printer (PUT) in the list
-		  	
-		   /*
-		  	Actions action = new Actions(SettingSession);
-		    action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));		    
-		    action.perform();
-		    log.info("Moved Mouse to Printer Name => "+ptr_name);
-		    */
-				
-			//Better logic could be just see if printer is visible in already added printer list
-			// Store all printers in a List				
+	  public static boolean IsPrinterAlreadyAdded(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {	
+		  
+			//Better logic could be just see if printer is visible in already added printer list (before going for discovery)
+			// Store all printers in a List		
+		  	OpenSettings(device_name);
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);				
 			boolean printerExists=false;
@@ -214,7 +203,7 @@ public class SettingBase extends Base {
 					log.info("Already Added IPP Printer "+i+" => "+el.getText());
 				}
 			}
-			log.info("Total Added IPP Printers Exists => "+ippExistingCount);
+			log.info("Total Added IPP Printers Count => "+ippExistingCount);
 			
 			
 			for(WebElement el : PrinterListItem) {																						
@@ -223,34 +212,170 @@ public class SettingBase extends Base {
 						printerExists = true;
 						break;							
 					}						
-			}
-			
-			return printerExists;
-			
-			
-			//Older logic to determine if printer was already added
-			
-			/*
-			if(SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).isDisplayed()) {
-				log.info("This IPP Printer => "+ptr_name+" is already added");
-				return true;
-			}else
-				{						
-				log.info("This IPP Printer => "+ptr_name+" not added yet");
-				return false;
-				}	
-		  */
+			}			
+			return printerExists;		
+		
 	  } 
-
+	  
+	  
+	  
+	  // Move mouse pointer to the printer (PUT) in the list
+	  public static void MoveMousePointerToPrinter(String ptr_name) throws InterruptedException {			  
+		  	Actions action = new Actions(SettingSession);
+			action.moveToElement(SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")));		    
+			action.perform();
+			SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);
+			log.info("Moved Mouse to Printer Name => "+ptr_name);
+	  }
+	  
+	  
 	  
 	 //if IPP printer was found then remove it
-	  public static boolean RemoveAlreadyAddedPrinter(String ptr_name) throws InterruptedException {
-		return false;	
-		  
+	  public static void RemoveAlreadyAddedPrinter(String ptr_name,String device_name ) throws InterruptedException {
+		  	//Move mouse pointer to printer under test and then remove it.
+			MoveMousePointerToPrinter(ptr_name);
+			Thread.sleep(1000);
+			
+			//Click on the printer that has to be removed
+			try {
+				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+				log.info("Waiting until Remove button is clickable");
+	    	    wait = new WebDriverWait(SettingSession, 60);
+	    	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//Button[contains(@Name,'Remove device')]")));	    	    
+			}catch(Exception e) {
+				log.info("Error clicking on printer that has to be removed");
+				throw new RuntimeException(e);
+			}
+    	    
+			//Click on the Remove device button
+			try {
+				SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).click();
+				log.info("Clicked on \"Remove device\" Successfully");
+			}catch(Exception e) {
+				log.info("Error clicking on \"Remove device\" button for the printer that has to be removed");
+				throw new RuntimeException(e);
+			}			
+			Thread.sleep(2000);
+			
+			try {
+    	    //Confirm deletion
+			DesktopSession = Base.GetDesktopSession(device_name);
+			DesktopSession.findElement(By.xpath("//Button[contains(@Name,'Yes')]")).click();
+    	    log.info("Clicked on \"Yes\" Successfully");
+    	    Thread.sleep(2000);
+			}catch(Exception e) {
+				log.info("Error confirming deletion of the printer that has to be removed");
+				throw new RuntimeException(e);
+			}
+			
+			// Ensure printer is not visible anymore
+			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+			Assert.assertNotNull(PrinterListItem);			
+			int ippExistingCount = 0; 
+			int i = 0;
+			for(WebElement el : PrinterListItem) {
+				if(el.getText().contains("ipp:")) {
+					ippExistingCount++;
+					i++;
+					log.info("Existing Added IPP Printer List After Removing Printer Under Test"+i+" => "+el.getText());
+				}
+			}
+			log.info("Total Added IPP Printers COunt => "+ippExistingCount);
+			
+			boolean printerRemoved=true;
+			for(WebElement el : PrinterListItem) {
+				log.info("Looking if removed printer is still there");
+					if (el.getText().contains(ptr_name)) 
+					{
+						printerRemoved = false;
+						break;
+						
+					}					
+				}				
+				Assert.assertEquals(printerRemoved,true,"Failed to Remove Target Printer => "+ptr_name);
+				log.info("Successfully removed printer under test => "+ptr_name);
+										
+		}	
+	  
+	  // Method to perform discovery
+	  public static void PerformDiscovery(String ptr_name,String device_name) throws InterruptedException {
+		  	//Move mouse pointer to Add a printer or scanner
+		  	Actions action = new Actions(SettingSession);
+			action.moveToElement(SettingSession.findElementByName("Add a printer or scanner"));		    
+			action.perform();
+			Thread.sleep(2000);
+		  	SettingSession.findElementByName("Add a printer or scanner").click();
+			Thread.sleep(1000);
+			log.info("Clicked on \"Add a printer or scanner\" to Search All Printer in the Network");
+			Thread.sleep(1000);
+			
+			do {
+				log.info("Printer Discovery is in Progress");				
+				Thread.sleep(3000);				
+				}while(SettingSession.findElementsByName("Searching for printers and scanners").size()!=0);
+				log.info("Printer Discovery completed");
 	  }
+	  
+	  
+	  
+	  // Find Target Printer
+	  public static void FindTargetPrinterInList(String ptr_name,String device_name) throws InterruptedException {		  
+		  	boolean printerFound = false;
+		  	List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+			Assert.assertNotNull(PrinterListItem);					
+			int ippCount = 0; 
+			int i = 0;
+			for(WebElement el : PrinterListItem) {
+				if(el.getText().contains("ipp:")) {
+					ippCount++;
+					i++;
+					log.info("IPP Printer "+i+" => "+el.getText());
+				}
+			}
+			log.info("Total IPP Printers Discovered => "+ippCount);
+			
+			
+			for(WebElement el : PrinterListItem) {																						
+					if (el.getText().contains(ptr_name))
+					{
+						printerFound = true;
+						log.debug("Get Text Retuns =>"+el.getText());
+						log.debug("Get Text lenght =>"+el.getText().length());
+						log.debug("ptr_name => "+ptr_name);
+						log.debug("ptr_name lenght => "+ptr_name.length());
+						break;							
+					}						
+			}
+			Assert.assertEquals(printerFound,true,"Didnt find Target Printer => "+ptr_name);
+			log.info("Found Target Printer => "+ptr_name);
+			
+	  }
+
+	  
+	  public static void OpenSettings(String device_name) throws InterruptedException, MalformedURLException {
+		  	CortanaSession=SettingBase.GetCortanaSession(device_name);	    	    
+		    Thread.sleep(3000);
+		    try {
+		    	CortanaSession.findElementByName("Search box").sendKeys("Printers & scanners");
+		    	log.info("Searching \"Printers & scanners\"");	      	           
+		    	CortanaSession.findElementByName("Printers & scanners, System settings").click();
+		    	log.info("Clicked on \"Printers & scanners\"");
+		    	}catch(Exception e){
+		    	e.printStackTrace();
+		    	log.info("Error getting to Settings -> \"Printers & scanner\"");
+		    	}
+		    Thread.sleep(1000);
+		    
+		    SettingSession=SettingBase.GetSettingSession(device_name);
+		    wait = new WebDriverWait(SettingSession, 60);
+		    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
+		    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
+	  }
+	  
+}
 	  
 	
 
 	 
 
-}
+
