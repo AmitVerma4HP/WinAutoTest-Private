@@ -68,9 +68,9 @@ public class Base {
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
 		        
-		        WebDriverWait wait = new WebDriverWait(session, 10);
+/*		        WebDriverWait wait = new WebDriverWait(session, 10);
 		        wait.until(ExpectedConditions.elementToBeClickable(By.name(buttonName)));
-		        log.info("Waiting until '" + buttonName + "' button is clickable.");
+		        log.info("Waiting until '" + buttonName + "' button is clickable.");*/
 		        
 		        // There is something strange about clicking buttons with findElementByName() - Appium thinks the button
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
@@ -131,6 +131,7 @@ public class Base {
 		    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
 		    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
 	
+		    	log.info("Successfully got Print Queue handle.");
 		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
 		    	DesiredCapabilities capabilities = new DesiredCapabilities();
 		    	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);

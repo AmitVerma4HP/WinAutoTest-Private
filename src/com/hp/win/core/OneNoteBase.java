@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -62,7 +63,11 @@ public class OneNoteBase extends Win32Base {
         }
         
         
-        Thread.sleep(3000);
+        log.info("Opened "+ test_notebook +" file from "+ testfiles_loc);
+        
+        Thread.sleep(3000); 
+        
+        log.info("Relauching OneNote App to Get Main Window Session");
         
         
         try {
@@ -76,12 +81,20 @@ public class OneNoteBase extends Win32Base {
             OneNoteSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
             
         }catch(Exception e){
-            //log.info("There was a problem opening OneNote. Going to try to get the window handle.");
+                       
+            Thread.sleep(3000);
                 e.printStackTrace();
                 log.info("Error opening OneNote app.");
                 throw new RuntimeException(e);
             }
 
+        try {
+            FirstOneNoteSession.close();
+            FirstOneNoteSession.quit();
+        } catch (Exception e) {
+            log.info("First OneNote session already closed.");
+        }
+        
         log.info("Successfully opened OneNote.");
         return OneNoteSession;
         }
@@ -91,14 +104,6 @@ public class OneNoteBase extends Win32Base {
     public static void OpenOneNoteFile(String test_notebook, String device_name) throws InterruptedException, MalformedURLException, WebDriverException {
         
         log.info("Going to open file '" + test_notebook + "' on laptop '" + device_name + "'...");
-        
-        if(OneNoteSession == null) {
-            log.info("OneNote session is null. Getting a new session.");
-            OneNoteSession = (RemoteWebDriver) Base.GetDesktopSession(device_name);
-            //Base.BringWindowToFront(device_name, OneNoteSession, "Framework::CFrame");
-            //Assert.assertNotNull(OneNoteSession);
-            Thread.sleep(3000);
-        }
         
         Base.BringWindowToFront(device_name, OneNoteSession, "Framework::CFrame");
         try {
@@ -189,16 +194,26 @@ public class OneNoteBase extends Win32Base {
               
         
         OpenOneNoteFile(test_notebook, device_name);
-               
-        if(OneNoteSession == null) {
-            log.info("OneNote session is null. Getting a new session.");
-            OneNoteSession = (RemoteWebDriver) Base.GetDesktopSession(device_name);
-            //Base.BringWindowToFront(device_name, OneNoteSession, "Framework::CFrame");
-        }
+        
         // Use ctrl + p shortcut to open print dialog
-        OneNoteSession.getKeyboard().pressKey(Keys.CONTROL + "p");
+/*        OneNoteSession.getKeyboard().pressKey(Keys.CONTROL + "p");
         OneNoteSession.getKeyboard().releaseKey("p");
-        OneNoteSession.getKeyboard().releaseKey(Keys.CONTROL);
+        OneNoteSession.getKeyboard().releaseKey(Keys.CONTROL);*/
+
+        
+        Base.ClickButton(OneNoteSession, "File Tab");
+        
+        try {
+            OneNoteSession.findElementByName("Print").click();
+            log.info("Successfully clicked on 'Print' tab item.");
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("Error clicking on Tab Item.");
+            throw new RuntimeException(e);  
+        }
+        
+        Base.ClickButton(OneNoteSession, "Print");
         
         Thread.sleep(1000);
                 
@@ -207,15 +222,10 @@ public class OneNoteBase extends Win32Base {
         Assert.assertNotNull(PrintDialogSession);
         
         ConfirmDialogBox(device_name, PrintDialogSession, "Print");
-        
-        PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "p");
-        PrintDialogSession.getKeyboard().releaseKey("p");
-        PrintDialogSession.getKeyboard().releaseKey(Keys.ALT);
-        
-        //Base.ClickButton(PrintDialogSession, "Print");
-        
-/*        //Select WiFi Printer
+                        
+        //Select WiFi Printer
         log.info("Looking for '" + ptr_name + "'...");
+        
         if(PrintDialogSession.findElementByName(ptr_name).isSelected()) {
             log.info("'" + ptr_name + "' is already selected.");
         }
@@ -230,12 +240,8 @@ public class OneNoteBase extends Win32Base {
             }
         }
         
+              
         // Open Preferences dialog
-        //ClickButton(PrintDialogSession, "Preferences");
-
-        if(PrintDialogSession == null) {
-            PrintDialogSession = Base.GetDesktopSession(device_name);
-        }
 
         log.info("Opening 'Preferences' dialog...");
         PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "r");
@@ -249,30 +255,53 @@ public class OneNoteBase extends Win32Base {
             log.info("PrintDialogSession already terminated.");
         }
         
-
-        log.info("Creating PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
         ConfirmDialogBox(device_name, PreferencesSession, "Printing Preferences");
         
         // Select Preferences on the Layout tab first
-        ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
-        ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
+        log.info("Looking for orientation settings...");
+        Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Orientation: ", "o", orientation, device_name);       
+        
+        log.info("Looking for duplex settings....");
+        Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Print on Both Sides: ", "b", duplex_optn, device_name);
 
-        // Select settings on Paper/Quality tab after the Layout tab
+        
+/*        // Select settings on Paper/Quality tab after the Layout tab
+        
+        log.info("Changing menu tabs.");
         SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
+        
+        log.info("Looking for print quality settings.");
+        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
+
+        log.info("Looking for color settings.");
         ChooseColorOrMono_Win32(PreferencesSession, color_optn);
         
-        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
+        */
+               
+        PreferencesSession.getKeyboard().pressKey(Keys.ENTER);
         
-        
-        if(PreferencesSession == null) {
-            log.info("PreferencesSession is null. Getting a new session.");
-            PreferencesSession = Base.GetDesktopSession(device_name);
+        try {
+            PreferencesSession.quit();
+            log.info("Successfully quit PreferencesSession.");
+        } catch (Exception e) {
+            log.info("Preferences session already terminated.");
         }
         
+        PrintDialogSession = Base.GetDesktopSession(device_name);
         
+        //ConfirmDialogBox(device_name, PrintDialogSession, "Print");
+        
+        log.info("Going to select 'Print' now.");
+        Base.ClickButton(PrintDialogSession, "Print");
+/*        PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "p");
+        PrintDialogSession.getKeyboard().releaseKey("p");
+        PrintDialogSession.getKeyboard().releaseKey(Keys.ALT);*/
+        
+        
+/*       
         // Now open the Advanced settings
         //ClickButton(PreferencesSession, "Advanced...");
 
@@ -296,31 +325,13 @@ public class OneNoteBase extends Win32Base {
                 
         ConfirmDialogBox(device_name, AdvancedSession, "Microsoft IPP Class Driver Advanced Document Settings");
         
-        if(AdvancedSession == null) {
-            AdvancedSession = Base.GetDesktopSession(device_name);
-        }
-        
         ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
-
-        if(AdvancedSession == null) {
-            AdvancedSession = Base.GetDesktopSession(device_name);
-        }
         
         Base.ClickButton(AdvancedSession, "OK");
-        
-        if(AdvancedSession == null) {
-            AdvancedSession = Base.GetDesktopSession(device_name);
-        }
         
         ConfirmDialogBox(device_name, AdvancedSession, "Printing Preferences");
 
         ClickButton(AdvancedSession, "OK");
-
-        
-        if(AdvancedSession == null) {
-            log.info("AdvancedSession is null. Getting a new session.");
-            AdvancedSession = Base.GetDesktopSession(device_name);
-        }
         
         ConfirmDialogBox(device_name, AdvancedSession, "Print");
         
@@ -332,6 +343,8 @@ public class OneNoteBase extends Win32Base {
 
 */
 
+
+        
     }
 
     

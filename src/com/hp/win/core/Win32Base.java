@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -65,38 +66,29 @@ public class Win32Base extends Base {
     }
     
     public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) {
-        log.info("Checking that the dialog we are using is in focus and can be interacted with.");
+        
+        // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> titles = session.findElementsByName(dialogTitle);
+        
+        // If the list is empty, the dialog box is closed
+        //log.info("Found " + titles.size() + " elements with name '" + dialogTitle + "'.");
+        Assert.assertNotEquals(titles.size(), 0);
+        
         for(WebElement title : titles) {
             String type = title.getAttribute("LocalizedControlType").toString();
             if(type.equals("dialog")) {
                 Assert.assertNotNull(session.findElementByName(dialogTitle));
-                if(session.findElementByName(dialogTitle).getAttribute("HasKeyboardFocus").equals("False")) {
-                    log.info("Dialog not in focus. Will try to bring into focus.");
-                    try {
-                        session.findElementByName(dialogTitle).click();
-                    } catch (Exception e) {
-                        log.info("Could not bring dialog into focus.");
-                        throw new RuntimeException(e);
-                    }
-                    
+                log.info("Confirmed dialog box '" + title.getAttribute("Name").toString() + "' is on top.");
+
+                if(title.getAttribute("HasKeyboardFocus").equals("False")) {
+                    log.info("'" + title.getAttribute("Name").toString() + "' does not have focus. Clicking on it to get focus.");
+                    title.click();
                 }
-                break;
             }
         }
-/*        //Assert.assertNotNull(session.findElementByName(dialogTitle));
-        if(session.findElementByName(dialogTitle).getAttribute("HasKeyboardFocus").equals("False")) {
-            log.info("Dialog not in focus. Will try to bring into focus.");
-            try {
-                session.findElementByName(dialogTitle).click();
-            } catch (Exception e) {
-                log.info("Could not bring dialog into focus.");
-                throw new RuntimeException(e);
-            }
             
-        }*/
-        
-        log.info("Confirmed dialog box '" + session.findElementByName(dialogTitle).getAttribute("Name").toString() + "' is on top.");
+            
+
     }
     
     // Method to select a list item from a combo box drop down menu
@@ -104,8 +96,8 @@ public class Win32Base extends Base {
     public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
        
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
-        List<WebElement> nameList = dialogSession.findElementsByName(boxName);
-
+        List<WebElement> nameList = dialogSession.findElementsByName(boxName);      
+        
         // If there are elements that have the name we are looking for...
         if(nameList.size() != 0) {
 
@@ -185,7 +177,69 @@ public class Win32Base extends Base {
     }
     
     
-    // Method to select print orientation
+    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
+        
+        // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
+        List<WebElement> nameList = session.findElementsByName(boxName);      
+        
+        // If there are elements that have the name we are looking for...
+        if(nameList.size() != 0) {
+
+            // Look for those elements in the list
+            for (WebElement li : nameList) {
+                
+                // If we find an element in the list that has the name we are looking for...
+                if(li.getAttribute("Name").toString().equals(boxName)) {
+                    
+                    // If that element is a combo box...
+                    if(li.getAttribute("LocalizedControlType").equals("combo box")) {
+                        
+                        try {
+                            session.getKeyboard().pressKey(Keys.ALT + key);
+                            session.getKeyboard().releaseKey(key);
+                            session.getKeyboard().releaseKey(Keys.ALT);
+                            log.info("Successfully focused on '" + option + "' combo box.");
+                        } catch (Exception e) {
+                            log.info("Could not focus on the '" + option + "' drop down.");
+                            throw new RuntimeException(e);
+                        }
+
+                        try {
+                            session.getKeyboard().pressKey(Keys.ARROW_DOWN);
+                            log.info("Successfully opened '" + option + "' list.");
+                        } catch (Exception e) {
+                            log.info("Could not open '" + option + "' list.");
+                            throw new RuntimeException(e);
+                        }
+                    
+                        log.info("Going to try to click on '" + option + "'...");
+                        try {
+                            session.findElementByName(option).click();
+                            Thread.sleep(1000);
+                            log.info("Successfully clicked on '" + option + "'...");
+                        
+                        } catch (Exception e) {
+                            log.info("There was a problem clicking on '" + option + "'.");
+                        }
+                        
+                    }
+                
+                // If there is an element with the name we're looking for, but there is no combo box...
+                }
+                else {
+                    log.info("Cannot find a combo box with the name '" + boxName + "'.");
+                    return;
+                }
+            }
+        }
+        
+        else {
+            log.info("Printer does not support '" + option + "'. Confirm printer's available settings.");
+        }
+    }
+    
+    
+    // Method to select print option
     public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {
 
         SelectListItem_Win32(session, "Orientation: ", option, device_name);
