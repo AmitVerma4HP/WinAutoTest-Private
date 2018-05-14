@@ -25,7 +25,8 @@ public class SettingBase extends Base {
 		private static final Logger log = LogManager.getLogger(SettingBase.class);
 		protected static RemoteWebDriver CortanaSession = null;
 		protected static RemoteWebDriver SettingSession = null;
-		static WebDriverWait wait;
+		static WebDriverWait wait;		
+		static int MethodCalledCount = 0;
 		
 		
 	  // Method to Get Cortana Session	
@@ -94,6 +95,7 @@ public class SettingBase extends Base {
 		  	
 		  	// Check if printer is already added
 		  	if (!IsPrinterAlreadyAdded(ptr_name, device_name)) {
+		  		
 		  		log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");	
 		  		
 		  		 // Perform discovery
@@ -121,7 +123,7 @@ public class SettingBase extends Base {
 	  }
 	  
 	  
-	  // Method to discover target printer - checks if already added then removes and then adds
+	  // Method to discover target printer - checks if already added then removes and then discover
 	  public static void DiscoverRemoveDiscoverPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
 		  	
 		  	// Check if printer is already added
@@ -139,10 +141,13 @@ public class SettingBase extends Base {
 				log.info("Printer you are looking for was already added previously so Removing this printer =>"+ptr_name);
 				// Remove the already added printers
 				RemoveAlreadyAddedPrinter(ptr_name,device_name);	
-				Thread.sleep(2000);
-								
-				// Now  Go for only discovery
-				DiscoverRemoveDiscoverPrinter(ptr_name, device_name);
+				Thread.sleep(2000);				
+				
+				 // Perform discovery
+		  		PerformDiscovery(ptr_name, device_name);
+		  		
+				// Find Target Printer in the List of Printer
+		  		FindTargetPrinterInList(ptr_name, device_name);				
 				
 			}
 		  	
@@ -186,11 +191,17 @@ public class SettingBase extends Base {
 	  
 	  
 	  //if IPP printer was found then determine whether it is already added or new one
+	  //Better logic could be just see if printer is visible in already added printer list (before going for discovery)
+	  // Store all printers in a List	  	
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {	
-		  
-			//Better logic could be just see if printer is visible in already added printer list (before going for discovery)
-			// Store all printers in a List		
+		/*
+		  	MethodCalledCount++;
+			//if method is called more than 1 - that indicates recursive call so reopen Setting to confirm added printer
+		  	if (MethodCalledCount>1) {
+		  	SettingSession.close();
 		  	OpenSettings(device_name);
+		  	}
+		  	*/
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);				
 			boolean printerExists=false;
@@ -299,10 +310,18 @@ public class SettingBase extends Base {
 	  
 	  // Method to perform discovery
 	  public static void PerformDiscovery(String ptr_name,String device_name) throws InterruptedException {
+		  	
+		  	//Go to top of the screen
+		  	SettingSession.getKeyboard().pressKey(Keys.PAGE_UP);
+		  	Thread.sleep(1000);		  	
+		  	SettingSession.getKeyboard().pressKey(Keys.PAGE_UP);
+		  	Thread.sleep(1000);
+		  
 		  	//Move mouse pointer to Add a printer or scanner
 		  	Actions action = new Actions(SettingSession);
 			action.moveToElement(SettingSession.findElementByName("Add a printer or scanner"));		    
 			action.perform();
+			
 			Thread.sleep(2000);
 		  	SettingSession.findElementByName("Add a printer or scanner").click();
 			Thread.sleep(1000);
