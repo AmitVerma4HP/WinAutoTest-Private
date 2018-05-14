@@ -90,7 +90,7 @@ public class SettingBase extends Base {
 		  }
 	  
 	  	  
-	  // Method to discover target printer - checks if already added then removes and then adds
+	  // Method to discover target printer - checks if already added then remove, confirm remove then add , confirm Add 
 	  public static void DiscoverRemoveAddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
 		  	
 		  	// Check if printer is already added
@@ -105,19 +105,21 @@ public class SettingBase extends Base {
 		  		FindTargetPrinterInList(ptr_name, device_name);		  		
 		  		
 		  		//Then Add Printer
-		  		AddPrinter(ptr_name,device_name);
+		  		PerformAddPrinter(ptr_name,device_name);
 									
 			} else {
 				log.info("Printer you are looking for was already added previously so Removing this printer =>"+ptr_name);
 				// Remove the already added printers
-				RemoveAlreadyAddedPrinter(ptr_name,device_name);	
-				Thread.sleep(2000);
+				RemoveAlreadyAddedPrinter(ptr_name,device_name);				
 				
-				// If called for AddPrinter tests then Go for discovery and add printer again.
-				AddPrinter(ptr_name,device_name);
-				
-				// If called for Discovery tests then Go for only discovery
-				
+				 // Perform discovery
+		  		PerformDiscovery(ptr_name, device_name);
+		  		
+				// Find Target Printer in the List of Printer
+		  		FindTargetPrinterInList(ptr_name, device_name);		  		
+		  		
+		  		//Then Add Printer
+		  		PerformAddPrinter(ptr_name,device_name);				
 			}
 		  	
 	  }
@@ -155,11 +157,16 @@ public class SettingBase extends Base {
 	  
 	  
 	  // Add Printer from discovered printer list - 1) IsAlreadyAdded if not then Discover and Add
-	  public static void AddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
+	  public static void PerformAddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
 		  	boolean printerAdded = false;
-		  	//Discover printer , if already added then remove it and then discover
-		  	DiscoverRemoveAddPrinter(ptr_name,device_name);
 		  	MoveMousePointerToPrinter(ptr_name);
+		  	
+		  	// if printer is way down in the list then moving mouse pointer does not work so check if printer is visible if not then scroll down further
+		  	if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
+		  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+		  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+		  	}		  	
+		  	
 		  		
 			//Click on Discovered Printer
 			try {
@@ -194,24 +201,14 @@ public class SettingBase extends Base {
 	  //Better logic could be just see if printer is visible in already added printer list (before going for discovery)
 	  // Store all printers in a List	  	
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {	
-		/*
-		  	MethodCalledCount++;
-			//if method is called more than 1 - that indicates recursive call so reopen Setting to confirm added printer
-		  	if (MethodCalledCount>1) {
-		  	SettingSession.close();
-		  	OpenSettings(device_name);
-		  	}
-		  	*/
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);				
 			boolean printerExists=false;
-			int ippExistingCount = 0; 
-			int i = 0;
+			int ippExistingCount = 0;			
 			for(WebElement el : PrinterListItem) {
 				if(el.getText().contains("ipp:")) {
-					ippExistingCount++;
-					i++;
-					log.info("Already Added IPP Printer "+i+" => "+el.getText());
+					ippExistingCount++;					
+					log.info("Already Added IPP Printer "+ippExistingCount+" => "+el.getText());
 				}
 			}
 			log.info("Total Added IPP Printers Count => "+ippExistingCount);
@@ -241,7 +238,7 @@ public class SettingBase extends Base {
 	  
 	  
 	  
-	 //if IPP printer was found then remove it
+	 //if IPP printer was found then remove it and confirm the printer removal
 	  public static void RemoveAlreadyAddedPrinter(String ptr_name,String device_name ) throws InterruptedException {
 		  	//Move mouse pointer to printer under test and then remove it.
 			MoveMousePointerToPrinter(ptr_name);
@@ -273,7 +270,7 @@ public class SettingBase extends Base {
 			DesktopSession = Base.GetDesktopSession(device_name);
 			DesktopSession.findElement(By.xpath("//Button[contains(@Name,'Yes')]")).click();
     	    log.info("Clicked on \"Yes\" Successfully");
-    	    Thread.sleep(2000);
+    	    Thread.sleep(4000);
 			}catch(Exception e) {
 				log.info("Error confirming deletion of the printer that has to be removed");
 				throw new RuntimeException(e);
@@ -282,13 +279,11 @@ public class SettingBase extends Base {
 			// Ensure printer is not visible anymore
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);			
-			int ippExistingCount = 0; 
-			int i = 0;
+			int ippExistingCount = 0;			
 			for(WebElement el : PrinterListItem) {
 				if(el.getText().contains("ipp:")) {
-					ippExistingCount++;
-					i++;
-					log.info("Existing Added IPP Printer List After Removing Printer Under Test"+i+" => "+el.getText());
+					ippExistingCount++;					
+					log.info("Existing Added IPP Printer List After Removing Printer Under Test"+ippExistingCount+" => "+el.getText());
 				}
 			}
 			log.info("Total Added IPP Printers COunt => "+ippExistingCount);
@@ -342,13 +337,11 @@ public class SettingBase extends Base {
 		  	boolean printerFound = false;
 		  	List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);					
-			int ippCount = 0; 
-			int i = 0;
+			int ippCount = 0;			
 			for(WebElement el : PrinterListItem) {
 				if(el.getText().contains("ipp:")) {
-					ippCount++;
-					i++;
-					log.info("IPP Printer "+i+" => "+el.getText());
+					ippCount++;					
+					log.info("IPP Printer "+ippCount+" => "+el.getText());
 				}
 			}
 			log.info("Total IPP Printers Discovered => "+ippCount);

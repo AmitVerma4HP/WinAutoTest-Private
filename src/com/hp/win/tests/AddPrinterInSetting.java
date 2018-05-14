@@ -33,7 +33,7 @@ public class AddPrinterInSetting extends SettingBase {
 		@Parameters({"ptr_name","device_name"})
 	    public void Add_Printer(String ptr_name,String device_name) throws InterruptedException, IOException
 	    {   			
-			// If printer is already added then remove it , go for discovery and then add the printer
+			// Method to discover target printer - checks if already added then remove, confirm remove then add , confirm Add
 			SettingBase.DiscoverRemoveAddPrinter(ptr_name,device_name);
 	    }
 			
