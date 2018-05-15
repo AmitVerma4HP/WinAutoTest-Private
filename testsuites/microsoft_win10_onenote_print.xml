@@ -2,10 +2,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 OneNote 2016 Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
- 		<parameter name="oneNote2016_exe_loc" value="C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe" />
-     	<!-- <parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> -->
+ 		<!-- <parameter name="oneNote2016_exe_loc" value="C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe" /> -->
+     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
      	<!-- <parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" /> -->
-		<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
+<!-- 		<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
+
+<!-- 		<parameter name="username" value="mymoprint@gmail.com" />
+		<parameter name="password" value="" -->
 
 
  <!-- NOTE: It is expected that no notebooks are open in OneNote at the time the test is begun. -->
@@ -39,7 +42,7 @@
      	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="OneNoteTestFile1" />
-     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
+<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -56,7 +59,7 @@
      	<parameter name="prnt_quality" value="Better" />
      	<parameter name="paper_size" value="Legal" />
      	<parameter name="test_filename" value="OneNoteTestFile1" />
-     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
+<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -73,7 +76,7 @@
      	<parameter name="prnt_quality" value="Best" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="OneNoteTestFile1" />
-     	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
+<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -90,7 +93,7 @@
      	<parameter name="prnt_quality" value="Draft" />
 		<parameter name="paper_size" value="A4" />
 		<parameter name="test_filename" value="OneNoteTestFile1" />
-		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
+<!-- 		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -98,6 +101,22 @@
    </test>
 <!-- ************************* TEST 04 ************************* -->
 
+
+<!-- ************************* TEST 05 ************************* -->  
+<!--         <test verbose="2" name="Test-05 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+		<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="None" />
+     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Draft" />
+		<parameter name="paper_size" value="A4" />
+		<parameter name="test_filename" value="OneNoteTestFile1" />
+		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromOneNote"/>
+    </classes>
+   </test> -->
+<!-- ************************* TEST 05 ************************* -->
 
 
  <!-- ********************************************** PRINTING ONENOTE 2016  TEST FILE *********************************************************** -->

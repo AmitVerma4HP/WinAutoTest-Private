@@ -65,13 +65,12 @@ public class Win32Base extends Base {
         return exists;
     }
     
-    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) {
+    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) throws InterruptedException {
         
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> titles = session.findElementsByName(dialogTitle);
         
         // If the list is empty, the dialog box is closed
-        //log.info("Found " + titles.size() + " elements with name '" + dialogTitle + "'.");
         Assert.assertNotEquals(titles.size(), 0);
         
         for(WebElement title : titles) {
@@ -79,11 +78,8 @@ public class Win32Base extends Base {
             if(type.equals("dialog")) {
                 Assert.assertNotNull(session.findElementByName(dialogTitle));
                 log.info("Confirmed dialog box '" + title.getAttribute("Name").toString() + "' is on top.");
-
-                if(title.getAttribute("HasKeyboardFocus").equals("False")) {
-                    log.info("'" + title.getAttribute("Name").toString() + "' does not have focus. Clicking on it to get focus.");
-                    title.click();
-                }
+/*                session.getKeyboard().pressKey(Keys.TAB);
+                log.info("Successfully used 'Tab' to ensure dialog '" + title.getAttribute("Name").toString() + "' is in focus.");*/
             }
         }
             
@@ -178,64 +174,72 @@ public class Win32Base extends Base {
     
     
     public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
-        
-        // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
-        List<WebElement> nameList = session.findElementsByName(boxName);      
-        
-        // If there are elements that have the name we are looking for...
-        if(nameList.size() != 0) {
 
-            // Look for those elements in the list
-            for (WebElement li : nameList) {
-                
-                // If we find an element in the list that has the name we are looking for...
-                if(li.getAttribute("Name").toString().equals(boxName)) {
-                    
-                    // If that element is a combo box...
-                    if(li.getAttribute("LocalizedControlType").equals("combo box")) {
-                        
-                        try {
-                            session.getKeyboard().pressKey(Keys.ALT + key);
-                            session.getKeyboard().releaseKey(key);
-                            session.getKeyboard().releaseKey(Keys.ALT);
-                            log.info("Successfully focused on '" + option + "' combo box.");
-                        } catch (Exception e) {
-                            log.info("Could not focus on the '" + option + "' drop down.");
-                            throw new RuntimeException(e);
-                        }
+        try {
+            List<WebElement> list = session.findElementsByName(boxName);
 
-                        try {
-                            session.getKeyboard().pressKey(Keys.ARROW_DOWN);
-                            log.info("Successfully opened '" + option + "' list.");
-                        } catch (Exception e) {
-                            log.info("Could not open '" + option + "' list.");
-                            throw new RuntimeException(e);
-                        }
-                    
-                        log.info("Going to try to click on '" + option + "'...");
-                        try {
-                            session.findElementByName(option).click();
-                            Thread.sleep(1000);
-                            log.info("Successfully clicked on '" + option + "'...");
-                        
-                        } catch (Exception e) {
-                            log.info("There was a problem clicking on '" + option + "'.");
-                        }
-                        
+            if(list.size() > 0) {
+                session.getKeyboard().pressKey(Keys.ALT + key);
+                session.getKeyboard().releaseKey(key);
+                session.getKeyboard().releaseKey(Keys.ALT);
+                log.info("Successfully focused on '" + boxName + "' combo box.");
+
+                session.getKeyboard().pressKey(Keys.ARROW_DOWN);
+                log.info("Successfully opened '" + boxName + "' list.");
+
+
+                log.info("Going to try to click on '" + option + "'...");
+                try {
+                    List<WebElement> listItems = session.findElementsByName(option);
+                    if(listItems.size() > 0) {
+                    session.findElementByName(option).click();
+                    Thread.sleep(1000);
+                    log.info("Successfully clicked on '" + option + "'...");
                     }
-                
-                // If there is an element with the name we're looking for, but there is no combo box...
-                }
-                else {
-                    log.info("Cannot find a combo box with the name '" + boxName + "'.");
-                    return;
+                    else {
+                        log.info("List item size is " + listItems.size() + ".");
+                    }
+
+                } catch (Exception e1) {
+                    log.info("There was a problem clicking on '" + option + "'.");
+                    throw new RuntimeException(e1);
                 }
             }
+            else {
+                log.info("'" + boxName + "' setting is not available for this printer.");
+                return;
+            }
+
+        } catch (Exception e) {
+            log.info("Could not find any elements of '" + boxName + "'.");
+            return;
         }
         
-        else {
-            log.info("Printer does not support '" + option + "'. Confirm printer's available settings.");
+/*        if(list.size() > 0) {
+                session.getKeyboard().pressKey(Keys.ALT + key);
+                session.getKeyboard().releaseKey(key);
+                session.getKeyboard().releaseKey(Keys.ALT);
+                log.info("Successfully focused on '" + boxName + "' combo box.");
+
+                session.getKeyboard().pressKey(Keys.ARROW_DOWN);
+                log.info("Successfully opened '" + boxName + "' list.");
+
+
+            log.info("Going to try to click on '" + option + "'...");
+            try {
+                session.findElementByName(option).click();
+                Thread.sleep(1000);
+                log.info("Successfully clicked on '" + option + "'...");
+
+            } catch (Exception e) {
+                log.info("There was a problem clicking on '" + option + "'.");
+                throw new RuntimeException(e);
+            }
         }
+        else {
+            log.info("'" + boxName + "' setting is not available for this printer.");
+            return;
+        }*/
     }
     
     

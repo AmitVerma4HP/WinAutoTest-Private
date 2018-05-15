@@ -1,6 +1,90 @@
 package com.hp.win.core;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
+
+
+
+public class OneNoteBase extends UwpAppBase {
+        private static final Logger log = LogManager.getLogger(OneNoteBase.class);
+        public static RemoteWebDriver OneNoteSession = null;
+        
+
+        // Method to open OneNote browser with desired URL.
+        public static RemoteWebDriver OpenOneNote(String device_name, String web_url)
+                throws MalformedURLException {
+
+            try {
+                capabilities = new DesiredCapabilities();
+                capabilities.setCapability("app", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge");
+                //capabilities.setCapability("appArguments", "onenote:https:///d.docs.live.net//85b0aae1c28ff01f//Documents//OneNoteTestNotebook//");
+                capabilities.setCapability("platformName", "Windows");
+                capabilities.setCapability("deviceName", device_name);
+                OneNoteSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
+                Assert.assertNotNull(OneNoteSession);
+                OneNoteSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                OneNoteSession.manage().window().maximize();
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                log.info("Error opening Edge app");
+            }
+            
+            log.info("Opened OneNoteSession successfully");
+            return OneNoteSession;
+            
+        }
+        
+        
+        // Method to print web page from MsEdge Browser
+        public static void PrintOneNote(String ptr_name, String web_url) throws InterruptedException {
+            // Go to More settings at the top right corner.
+            
+            // Tap on Print icon
+            OneNoteSession.findElementByName("Print").click();
+            log.info("Clicked on Print button Successfully to launch the print options screen");
+            Thread.sleep(1000);
+        }
+
+        // Method to open OneNote.
+            public static RemoteWebDriver OpenOneNoteApp(String device_name, String test_filename)
+                    throws MalformedURLException {
+
+                try {
+                    capabilities = new DesiredCapabilities();
+                    capabilities.setCapability("app", "Microsoft.Office.OneNote_8wekyb3d8bbwe!microsoft.onenoteim");
+                    //capabilities.setCapability("appArguments", testfiles_loc + test_filename);
+                    capabilities.setCapability("platformName", "Windows");
+                    capabilities.setCapability("deviceName", device_name);
+                    //capabilities.setCapability("appWorkingDir", testfiles_loc);
+                    OneNoteSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
+                    Assert.assertNotNull(OneNoteSession);
+                    OneNoteSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.info("Error opening OneNote");
+                    throw new RuntimeException(e);
+                }
+                    
+                log.info("Opened OneNote successfully");
+                return OneNoteSession;
+                
+            }
+        
+}
+
+
+
+/*package com.hp.win.core;
+
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -196,9 +280,9 @@ public class OneNoteBase extends Win32Base {
         OpenOneNoteFile(test_notebook, device_name);
         
         // Use ctrl + p shortcut to open print dialog
-/*        OneNoteSession.getKeyboard().pressKey(Keys.CONTROL + "p");
+        OneNoteSession.getKeyboard().pressKey(Keys.CONTROL + "p");
         OneNoteSession.getKeyboard().releaseKey("p");
-        OneNoteSession.getKeyboard().releaseKey(Keys.CONTROL);*/
+        OneNoteSession.getKeyboard().releaseKey(Keys.CONTROL);
 
         
         Base.ClickButton(OneNoteSession, "File Tab");
@@ -216,7 +300,7 @@ public class OneNoteBase extends Win32Base {
         Base.ClickButton(OneNoteSession, "Print");
         
         Thread.sleep(1000);
-                
+        
         log.info("Opening PrintDialogSession...");
         PrintDialogSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PrintDialogSession);
@@ -243,10 +327,11 @@ public class OneNoteBase extends Win32Base {
               
         // Open Preferences dialog
 
-        log.info("Opening 'Preferences' dialog...");
+        log.info("Opening 'Preferences' menu...");
         PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "r");
         PrintDialogSession.getKeyboard().releaseKey("r");
         PrintDialogSession.getKeyboard().releaseKey(Keys.ALT);
+        Base.ClickButton(PrintDialogSession, "Preferences");
         
         try {
             PrintDialogSession.quit();
@@ -256,52 +341,84 @@ public class OneNoteBase extends Win32Base {
         }
         
         PreferencesSession = GetDesktopSession(device_name);
+        PreferencesSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         Assert.assertNotNull(PreferencesSession);
         
         ConfirmDialogBox(device_name, PreferencesSession, "Printing Preferences");
         
+        //Win32Base.ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
+        
+        
         // Select Preferences on the Layout tab first
         log.info("Looking for orientation settings...");
-        Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Orientation: ", "o", orientation, device_name);       
+        //Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Orientation: ", "o", orientation, device_name);
+        Win32Base.ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
+        
+        RemoteWebDriver FirstNewPreferencesSession = Base.GetDesktopSession(device_name);
         
         log.info("Looking for duplex settings....");
-        Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Print on Both Sides: ", "b", duplex_optn, device_name);
-
+        //Win32Base.ComboBoxHotkeySelect(PreferencesSession, "Print on Both Sides: ", "b", duplex_optn, device_name);
+        Win32Base.ChooseDuplexOrSimplex_Win32(FirstNewPreferencesSession, duplex_optn, device_name);
         
-/*        // Select settings on Paper/Quality tab after the Layout tab
+        // Select settings on Paper/Quality tab after the Layout tab
         
-        log.info("Changing menu tabs.");
+        //log.info("Changing menu tabs.");
         SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
-        
-        log.info("Looking for print quality settings.");
-        ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
-
-        log.info("Looking for color settings.");
-        ChooseColorOrMono_Win32(PreferencesSession, color_optn);
-        
-        */
-               
-        PreferencesSession.getKeyboard().pressKey(Keys.ENTER);
+        PreferencesSession.getKeyboard().sendKeys(Keys.CONTROL, Keys.TAB);
+        PreferencesSession.getKeyboard().releaseKey(Keys.TAB);
+        PreferencesSession.getKeyboard().releaseKey(Keys.CONTROL);
         
         try {
             PreferencesSession.quit();
-            log.info("Successfully quit PreferencesSession.");
         } catch (Exception e) {
-            log.info("Preferences session already terminated.");
+            log.info("PreferencesSession already terminated.");
+        }
+        
+        RemoteWebDriver QualitySession = Base.GetDesktopSession(device_name);
+                
+        //log.info("Looking for print quality settings.");
+        //ChoosePrintQuality_Win32(QualitySession, prnt_quality);
+        
+
+        //log.info("Looking for color settings.");
+        //ChooseColorOrMono_Win32(QualitySession, color_optn);
+        
+        
+               
+        //PreferencesSession.getKeyboard().pressKey(Keys.ENTER);
+        //PreferencesSession.getKeyboard().pressKey(Keys.TAB);
+        Base.ClickButton(QualitySession, "OK");
+        
+        try {
+            QualitySession.quit();
+            log.info("Successfully quit QualitySession.");
+        } catch (Exception e) {
+            log.info("QualitySession already terminated.");
+        }
+        
+        RemoteWebDriver SecondNewPreferencesSession = Base.GetDesktopSession(device_name);
+        Base.ClickButton(SecondNewPreferencesSession, "OK");
+        
+        try {
+            SecondNewPreferencesSession.quit();
+            log.info("Successfully quit SecondNewPreferencesSession.");
+        } catch (Exception e) {
+            log.info("SecondNewPreferencesSession already terminated.");
         }
         
         PrintDialogSession = Base.GetDesktopSession(device_name);
+        ConfirmDialogBox(device_name, PrintDialogSession, "Print");
         
-        //ConfirmDialogBox(device_name, PrintDialogSession, "Print");
+        //PrintDialogSession.getKeyboard().pressKey(Keys.TAB);
         
         log.info("Going to select 'Print' now.");
         Base.ClickButton(PrintDialogSession, "Print");
-/*        PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "p");
+        PrintDialogSession.getKeyboard().pressKey(Keys.ALT + "p");
         PrintDialogSession.getKeyboard().releaseKey("p");
-        PrintDialogSession.getKeyboard().releaseKey(Keys.ALT);*/
+        PrintDialogSession.getKeyboard().releaseKey(Keys.ALT);
         
         
-/*       
+       
         // Now open the Advanced settings
         //ClickButton(PreferencesSession, "Advanced...");
 
@@ -341,7 +458,7 @@ public class OneNoteBase extends Win32Base {
         //ClickButton(AdvancedSession, "OK");
         //ClickButton(AdvancedSession, "Print");
 
-*/
+
 
 
         
@@ -358,8 +475,8 @@ public class OneNoteBase extends Win32Base {
         session.getKeyboard().releaseKey(Keys.CONTROL);
         
         // Use keyboard shortcut to open menu (keyboard alternative to right click)
-/*        session.getKeyboard().pressKey(Keys.SHIFT);
-        session.getKeyboard().pressKey(Keys.F10);*/
+        session.getKeyboard().pressKey(Keys.SHIFT);
+        session.getKeyboard().pressKey(Keys.F10);
         session.getKeyboard().sendKeys(Keys.SHIFT, Keys.F10);
         session.getKeyboard().releaseKey(Keys.F10);
         session.getKeyboard().releaseKey(Keys.SHIFT);
@@ -371,3 +488,4 @@ public class OneNoteBase extends Win32Base {
 
 }
 
+*/
