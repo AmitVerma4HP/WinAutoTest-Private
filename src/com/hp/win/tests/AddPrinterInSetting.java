@@ -16,31 +16,29 @@ import com.hp.win.core.SettingBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 @Listeners({ScreenshotUtility.class})
-public class DiscoverPrinterInSettings extends SettingBase {
-	private static final Logger log = LogManager.getLogger(DiscoverPrinterInSettings.class);
+public class AddPrinterInSetting extends SettingBase {
+	private static final Logger log = LogManager.getLogger(AddPrinterInSetting.class);
 	static WebDriverWait wait;
 	
 		
 		@BeforeClass
 		@Parameters({"device_name"})
 	    public static void setup(String device_name) throws MalformedURLException, InterruptedException {
-	        SettingBase.OpenSettings(device_name);
-	    	    
+	        SettingBase.OpenSettings(device_name);	    	    
 	    }
 		
-		
-		// Method to Discover Printer Under Test		
+			
+		// Method to Add Printer (if not already added) Under Test
 		@Test
 		@Parameters({"ptr_name","device_name"})
-	    public void Discover_Printer(String ptr_name,String device_name) throws InterruptedException, IOException
-	    {   
-			//If printer is already added then remove it and go for discovery
-			
-			SettingBase.DiscoverRemoveDiscoverPrinter(ptr_name,device_name);
-								
+	    public void Add_Printer(String ptr_name,String device_name) throws InterruptedException, IOException
+	    {   			
+			// Method to discover target printer - checks if already added then remove, confirm remove then add , confirm Add
+			SettingBase.DiscoverRemoveAddPrinter(ptr_name,device_name);
 	    }
 			
-				
+			
+			
 		@AfterClass(alwaysRun=true)
 		public static void TearDown()
 		{	        
