@@ -33,7 +33,7 @@ public class DiscoverAddTestRemove extends SettingBase {
 	
 		
 	// Method to Add Printer (if not already added) Under Test
-	@Test
+	@Test(priority = 1)
 	@Parameters({"ptr_name","device_name"})
     public void Print_TestPage(String ptr_name,String device_name) throws InterruptedException, IOException
     {   
@@ -47,9 +47,9 @@ public class DiscoverAddTestRemove extends SettingBase {
     }
 		
 		
-	@Test(dependsOnMethods = { "Print_TestPage" })
-	@Parameters({ "device_name", "ptr_name", "remove_ptr"})
-	public void ValidatePrintQueue(String device_name, String ptr_name, boolean remove_ptr) throws IOException, InterruptedException 
+	@Test(priority = 2, dependsOnMethods = { "Print_TestPage" })
+	@Parameters({ "device_name", "ptr_name"})
+	public void ValidatePrintQueue(String device_name, String ptr_name) throws IOException, InterruptedException 
 	{
 		// Open Print Queue
 		Base.OpenPrintQueue(ptr_name);
@@ -74,14 +74,19 @@ public class DiscoverAddTestRemove extends SettingBase {
 	   PrintQueueSession.close(); 
 	   log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");
 	   		    
-	   //Remove printer based on user input.
-	   if (remove_ptr){
+	}	
+	
+	@Test(priority = 3, dependsOnMethods = { "Print_TestPage" })
+	@Parameters({ "device_name", "ptr_name", "remove_ptr"})
+	public void RemovePrinter(String device_name, String ptr_name, String remove_ptr) throws InterruptedException{
+	   
+	   //Remove printer based on user choice Y/N.
+	   if (remove_ptr.equalsIgnoreCase("Y")){
 		   RemoveAlreadyAddedPrinter(ptr_name,device_name);
 	   }else{
 		   log.info("Printer under test not removed as per user Choice => "+ptr_name);
 	   } 
-	    
-	}	
+	}   
 	
 	
 	@AfterClass(alwaysRun=true)

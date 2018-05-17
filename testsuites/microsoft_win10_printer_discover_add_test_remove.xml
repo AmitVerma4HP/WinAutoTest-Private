@@ -13,7 +13,7 @@
   
 	<test verbose="2" name="Test-01 : Test page print Tests from Windows Settings - Printer1">    	
      	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> 	
-     	<parameter name="remove_ptr" value="true" />	
+     	<parameter name="remove_ptr" value="Y" />	
     <classes>
          <class name="com.hp.win.tests.DiscoverAddTestRemove"/>
     </classes>
@@ -21,7 +21,7 @@
 
 	<test verbose="2" name="Test-02 : Test page print Tests from Windows Settings - Printer2">    	
      	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> 	
-     	<parameter name="remove_ptr" value="false" />	
+     	<parameter name="remove_ptr" value="N" />	
     <classes>
          <class name="com.hp.win.tests.DiscoverAddTestRemove"/>
     </classes>
@@ -29,7 +29,7 @@
 
 	<test verbose="2" name="Test-03 : Test page print Tests from Windows Settings - Printer3">    	
      	<parameter name="ptr_name" value="ipp: XEROX Phaser 3330 (XRX9C934E734C76)" /> 	
-     	<parameter name="remove_ptr" value="true" />	
+     	<parameter name="remove_ptr" value="Y" />	
     <classes>
          <class name="com.hp.win.tests.DiscoverAddTestRemove"/>
     </classes>
