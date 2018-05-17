@@ -24,7 +24,7 @@
 <!-- OPTIONAL      headerandfooter_optn = <"On", "Off"> , DEFAULT = "Off" -->
 <!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
-
+<!-- OPTIONAL      page_range	= <"All","Current Page", "expression like "1-2", "3,5" etc.> , DEFAULT = All -->
 <!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
 
 

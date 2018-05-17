@@ -445,14 +445,16 @@ public class UwpAppBase extends Base {
 	        PageRangeListComboBox.click();
 	        Thread.sleep(1000);
 	        try {
-				if((!(page_range.equalsIgnoreCase("All pages"))) &&  (!(page_range.equalsIgnoreCase("Current page")))){
+				if((!(page_range.equalsIgnoreCase("All pages"))) &&  (!(page_range.equalsIgnoreCase("Current page"))) && (!(page_range.equalsIgnoreCase("All")))){
 					
 					// Selecting the Custom option for Pages to enter desired page range to print.
-					Session.findElementByName("Custom range").click();
+					// Pdf has this option as "Page range" and webpage has this option as "Custom range"
+					Session.findElementByXPath("//*[contains(@Name,'range')]").click();
 					Thread.sleep(2000);
 					
 					// Clicking on Page Range Edit box.
-					Session.findElementByXPath("//*[@AutomationId = 'com.microsoft.JobCustomPageRange_ValueText']").click();
+					// PDF and Webpage have different ID for PageRange Edit Box
+					Session.findElementByXPath("//*[@AutomationId = 'com.microsoft.JobCustomPageRange_ValueText' or @AutomationId = 'CustomRangeEdit_ValueText']").click();
 					Thread.sleep(2000);
 
 					Session.getKeyboard().pressKey(page_range);
@@ -460,10 +462,10 @@ public class UwpAppBase extends Base {
 
 					log.info("Entered page range value ***** " + page_range + " *****");
 				}else{
-					Session.findElementByName(page_range).click();
+					Session.findElementByXPath("//*[contains(@Name,'"+page_range+"')]").click();
 					Thread.sleep(2000);
 				}
-				log.info("Selected desired Page Range *****" + PageRangeListComboBox.getText().toString() + "*****");
+				log.info("Selected desired Page Range *****" +page_range+ "*****");
             } catch(Exception e){
 	        	log.info("Desired Page Range is not found so either 1) your Printer does not support desired Page Range OR 2) you have typed the Page Range option incorrectly in testsuite xml");
 	        	//e.printStackTrace();
