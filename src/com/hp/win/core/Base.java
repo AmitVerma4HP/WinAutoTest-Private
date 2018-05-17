@@ -30,6 +30,7 @@ public class Base {
 		public static RemoteWebDriver PrintQueueSession = null;
 		protected static DesiredCapabilities capabilities = null;
 		protected static String WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
+		public static RemoteWebDriver OneNoteSession  = null;
 		protected static final String hex = "0x";
 		
 		
