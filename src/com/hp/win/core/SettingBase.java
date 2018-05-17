@@ -1,5 +1,6 @@
 package com.hp.win.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -24,7 +26,7 @@ import io.appium.java_client.windows.WindowsElement;
 public class SettingBase extends Base {
 		private static final Logger log = LogManager.getLogger(SettingBase.class);
 		protected static RemoteWebDriver CortanaSession = null;
-		protected static RemoteWebDriver SettingSession = null;
+		public static RemoteWebDriver SettingSession = null;
 		static WebDriverWait wait;		
 		static int MethodCalledCount = 0;
 		
@@ -383,6 +385,58 @@ public class SettingBase extends Base {
 		    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
 		    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
 	  }
+	  
+	  
+	  // Printing test page from PUT in the added printer list - 1) IsAlreadyAdded if not then Discover and Add
+	  public static void TestPagePrint(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
+		  
+		  	OpenSettings(device_name); 
+		  
+		  	//Scrolling to the printer to which test page has to be printed.
+		  	MoveMousePointerToPrinter(ptr_name);
+		  	
+		  	// if printer is way down in the list then moving mouse pointer does not work so check if printer is visible if not then scroll down further
+		  	if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
+		  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+		  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+		  	}		  	
+		  			  		
+			//Click on Added Printer
+			try {
+				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+			}catch (Exception e) {
+				log.info("Error in clicking on the printer =>"+ptr_name);
+				throw new RuntimeException(e);
+			}
+			   
+			//Click on Manage to view info about Added Printer
+			try {
+				SettingSession.findElement(By.xpath("//Button[@Name = 'Manage']")).click();
+				log.info("Clicked on Manage for Printer => "+ptr_name);
+				Thread.sleep(1000);
+				
+				}catch (Exception e) {
+					log.info("Error in clicking Manage for printer =>"+ptr_name);
+					throw new RuntimeException(e);
+				}
+			
+			//Click on Print a test page option to print test page
+			try {
+				SettingSession.findElementByName("Print a test page").click();
+				log.info("Clicked on Print test page for Printer => "+ptr_name);
+		        Thread.sleep(1000);		        
+	      		}catch (Exception e) {
+					log.info("Error in clicking Print test page for printer =>"+ptr_name);
+					throw new RuntimeException(e);
+				}
+			
+			//moving back to printer settings screen
+			SettingSession.getKeyboard().pressKey(Keys.BACK_SPACE);
+			log.info("Moved back to Settings page with printers listing");
+			Thread.sleep(1000);
+				
+	  }
+	  
 	  
 }
 	  
