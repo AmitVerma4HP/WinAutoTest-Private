@@ -68,15 +68,10 @@ public class Base {
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
 		        
-/*		        WebDriverWait wait = new WebDriverWait(session, 10);
-		        wait.until(ExpectedConditions.elementToBeClickable(By.name(buttonName)));
-		        log.info("Waiting until '" + buttonName + "' button is clickable.");*/
-		        
 		        // There is something strange about clicking buttons with findElementByName() - Appium thinks the button
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
 		        // the button's name is unique or not - EMC
 		        session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
-            //session.findElementByName(buttonName).click();
 		        log.info("Clicked '" + buttonName + "' button successfully.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {
@@ -90,8 +85,7 @@ public class Base {
 		              log.info("Could not click on '" + buttonName + "' button.");
 		              throw new RuntimeException(e1);
 		        }
-/*		        log.info("Could not click on '" + buttonName + "' button.");
-		        throw new RuntimeException(e);*/
+
 		    }
 		}
 		
@@ -172,6 +166,7 @@ public class Base {
                 capabilities.setCapability("platformName", "Windows");
                 capabilities.setCapability("deviceName", device_name);
                 session = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+                Assert.assertNotNull(session);
                 }catch(Exception e){
                     e.printStackTrace();
                     log.info("Error getting session window handle");

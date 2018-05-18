@@ -23,16 +23,6 @@ public class OneNoteBase extends UwpAppBase {
     public static RemoteWebDriver OneNoteSession = null;
 
 
-    // Method to print web page from MsEdge Browser
-    public static void PrintOneNote(String ptr_name, String web_url) throws InterruptedException {
-        // Go to More settings at the top right corner.
-
-        // Tap on Print icon
-        OneNoteSession.findElementByName("Print").click();
-        log.info("Clicked on Print button Successfully to launch the print options screen");
-        Thread.sleep(1000);
-    }
-
     // Method to open OneNote.
     public static RemoteWebDriver OpenOneNoteApp(String device_name, String test_filename)
             throws MalformedURLException, InterruptedException {

@@ -215,31 +215,6 @@ public class Win32Base extends Base {
             return;
         }
         
-/*        if(list.size() > 0) {
-                session.getKeyboard().pressKey(Keys.ALT + key);
-                session.getKeyboard().releaseKey(key);
-                session.getKeyboard().releaseKey(Keys.ALT);
-                log.info("Successfully focused on '" + boxName + "' combo box.");
-
-                session.getKeyboard().pressKey(Keys.ARROW_DOWN);
-                log.info("Successfully opened '" + boxName + "' list.");
-
-
-            log.info("Going to try to click on '" + option + "'...");
-            try {
-                session.findElementByName(option).click();
-                Thread.sleep(1000);
-                log.info("Successfully clicked on '" + option + "'...");
-
-            } catch (Exception e) {
-                log.info("There was a problem clicking on '" + option + "'.");
-                throw new RuntimeException(e);
-            }
-        }
-        else {
-            log.info("'" + boxName + "' setting is not available for this printer.");
-            return;
-        }*/
     }
     
     

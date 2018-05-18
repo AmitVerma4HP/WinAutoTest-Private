@@ -29,8 +29,6 @@ import java.util.concurrent.TimeUnit;
     public class PrintFromOneNote extends OneNoteBase {
         private static final Logger log = LogManager.getLogger(PrintFromOneNote.class);
         private static String currentClass; 
-        public static RemoteWebDriver OneNoteSession = null;
-        public static RemoteWebDriver TempOneNoteSession = null;
         public static String expectedPrintjob;
         
         public static WebDriverWait wait;
