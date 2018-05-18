@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Test suite - Printer Listing Utility">
+	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
+	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+ 
+
+<!-- Creates a text file saved in resources folder containing -->
+<!-- List of already added printers and the printers discovered in the network(excluding the already added printers)-->
+ 
+<!-- **************************************** START: PRINTER LISTING UTILITY TEST ******************************************************** -->
+  
+  	<test verbose="2" name="Test-01 : Printer Listing Utility Test from Windows Settings - Device1">    		
+    <classes>
+         <class name="com.hp.win.utility.DiscoverPrinterList"/>
+    </classes>
+  	</test>
+ 
+    
+ <!-- **************************************** END: PRINTER LISTING UTILITY TEST ******************************************************** -->
+ 
+ </suite>
