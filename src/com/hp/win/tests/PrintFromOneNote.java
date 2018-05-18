@@ -4,6 +4,7 @@ package com.hp.win.tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
+import com.hp.win.core.EdgeAppBase;
 import com.hp.win.core.OneNoteBase;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -49,8 +50,8 @@ import java.util.concurrent.TimeUnit;
     
         
     @Test
-    @Parameters({ "device_name", "ptr_name", "test_pagename","copies","pages","orientation","paper_size","color_optn","duplex_optn","paper_tray","output_qlty","collation_optn"})
-    public void PrintOneNote(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename, @Optional("1")String copies, @Optional("Page")String pages, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
+    @Parameters({ "device_name", "ptr_name", "test_pagename","copies","pages","orientation","paper_size","color_optn","duplex_optn","paper_tray","output_qlty","stapling_optn","collation_optn"})
+    public void PrintOneNote(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename, @Optional("1")String copies, @Optional("Page")String pages, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
     {
 
         OneNoteSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -141,6 +142,14 @@ import java.util.concurrent.TimeUnit;
                 log.info("The desired Color Mode feature is not supported by the printer ");
             }
                         
+            //Select Desired Stapling Option.           
+            if (OneNoteSession.findElementsByName("Stapling").size()!=0){
+                EdgeAppBase.SelectStaplingOption_Uwp(OneNoteSession,stapling_optn);
+            }else{
+                log.info("The desired Stapling feature is not supported by the printer ");
+            }
+            
+            
             //Closing more settings after accessing more printing options.
             OneNoteBase.CloseMoreSettings(OneNoteSession);
             

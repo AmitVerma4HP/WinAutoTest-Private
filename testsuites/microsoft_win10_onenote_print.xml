@@ -3,13 +3,9 @@
 <suite name="Microsoft Win10 OneNote Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
  		<!-- <parameter name="oneNote2016_exe_loc" value="C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe" /> -->
-     	<!-- <parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> -->
-     	<parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" />
-<!-- 		<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
-
-<!-- 		<parameter name="username" value="mymoprint@gmail.com" />
-		<parameter name="password" value="" -->
-
+     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+     	<!-- <parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" /> -->
+		<!-- <parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
 
  <!-- NOTE: It is expected that a notebook is open and has the desired
 	  test page selected in OneNote at the time the test is begun. -->
@@ -26,6 +22,7 @@
  <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 												, DEFAULT = "Letter"   		   -->
  <!-- OPTIONAL	color_optn	   = <"Color", "Monochrome">			 	 												, DEFAULT = "Color"    		   -->
  <!-- OPTIONAL  paper_tray	   = <"Auto select", "Auto", "Tray 2", "Tray 1", "Main", "Photo"etc (Depending on printer)> , DEFAULT = "Auto select" 	   -->
+ <!-- OPTIONAL  stapling_optn  = <"Staple", "Top left", "Top right"> 													, DEFAULT = "Staple"  		   -->
  <!-- OPTIONAL	output_qlty    = <"Normal", "Draft">			 		 												, DEFAULT = "Normal"		   -->
  <!-- OPTIONAL  collation_optn = <"Uncollated", "Collated">				 												, DEFAULT = "Uncollated" 	   -->
 
@@ -45,7 +42,8 @@
      	<parameter name="paper_size" 	 value="A4" 		 />
 		<parameter name="color_optn" 	 value="Monochrome"  />
 		<parameter name="paper_tray" 	 value="Tray 1" 	 />
-		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="output_qlty"    value="Draft" 	  	 />
+		<parameter name="stapling_optn"  value="Top left"    />		
 		<parameter name="collation_optn" value="Collated" 	 /> -->
 		
     <classes>
@@ -65,7 +63,8 @@
      	<parameter name="paper_size" 	 value="A4" 		 />
 		<parameter name="color_optn" 	 value="Monochrome"  />
 		<parameter name="paper_tray" 	 value="Tray 1" 	 />
-		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="output_qlty"    value="Draft" 	  	 />
+		<parameter name="stapling_optn"  value="Top left"    />		
 		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
@@ -85,7 +84,8 @@
      	<parameter name="paper_size" 	 value="A4" 		 />
 		<parameter name="color_optn" 	 value="Monochrome"  />
 		<parameter name="paper_tray" 	 value="Tray 1" 	 />
-		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="output_qlty"    value="Draft" 	  	 />
+		<parameter name="stapling_optn"  value="Top left"    />		
 		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
@@ -105,7 +105,8 @@
      	<parameter name="paper_size" 	 value="A4" 		 />
 		<parameter name="color_optn" 	 value="Monochrome"  />
 		<parameter name="paper_tray" 	 value="Tray 1" 	 />
-		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="output_qlty"    value="Draft" 	  	 />
+		<parameter name="stapling_optn"  value="Top left"    />		
 		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
