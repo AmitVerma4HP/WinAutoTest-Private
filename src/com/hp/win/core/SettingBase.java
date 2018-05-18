@@ -1,5 +1,6 @@
 package com.hp.win.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -24,7 +26,7 @@ import io.appium.java_client.windows.WindowsElement;
 public class SettingBase extends Base {
 		private static final Logger log = LogManager.getLogger(SettingBase.class);
 		protected static RemoteWebDriver CortanaSession = null;
-		protected static RemoteWebDriver SettingSession = null;
+		public static RemoteWebDriver SettingSession = null;
 		static WebDriverWait wait;		
 		static int MethodCalledCount = 0;
 		
@@ -197,21 +199,20 @@ public class SettingBase extends Base {
 	  }
 	  
 	  
-	  //if IPP printer was found then determine whether it is already added or new one
+	  //if printer was found then determine whether it is already added or new one
 	  //Better logic could be just see if printer is visible in already added printer list (before going for discovery)
 	  // Store all printers in a List	  	
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {	
-			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+		  	SettingSession.findElementByClassName("ScrollViewer").click();
+		  	List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);				
 			boolean printerExists=false;
-			int ippExistingCount = 0;			
+			int ptrExistingCount = 0;			
 			for(WebElement el : PrinterListItem) {
-				if(el.getText().contains("ipp:")) {
-					ippExistingCount++;					
-					log.info("Already Added IPP Printer "+ippExistingCount+" => "+el.getText());
-				}
+					ptrExistingCount++;					
+					log.info("Already Added Printer "+ptrExistingCount+" => "+el.getText());
 			}
-			log.info("Total Added IPP Printers Count => "+ippExistingCount);
+			log.info("Total Added Printers Count => "+ptrExistingCount);
 			
 			
 			for(WebElement el : PrinterListItem) {																						
@@ -238,7 +239,7 @@ public class SettingBase extends Base {
 	  
 	  
 	  
-	 //if IPP printer was found then remove it and confirm the printer removal
+	 //if printer was found then remove it and confirm the printer removal
 	  public static void RemoveAlreadyAddedPrinter(String ptr_name,String device_name ) throws InterruptedException {
 		  	//Move mouse pointer to printer under test and then remove it.
 			MoveMousePointerToPrinter(ptr_name);
@@ -277,16 +278,15 @@ public class SettingBase extends Base {
 			}
 			
 			// Ensure printer is not visible anymore
+			SettingSession.findElementByClassName("ScrollViewer").click();
 			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);			
-			int ippExistingCount = 0;			
+			int ptrExistingCount = 0;			
 			for(WebElement el : PrinterListItem) {
-				if(el.getText().contains("ipp:")) {
-					ippExistingCount++;					
-					log.info("Existing Added IPP Printer List After Removing Printer Under Test"+ippExistingCount+" => "+el.getText());
-				}
+				ptrExistingCount++;					
+				log.info("Existing Added Printer List After Removing Printer Under Test"+ptrExistingCount+" => "+el.getText());
 			}
-			log.info("Total Added IPP Printers COunt => "+ippExistingCount);
+			log.info("Total Added Printers Count => "+ptrExistingCount);
 			
 			boolean printerRemoved=true;
 			for(WebElement el : PrinterListItem) {
@@ -335,16 +335,17 @@ public class SettingBase extends Base {
 	  // Find Target Printer
 	  public static void FindTargetPrinterInList(String ptr_name,String device_name) throws InterruptedException {		  
 		  	boolean printerFound = false;
+		  	
+		  	SettingSession.findElementByClassName("ScrollViewer").click();
 		  	List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(PrinterListItem);					
-			int ippCount = 0;			
+			int ptrCount = 0;			
 			for(WebElement el : PrinterListItem) {
-				if(el.getText().contains("ipp:")) {
-					ippCount++;					
-					log.info("IPP Printer "+ippCount+" => "+el.getText());
-				}
+				ptrCount++;					
+				log.info("Printer "+ptrCount+" => "+el.getText());
 			}
-			log.info("Total IPP Printers Discovered => "+ippCount);
+			
+			log.info("Total Printers Discovered => "+ptrCount);
 			
 			
 			for(WebElement el : PrinterListItem) {																						
@@ -383,6 +384,58 @@ public class SettingBase extends Base {
 		    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
 		    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
 	  }
+	  
+	  
+	  // Printing test page from PUT in the added printer list 
+	  public static void TestPagePrint(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
+		  
+		  	OpenSettings(device_name); 
+		  
+		  	//Scrolling to the printer to which test page has to be printed.
+		  	MoveMousePointerToPrinter(ptr_name);
+		  	
+		  	// if printer is way down in the list then moving mouse pointer does not work so check if printer is visible if not then scroll down further
+		  	if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
+		  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+		  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+		  	}		  	
+		  			  		
+			//Click on Added Printer
+			try {
+				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+			}catch (Exception e) {
+				log.info("Error in clicking on the printer =>"+ptr_name);
+				throw new RuntimeException(e);
+			}
+			   
+			//Click on Manage to view info about Added Printer
+			try {
+				SettingSession.findElement(By.xpath("//Button[@Name = 'Manage']")).click();
+				log.info("Clicked on Manage for Printer => "+ptr_name);
+				Thread.sleep(1000);
+				
+				}catch (Exception e) {
+					log.info("Error in clicking Manage for printer =>"+ptr_name);
+					throw new RuntimeException(e);
+				}
+			
+			//Click on Print a test page option to print test page
+			try {
+				SettingSession.findElementByName("Print a test page").click();
+				log.info("Clicked on Print test page for Printer => "+ptr_name);
+		        Thread.sleep(1000);		        
+	      		}catch (Exception e) {
+					log.info("Error in clicking Print test page for printer =>"+ptr_name);
+					throw new RuntimeException(e);
+				}
+			
+			//moving back to printer settings screen
+			SettingSession.getKeyboard().pressKey(Keys.BACK_SPACE);
+			log.info("Moved back to Settings page with printers listing");
+			Thread.sleep(1000);
+				
+	  }
+	  
 	  
 }
 	  
