@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Microsoft Win10 OneNote 2016 Test suite - Printing Tests">
+<suite name="Microsoft Win10 OneNote Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
  		<!-- <parameter name="oneNote2016_exe_loc" value="C:\\Program Files\\Microsoft Office\\Office16\\ONENOTE.exe" /> -->
-     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
-     	<!-- <parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" /> -->
+     	<!-- <parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> -->
+     	<parameter name="ptr_name" value="ipp: HP Color LaserJet M653 [A575A9]" />
 <!-- 		<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
 
 <!-- 		<parameter name="username" value="mymoprint@gmail.com" />
 		<parameter name="password" value="" -->
 
 
- <!-- NOTE: It is expected that no notebooks are open in OneNote at the time the test is begun. -->
-
- <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
- 
- <!-- Supported Parameters:  																	-->
- <!-- MUST		device_name    = <Your Windows PC Name> 										-->
- <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
- <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
- <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">  , DEFAULT = "None"  -->
- <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
- <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
- <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
- <!-- OPTIONAL	test_notebook  = <Full name of notebook to use in test>	 , DEFAULT = "OneNoteTestNotebook1\TestNotebook1.onetoc2"    -->
- <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "OneNoteTestFile1"    -->
- <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
+ <!-- NOTE: It is expected that a notebook is open and has the desired
+	  test page selected in OneNote at the time the test is begun. -->
 
  
+ <!-- Supported Parameters:  																														   -->
+ <!-- MUST		device_name    = <Your Windows PC Name> 																							   -->
+ <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 																			   -->
+ <!-- OPTIONAL	test_pagename  = <Name of the OneNote page to be used in the test>										, DEFAULT = "1pg OneNote" -->
+ <!-- OPTIONAL  copies		   = <Number of copies to be printed>		 												, DEFAULT = "1"				   -->
+ <!-- OPTIONAL	pages		   = <"Page", "Section", "Notebook">		 												, DEFAULT = "Page	    	   -->
+ <!-- OPTIONAL	orientation    = <"Portrait", "Landscape">				 												, DEFAULT = "Portrait" 		   -->
+ <!-- OPTIONAL  duplex_optn    = <"None", "Shortedge", "Longedge">		 												, DEFAULT = "None"			   -->
+ <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 												, DEFAULT = "Letter"   		   -->
+ <!-- OPTIONAL	color_optn	   = <"Color", "Monochrome">			 	 												, DEFAULT = "Color"    		   -->
+ <!-- OPTIONAL  paper_tray	   = <"Auto select", "Auto", "Tray 2", "Tray 1", "Main", "Photo"etc (Depending on printer)> , DEFAULT = "Auto select" 	   -->
+ <!-- OPTIONAL	output_qlty    = <"Normal", "Draft">			 		 												, DEFAULT = "Normal"		   -->
+ <!-- OPTIONAL  collation_optn = <"Uncollated", "Collated">				 												, DEFAULT = "Uncollated" 	   -->
+
  
-<!-- ********************************************** PRINTING ONENOTE 2016  TEST FILE *********************************************************** -->
+ 
+<!-- ********************************************** PRINTING ONENOTE  TEST FILE *********************************************************** -->
 
 
 
 <!-- ************************* TEST 01 ************************* -->
-    <test verbose="2" name="Test-01 : OneNote 2016 Duplex Short Edge Color - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-<!--      	<parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" /> -->
-     	<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="Flip on Short Edge" />
-     	<parameter name="color_optn" value="Color" />
-     	<parameter name="prnt_quality" value="Draft" />
-     	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="OneNoteTestFile1" />
-<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
+    <test verbose="2" name="Test-01 : 1pg OneNote Default Settings - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+<!--      	<parameter name="test_pagename" 	 value="2pg OneNote" />
+     	<parameter name="copies" 		 value="2"	         />
+     	<parameter name="pages"  		 value="Section"     />
+     	<parameter name="orientation" 	 value="Landscape"   />
+     	<parameter name="duplex_optn" 	 value="Shortedge"   />
+     	<parameter name="paper_size" 	 value="A4" 		 />
+		<parameter name="color_optn" 	 value="Monochrome"  />
+		<parameter name="paper_tray" 	 value="Tray 1" 	 />
+		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="collation_optn" value="Collated" 	 /> -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -52,14 +56,17 @@
   
   
 <!-- ************************* TEST 02 ************************* -->
-      <test verbose="2" name="Test-02 : OneNote 2016 Duplex Long Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-     	<parameter name="orientation" value="Landscape" />
-     	<parameter name="duplex_optn" value="Flip on Long Edge" />
-     	<parameter name="color_optn" value="Mono" />
-     	<parameter name="prnt_quality" value="Better" />
-     	<parameter name="paper_size" value="Legal" />
-     	<parameter name="test_filename" value="OneNoteTestFile1" />
-<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
+      <test verbose="2" name="Test-02 : 2pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+     	<parameter name="test_pagename"	 value="2pg OneNote" />
+     	<parameter name="copies" 		 value="2"	         />
+     	<parameter name="pages"  		 value="Section"     />
+     	<parameter name="orientation" 	 value="Landscape"   />
+     	<parameter name="duplex_optn" 	 value="Shortedge"   />
+     	<parameter name="paper_size" 	 value="A4" 		 />
+		<parameter name="color_optn" 	 value="Monochrome"  />
+		<parameter name="paper_tray" 	 value="Tray 1" 	 />
+		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -69,14 +76,17 @@
 
 
 <!-- ************************* TEST 03 ************************* -->
-        <test verbose="2" name="Test-03 : OneNote 2016 Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-     	<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="Flip on Short Edge" />
-     	<parameter name="color_optn" value="Color" />
-     	<parameter name="prnt_quality" value="Best" />
-     	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="OneNoteTestFile1" />
-<!--      	<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
+        <test verbose="2" name="Test-03 : 2pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+     	<parameter name="test_pagename"  value="2pg OneNote" />
+     	<parameter name="copies" 		 value="2"	         />
+     	<parameter name="pages"  		 value="Section"     />
+     	<parameter name="orientation" 	 value="Landscape"   />
+     	<parameter name="duplex_optn" 	 value="Shortedge"   />
+     	<parameter name="paper_size" 	 value="A4" 		 />
+		<parameter name="color_optn" 	 value="Monochrome"  />
+		<parameter name="paper_tray" 	 value="Tray 1" 	 />
+		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -86,14 +96,17 @@
 
 
 <!-- ************************* TEST 04 ************************* -->  
-        <test verbose="2" name="Test-04 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-		<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="None" />
-     	<parameter name="color_optn" value="Mono" />
-     	<parameter name="prnt_quality" value="Draft" />
-		<parameter name="paper_size" value="A4" />
-		<parameter name="test_filename" value="OneNoteTestFile1" />
-<!-- 		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" /> -->
+        <test verbose="2" name="Test-04 : 2pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
+     	<parameter name="test_pagename" 	 value="2pg OneNote" />
+     	<parameter name="copies" 		 value="2"	         />
+     	<parameter name="pages"  		 value="Section"     />
+     	<parameter name="orientation" 	 value="Landscape"   />
+     	<parameter name="duplex_optn" 	 value="Shortedge"   />
+     	<parameter name="paper_size" 	 value="A4" 		 />
+		<parameter name="color_optn" 	 value="Monochrome"  />
+		<parameter name="paper_tray" 	 value="Tray 1" 	 />
+		<parameter name="output_qlty"    value="Draft" 	  	 />		
+		<parameter name="collation_optn" value="Collated" 	 />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -102,23 +115,6 @@
 <!-- ************************* TEST 04 ************************* -->
 
 
-<!-- ************************* TEST 05 ************************* -->  
-<!--         <test verbose="2" name="Test-05 : OneNote 2016 Simplex Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-		<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="None" />
-     	<parameter name="color_optn" value="Mono" />
-     	<parameter name="prnt_quality" value="Draft" />
-		<parameter name="paper_size" value="A4" />
-		<parameter name="test_filename" value="OneNoteTestFile1" />
-		<parameter name="test_notebook" value="OneNoteTestNotebook1\TestNotebook1.onetoc2" />
-		
-    <classes>
-         <class name="com.hp.win.tests.PrintFromOneNote"/>
-    </classes>
-   </test> -->
-<!-- ************************* TEST 05 ************************* -->
-
-
- <!-- ********************************************** PRINTING ONENOTE 2016  TEST FILE *********************************************************** -->
+ <!-- ********************************************** PRINTING ONENOTE  TEST FILE *********************************************************** -->
      
   </suite>
