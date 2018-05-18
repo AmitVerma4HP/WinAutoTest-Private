@@ -24,7 +24,7 @@
 <!-- OPTIONAL      headerandfooter_optn = <"On", "Off"> , DEFAULT = "Off" -->
 <!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
-
+<!-- OPTIONAL      page_range	= <"All","Current Page", "expression like "1-2", "3,5" etc.> , DEFAULT = All -->
 <!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
 
 
@@ -71,6 +71,50 @@
 		<parameter name="scale_optn" value="Shrink to fit" />
 		<parameter name="page_range" value="2-4" />
 		<parameter name="collation_optn" value="Uncollated" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+    </classes>
+    </test>
+    
+       <test verbose="2" name="Test-03 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+     	<parameter name="test_filename" value="Himalayas_WebPage.html" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="paper_size" value="A4" />
+		<parameter name="page_margins" value="Moderate" />
+		<parameter name="color_optn" value="Monochrome" />
+		<parameter name="duplex_optn" value="Shortedge" />
+		<parameter name="borderless" value="On" />
+		<parameter name="paper_tray" value="Tray 1" />
+		<parameter name="output_qlty" value="Draft" />
+		<parameter name="stapling_optn" value="Top left" />
+		<parameter name="headerandfooter_optn" value="On" />
+		<parameter name="scale_optn" value="100%" />
+		<parameter name="page_range" value="1-2" />
+		<parameter name="collation_optn" value="Collated" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+    </classes>
+    </test>
+ 
+     <test verbose="2" name="Test-04 : Printing Test from Edge - Device Under test (DESKTOP-OVHNAIJ) => Printer Under Test (ipp: HP LaserJet M605 [04F7AB])">
+     	<parameter name="test_filename" value="MountStHelens_WebPage.html" />
+     	<parameter name="copies" value="1" />
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="paper_size" value="Letter" />
+		<parameter name="page_margins" value="Normal" />
+		<parameter name="color_optn" value="Color" />
+		<parameter name="duplex_optn" value="Longedgeedge" />
+		<parameter name="borderless" value="Off" />
+		<parameter name="paper_tray" value="Auto select" />
+		<parameter name="output_qlty" value="Draft" />
+		<parameter name="stapling_optn" value="Top left" />
+		<parameter name="headerandfooter_optn" value="Off" />
+		<parameter name="scale_optn" value="Shrink to fit" />
+		<parameter name="page_range" value="2-4" />
+		<parameter name="collation_optn" value="Collated" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromEdge"/>
