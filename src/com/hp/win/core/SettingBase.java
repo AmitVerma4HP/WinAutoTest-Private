@@ -1,6 +1,5 @@
 package com.hp.win.core;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -9,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -101,10 +99,10 @@ public class SettingBase extends Base {
 		  		log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");	
 		  		
 		  		 // Perform discovery
-		  		PerformDiscovery(ptr_name, device_name);
+		  		PerformDiscovery();
 		  		
 				// Find Target Printer in the List of Printer
-		  		FindTargetPrinterInList(ptr_name, device_name);		  		
+		  		FindTargetPrinterInList(ptr_name);		  		
 		  		
 		  		//Then Add Printer
 		  		PerformAddPrinter(ptr_name,device_name);
@@ -115,10 +113,10 @@ public class SettingBase extends Base {
 				RemoveAlreadyAddedPrinter(ptr_name,device_name);				
 				
 				 // Perform discovery
-		  		PerformDiscovery(ptr_name, device_name);
+		  		PerformDiscovery();
 		  		
 				// Find Target Printer in the List of Printer
-		  		FindTargetPrinterInList(ptr_name, device_name);		  		
+		  		FindTargetPrinterInList(ptr_name);		  		
 		  		
 		  		//Then Add Printer
 		  		PerformAddPrinter(ptr_name,device_name);				
@@ -135,10 +133,10 @@ public class SettingBase extends Base {
 		  		log.info("Printer does not exists already under \"Printers & scanners\" so going for discovering");	
 		  		
 		  		 // Perform discovery
-		  		PerformDiscovery(ptr_name, device_name);
+		  		PerformDiscovery();
 		  		
 				// Find Target Printer in the List of Printer
-		  		FindTargetPrinterInList(ptr_name, device_name);
+		  		FindTargetPrinterInList(ptr_name);
 						
 									
 			} else {
@@ -148,10 +146,10 @@ public class SettingBase extends Base {
 				Thread.sleep(2000);				
 				
 				 // Perform discovery
-		  		PerformDiscovery(ptr_name, device_name);
+		  		PerformDiscovery();
 		  		
 				// Find Target Printer in the List of Printer
-		  		FindTargetPrinterInList(ptr_name, device_name);				
+		  		FindTargetPrinterInList(ptr_name);				
 				
 			}
 		  	
@@ -304,7 +302,7 @@ public class SettingBase extends Base {
 		}	
 	  
 	  // Method to perform discovery
-	  public static void PerformDiscovery(String ptr_name,String device_name) throws InterruptedException {
+	  public static void PerformDiscovery() throws InterruptedException {
 		  	
 		  	//Go to top of the screen
 		  	SettingSession.getKeyboard().pressKey(Keys.PAGE_UP);
@@ -333,7 +331,7 @@ public class SettingBase extends Base {
 	  
 	  
 	  // Find Target Printer
-	  public static void FindTargetPrinterInList(String ptr_name,String device_name) throws InterruptedException {		  
+	  public static void FindTargetPrinterInList(String ptr_name) throws InterruptedException {		  
 		  	boolean printerFound = false;
 		  	
 		  	SettingSession.findElementByClassName("ScrollViewer").click();
