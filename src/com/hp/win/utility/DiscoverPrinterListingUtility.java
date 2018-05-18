@@ -22,8 +22,8 @@ import com.hp.win.core.SettingBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 @Listeners({ScreenshotUtility.class})
-public class DiscoverPrinterList extends SettingBase {
-	private static final Logger log = LogManager.getLogger(DiscoverPrinterList.class);
+public class DiscoverPrinterListingUtility extends SettingBase {
+	private static final Logger log = LogManager.getLogger(DiscoverPrinterListingUtility.class);
 			
 	@BeforeClass
 	@Parameters({"device_name"})
@@ -71,7 +71,7 @@ public class DiscoverPrinterList extends SettingBase {
 	
         
         // Perform discovery - can ptr_name be taken off the Perform Discovery method as its not used.
-	    PerformDiscovery(ptr_name,device_name);
+	    PerformDiscovery();
         try{
 		    List<WebElement> DiscoveredPrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
 			Assert.assertNotNull(DiscoveredPrinterListItem);	
