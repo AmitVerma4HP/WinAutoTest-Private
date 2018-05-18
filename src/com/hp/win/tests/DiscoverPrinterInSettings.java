@@ -2,7 +2,6 @@ package com.hp.win.tests;
 
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
@@ -13,17 +12,23 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import com.hp.win.core.SettingBase;
+import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
 @Listeners({ScreenshotUtility.class})
 public class DiscoverPrinterInSettings extends SettingBase {
 	private static final Logger log = LogManager.getLogger(DiscoverPrinterInSettings.class);
 	static WebDriverWait wait;
+	private static String currentClass;
 	
 		
 		@BeforeClass
 		@Parameters({"device_name"})
-	    public static void setup(String device_name) throws MalformedURLException, InterruptedException {
+	    public static void setup(String device_name) throws InterruptedException, Throwable {
+			currentClass = DiscoverPrinterInSettings.class.getSimpleName();
+			
+			//Start PrintTrace log capturing 
+	    	PrintTraceCapture.StartLogCollection(currentClass);
 	        SettingBase.OpenSettings(device_name);
 	    	    
 	    }
@@ -42,7 +47,7 @@ public class DiscoverPrinterInSettings extends SettingBase {
 			
 				
 		@AfterClass(alwaysRun=true)
-		public static void TearDown()
+		public static void TearDown() throws Throwable, InterruptedException
 		{	        
 		          
 		   try {
@@ -72,6 +77,9 @@ public class DiscoverPrinterInSettings extends SettingBase {
 		   }catch (NoSuchSessionException e) {
 			   log.info("Setting Session is already terminated");
 		   }
+		
+		 //Stop PrintTrace log capturing.
+	   	 PrintTraceCapture.StopLogCollection(currentClass);	
 		        	        
 		}
 		
