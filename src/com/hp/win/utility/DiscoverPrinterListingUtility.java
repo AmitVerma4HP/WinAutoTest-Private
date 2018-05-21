@@ -42,7 +42,7 @@ public class DiscoverPrinterListingUtility extends SettingBase {
     public void Discover_Printer_Utility(String ptr_name,String device_name) throws InterruptedException, IOException
     {   
 		
-		String PrinterListFile = System.getProperty("user.dir") + "\\resources\\" + "\\DiscoverPrinterList.txt\\";
+		String PrinterListFile = System.getProperty("user.dir") + "\\resources\\" + "\\PrinterListOnYourNetwork.txt\\";
 		File file = new File(PrinterListFile);
 		FileWriter writer = new FileWriter(file);
         BufferedWriter bw = new BufferedWriter(writer);
