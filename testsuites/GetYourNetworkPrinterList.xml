@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Test suite - Printer Listing Utility">
-	<parameter name="device_name" value="DESKTOP-OVHNAIJ" />
-	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+	<parameter name="device_name" value="DESKTOP-46461K1" />
  
 
 <!-- Creates a text file saved in resources folder containing -->

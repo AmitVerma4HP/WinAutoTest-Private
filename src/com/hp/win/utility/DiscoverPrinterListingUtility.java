@@ -38,11 +38,11 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 		
 	// Method to Discover Printer Under Test		
 	@Test
-	@Parameters({"ptr_name","device_name"})
-    public void Discover_Printer_Utility(String ptr_name,String device_name) throws InterruptedException, IOException
+	@Parameters({"device_name"})
+    public void Discover_Printer_Utility(String device_name) throws InterruptedException, IOException
     {   
 		
-		String PrinterListFile = System.getProperty("user.dir") + "\\resources\\" + "\\PrinterListOnYourNetwork.txt\\";
+		String PrinterListFile = System.getProperty("user.dir") + "\\resources\\" + "PrinterListOnYourNetwork.txt";
 		File file = new File(PrinterListFile);
 		FileWriter writer = new FileWriter(file);
         BufferedWriter bw = new BufferedWriter(writer);
@@ -62,7 +62,7 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 					(el.getText().contains("Touchpad")) || (el.getText().contains("Typing")) || (el.getText().contains("Pen & Windows Ink")) ||
 					(el.getText().contains("AutoPlay")) || (el.getText().contains("USB")) || (el.getText().contains("Fax")) ||
 					(el.getText().contains("Microsoft Print to PDF")) || (el.getText().contains("Microsoft XPS Document Writer")) || (el.getText().contains("Send To OneNote 16"))) {
-				log.info("Inside if statement: Found element to be removed: "+el.getText());
+				log.info("Found element to be removed: "+el.getText());
 			}else{
 				addedCount++;					
 				log.info("Added Printer "+addedCount+" => "+el.getText());
@@ -114,6 +114,7 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 		    e.printStackTrace();
 		}
 	
+        log.info("Printer list on your network captured => "+PrinterListFile);
     }
 		
 			
