@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,8 +48,7 @@ public class DiscoverPrinterListingUtility extends SettingBase {
         BufferedWriter bw = new BufferedWriter(writer);
 		
         List<WebElement> AlreadyAddedPrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
-		Assert.assertNotNull(AlreadyAddedPrinterListItem);					
-		int addedCount = 0;
+		Assert.assertNotNull(AlreadyAddedPrinterListItem);		
 		
 		bw.append("*****************************************");
 		bw.newLine();
@@ -54,12 +56,19 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 		bw.newLine();
 		bw.append("*****************************************");
 		bw.newLine();
+		int addedCount = 0;
 		for(WebElement el : AlreadyAddedPrinterListItem) {
-			addedCount++;					
-			log.info("Added Printer "+addedCount+" => "+el.getText());
-			bw.append(addedCount + ". " + el.getText());
-			bw.newLine();
-
+			if((el.getText().contains("Bluetooth & other devices")) || (el.getText().contains("Printers & scanners")) || (el.getText().contains("Mouse"))||
+					(el.getText().contains("Touchpad")) || (el.getText().contains("Typing")) || (el.getText().contains("Pen & Windows Ink")) ||
+					(el.getText().contains("AutoPlay")) || (el.getText().contains("USB")) || (el.getText().contains("Fax")) ||
+					(el.getText().contains("Microsoft Print to PDF")) || (el.getText().contains("Microsoft XPS Document Writer")) || (el.getText().contains("Send To OneNote 16"))) {
+				log.info("Inside if statement: Found element to be removed: "+el.getText());
+			}else{
+				addedCount++;					
+				log.info("Added Printer "+addedCount+" => "+el.getText());
+				bw.append(addedCount + ". " + el.getText());
+				bw.newLine();
+			}
 		}
 		bw.newLine();
 		bw.append("Total Number Of Already Added Printers => "+addedCount);
