@@ -86,6 +86,9 @@ public class Base {
 		    capabilities.setCapability("app","Root");
 		    capabilities.setCapability("platformName", "Windows");
 	        capabilities.setCapability("deviceName", device_name);
+	        
+	        //Increased default command timeout to 60 seconds as Add printer takes little longer 
+	        capabilities.setCapability("newCommandTimeout", "60000"); 
 		    DesktopSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
 			}catch(Exception e){
 	            e.printStackTrace();

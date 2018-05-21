@@ -78,6 +78,9 @@ public class SettingBase extends Base {
 		    	DesiredCapabilities appCapabilities = new DesiredCapabilities();
 		    	appCapabilities.setCapability("appTopLevelWindow", settingTopWindowHandle);		    	
 		    	appCapabilities.setCapability("deviceName", device_name);
+		    	
+		    	//Increased default command timeout to 60 seconds as Add printer takes little longer 
+		    	appCapabilities.setCapability("newCommandTimeout", "60000"); 
 		    	SettingSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), appCapabilities);
 		    	Assert.assertNotNull(SettingSession);
 				}catch(Exception e){
