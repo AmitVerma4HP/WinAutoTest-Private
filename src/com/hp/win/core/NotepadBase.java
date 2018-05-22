@@ -3,11 +3,12 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -31,16 +32,12 @@ public class NotepadBase extends Win32Base {
 
     // Method to print from Notepad
     public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
-        // Go to file Menu
-        NotepadSession.findElementByName("File").click();
-        log.info("Clicked on File Menu in Notepad");
-        Thread.sleep(1000);
 
-        // Save the file
-        NotepadSession.findElementByXPath("//MenuItem[starts-with(@Name, \"Save\")]").click();
-        log.info("Pressed Save button to Save the File");
-        Thread.sleep(1000);
-
+        // Maximize the notepad window to prevent false errors if Notepad is partially off-screen
+        NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
+        NotepadSession.getKeyboard().releaseKey(Keys.ARROW_UP);
+        NotepadSession.getKeyboard().releaseKey(Keys.COMMAND);
+        
         // Go to file Menu
         NotepadSession.findElementByName("File").click();
         log.info("Clicked on File Menu in Notepad");
@@ -90,7 +87,19 @@ public class NotepadBase extends Win32Base {
         PreferencesSession = GetDesktopSession(device_name);
         Assert.assertNotNull(PreferencesSession);
         
-        // Select Preferences on the Layout tab first
+        // Get a list of all the tabs in the preferences window
+        
+        List<WebElement> tabs = PreferencesSession.findElementsByClassName("TabItem");
+        if(tabs.size() > 0) {
+            for(WebElement t : tabs) {
+                log.info("Found tab '" + t.getText().toString() + ".");
+            }
+        }
+        else {
+            log.info("No tabs found.");
+        }
+        
+        /*        // Select Preferences on the Layout tab first
         ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
         ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
 
@@ -121,54 +130,18 @@ public class NotepadBase extends Win32Base {
         
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "OK");
-        ClickButton(AdvancedSession, "Print");
+        ClickButton(AdvancedSession, "Print");*/
 
-        // Use ALT + F4 hotkeys to close the notepad window 
-/*        AdvancedSession.getKeyboard().sendKeys(Keys.ALT, Keys.F4);
-        AdvancedSession.getKeyboard().pressKey(Keys.ALT);*/
-        
-        
-        /*        // The Advanced desktop session must be closed here instead of at tear down
         try {
-            AdvancedSession.quit();
-            log.info("Closed AdvancedSession...");
+            PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'CancelButton')]").click();
+            log.info("Successfully clicked on Cancel button.");
+            Thread.sleep(1000);
         } catch (Exception e) {
-            log.info("AdvancedSession already terminated.");
+            log.info("Could not click on Cancel button.");
+            throw new RuntimeException(e);
         }
         
-        
-        // A new Preferences desktop session must be opened here in order to continue the test 
-        log.info("Opening PreferencesSession...");
-        PreferencesSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(PreferencesSession);
-        
-        // Close print option dialogs
-        ClickButton(PreferencesSession, "OK");
-
-
-        // Close the preferences session
-        try {
-            PreferencesSession.quit();
-            log.info("Closing PreferencesSession...");
-        } catch (Exception e) {
-            log.info("PreferencesSession already terminated.");
-        }
-        
-        // Get a new print dialog session
-        log.info("Opening PrintDialogSession...");
-        PrintDialogSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(PrintDialogSession);
-        
-        //Tap on print icon (Give Print)        
-        ClickButton(PrintDialogSession, "Print");
-        
-        try {
-            PrintDialogSession.quit();
-            log.info("Closed PrintDialogSession...");
-        } catch (Exception e) {
-            log.info("PrintDialogSession already terminated.");
-        }*/
-     
+        ClickButton(PreferencesSession, "Cancel");
     }
 
 
