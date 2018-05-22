@@ -458,6 +458,8 @@ public class UwpAppBase extends Base {
 					Thread.sleep(2000);
 
 					Session.getKeyboard().pressKey(page_range);
+					Session.findElementByName("PrintDialog").click();
+					
 					Thread.sleep(1000);
 
 					log.info("Entered page range value ***** " + page_range + " *****");

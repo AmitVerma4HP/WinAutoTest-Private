@@ -94,8 +94,8 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 			bw.newLine();
 			for(WebElement el : DiscoveredPrinterListItem) {
 				ptrCount++;					
-				log.info("Discovered Printer "+ptrCount+" => "+el.getText());
-			    bw.append(ptrCount + ". " + el.getText());
+				log.info("Discovered Printer "+ptrCount+" => "+el.getText().split(",")[0]);
+			    bw.append(ptrCount + ". " + el.getText().split(",")[0]);
 			    bw.newLine();
 
 			}
