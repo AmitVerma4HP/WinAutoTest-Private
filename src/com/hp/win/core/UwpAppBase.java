@@ -152,6 +152,7 @@ public class UwpAppBase extends Base {
 	public static int OpenMoreSettings(RemoteWebDriver Session) throws InterruptedException {
 		try {
 			Session.findElementByName("More settings").click();
+			//Session.findElementById("moreOptionsButton").click();
 			log.info("Clicked 'More Settings' link successfully");
 			Thread.sleep(2000);
 			return 1;
@@ -458,6 +459,8 @@ public class UwpAppBase extends Base {
 					Thread.sleep(2000);
 
 					Session.getKeyboard().pressKey(page_range);
+					Session.findElementByName("PrintDialog").click();
+					
 					Thread.sleep(1000);
 
 					log.info("Entered page range value ***** " + page_range + " *****");
