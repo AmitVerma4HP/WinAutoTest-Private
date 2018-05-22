@@ -152,7 +152,6 @@ public class UwpAppBase extends Base {
 	public static int OpenMoreSettings(RemoteWebDriver Session) throws InterruptedException {
 		try {
 			Session.findElementByName("More settings").click();
-			//Session.findElementById("moreOptionsButton").click();
 			log.info("Clicked 'More Settings' link successfully");
 			Thread.sleep(2000);
 			return 1;
