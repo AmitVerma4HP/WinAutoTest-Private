@@ -7,9 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import io.appium.java_client.windows.WindowsDriver;
@@ -64,16 +67,25 @@ public class Base {
 
 		public static void ClickButton(RemoteWebDriver session, String buttonName) throws InterruptedException{
 		    try {
+		        
 		        // There is something strange about clicking buttons with findElementByName() - Appium thinks the button
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
 		        // the button's name is unique or not - EMC
 		        session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
-            //session.findElementByName(buttonName).click();
 		        log.info("Clicked '" + buttonName + "' button successfully.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {
-		        log.info("Could not click on '" + buttonName + "' button.");
-		        throw new RuntimeException(e);
+		        log.info("Could not find button using xpath. Going to try finding button by name.");
+		        try {
+		            session.findElementByName(buttonName).click();
+		            log.info("Clicked '" + buttonName + "' button successfully.");
+		            Thread.sleep(1000);
+		        }
+		        catch (Exception e1) {
+		              log.info("Could not click on '" + buttonName + "' button.");
+		              throw new RuntimeException(e1);
+		        }
+
 		    }
 		}
 		
@@ -116,6 +128,7 @@ public class Base {
 		    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
 		    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
 	
+		    	log.info("Successfully got Print Queue handle.");
 		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
 		    	DesiredCapabilities capabilities = new DesiredCapabilities();
 		    	capabilities.setCapability("appTopLevelWindow", printerQueueTopWindowHandle);
@@ -133,5 +146,36 @@ public class Base {
 	    	Assert.assertTrue(PrintQueueSession.findElementByClassName("PrintUI_PrinterQueue").getAttribute("Name").contains(ptr_name));
 		    log.info("Opened printer queue is correct for the printer => "+ptr_name);
 		}
+		
+		
+	    // Method to switch to a new app window
+        public static void BringWindowToFront(String device_name, RemoteWebDriver session, String className) throws MalformedURLException {
+            try {
+            
+                DesktopSession = Base.GetDesktopSession(device_name);
+                
+                //Get handle to PrinterQueue window
+                WebElement sessionWindow = DesktopSession.findElementByClassName(className);
+                log.info("Found window '" + sessionWindow.getAttribute("Name").toString() + "'.");
+                String nativeWindowHandle = sessionWindow.getAttribute("NativeWindowHandle");
+                int sessionWindowHandle = Integer.parseInt(nativeWindowHandle);
+                log.debug("int value:" + nativeWindowHandle);
+                String sessionTopWindowHandle  = hex.concat(Integer.toHexString(sessionWindowHandle));
+                log.debug("Hex Value:" + sessionTopWindowHandle);
+    
+                // Create an app session by attaching to an existing application top level window handle
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setCapability("appTopLevelWindow", sessionTopWindowHandle);
+                capabilities.setCapability("platformName", "Windows");
+                capabilities.setCapability("deviceName", device_name);
+                session = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+                Assert.assertNotNull(session);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    log.info("Error getting session window handle");
+                    throw new RuntimeException(e);
+                    }
+            log.info("Successfully switched to different window.");
+        }
 	
 }
