@@ -122,52 +122,6 @@ public class NotepadBase extends Win32Base {
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "Print");
-
-        // Use ALT + F4 hotkeys to close the notepad window 
-/*        AdvancedSession.getKeyboard().sendKeys(Keys.ALT, Keys.F4);
-        AdvancedSession.getKeyboard().pressKey(Keys.ALT);*/
-        
-        
-        /*        // The Advanced desktop session must be closed here instead of at tear down
-        try {
-            AdvancedSession.quit();
-            log.info("Closed AdvancedSession...");
-        } catch (Exception e) {
-            log.info("AdvancedSession already terminated.");
-        }
-        
-        
-        // A new Preferences desktop session must be opened here in order to continue the test 
-        log.info("Opening PreferencesSession...");
-        PreferencesSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(PreferencesSession);
-        
-        // Close print option dialogs
-        ClickButton(PreferencesSession, "OK");
-
-
-        // Close the preferences session
-        try {
-            PreferencesSession.quit();
-            log.info("Closing PreferencesSession...");
-        } catch (Exception e) {
-            log.info("PreferencesSession already terminated.");
-        }
-        
-        // Get a new print dialog session
-        log.info("Opening PrintDialogSession...");
-        PrintDialogSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(PrintDialogSession);
-        
-        //Tap on print icon (Give Print)        
-        ClickButton(PrintDialogSession, "Print");
-        
-        try {
-            PrintDialogSession.quit();
-            log.info("Closed PrintDialogSession...");
-        } catch (Exception e) {
-            log.info("PrintDialogSession already terminated.");
-        }*/
      
     }
 

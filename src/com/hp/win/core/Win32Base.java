@@ -4,8 +4,15 @@ import java.net.MalformedURLException;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import io.appium.java_client.windows.WindowsDriver;
 
 
 
@@ -13,9 +20,15 @@ public class Win32Base extends Base {
 
     private static final Logger log = LogManager.getLogger(Win32Base.class);
 
+    public static WebDriverWait wait;
+    
     // Method to select the necessary tab to change the print preference options
     public static void SelectPreferencesTab_Win32(RemoteWebDriver session, String desiredTab) throws InterruptedException {
 
+        wait = new WebDriverWait(session, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
+        log.info("Waited for combo box to become clickable.");
+        
         try {
             if(session.findElementByName(desiredTab).isSelected()) {
                 log.info("'" + desiredTab + "' tab is already selected.");
@@ -52,14 +65,35 @@ public class Win32Base extends Base {
         return exists;
     }
     
+    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) throws InterruptedException {
+        
+        // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
+        List<WebElement> titles = session.findElementsByName(dialogTitle);
+        
+        // If the list is empty, the dialog box is closed
+        Assert.assertNotEquals(titles.size(), 0);
+        
+        for(WebElement title : titles) {
+            String type = title.getAttribute("LocalizedControlType").toString();
+            if(type.equals("dialog")) {
+                Assert.assertNotNull(session.findElementByName(dialogTitle));
+                log.info("Confirmed dialog box '" + title.getAttribute("Name").toString() + "' is on top.");
+/*                session.getKeyboard().pressKey(Keys.TAB);
+                log.info("Successfully used 'Tab' to ensure dialog '" + title.getAttribute("Name").toString() + "' is in focus.");*/
+            }
+        }
+            
+            
+
+    }
     
     // Method to select a list item from a combo box drop down menu
     // -- also confirms if the setting is available
     public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
-
+       
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
-        List<WebElement> nameList = dialogSession.findElementsByName(boxName);
-
+        List<WebElement> nameList = dialogSession.findElementsByName(boxName);      
+        
         // If there are elements that have the name we are looking for...
         if(nameList.size() != 0) {
 
@@ -75,6 +109,7 @@ public class Win32Base extends Base {
                         // Click on the combo box
                         try {
                             log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
+                            
                             li.click();
                             Thread.sleep(1000);
                             break;
@@ -118,10 +153,16 @@ public class Win32Base extends Base {
     public static void SelectRadioButton_Win32(RemoteWebDriver session, String settingsSel, String radioGroup) {
         
         if (ConfirmGroupExists_Win32(session, radioGroup)){
+            
+            wait = new WebDriverWait(session, 30);
+            wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
+            log.info("Waited for combo box to become clickable.");
+            
             try {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
             } catch (Exception e) {
+                e.printStackTrace();
                 log.info("Couldn't click on '" + settingsSel + "' button.");
                 throw new RuntimeException(e);
             }
@@ -132,7 +173,52 @@ public class Win32Base extends Base {
     }
     
     
-    // Method to select print orientation
+    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
+
+        try {
+            List<WebElement> list = session.findElementsByName(boxName);
+
+            if(list.size() > 0) {
+                session.getKeyboard().pressKey(Keys.ALT + key);
+                session.getKeyboard().releaseKey(key);
+                session.getKeyboard().releaseKey(Keys.ALT);
+                log.info("Successfully focused on '" + boxName + "' combo box.");
+
+                session.getKeyboard().pressKey(Keys.ARROW_DOWN);
+                log.info("Successfully opened '" + boxName + "' list.");
+
+
+                log.info("Going to try to click on '" + option + "'...");
+                try {
+                    List<WebElement> listItems = session.findElementsByName(option);
+                    if(listItems.size() > 0) {
+                    session.findElementByName(option).click();
+                    Thread.sleep(1000);
+                    log.info("Successfully clicked on '" + option + "'...");
+                    }
+                    else {
+                        log.info("List item size is " + listItems.size() + ".");
+                    }
+
+                } catch (Exception e1) {
+                    log.info("There was a problem clicking on '" + option + "'.");
+                    throw new RuntimeException(e1);
+                }
+            }
+            else {
+                log.info("'" + boxName + "' setting is not available for this printer.");
+                return;
+            }
+
+        } catch (Exception e) {
+            log.info("Could not find any elements of '" + boxName + "'.");
+            return;
+        }
+        
+    }
+    
+    
+    // Method to select print option
     public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {
 
         SelectListItem_Win32(session, "Orientation: ", option, device_name);
