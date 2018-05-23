@@ -12,8 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import io.appium.java_client.windows.WindowsDriver;
-
 
 
 public class Win32Base extends Base {

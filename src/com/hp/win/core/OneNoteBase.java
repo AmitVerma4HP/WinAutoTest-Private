@@ -3,12 +3,9 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
