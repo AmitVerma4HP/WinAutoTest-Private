@@ -39,7 +39,7 @@ public class Win32Base extends Base {
                 Thread.sleep(1000);
             }
         } catch (Exception e) {
-            log.info("Error: Tab '" + desiredTab + "' doesn't exist. Use 'Layout' or 'Paper/Quality.'");
+            log.info("Error: Tab '" + desiredTab + "' doesn't exist.");
             throw new RuntimeException(e);
         }
 
@@ -89,7 +89,7 @@ public class Win32Base extends Base {
     
     // Method to select a list item from a combo box drop down menu
     // -- also confirms if the setting is available
-    public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException, MalformedURLException {
+    public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException {
        
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> nameList = dialogSession.findElementsByName(boxName);      
@@ -219,7 +219,7 @@ public class Win32Base extends Base {
     
     
     // Method to select print option
-    public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException, MalformedURLException {
+    public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException {
 
         SelectListItem_Win32(session, "Orientation: ", option, device_name);
 
@@ -227,7 +227,7 @@ public class Win32Base extends Base {
 
 
     // Method to select duplex option
-    public static void ChooseDuplexOrSimplex_Win32(RemoteWebDriver session, String duplexSel, String device_name) throws InterruptedException, MalformedURLException {
+    public static void ChooseDuplexOrSimplex_Win32(RemoteWebDriver session, String duplexSel, String device_name) throws InterruptedException {
 
         SelectListItem_Win32(session, "Print on Both Sides: ", duplexSel, device_name);
 
@@ -264,7 +264,7 @@ public class Win32Base extends Base {
     
 
     // Method to select the paper size
-    public static void ChoosePaperSize_Win32(RemoteWebDriver session, String size, String device_name) throws InterruptedException, MalformedURLException {   
+    public static void ChoosePaperSize_Win32(RemoteWebDriver session, String size, String device_name) throws InterruptedException {   
         
         SelectListItem_Win32(session, "Paper Size: ", size, device_name);
 

@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
 import org.testng.annotations.*;
+
 import com.hp.win.core.Base;
 import com.hp.win.core.NotepadBase;
 import com.hp.win.utility.PrintTraceCapture;
@@ -52,11 +52,11 @@ public class PrintFromNotepad extends NotepadBase{
 	}
 	
 	
-/*	@Test(dependsOnMethods = { "PrintNoteFile" })
+	@Test(dependsOnMethods = { "PrintNoteFile" })
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
-	    // Method to open the print queue (Moved from setup() method)
+/*	    // Method to open the print queue (Moved from setup() method)
 	    Base.OpenPrintQueue(ptr_name);
 	    
 		// Method to attach session to Printer Queue Window
@@ -69,7 +69,7 @@ public class PrintFromNotepad extends NotepadBase{
 
 	    //Validate Print Job Queued up
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
-	    log.info("Found correct job in print queue => "+test_filename);
+	    log.info("Found correct job in print queue => "+test_filename);*/
 	    
 	    // Get the Notepad handle so that we can switch back to the app and close it
         try {
@@ -97,7 +97,7 @@ public class PrintFromNotepad extends NotepadBase{
                 }
         log.info("Notepad session created successfully");
 	    
-	}*/
+	}
 
     
 
