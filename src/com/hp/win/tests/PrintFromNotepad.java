@@ -92,8 +92,9 @@ public class PrintFromNotepad extends NotepadBase{
             NotepadSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
             }catch(Exception e){
                 e.printStackTrace();
-                log.info("Error getting Notepad session");
-                throw new RuntimeException(e);
+                log.info("Error getting Notepad session to close notepage testfile");
+                // Dont have to throw runtime exception just because we could not close notepad testfile because it will terminate the testcases
+                //throw new RuntimeException(e);
                 }
         log.info("Notepad session created successfully");
 	    
