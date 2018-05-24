@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -172,11 +173,14 @@ public class UwpAppBase extends Base {
 			if (Session.findElementByXPath("//Button[@Name = 'Ok']").isDisplayed()){
 				Session.findElementByXPath("//Button[@Name = 'Ok']").click();
 				log.info("Clicked 'OK' button twice because of conflicting settings.");
+			}else{
+				log.info("There were no conflicting settings");
 			}
-		}catch(Exception e){
-				log.info("Clicked 'OK' button successfully.");
+		}catch(NoSuchElementException e){
+				log.info("OK button not found again, already clicked");
 			}
 		Thread.sleep(2000);
+		log.info("Clicked 'OK' button successfully.");
 	}
 
 	
