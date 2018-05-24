@@ -13,9 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.hp.win.utility.*;                            
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
