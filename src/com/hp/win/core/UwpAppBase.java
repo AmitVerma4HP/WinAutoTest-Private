@@ -165,8 +165,17 @@ public class UwpAppBase extends Base {
 	
 	// Method to return from More Options screen to access print button.
 	public static void CloseMoreSettings(RemoteWebDriver Session) throws InterruptedException {
+		
 		Session.findElementByXPath("//Button[@Name = 'Ok']").click();
-		log.info("Clicked 'OK' button successfully.");
+		Thread.sleep(1000);
+		try{
+			if (Session.findElementByXPath("//Button[@Name = 'Ok']").isDisplayed()){
+				Session.findElementByXPath("//Button[@Name = 'Ok']").click();
+				log.info("Clicked 'OK' button twice because of conflicting settings.");
+			}
+		}catch(Exception e){
+				log.info("Clicked 'OK' button successfully.");
+			}
 		Thread.sleep(2000);
 	}
 
