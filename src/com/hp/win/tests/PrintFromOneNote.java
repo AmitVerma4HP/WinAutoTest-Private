@@ -40,8 +40,8 @@ import java.util.concurrent.TimeUnit;
     
         
     @Test
-    @Parameters({ "device_name", "ptr_name", "test_pagename","copies","pages","orientation","paper_size","color_optn","duplex_optn","paper_tray","output_qlty","stapling_optn","collation_optn"})
-    public void PrintOneNote(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename, @Optional("1")String copies, @Optional("Page")String pages, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
+    @Parameters({ "device_name", "ptr_name", "test_pagename","copies","pages_selection","orientation","paper_size","color_optn","duplex_optn","paper_tray","output_qlty","stapling_optn","collation_optn"})
+    public void PrintOneNote(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename, @Optional("1")String copies, @Optional("Page")String pages_selection, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
     {
 
         OneNoteSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -77,15 +77,14 @@ import java.util.concurrent.TimeUnit;
         }
         
                     
-        //Select Desired Pages(page range) Option.
-        
+        //Select Desired Pages(page range) Option.        
         if (OneNoteSession.findElementsByName("Pages").size()!=0){
-            String pageSelection = "Current " + pages;
+            String pageSelection = "Current " + pages_selection;
             OneNoteBase.SelectPageRange_Uwp(OneNoteSession, pageSelection);
         }else{
             log.info("The desired Pages(Page Range) feature is not supported by the printer ");
         }
-
+        
         //Opening more settings to access more printing options.
         int MoreSettings = OneNoteBase.OpenMoreSettings(OneNoteSession);
         if  (MoreSettings == 1){    
