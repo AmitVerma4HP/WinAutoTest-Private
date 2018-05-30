@@ -163,26 +163,16 @@ public class SettingBase extends Base {
 	  public static void PerformAddPrinter(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {
 		  	boolean printerAdded = false;
 		  	MoveMousePointerToPrinter(ptr_name);
-		  	
-		  	// if printer is way down in the list then moving mouse pointer does not work so check if printer is visible if not then scroll down further
+		  
+		  	// if printer is not displayed in the list then keep going down until find the target printer	
+		  	// This if condition will handle not to execute do while block if printer is already visible in top of the discovered printer list  
 		  	if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
-		  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
-		  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
-		  		
-		  		// if printer still not visible then going further down 
-		  		if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
-			  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
-			  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
-			  		
-			  	// if printer still not visible then going further down 
-			  		if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
-				  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
-				  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
-		  		
-			  		}
-		  		}
+		  		do {
+		  			log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+		  			SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);		  		
+		  		}while(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed());
 		  	}
-		  	
+				  	
 		  		
 			//Click on Discovered Printer
 			try {
@@ -194,9 +184,17 @@ public class SettingBase extends Base {
 			   
 			//Click on Add Device to Add Discovered Printer
 			try {
+				
+				//In very few cases "Add Device" button is not displayed completely but isDisplayed thinks it is visible so going down little would fix such corner cases
+				SettingSession.getKeyboard().pressKey(Keys.ARROW_DOWN);	
+				
 				SettingSession.findElement(By.xpath("//Button[contains(@Name,'Add device')]")).click();
 				log.info("Clicked on Add device for Printer => "+ptr_name);
+								
 				
+				Thread.sleep(1000);			
+				
+				// We dont have to scroll up to watch printer add status. Even though it is not visible , check on "Ready" works fine
 				// Wait until you see printer shows status as "Ready" indicating it is added successfully
 				log.info("Waiting until printer gets added");
 	    	    wait = new WebDriverWait(SettingSession, 60);
@@ -448,6 +446,15 @@ public class SettingBase extends Base {
 			log.info("Moved back to Settings page with printers listing");
 			Thread.sleep(1000);
 				
+	  }
+	  
+	  
+	  // Move mouse pointer to the text
+	  public static void MoveMousePointerToLabel(String label) throws InterruptedException {			  
+		  	Actions action = new Actions(SettingSession);
+			action.moveToElement(SettingSession.findElement(By.xpath("//Text[contains(@Name,'"+label+"')]")));		    
+			action.perform();			
+			log.info("Moved Mouse to the label => "+label);
 	  }
 	  
 	  
