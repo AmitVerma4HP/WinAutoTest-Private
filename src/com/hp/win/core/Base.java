@@ -146,7 +146,7 @@ public class Base {
 		
 		
 	    // Method to switch to a new app window
-        public static void BringWindowToFront(String device_name, RemoteWebDriver session, String className) throws MalformedURLException {
+        public static void SwitchToDifferentWindow(String device_name, RemoteWebDriver session, String className) throws MalformedURLException {
             try {
             
                 DesktopSession = Base.GetDesktopSession(device_name);

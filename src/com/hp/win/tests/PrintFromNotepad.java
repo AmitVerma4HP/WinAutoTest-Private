@@ -44,11 +44,11 @@ public class PrintFromNotepad extends NotepadBase{
 
 	
 	@Test
-	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "device_name" })
-    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "borderless", "paper_type", "paper_tray", "device_name" })
+    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, @Optional("Off")String borderless, @Optional("Plain Paper")String paper_type, @Optional("Main Tray")String paper_tray, String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, device_name);
+		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, borderless, paper_type, paper_tray, device_name);
 	}
 	
 	

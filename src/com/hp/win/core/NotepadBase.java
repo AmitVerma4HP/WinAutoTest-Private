@@ -32,7 +32,7 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
+    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name, String borderless, String paper_type, String paper_tray) throws InterruptedException, MalformedURLException  {
 
         // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
         NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
@@ -103,7 +103,7 @@ public class NotepadBase extends Win32Base {
             // If the first tab is the "Printing Shortcuts" tab, the print settings are in a WPF window
             else if(tabs.get(0).getText().equals("Printing Shortcuts")) {
                 log.info("Going to use WPF interface.");
-            
+                RunWPFTest(PreferencesSession, tabs, parameters, device_name, ptr_name); 
                 try {
                     PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'CancelButton')]").click();
                     log.info("Successfully clicked on Cancel button.");
@@ -122,8 +122,7 @@ public class NotepadBase extends Win32Base {
             log.info("Error: No tabs found.");
         }
 
-        PrintDialogSession = Base.GetDesktopSession(device_name);
-        ClickButton(PrintDialogSession, "Cancel");
+        ClickButton(PreferencesSession, "Cancel");
         
     }
 
@@ -214,55 +213,111 @@ public class NotepadBase extends Win32Base {
     }
 
     
-    public static void RunWPFTest(RemoteWebDriver session, List<WebElement> tabs, List<String> parameters, String device_name) throws InterruptedException, MalformedURLException {
+    public static void RunWPFTest(RemoteWebDriver session, List<WebElement> tabs, List<String> parameters, String device_name, String ptr_name) throws InterruptedException, MalformedURLException {
 
+        // Ensure correct printer selected      
+        Assert.assertTrue(session.findElementByClassName("Window").getAttribute("Name").contains(ptr_name));
+        log.info("Opened printer settings is correct for the printer => " + ptr_name);
+        
         // Store the tab elements in reader-friendly variables
         
-        // Make sure tabs are what we're expecting with Asserts
+        // Make sure the tabs are what we expect them to be
         Assert.assertEquals("Printing Shortcuts", tabs.get(0).getText());
         WebElement shortcutsTab = tabs.get(0);
-        log.info("Found tab " + shortcutsTab);
+        log.info("Found tab " + shortcutsTab.getText());
         
         Assert.assertEquals("Paper/Quality", tabs.get(1).getText());
         WebElement paperQualityTab = tabs.get(1);
-        log.info("Found tab " + paperQualityTab);
+        log.info("Found tab " + paperQualityTab.getText());
         
         Assert.assertEquals("Layout", tabs.get(2).getText());
         WebElement layoutTab = tabs.get(2);
-        log.info("Found tab " + layoutTab);
+        log.info("Found tab " + layoutTab.getText());
         
         Assert.assertEquals("Advanced", tabs.get(3).getText());
         WebElement advancedTab = tabs.get(3);
-        log.info("Found tab " + advancedTab);
-        
-        
-        
-        
-        
+        log.info("Found tab " + advancedTab.getText());
+
         // Store the list elements in reader-friendly variables 
         String orientation = parameters.get(0);
         String duplex_optn = parameters.get(1);
         String color_optn = parameters.get(2);
         String prnt_quality = parameters.get(3);
         String paper_size = parameters.get(4);
+        String borderless = parameters.get(5);
+        String paper_type = parameters.get(6);
+        String paper_tray = parameters.get(7);
         
-        // Change the settings on the Layout tab
-        SelectPreferencesTab_Win32(session, layoutTab.getText());
-
-        SelectPreferencesTab_Win32(session, shortcutsTab.getText());
-        
+/*  
+ *     
+ *  Because of small differences between wording for different printers' settings (OJ 8720 vs Envy 7800)
+ *  the "Printing Shortcuts" tab will not be used to test printer settings.
+ *    
+*/
+              
+        // We are starting with the settings on the Paper/Quality tab
         SelectPreferencesTab_Win32(session, paperQualityTab.getText());
         
-        SelectPreferencesTab_Win32(session, advancedTab.getText());
         
-        try {
-            session.findElementByXPath("//Button[starts-with(@AutomationId, 'CancelButton')]").click();
-            log.info("Successfully clicked on Cancel button.");
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            log.info("Could not click on Cancel button.");
-            throw new RuntimeException(e);
-        }  
+        // * *** Paper Options Group ***
+
+            //Paper Size:
+
+        SelectListItem_WPF(session, "cboPageMediaSize", paper_size, device_name);
+        
+            //TODO: (Custom button)
+
+            //TODO: Paper Source:
+            //cboDocumentInputBin (Paper Source)
+        SelectListItem_WPF(session, "cboDocumentInputBin", paper_tray, device_name);
+
+            //TODO: Paper Type:
+
+            //cboPageMediaType (Paper Type)
+        SelectListItem_WPF(session, "cboPageMediaType", paper_type, device_name);
+        
+        
+        // *** Borderless Printing Group ***
+            //cboBorderless (Borderless Printing)
+
+        SelectListItem_WPF(session, "cboBorderless", borderless, device_name);
+
+        // *** Print Quality Group ***
+       
+        SelectListItem_WPF(session, "cboResolution", prnt_quality, device_name);
+
+
+        // *** Print in Grayscale Group ***
+        //    TODO: Off/Black Ink Only/High Quality Grayscale
+        //    cboPrintInGrayScale Off/Black Ink Only/ High Quality Grayscale
+
+        String colorSel = null;
+        if((color_optn.equals("Color")) || (color_optn.equals("Off"))) {
+            //log.info("Color is not supported by this interface. Changing setting to 'Off'");
+            colorSel = "Off";
+        }
+        else if((color_optn.equals("BlackAndWhite")) || (color_optn.equals("Black Ink Only"))) {
+            log.info("'Black & White' is not supported by this interface. Changing setting to 'Black Ink Only'");
+            colorSel = "Black Ink Only";
+        }
+        else if(color_optn.equals("Grayscale")) {
+            colorSel = "High Quality Grayscale";
+        }
+        SelectListItem_WPF(session, "cboPrintInGrayScale", colorSel, device_name);
+
+        /*
+        TODO: (About button)??
+
+         * */
+        
+        
+        
+/*        
+        SelectPreferencesTab_Win32(session, layoutTab.getText());
+        SelectPreferencesTab_Win32(session, advancedTab.getText());*/
+
     }
+    
+    
 }
 

@@ -2,22 +2,25 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
-     	<!-- <parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" /> -->
-     	<!-- <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> -->
+        <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" />
+        <!-- <parameter name="ptr_name" value ="ipp: HP PageWide MFP P57750 [DFF323]" /> -->
+        <!-- <parameter name="ptr_name" value ="NPI04F7AB (HP LaserJet M605)" /> -->
+        <!-- <parameter name="ptr_name" value ="HP093DA7 (HP ENVY Photo 7800 series)" /> -->
+        <!-- <parameter name="ptr_name" value ="ipp: HP ENVY 7640 series [4FA898]" /> -->
 
 
  <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
  
- <!-- Supported Parameters:  																	-->
- <!-- MUST		device_name    = <Your Windows PC Name> 										-->
- <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
- <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
- <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">  , DEFAULT = "None"  -->
- <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
- <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
- <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
- <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "NotepadTestFile1.txt"    -->
- <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
+ <!-- Supported Parameters:                                                                                                      -->
+ <!-- MUST      device_name    = <Your Windows PC Name>                                                                          -->
+ <!-- MUST      ptr_name       = <Printer name as it shows in discovery>                                                         -->
+ <!-- OPTIONAL  orientation    = <"Portrait","Landscape">                                     , DEFAULT = "Portrait"             -->
+ <!-- OPTIONAL  duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">          , DEFAULT = "None"                 -->
+ <!-- OPTIONAL  paper_size     = <Paper size list> 	                                          , DEFAULT = "Letter"               -->
+ <!-- OPTIONAL  color_optn     = <"Color", "BlackAndWhite", "Grayscale" (Depending on printer)>        , DEFAULT = "Color"                -->
+ <!-- OPTIONAL  prnt_quality   = <"Normal", "Better", "Draft", "Best" (Depending on printer)> , DEFAULT = "Draft"                -->
+ <!-- OPTIONAL  test_filename  = <Full name of file to use in test>	                          , DEFAULT = "NotepadTestFile1.txt" -->
+ <!-- OPTIONAL  TDB	           = <TDB>                                                        , DEFAULT =  TBD 	                 -->
 
  
  
@@ -25,14 +28,12 @@
 
 
 
-<!-- ************************* OJ 8600 on R12 ************************* -->
-    <test verbose="2" name="Test-01 : Notepad Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])">
-<!--      	<parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" />
- -->     	<parameter name="orientation" value="Portrait" />
+<!-- ************************* Test-01 ************************* -->
+    <test verbose="2" name="Test-01 : Notepad Duplex Short Edge Color - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
-     	<parameter name="color_optn" value="Color" />
-     	<!-- <parameter name="prnt_quality" value="Draft" /> -->
-     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+     	<parameter name="color_optn" value="Grayscale" />
+     	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -40,17 +41,15 @@
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-<!-- ************************* OJ 8600 on R12 ************************* -->
+<!-- ************************* Test-01 ************************* -->
   
   
-<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
-      <test verbose="2" name="Test-02 : Notepad Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
-<!--      	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" />
- -->     	<parameter name="orientation" value="Landscape" />
+<!-- ************************* Test-02 ************************* -->
+      <test verbose="2" name="Test-02 : Notepad Duplex Long Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name="orientation" value="Landscape" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
-     	<parameter name="color_optn" value="Mono" />
-     	<parameter name="prnt_quality" value="Better" />
-     	<parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" />
+     	<parameter name="color_optn" value="BlackAndWhite" />
+     	<parameter name="prnt_quality" value="Normal" />
      	<parameter name="paper_size" value="Legal" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -58,17 +57,15 @@
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+<!-- ************************* Test-02 ************************* -->
 
 
-<!-- ************************* ENVY 7640 on R12 ************************* -->
-        <test verbose="2" name="Test-03 : Notepad Duplex Short Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP ENVY 7640 series [CCF025])">
-<!--      	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
- -->     	<parameter name="orientation" value="Portrait" />
+<!-- ************************* Test-03 ************************* -->
+        <test verbose="2" name="Test-03 : Notepad Duplex Short Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Best" />
-     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -76,17 +73,15 @@
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-<!-- ************************* ENVY 7640 on R12 ************************* -->
+<!-- ************************* Test-03 ************************* -->
 
 
-<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->  
-        <test verbose="2" name="Test-04 : Notepad Simplex Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Pro MFP 772-222 [64425B])">
-<!--      	<parameter name="ptr_name" value="ipp: HP PageWide Pro MFP 772-777 [64425B]" />
- -->		<parameter name="orientation" value="Portrait" />
+<!-- ************************* Test-04 ************************* -->  
+        <test verbose="2" name="Test-04 : Notepad Simplex BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+		<parameter name="orientation" value="Portrait" />
      	<parameter name="duplex_optn" value="None" />
-     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="color_optn" value="BlackAndWhite" />
      	<parameter name="prnt_quality" value="Draft" />
-     	<parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" />
 		<parameter name="paper_size" value="A4" />
 		<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
@@ -94,7 +89,7 @@
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
    </test>
-<!-- ************************* PageWide Pro MFP 772-777 on R12 ************************* -->
+<!-- ************************* Test-04 ************************* -->
 
 
 

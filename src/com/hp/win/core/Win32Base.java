@@ -24,8 +24,8 @@ public class Win32Base extends Base {
     public static void SelectPreferencesTab_Win32(RemoteWebDriver session, String desiredTab) throws InterruptedException {
 
         wait = new WebDriverWait(session, 30);
+        // Using 'OK' button's clickability as indicator that tabs can be interacted with
         wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
-        log.info("Waited for combo box to become clickable.");
         
         try {
             if(session.findElementByName(desiredTab).isSelected()) {
@@ -44,6 +44,7 @@ public class Win32Base extends Base {
     }
    
     @SuppressWarnings("unused")
+    // Method to confirm that a group of radio buttons exists - returns true if group exists, false if it does not
 	public static boolean ConfirmGroupExists_Win32(RemoteWebDriver session, String groupName){
         
         boolean exists = false;
@@ -63,7 +64,7 @@ public class Win32Base extends Base {
         return exists;
     }
     
-    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) throws InterruptedException {
+/*    public static void ConfirmDialogBox(String device_name, RemoteWebDriver session, String dialogTitle) throws InterruptedException {
         
         // Several elements have the same name, so this list will loop through them and find the correct one (if it exists)
         List<WebElement> titles = session.findElementsByName(dialogTitle);
@@ -76,16 +77,16 @@ public class Win32Base extends Base {
             if(type.equals("dialog")) {
                 Assert.assertNotNull(session.findElementByName(dialogTitle));
                 log.info("Confirmed dialog box '" + title.getAttribute("Name").toString() + "' is on top.");
-/*                session.getKeyboard().pressKey(Keys.TAB);
-                log.info("Successfully used 'Tab' to ensure dialog '" + title.getAttribute("Name").toString() + "' is in focus.");*/
+                session.getKeyboard().pressKey(Keys.TAB);
+                log.info("Successfully used 'Tab' to ensure dialog '" + title.getAttribute("Name").toString() + "' is in focus.");
             }
         }
             
             
 
-    }
+    }*/
     
-    // Method to select a list item from a combo box drop down menu
+    // Method to select a list item from a combo box via Win32 framework
     // -- also confirms if the setting is available
     public static void SelectListItem_Win32(RemoteWebDriver dialogSession, String boxName, String listSel, String device_name) throws InterruptedException {
        
@@ -126,16 +127,7 @@ public class Win32Base extends Base {
                 }
             }
         
-            // Find the desired list item and click on it
-            WebElement listItem = dialogSession.findElementByName(listSel);
-            try {
-                log.info("Going to click on '" + listItem.getText().toString() + "'");
-                listItem.click();
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                log.info("Unable to click on list item.");
-                throw new RuntimeException(e);
-            }
+            ClickOnListItem(dialogSession, listSel);
             
         }
         
@@ -147,14 +139,45 @@ public class Win32Base extends Base {
     }
 
     
+    // Method to select a list item via combo box in WPF framework
+    public static void SelectListItem_WPF(RemoteWebDriver session, String boxAutoId, String listSel, String device_name) throws InterruptedException {
+        try {
+            session.findElementByXPath("//ComboBox[@AutomationId='" + boxAutoId + "']").click();
+            log.info("Successfully clicked on desired combo box.");
+        } catch (Exception e) {
+            log.info("Unable to click on desired combo box.");
+            throw new RuntimeException(e);
+        }
+        Thread.sleep(1000);
+        
+        ClickOnListItem(session, listSel);
+    }
+    
+    
+    // Method to click on a ListItem element in a combo box
+    public static void ClickOnListItem(RemoteWebDriver session, String listSel) throws InterruptedException {
+        // Find the desired list item and click on it
+        WebElement listItem = session.findElementByName(listSel);
+        try {
+            log.info("Going to click on '" + listItem.getText().toString() + "'");
+            listItem.click();
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            log.info("Unable to click on list item.");
+            throw new RuntimeException(e);
+        }
+        Thread.sleep(1000);
+    }
+    
+    
     // Method to click a radio button
     public static void SelectRadioButton_Win32(RemoteWebDriver session, String settingsSel, String radioGroup) {
         
         if (ConfirmGroupExists_Win32(session, radioGroup)){
             
             wait = new WebDriverWait(session, 30);
+            // Using 'OK' button's clickability as indicator that Radio Buttons can be interacted with
             wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
-            log.info("Waited for combo box to become clickable.");
             
             try {
                 session.findElementByName(settingsSel).click();
@@ -171,7 +194,7 @@ public class Win32Base extends Base {
     }
     
     
-    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
+/*    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
 
         try {
             List<WebElement> list = session.findElementsByName(boxName);
@@ -213,7 +236,7 @@ public class Win32Base extends Base {
             return;
         }
         
-    }
+    }*/
     
     
     // Method to select print option
@@ -233,7 +256,7 @@ public class Win32Base extends Base {
 
 
 
-    // Method to select color option
+    // Method to select color option via radio button for Win32 framework
     public static void ChooseColorOrMono_Win32(RemoteWebDriver session, String color_optn) throws InterruptedException {
         
         // Test parameters have been paraphrased to prevent confusion around the two '&' in 'Black && White'
@@ -243,7 +266,15 @@ public class Win32Base extends Base {
         String color_choice;
         String color_sel = color_optn.toLowerCase();
 
-        if(color_sel.equals("mono")) {
+        if(color_sel.equals("blackandwhite")) {
+            color_choice = mono;
+        }
+        else if(color_sel.equals("grayscale")){
+            log.info("Grayscale not supported by this print interface. Changing selection to 'Black & White'.");
+            color_choice = mono;
+        }
+        else if(color_sel.equals("off")) {
+            log.info("'Off' is not a valid color selection for this interface. Changing selection to 'Color'.");
             color_choice = mono;
         }
         else {
