@@ -11,17 +11,22 @@
 
  <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
  
- <!-- Supported Parameters:                                                                                                      -->
- <!-- MUST      device_name    = <Your Windows PC Name>                                                                          -->
- <!-- MUST      ptr_name       = <Printer name as it shows in discovery>                                                         -->
- <!-- OPTIONAL  orientation    = <"Portrait","Landscape">                                     , DEFAULT = "Portrait"             -->
- <!-- OPTIONAL  duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge">          , DEFAULT = "None"                 -->
- <!-- OPTIONAL  paper_size     = <Paper size list> 	                                          , DEFAULT = "Letter"               -->
- <!-- OPTIONAL  color_optn     = <"Color", "BlackAndWhite", "Grayscale" (Depending on printer)>        , DEFAULT = "Color"                -->
- <!-- OPTIONAL  prnt_quality   = <"Normal", "Better", "Draft", "Best" (Depending on printer)> , DEFAULT = "Draft"                -->
- <!-- OPTIONAL  test_filename  = <Full name of file to use in test>	                          , DEFAULT = "NotepadTestFile1.txt" -->
- <!-- OPTIONAL  TDB	           = <TDB>                                                        , DEFAULT =  TBD 	                 -->
-
+ <!-- Supported Parameters:                                                                                                                               -->
+ <!-- MUST      device_name     = <Your Windows PC Name>                                                                                                  -->
+ <!-- MUST      ptr_name        = <Printer name as it shows in discovery>                                                                                 -->
+ <!-- OPTIONAL  orientation     = <"Portrait","Landscape">                                                             , DEFAULT = "Portrait"             -->
+ <!-- OPTIONAL  duplex_optn     = <"None", "Flip on Short Edge", "Flip on Long Edge">                                  , DEFAULT = "None"                 -->
+ <!-- OPTIONAL  paper_size      = <Paper size list>                                                                    , DEFAULT = "Letter"               -->
+ <!-- OPTIONAL  color_optn      = <"Color", "BlackAndWhite", "Grayscale" (Depending on printer)>                       , DEFAULT = "Color"                -->
+ <!-- OPTIONAL  prnt_quality    = <"Normal", "Better", "Draft", "Best" (Depending on printer)>                         , DEFAULT = "Draft"                -->
+ <!-- OPTIONAL  test_filename   = <Full name of file to use in test>                                                   , DEFAULT = "NotepadTestFile1.txt" -->
+ <!-- OPTIONAL  copies 	        = <Any number between 1-32767> *** NOT SUPPORTED IN WPF UI ***                         , DEFAULT = "1"                    -->
+ <!-- OPTIONAL  borderless      = <"On", "Off">                                                                        , DEFAULT = "On"                   -->
+ <!-- OPTIONAL  paper_type      = <"Plain Paper", " HP Photo paper", etc. (Depending on printer)>                      , DEFAULT = "Plain Paper"          -->
+ <!-- OPTIONAL  paper_tray      = <"Auto select", "Tray 2", "Photo", etc. (Depending on printer)>                      , DEFAULT = "Auto select"          -->
+ <!-- OPTIONAL  page_range      = <"All", "Current Page", "Odd Pages Only", "1-2", "3,5", etc. (Depending on printer)> , DEFAULT = "All"                  -->
+ <!-- OPTIONAL  pages_per_sheet = <"1", "2", "4", "6", "9", "16">                                                      , DEFAULT = "1"                    -->
+ <!-- OPTIONAL  TDB	            = <TDB>                                                                                , DEFAULT = TBD                    -->
  
  
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
@@ -29,13 +34,19 @@
 
 
 <!-- ************************* Test-01 ************************* -->
-    <test verbose="2" name="Test-01 : Notepad Duplex Short Edge Color - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
-     	<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="Flip on Short Edge" />
-     	<parameter name="color_optn" value="Grayscale" />
-     	<parameter name="prnt_quality" value="Draft" />
-     	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+  <test verbose="2" name ="Test-01 : Notepad Duplex Short Edge Color - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name = "orientation"     value = "Portrait"             />
+     	<parameter name = "duplex_optn"     value = "Flip on Short Edge"   />
+     	<parameter name = "color_optn"      value = "Grayscale"            />
+     	<parameter name = "prnt_quality"    value = "Draft"                />
+     	<parameter name = "paper_size"      value = "Letter"               />
+     	<parameter name = "copies"          value = "1"                    />
+ 		<parameter name = "borderless"      value = "On"                   />
+ 		<parameter name = "paper_type"      value = "Plain Paper"          />
+ 		<parameter name = "paper_tray"      value = "Main"                 />
+ 		<parameter name = "page_range"      value = "All"                  />
+ 		<parameter name = "pages_per_sheet" value = "4"                    />
+     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -45,13 +56,19 @@
   
   
 <!-- ************************* Test-02 ************************* -->
-      <test verbose="2" name="Test-02 : Notepad Duplex Long Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
-     	<parameter name="orientation" value="Landscape" />
-     	<parameter name="duplex_optn" value="Flip on Long Edge" />
-     	<parameter name="color_optn" value="BlackAndWhite" />
-     	<parameter name="prnt_quality" value="Normal" />
-     	<parameter name="paper_size" value="Legal" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+  <test verbose="2" name ="Test-02 : Notepad Duplex Long Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name = "orientation"     value = "Landscape"            />
+     	<parameter name = "duplex_optn"     value = "Flip on Long Edge"    />
+     	<parameter name = "color_optn"      value = "BlackAndWhite"        />
+     	<parameter name = "prnt_quality"    value = "Normal"               />
+     	<parameter name = "paper_size"      value = "Legal"                />
+     	<parameter name = "copies"          value = "1"                    />
+ 		<parameter name = "borderless"      value = "Off"                  />
+ 		<parameter name = "paper_type"      value = "HP Photo Paper"       />
+ 		<parameter name = "paper_tray"      value = "Printer Auto Select"  />
+ 		<parameter name = "page_range"      value = "All"                  />
+		<parameter name = "pages_per_sheet" value = "2"                    />
+     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -61,13 +78,19 @@
 
 
 <!-- ************************* Test-03 ************************* -->
-        <test verbose="2" name="Test-03 : Notepad Duplex Short Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
-     	<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="Flip on Short Edge" />
-     	<parameter name="color_optn" value="Color" />
-     	<parameter name="prnt_quality" value="Best" />
-     	<parameter name="paper_size" value="Letter" />
-     	<parameter name="test_filename" value="NotepadTestFile1.txt" />
+  <test verbose="2" name="Test-03 : Notepad Duplex Short Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name = "orientation"     value = "Portrait"             />
+     	<parameter name = "duplex_optn"     value = "Flip on Short Edge"   />
+     	<parameter name = "color_optn"      value = "Color"                />
+     	<parameter name = "prnt_quality"    value = "Best"                 />
+     	<parameter name = "paper_size"      value = "Letter"               />
+		<parameter name = "copies"          value = "1"                    />
+ 		<parameter name = "borderless"      value = "On"                   />
+ 		<parameter name = "paper_type"      value = "Plain Paper"          />
+ 		<parameter name = "paper_tray"      value = "Printer Auto Select"  />
+ 		<parameter name = "page_range"      value = "Even Pages Only"      />
+		<parameter name = "pages_per_sheet" value = "3"                    />
+     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -77,18 +100,24 @@
 
 
 <!-- ************************* Test-04 ************************* -->  
-        <test verbose="2" name="Test-04 : Notepad Simplex BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
-		<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="None" />
-     	<parameter name="color_optn" value="BlackAndWhite" />
-     	<parameter name="prnt_quality" value="Draft" />
-		<parameter name="paper_size" value="A4" />
-		<parameter name="test_filename" value="NotepadTestFile1.txt" />
+  <test verbose="2" name="Test-04 : Notepad Simplex BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+		<parameter name = "orientation"     value = "Portrait"             />
+     	<parameter name = "duplex_optn"     value = "None"                 />
+     	<parameter name = "color_optn"      value = "BlackAndWhite"        />
+     	<parameter name = "prnt_quality"    value = "Draft"                />
+		<parameter name = "paper_size"      value = "A4"                   />
+		<parameter name = "copies"          value = "5"                    />
+ 		<parameter name = "borderless"      value = "Off"                  />
+ 		<parameter name = "paper_type"      value = "HP Photo Paper"       />
+ 		<parameter name = "paper_tray"      value = "Photo"                />
+ 		<parameter name = "page_range"      value = "All"                  />
+        <parameter name = "pages_per_sheet" value = "1"                    />
+		<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
-   </test>
+  </test>
 <!-- ************************* Test-04 ************************* -->
 
 

@@ -32,7 +32,7 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name, String borderless, String paper_type, String paper_tray) throws InterruptedException, MalformedURLException  {
+    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String borderless, String paper_type, String paper_tray, String copies, String page_range, String pages_per_sheet, String device_name) throws InterruptedException, MalformedURLException  {
 
         // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
         NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
@@ -91,7 +91,7 @@ public class NotepadBase extends Win32Base {
         List<WebElement> tabs = PreferencesSession.findElementsByTagName("TabItem");
         
         // Create a list of all of the parameters to be passed to different print setting tests
-        List<String> parameters = Arrays.asList(orientation, duplex_optn, color_optn, prnt_quality, paper_size);
+        List<String> parameters = Arrays.asList(orientation, duplex_optn, color_optn, prnt_quality, paper_size, borderless, paper_type, paper_tray, copies, page_range, pages_per_sheet);
         
         if(tabs.size() > 0) {
             
@@ -218,103 +218,195 @@ public class NotepadBase extends Win32Base {
         // Ensure correct printer selected      
         Assert.assertTrue(session.findElementByClassName("Window").getAttribute("Name").contains(ptr_name));
         log.info("Opened printer settings is correct for the printer => " + ptr_name);
-        
+
         // Store the tab elements in reader-friendly variables
-        
+
         // Make sure the tabs are what we expect them to be
         Assert.assertEquals("Printing Shortcuts", tabs.get(0).getText());
         WebElement shortcutsTab = tabs.get(0);
         log.info("Found tab " + shortcutsTab.getText());
-        
+
         Assert.assertEquals("Paper/Quality", tabs.get(1).getText());
         WebElement paperQualityTab = tabs.get(1);
         log.info("Found tab " + paperQualityTab.getText());
-        
+
         Assert.assertEquals("Layout", tabs.get(2).getText());
         WebElement layoutTab = tabs.get(2);
         log.info("Found tab " + layoutTab.getText());
-        
+
         Assert.assertEquals("Advanced", tabs.get(3).getText());
         WebElement advancedTab = tabs.get(3);
         log.info("Found tab " + advancedTab.getText());
 
         // Store the list elements in reader-friendly variables 
-        String orientation = parameters.get(0);
-        String duplex_optn = parameters.get(1);
-        String color_optn = parameters.get(2);
-        String prnt_quality = parameters.get(3);
-        String paper_size = parameters.get(4);
-        String borderless = parameters.get(5);
-        String paper_type = parameters.get(6);
-        String paper_tray = parameters.get(7);
+
+        String orientation = null;
+        try {
+            orientation = parameters.get(0);
+            log.info("Orientation is: " + orientation + ".");
+        } catch (Exception e) {
+            log.info("Could not store orientation parameter.");
+        }
+
+        String duplex_optn = null;
+        try {
+            duplex_optn = parameters.get(1);
+            log.info("Duplex option is: " + duplex_optn + ".");
+        } catch (Exception e) {
+            log.info("Could not store duplex parameter.");
+        }
+
+        String color_optn = null;
+        try {
+            color_optn = parameters.get(2);
+            log.info("Color selection is: " + color_optn + ".");
+        } catch (Exception e) {
+            log.info("Could not store color option parameter.");
+        }
+
+        String prnt_quality = null;
+        try {
+            prnt_quality = parameters.get(3);
+            log.info("Print quality is: " + prnt_quality + ".");
+        } catch (Exception e) {
+            log.info("Could not store print quality parameter.");
+        }
+
+        String paper_size = null;
+        try {
+            paper_size = parameters.get(4);
+            log.info("Paper size is: " + paper_size + ".");
+        } catch (Exception e) {
+            log.info("Could not store paper size parameter.");
+        }
+
+        String borderless = null;
+        try {
+            borderless = parameters.get(5);
+            log.info("Borderless is turned " + borderless + ".");
+        } catch (Exception e) {
+            log.info("Could not store borderless paramter.");
+        }
+
+        String paper_type = null;
+        try {
+            paper_type = parameters.get(6);
+            log.info("Paper type is: " + paper_type + ".");
+        } catch (Exception e) {
+            log.info("Could not store paper type parameter.");
+        }
+
+        String paper_tray = null;
+        try {
+            paper_tray = parameters.get(7);
+            log.info("Paper tray selection is: " + paper_tray + ".");
+        } catch (Exception e) {
+            log.info("Could not store paper tray parameter.");
+        }
         
-/*  
- *     
- *  Because of small differences between wording for different printers' settings (OJ 8720 vs Envy 7800)
- *  the "Printing Shortcuts" tab will not be used to test printer settings.
- *    
-*/
-              
+        String copies = null;
+        try {
+            copies = parameters.get(8);
+            log.info("Number of copies is: " + copies + ".");
+        } catch (Exception e) {
+            log.info("Could not store copies parameter.");
+        }
+        
+        String page_range = null;
+        try {
+            page_range = parameters.get(9);
+            log.info("Page range is: " + page_range + ".");
+        } catch (Exception e) {
+            log.info("Could not store page range parameter.");
+        }
+        
+        String pages_per_sheet = null;
+        try {
+            pages_per_sheet = parameters.get(10);
+            log.info("Number of pages per sheet is: " + pages_per_sheet);
+        } catch (Exception e) {
+            log.info("Could not store pages per sheet parameter.");
+        }
+        
+        /*  
+         *     
+         *  Because of small differences between wording for different printers' settings (OJ 8720 vs Envy 7800)
+         *  the "Printing Shortcuts" tab will not be used to test printer settings.
+         *    
+         */
+        
+        log.info("Going to click on the Paper Quality tab.");
         // We are starting with the settings on the Paper/Quality tab
         SelectPreferencesTab_Win32(session, paperQualityTab.getText());
-        
-        
-        // * *** Paper Options Group ***
 
-            //Paper Size:
 
-        SelectListItem_WPF(session, "cboPageMediaSize", paper_size, device_name);
-        
-            //TODO: (Custom button)
+        // *** Paper Options Group ***
 
-            //TODO: Paper Source:
-            //cboDocumentInputBin (Paper Source)
-        SelectListItem_WPF(session, "cboDocumentInputBin", paper_tray, device_name);
+        //Paper Size:
 
-            //TODO: Paper Type:
+        if(paper_size != null) {
+            SelectListItem_WPF(session, "cboPageMediaSize", paper_size, device_name);
+        }
 
-            //cboPageMediaType (Paper Type)
-        SelectListItem_WPF(session, "cboPageMediaType", paper_type, device_name);
-        
-        
+        //TODO: (Custom button)
+
+        //TODO: Paper Source:
+        //cboDocumentInputBin (Paper Source)
+        if(paper_tray != null) {
+            SelectListItem_WPF(session, "cboDocumentInputBin", paper_tray, device_name);
+        }
+
+        //TODO: Paper Type:
+
+        //cboPageMediaType (Paper Type)
+        if(paper_type != null) {
+            SelectListItem_WPF(session, "cboPageMediaType", paper_type, device_name);
+        }
+
+
         // *** Borderless Printing Group ***
-            //cboBorderless (Borderless Printing)
+        //cboBorderless (Borderless Printing)
 
-        SelectListItem_WPF(session, "cboBorderless", borderless, device_name);
+        if(borderless != null) {
+            SelectListItem_WPF(session, "cboBorderless", borderless, device_name);
+        }
 
         // *** Print Quality Group ***
-       
-        SelectListItem_WPF(session, "cboResolution", prnt_quality, device_name);
+
+        if(prnt_quality != null) {
+            SelectListItem_WPF(session, "cboResolution", prnt_quality, device_name);
+        }
 
 
         // *** Print in Grayscale Group ***
-        //    TODO: Off/Black Ink Only/High Quality Grayscale
         //    cboPrintInGrayScale Off/Black Ink Only/ High Quality Grayscale
 
         String colorSel = null;
         if((color_optn.equals("Color")) || (color_optn.equals("Off"))) {
-            //log.info("Color is not supported by this interface. Changing setting to 'Off'");
+            //log.info("'Color' is not supported by this interface. Changing setting to 'Off'");
             colorSel = "Off";
         }
         else if((color_optn.equals("BlackAndWhite")) || (color_optn.equals("Black Ink Only"))) {
-            log.info("'Black & White' is not supported by this interface. Changing setting to 'Black Ink Only'");
+            //log.info("'Black & White' is not supported by this interface. Changing setting to 'Black Ink Only'");
             colorSel = "Black Ink Only";
         }
         else if(color_optn.equals("Grayscale")) {
             colorSel = "High Quality Grayscale";
         }
-        SelectListItem_WPF(session, "cboPrintInGrayScale", colorSel, device_name);
+        else {
+            log.info("Color option '" + color_optn + "' is not recognized. Please use 'Off', 'Black Ink Only', or 'Grayscale'.");
+        }
+
+        SelectListItem_WPF(session, "cboPrintInGrayscale", colorSel, device_name);
+
+        /* TODO: (About button)?? */
+
+
 
         /*
-        TODO: (About button)??
-
-         * */
-        
-        
-        
-/*        
-        SelectPreferencesTab_Win32(session, layoutTab.getText());
-        SelectPreferencesTab_Win32(session, advancedTab.getText());*/
+         * SelectPreferencesTab_Win32(session, layoutTab.getText());
+         * SelectPreferencesTab_Win32(session, advancedTab.getText());
+         */
 
     }
     

@@ -26,7 +26,7 @@ public class Win32Base extends Base {
         wait = new WebDriverWait(session, 30);
         // Using 'OK' button's clickability as indicator that tabs can be interacted with
         wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
-        
+        log.info("OK button is clickable. Going to try to select " + desiredTab + ".");
         try {
             if(session.findElementByName(desiredTab).isSelected()) {
                 log.info("'" + desiredTab + "' tab is already selected.");
@@ -159,7 +159,7 @@ public class Win32Base extends Base {
         // Find the desired list item and click on it
         WebElement listItem = session.findElementByName(listSel);
         try {
-            log.info("Going to click on '" + listItem.getText().toString() + "'");
+//            log.info("Going to click on '" + listItem.getText().toString() + "'");
             listItem.click();
             Thread.sleep(1000);
         } catch (Exception e) {
@@ -167,6 +167,7 @@ public class Win32Base extends Base {
             throw new RuntimeException(e);
         }
         Thread.sleep(1000);
+        log.info("Successfully clicked on '" + listItem.getText().toString() + "'");
     }
     
     
