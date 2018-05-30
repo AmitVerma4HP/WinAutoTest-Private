@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
         
         @BeforeClass
         @Parameters({ "device_name", "ptr_name", "test_pagename"})
-        public static void setup(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename) throws InterruptedException, IOException { 
+        public static void setup(String device_name, String ptr_name, String test_pagename) throws InterruptedException, IOException { 
            
         currentClass = PrintFromOneNote.class.getSimpleName();
                 
@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
         
     @Test
     @Parameters({ "device_name", "ptr_name", "test_pagename","copies","pages_selection","orientation","paper_size","color_optn","duplex_optn","paper_tray","output_qlty","stapling_optn","collation_optn"})
-    public void PrintOneNote(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename, @Optional("1")String copies, @Optional("Page")String pages_selection, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
+    public void PrintOneNote(String device_name, String ptr_name, String test_pagename, @Optional("1")String copies, @Optional("Page")String pages_selection, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("Auto select")String paper_tray, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
     {
 
         OneNoteSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -160,7 +160,7 @@ import java.util.concurrent.TimeUnit;
         
     @Test(dependsOnMethods = { "PrintOneNote" })
     @Parameters({ "device_name", "ptr_name", "test_pagename"})
-    public void ValidatePrintQueue(String device_name, String ptr_name, @Optional("1pg OneNote")String test_pagename) throws IOException, InterruptedException 
+    public void ValidatePrintQueue(String device_name, String ptr_name, String test_pagename) throws IOException, InterruptedException 
     {
         // Open Print Queue
         Base.OpenPrintQueue(ptr_name);
@@ -172,7 +172,9 @@ import java.util.concurrent.TimeUnit;
         
          //Validate Print Job Queued up
         try {
-            Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains("OneNote"));
+            String job = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name");
+            log.info("Found job '" + job + "' in queue.");
+            Assert.assertTrue(job.contains(test_pagename));
         }catch(NoSuchElementException e) {
             log.info("Expected Print job is not found in print queue");
             throw new RuntimeException(e);
@@ -181,7 +183,6 @@ import java.util.concurrent.TimeUnit;
             throw new RuntimeException(e);
         }
         
-        log.info("Found job in print queue");
         PrintQueueSession.close();
         log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");
         

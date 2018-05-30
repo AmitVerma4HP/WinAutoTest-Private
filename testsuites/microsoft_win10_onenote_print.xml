@@ -2,16 +2,21 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 OneNote Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
- 		<parameter name="ptr_name" value ="HP418D24 (HP OfficeJet Pro 8720)" />
+ 		<parameter name="ptr_name" value ="ipp: HP ENVY 7640 series [4FA898]" />
+ 		<parameter name="test_pagename" value="1pg OneNote" />
 
- <!-- NOTE: It is expected that a notebook is open and has the desired
-	  test page selected in OneNote at the time the test is begun. -->
+ <!-- NOTE: Test files for OneNote CANNOT be created and stored locally. OneNote will open with the last notebook/section/page       -->
+ <!--       that it closed on. The test_pagename parameter is global because, currently, the test cannot select pages automatically. -->
+ <!--       Thus, test_pagename is used only to validate that the correct job is in the print queue.                                 -->
+ <!--       The test_pagename value is persistent across all page print selections (Current Page, Current Section, Current Notebook) -->
+ <!--       because only the page name is what will be displayed in the printer queue.                                               -->
+
 
  
  <!-- Supported Parameters:                                                                                                -->
  <!-- MUST      device_name     = <Your Windows PC Name>                                                                   -->
  <!-- MUST      ptr_name        = <Printer name as it shows in discovery>                                                  -->
- <!-- OPTIONAL  test_pagename   = <Name of the OneNote page to be used in the test>              , DEFAULT = "1pg OneNote" -->
+ <!-- MUST      test_pagename   = <Name of the OneNote page to be used in the test>                                        -->
  <!-- OPTIONAL  copies          = <Number of copies to be printed>                               , DEFAULT = "1"           -->
  <!-- OPTIONAL  pages_selection = <"Page", "Section", "Notebook">                                , DEFAULT = "Page         -->
  <!-- OPTIONAL  orientation     = <"Portrait", "Landscape">                                      , DEFAULT = "Portrait"    -->
@@ -31,17 +36,8 @@
 
 <!-- ************************* TEST 01 ************************* -->
     <test verbose="2" name="Test-01 : 1pg OneNote Default Settings - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-<!--      	<parameter name="test_pagename" 	 value="1pg OneNote" />
-     	<parameter name="copies" 		 value="2"	         />
-     	<parameter name="pages_selection"  		 value="Section"     />
-     	<parameter name="orientation" 	 value="Landscape"   />
-     	<parameter name="duplex_optn" 	 value="Shortedge"   />
-     	<parameter name="paper_size" 	 value="A4" 		 />
-		<parameter name="color_optn" 	 value="Monochrome"  />
-		<parameter name="paper_tray" 	 value="Tray 1" 	 />
-		<parameter name="output_qlty"    value="Draft" 	  	 />
-		<parameter name="stapling_optn"  value="Top left"    />		
-		<parameter name="collation_optn" value="Collated" 	 /> -->
+
+<!-- Using default settings -->
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
@@ -52,7 +48,6 @@
   
 <!-- ************************* TEST 02 ************************* -->
       <test verbose="2" name="Test-02 : 1pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-     	<parameter name="test_pagename"	  value="1pg OneNote" />
      	<parameter name="copies"          value="3"           />
      	<parameter name="pages_selection" value="Page"        />
      	<parameter name="orientation"     value="Landscape"   />
@@ -73,7 +68,6 @@
 
 <!-- ************************* TEST 03 ************************* -->
         <test verbose="2" name="Test-03 : 1pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-     	<parameter name="test_pagename"   value="1pg OneNote" />
      	<parameter name="copies"          value="2"	          />
      	<parameter name="pages_selection" value="Section"     />
      	<parameter name="orientation"     value="Portrait"    />
@@ -94,7 +88,6 @@
 
 <!-- ************************* TEST 04 ************************* -->  
         <test verbose="2" name="Test-04 : 1pg OneNote Duplex Short Edge Mono - Device Under test (See global test parameters) => Printer Under Test (See global test parameters)">
-     	<parameter name="test_pagename"   value="1pg OneNote" />
      	<parameter name="copies"          value="1"	          />
      	<parameter name="pages_selection" value="Notebook"    />
      	<parameter name="orientation"     value="Portrait"    />
