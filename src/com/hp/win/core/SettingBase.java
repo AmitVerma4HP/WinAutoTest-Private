@@ -168,7 +168,20 @@ public class SettingBase extends Base {
 		  	if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
 		  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
 		  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
-		  	}		  	
+		  		
+		  		// if printer still not visible then going further down 
+		  		if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
+			  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+			  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+			  		
+			  	// if printer still not visible then going further down 
+			  		if(!SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).isDisplayed()){
+				  		log.info("Target printer \"+ptr_name\" still not visible so scrolling down");
+				  		SettingSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+		  		
+			  		}
+		  		}
+		  	}
 		  	
 		  		
 			//Click on Discovered Printer
@@ -372,7 +385,7 @@ public class SettingBase extends Base {
 		    try {
 		    	CortanaSession.findElementByName("Search box").sendKeys("Printers & scanners");
 		    	log.info("Searching \"Printers & scanners\"");	      	           
-		    	CortanaSession.findElementByName("Printers & scanners, System settings").click();
+		    	CortanaSession.findElementByXPath("//ListItem[contains(@Name,'Printers & scanners, System settings')]").click();
 		    	log.info("Clicked on \"Printers & scanners\"");
 		    	}catch(Exception e){
 		    	e.printStackTrace();
