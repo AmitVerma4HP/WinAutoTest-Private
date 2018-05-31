@@ -71,7 +71,7 @@ import java.util.concurrent.TimeUnit;
         }
         
         // Bring focus back to OneNote now
-        Base.BringWindowToFront(device_name, OneNoteSession, "ApplicationFrameWindow");
+        Base.SwitchToDifferentWindow(device_name, OneNoteSession, "ApplicationFrameWindow");
         
         // Click on the OneNote page to ensure that it's in focus, otherwise 'ctrl + p' might not work
         try {
