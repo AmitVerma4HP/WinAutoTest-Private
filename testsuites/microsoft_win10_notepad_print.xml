@@ -2,7 +2,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
-        <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" />
+ 		
+        <!-- <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> -->
+        <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" />
+
+
+
         <!-- <parameter name="ptr_name" value ="ipp: HP PageWide MFP P57750 [DFF323]" /> -->
         <!-- <parameter name="ptr_name" value ="NPI04F7AB (HP LaserJet M605)" /> -->
         <!-- <parameter name="ptr_name" value ="HP093DA7 (HP ENVY Photo 7800 series)" /> -->
