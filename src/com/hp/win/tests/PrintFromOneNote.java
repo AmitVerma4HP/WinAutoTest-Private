@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.hp.win.utility.*;                            
 import java.io.IOException;
@@ -46,6 +47,32 @@ import java.util.concurrent.TimeUnit;
 
         OneNoteSession.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
+        // OneNote may not allow clicking on opening - clicking its icon in the taskbar to minimize then restore it enables clicking again
+        // A new desktop session is needed to click items in the taskbar 
+        RemoteWebDriver TempSession = Base.GetDesktopSession(device_name);
+        try {
+        	TempSession.findElementByName("OneNote - 1 running window").click();
+        	log.info("Successfully minimized OneNote by clicking icon in taskbar.");
+        	Thread.sleep(1000);
+        } catch (Exception e) {
+        	log.info("Unable to click on button in taskbar.");
+        }
+        
+        try {
+        	TempSession.findElementByName("OneNote - 1 running window").click();
+        	log.info("Successfully restored OneNote by clicking icon in taskbar.");
+        	Thread.sleep(1000);
+        } catch (Exception e) {
+        	log.info("Unable to click on button in taskbar.");
+        }
+        
+        if(TempSession != null) {
+        	TempSession.quit();
+        }
+        
+        // Bring focus back to OneNote now
+        Base.BringWindowToFront(device_name, OneNoteSession, "ApplicationFrameWindow");
+        
         // Click on the OneNote page to ensure that it's in focus, otherwise 'ctrl + p' might not work
         try {
             OneNoteSession.findElementByXPath(".//Window[@Name='OneNote']//Pane[@AutomationId='Silhouette']//Tree//Custom").click();
@@ -57,7 +84,7 @@ import java.util.concurrent.TimeUnit;
         OneNoteSession.getKeyboard().sendKeys(Keys.CONTROL + "p");
         OneNoteSession.getKeyboard().releaseKey("p");
         OneNoteSession.getKeyboard().releaseKey(Keys.CONTROL);
-        
+
         
         // Method to select the desired printer.
         OneNoteBase.SelectDesiredPrinter(OneNoteSession, ptr_name);
