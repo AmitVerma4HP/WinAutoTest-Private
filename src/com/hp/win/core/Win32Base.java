@@ -141,15 +141,13 @@ public class Win32Base extends Base {
     
     // Method to select a list item via combo box in WPF framework
     public static void SelectListItem_WPF(RemoteWebDriver session, String boxAutoId, String listSel, String device_name) throws InterruptedException {
-        try {
+    	try {
             session.findElementByXPath("//ComboBox[@AutomationId='" + boxAutoId + "']").click();
             log.info("Successfully clicked on desired combo box.");
         } catch (Exception e) {
-            log.info("Unable to click on desired combo box.");
-            throw new RuntimeException(e);
+            log.info("Unable to click on desired combo box. Check the printer settings.");
         }
         Thread.sleep(1000);
-        
         ClickOnListItem(session, listSel);
     }
     
@@ -157,17 +155,21 @@ public class Win32Base extends Base {
     // Method to click on a ListItem element in a combo box
     public static void ClickOnListItem(RemoteWebDriver session, String listSel) throws InterruptedException {
         // Find the desired list item and click on it
-        WebElement listItem = session.findElementByName(listSel);
+
         try {
-//            log.info("Going to click on '" + listItem.getText().toString() + "'");
+        	WebElement listItem = session.findElementByName(listSel);
             listItem.click();
-            Thread.sleep(1000);
+            log.info("Successfully clicked on '" + listItem.getText().toString() + "'");
         } catch (Exception e) {
-            log.info("Unable to click on list item.");
-            throw new RuntimeException(e);
+            log.info("List item '" + listSel + "' is not available for this printer. Using default selection. Check available printer settings.");
+            try {
+            	session.findElementByClassName("TabControl").click();
+            } catch (Exception e1) {
+            	log.info("There was a problem clicking on the default list element.");
+            }
         }
         Thread.sleep(1000);
-        log.info("Successfully clicked on '" + listItem.getText().toString() + "'");
+        
     }
     
     

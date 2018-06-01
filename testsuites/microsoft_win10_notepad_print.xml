@@ -48,7 +48,7 @@
      	<parameter name = "copies"          value = "1"                    />
  		<parameter name = "borderless"      value = "On"                   />
  		<parameter name = "paper_type"      value = "Plain Paper"          />
- 		<parameter name = "paper_tray"      value = "Main"                 />
+ 		<parameter name = "paper_tray"      value = "Main Tray"            />
  		<parameter name = "page_range"      value = "All"                  />
  		<parameter name = "pages_per_sheet" value = "4"                    />
      	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
@@ -69,8 +69,8 @@
      	<parameter name = "paper_size"      value = "Legal"                />
      	<parameter name = "copies"          value = "1"                    />
  		<parameter name = "borderless"      value = "Off"                  />
- 		<parameter name = "paper_type"      value = "HP Photo Paper"       />
- 		<parameter name = "paper_tray"      value = "Printer Auto Select"  />
+ 		<parameter name = "paper_type"      value = "HP Photo Papers"       />
+ 		<parameter name = "paper_tray"      value = "Photo Tray"           />
  		<parameter name = "page_range"      value = "All"                  />
 		<parameter name = "pages_per_sheet" value = "2"                    />
      	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
@@ -92,7 +92,7 @@
 		<parameter name = "copies"          value = "1"                    />
  		<parameter name = "borderless"      value = "On"                   />
  		<parameter name = "paper_type"      value = "Plain Paper"          />
- 		<parameter name = "paper_tray"      value = "Printer Auto Select"  />
+ 		<parameter name = "paper_tray"      value = "Photo Tray"           />
  		<parameter name = "page_range"      value = "Even Pages Only"      />
 		<parameter name = "pages_per_sheet" value = "3"                    />
      	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
@@ -114,7 +114,7 @@
 		<parameter name = "copies"          value = "5"                    />
  		<parameter name = "borderless"      value = "Off"                  />
  		<parameter name = "paper_type"      value = "HP Photo Paper"       />
- 		<parameter name = "paper_tray"      value = "Photo"                />
+ 		<parameter name = "paper_tray"      value = "Main Tray"            />
  		<parameter name = "page_range"      value = "All"                  />
         <parameter name = "pages_per_sheet" value = "1"                    />
 		<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
