@@ -3,9 +3,11 @@ package com.hp.win.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -40,69 +42,71 @@ public class PhotoAppBase extends UwpAppBase {
 			throw new RuntimeException(e);
 		}
 		
-		// Search for Saved Pictures folder.
-		PhotosSession.findElementByName("Search").sendKeys("testfiles");
+		log.info("Opened PhotosSession successfully");
+		return PhotosSession;
+	}
+	
+	public static void AddTestFolder(String device_name, String test_filename, String testfiles_loc) throws Throwable{
+		
+		log.info("Adding the test folder");
+		
+		// Adding the Test Folder to the Photos app
+		PhotosSession.findElementByName("Import").click();
 		Thread.sleep(1000);
 		
-		if(PhotosSession.findElementsByName("testfiles").size()==0)
-		{
-			// Adding the Test Folder to the Photos app
-			PhotosSession.findElementByName("Import").click();
-			Thread.sleep(1000);
-			
-			PhotosSession.findElementByName("From a folder").click();
-			Thread.sleep(1000);
-			
-			log.info("Opening WindowsAddSession...");
-			WindowsAddSession = GetDesktopSession(device_name);
-	        Assert.assertNotNull(WindowsAddSession);
-					
-	        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
-	        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
-	        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
-			Thread.sleep(1000);
-	
-			WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
-			Thread.sleep(1000);
-			log.info("Added Test Folder => \"testfiles\" to the Photos app successfully");
-			
-			PhotosSession.findElementByName("Search").clear();
-		}else{
-			log.info("Test Folder => \"testfiles\" has already been imported");
-			PhotosSession.findElementByName("Search").clear();
-			
-		}
+		PhotosSession.findElementByName("From a folder").click();
+		Thread.sleep(1000);
 		
+		log.info("Opening WindowsAddSession...");
+		WindowsAddSession = GetDesktopSession(device_name);
+        Assert.assertNotNull(WindowsAddSession);
+        						
+        WindowsAddSession.findElementByXPath("//Edit[@Name = 'Folder:']").click();
+        WindowsAddSession.getKeyboard().pressKey(testfiles_loc);
+        WindowsAddSession.getKeyboard().pressKey(Keys.ENTER);
+            	    
+		WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
+		Thread.sleep(1000);
+		log.info("Added Test Folder => \"testfiles\" to the Photos app successfully");
+		
+		//Clicking on the test folder to display the images.
+		PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']").click();
+						
 		try {
 			WindowsAddSession.quit();
             log.debug("Closed WindowsAddSession...");
-        } catch (Exception e) {
+		} catch (Exception e) {
         	log.info("WindowsAddSession already terminated.");
         }
-		
-		log.info("Opened PhotosSession successfully");
-		return PhotosSession;
-
-	}
+	
+}
 
 	
 	// Method to print from Photos
 	public static void PrintPhoto(String ptr_name, String test_filename) throws InterruptedException {
+		
+		Thread.sleep(2000);
+		PhotosSession.getKeyboard().pressKey(Keys.TAB);
 			
-		// Search for Saved Pictures folder.
-		PhotosSession.findElementByName("Search").sendKeys("testfiles");
-		log.info("Searching \"Test Folder - testfiles\"");
-		Thread.sleep(2000);
-
-		// Click on Saved Pictures
-		PhotosSession.findElementByXPath("//Button[@Name = \"testfiles\"]").click();
-		log.info("Clicked on \"Test Folder - testfiles\"");
-		Thread.sleep(2000);
-
-		// Select the Photo file
+		List <WebElement> testimages = PhotosSession.findElements(By.xpath("//Button[@Name = 'Image']"));
+		log.info("testfiles number: " + testimages.size());
+		//PhotosSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+		for (WebElement img : testimages){
+			if(img.getAttribute("AutomationId").toString().equalsIgnoreCase(test_filename)){
+				//img.click();
+				log.info("Test image to be printed is found");
+				break;
+			}else{
+				PhotosSession.getKeyboard().pressKey(Keys.PAGE_DOWN);
+				Thread.sleep(1000);
+				log.info("Image not found, hence scrolling down and searching");
+			}
+		}
+	
+	// Select the Photo file
 		PhotosSession.findElementByXPath("//Button[@AutomationId = '" + test_filename + "']").click();
 		log.info("Selected the Photo file for printing");
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 
 		// Tap on Print icon
 		PhotosSession.findElementByXPath("//*[@Name = 'Print']").click();
@@ -110,7 +114,6 @@ public class PhotoAppBase extends UwpAppBase {
 		Thread.sleep(1000);
 
 	}
-	
 	
 	// Method to select desired photo size
 	// Possible candidate for re-factoring when there are multiple application in automation
@@ -167,6 +170,30 @@ public class PhotoAppBase extends UwpAppBase {
 			log.info("Desired photo fit => " + PhotoFitListComboBox.getText().toString() + " <= is already selected so proceeding");
 		}
 	}
+
+	public static void VerifyAddTestFolder(String device_name, String test_filename, String testfiles_loc) throws Throwable{
+	 
+		//Verifying test folder and adding if not already added
+	    PhotosSession.findElementByName("Folders").click();
+		Thread.sleep(1000);
+		testfiles_loc = testfiles_loc.substring(0, testfiles_loc.length()-1);
+		log.info(testfiles_loc);
+	    try {
+	    	if (PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']") != null){
+	    		log.info("TestFiles Folder already added");
+	    		PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']").click();
+	    	}else{
+	    		log.info("TestFiles Folder not found");
+			    PhotoAppBase.AddTestFolder(device_name, test_filename, testfiles_loc);    		
+	    	}
+		}catch (Exception e){
+			log.info("TestFiles Folder not found");
+		    PhotoAppBase.AddTestFolder(device_name, test_filename, testfiles_loc);
+		 
+	    }
+	   
+	}
+	
 
 
 }
