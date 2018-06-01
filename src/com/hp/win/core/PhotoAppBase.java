@@ -182,9 +182,6 @@ public class PhotoAppBase extends UwpAppBase {
 	    	if (PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']") != null){
 	    		log.info("TestFiles Folder already added");
 	    		PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']").click();
-	    	}else{
-	    		log.info("TestFiles Folder not found");
-			    PhotoAppBase.AddTestFolder(device_name, test_filename, testfiles_loc);    		
 	    	}
 		}catch (Exception e){
 			log.info("TestFiles Folder not found");
