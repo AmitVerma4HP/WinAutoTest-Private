@@ -143,9 +143,9 @@ public class Win32Base extends Base {
     public static void SelectListItem_WPF(RemoteWebDriver session, String boxAutoId, String listSel, String device_name) throws InterruptedException {
     	try {
             session.findElementByXPath("//ComboBox[@AutomationId='" + boxAutoId + "']").click();
-            log.info("Successfully clicked on desired combo box.");
+            //log.info("Successfully clicked on desired combo box.");
         } catch (Exception e) {
-            log.info("Unable to click on desired combo box. Check the printer settings.");
+            log.info("Unable to click on combo box '" + boxAutoId + "'. Check the printer settings.");
         }
         Thread.sleep(1000);
         ClickOnListItem(session, listSel);
@@ -196,6 +196,17 @@ public class Win32Base extends Base {
         }
     }
     
+    
+    // Method to select a checkbox
+    public static void ClickCheckbox_WPF(RemoteWebDriver session, String chkbox) throws InterruptedException {
+    	try {
+    		session.findElementByXPath("//CheckBox[@AutomationId='" + chkbox + "']").click();
+    		//log.info("Successfully clicked on '" + chkbox + "' checkbox.");
+    	} catch (Exception e) {
+    		log.info("There was a problem clicking on '" + chkbox + "'.");
+    	}
+    	Thread.sleep(1000);
+    }
     
 /*    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
 

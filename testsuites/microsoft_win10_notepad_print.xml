@@ -3,8 +3,9 @@
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
  		
-        <!-- <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> -->
-        <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" />
+        <!-- <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> --> <!-- Win32 Test -->
+        <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" /> <!-- Color Tab test -->
+        <!-- <parameter name="ptr_name" value = "HPDFF323 (HP PageWide MFP P57750)" /> --> <!-- No Color Tab test -->
 
 
 
