@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -31,15 +31,11 @@ public class NotepadBase extends Win32Base {
 
     // Method to print from Notepad
     public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
-        // Go to file Menu
-        NotepadSession.findElementByName("File").click();
-        log.info("Clicked on File Menu in Notepad");
-        Thread.sleep(1000);
 
-        // Save the file
-        NotepadSession.findElementByXPath("//MenuItem[starts-with(@Name, \"Save\")]").click();
-        log.info("Pressed Save button to Save the File");
-        Thread.sleep(1000);
+        // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
+        NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
+        NotepadSession.getKeyboard().releaseKey(Keys.ARROW_UP);
+        NotepadSession.getKeyboard().releaseKey(Keys.COMMAND);
 
         // Go to file Menu
         NotepadSession.findElementByName("File").click();
