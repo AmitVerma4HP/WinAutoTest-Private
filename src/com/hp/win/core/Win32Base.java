@@ -186,9 +186,10 @@ public class Win32Base extends Base {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
             } catch (Exception e) {
-                e.printStackTrace();
-                log.info("Couldn't click on '" + settingsSel + "' button.");
-                throw new RuntimeException(e);
+                log.info("List item '" + settingsSel + "' is not available for this printer. Using default selection. Check available printer settings.");
+            	//e.printStackTrace();
+                //log.info("Couldn't click on '" + settingsSel + "' button.");
+                //throw new RuntimeException(e);
             }
         }
         else {
@@ -207,51 +208,7 @@ public class Win32Base extends Base {
     	}
     	Thread.sleep(1000);
     }
-    
-/*    public static void ComboBoxHotkeySelect(RemoteWebDriver session, String boxName, String key, String option, String device_name) throws InterruptedException {
-
-        try {
-            List<WebElement> list = session.findElementsByName(boxName);
-
-            if(list.size() > 0) {
-                session.getKeyboard().pressKey(Keys.ALT + key);
-                session.getKeyboard().releaseKey(key);
-                session.getKeyboard().releaseKey(Keys.ALT);
-                log.info("Successfully focused on '" + boxName + "' combo box.");
-
-                session.getKeyboard().pressKey(Keys.ARROW_DOWN);
-                log.info("Successfully opened '" + boxName + "' list.");
-
-
-                log.info("Going to try to click on '" + option + "'...");
-                try {
-                    List<WebElement> listItems = session.findElementsByName(option);
-                    if(listItems.size() > 0) {
-                    session.findElementByName(option).click();
-                    Thread.sleep(1000);
-                    log.info("Successfully clicked on '" + option + "'...");
-                    }
-                    else {
-                        log.info("List item size is " + listItems.size() + ".");
-                    }
-
-                } catch (Exception e1) {
-                    log.info("There was a problem clicking on '" + option + "'.");
-                    throw new RuntimeException(e1);
-                }
-            }
-            else {
-                log.info("'" + boxName + "' setting is not available for this printer.");
-                return;
-            }
-
-        } catch (Exception e) {
-            log.info("Could not find any elements of '" + boxName + "'.");
-            return;
-        }
-        
-    }*/
-    
+  
     
     // Method to select print option
     public static void ChooseOrientation_Win32(RemoteWebDriver session, String option, String device_name) throws InterruptedException {

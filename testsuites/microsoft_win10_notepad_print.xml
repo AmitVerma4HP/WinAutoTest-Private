@@ -3,8 +3,8 @@
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
  		
-        <!-- <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> --> <!-- Win32 Test -->
-        <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" /> <!-- Color Tab test -->
+        <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> <!-- Win32 Test -->
+        <!-- <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" /> --> <!-- Color Tab test -->
         <!-- <parameter name="ptr_name" value = "HPDFF323 (HP PageWide MFP P57750)" /> --> <!-- No Color Tab test -->
 
 
@@ -38,6 +38,27 @@
 <!-- ********************************************** PRINTING NOTEPAD TEST FILE *********************************************************** -->
 
 
+<!-- ************************* Test-00 ************************* -->
+  <test verbose="2" name ="Test-00 : Notepad Duplex Long Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
+     	<parameter name = "orientation"     value = "Landscape"            />
+     	<parameter name = "duplex_optn"     value = "Flip on Long Edge"    />
+     	<parameter name = "color_optn"      value = "BlackAndWhite"        />
+     	<parameter name = "prnt_quality"    value = "Normal"               />
+     	<parameter name = "paper_size"      value = "Legal"                />
+     	<parameter name = "copies"          value = "1"                    />
+ 		<parameter name = "borderless"      value = "Off"                  />
+ 		<parameter name = "paper_type"      value = "HP Photo Papers"       />
+ 		<parameter name = "paper_tray"      value = "Photo Tray"           />
+ 		<parameter name = "page_range"      value = "All"                  />
+		<parameter name = "pages_per_sheet" value = "2"                    />
+     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintFromNotepad"/>
+    </classes>
+  </test>
+<!-- ************************* Test-00 ************************* -->
+
 
 <!-- ************************* Test-01 ************************* -->
   <test verbose="2" name ="Test-01 : Notepad Duplex Short Edge Color - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
@@ -61,7 +82,7 @@
 <!-- ************************* Test-01 ************************* -->
   
   
-<!-- ************************* Test-02 ************************* -->
+<!-- ************************* Test-02 *************************
   <test verbose="2" name ="Test-02 : Notepad Duplex Long Edge BlackAndWhite - Device Under test (see global parameters) => Printer Under Test (see global parameters)">
      	<parameter name = "orientation"     value = "Landscape"            />
      	<parameter name = "duplex_optn"     value = "Flip on Long Edge"    />
@@ -80,7 +101,7 @@
          <class name="com.hp.win.tests.PrintFromNotepad"/>
     </classes>
   </test>
-<!-- ************************* Test-02 ************************* -->
+************************* Test-02 ************************* -->
 
 
 <!-- ************************* Test-03 ************************* -->

@@ -30,6 +30,7 @@ public class NotepadBase extends Win32Base {
     public static RemoteWebDriver PrintDialogSession = null;
     public static RemoteWebDriver PreferencesSession = null;
     public static RemoteWebDriver AdvancedSession    = null;
+    public static RemoteWebDriver ConflictSession = null;
 
 
     // Method to print from Notepad
@@ -129,8 +130,19 @@ public class NotepadBase extends Win32Base {
     	else {
         	log.info("Going to use Win32 interface.");
             RunWin32Test(PreferencesSession, tabs, parameters, device_name);
-            ClickButton(PreferencesSession, "Cancel");
     	}
+    	
+    	if(ConflictSession != null) {
+    		try {
+    			ConflictSession.quit();
+    			log.info("Closed ConflictSession.");
+    		} catch (Exception e) {
+    			log.info("Could not close ConflictSession.");
+    		}
+    	}
+    	
+    	PreferencesSession = Win32Base.GetDesktopSession(device_name);
+    	Assert.assertNotNull(PreferencesSession);
     	
         ClickButton(PreferencesSession, "Cancel");
         
@@ -163,34 +175,29 @@ public class NotepadBase extends Win32Base {
     
     //public static void RunWin32Test(RemoteWebDriver session, List<WebElement> tabs, HashMap<String, String> parameters, String device_name) throws InterruptedException, MalformedURLException {
     public static void RunWin32Test(RemoteWebDriver session, HashMap<String, String> tabs, HashMap<String, String> parameters, String device_name) throws InterruptedException, MalformedURLException {
-
-/*        // Store the tab elements in reader-friendly variables
-        // Make sure tab is what we're expecting
-        Assert.assertEquals("Layout", tabs.get(0).getText());
-        WebElement layoutTab = tabs.get(0);
-        
-        // Make sure tab is what we're expecting
-        Assert.assertEquals("Paper/Quality", tabs.get(1).getText());
-        WebElement paperQuality = tabs.get(1);
         
         // Change the settings on the Layout tab
-        SelectPreferencesTab_Win32(session, layoutTab.getText());
+    	Win32Base.SelectPreferencesTab_Win32(session, tabs.get("Layout").toString());
         
         // Select duplex option
-        ChooseDuplexOrSimplex_Win32(session, parameters.get("duplex"), device_name);
+        ChooseDuplexOrSimplex_Win32(session, parameters.get("duplex").toString(), device_name);
         
         // Select orientation
-        ChooseOrientation_Win32(session, parameters.get("orientation"), device_name);
+        ChooseOrientation_Win32(session, parameters.get("orientation").toString(), device_name);
 
 
         // Change the settings on the Paper/Quality tab
-        SelectPreferencesTab_Win32(session, paperQuality.getText());
+        Win32Base.SelectPreferencesTab_Win32(session, tabs.get("Paper/Quality").toString());
         
         // Select color option
-        ChooseColorOrMono_Win32(session, parameters.get("color"));
+        log.info("Selecting color choice.");
+        log.info("Using '" + parameters.get("color"));
+        ChooseColorOrMono_Win32(session, parameters.get("color").toString());
         
         // Select print quality
-        ChoosePrintQuality_Win32(session, parameters.get("printQuality"));
+        log.info("Selecting print quality.");
+        log.info("Using " + parameters.get("printQuality"));
+        ChoosePrintQuality_Win32(session, parameters.get("printQuality").toString());
         
         // Now open the Advanced settings
         ClickButton(session, "Advanced...");
@@ -211,15 +218,38 @@ public class NotepadBase extends Win32Base {
         
         ChoosePaperSize_Win32(AdvancedSession, parameters.get("paperSize"), device_name);
         
-        ClickButton(AdvancedSession, "OK");
+        //Quitting Advanced dialog
         ClickButton(AdvancedSession, "OK");
         
-        try {
-            AdvancedSession.quit();
-            log.info("Closed " + AdvancedSession + "...");
-        } catch (Exception e) {
-            log.info("'" + AdvancedSession + "' already terminated.");
-        }*/
+        //Quitting Preferences dialog
+        ClickButton(AdvancedSession, "OK");
+       
+        //Quitting Advanced session in order to open new desktop session to check for printer conflict popup dialog
+    	try {
+    		AdvancedSession.quit();
+    	} catch (Exception e) {
+    		log.info("AdvancedSession already closed.");
+    	}
+        
+    	ConflictSession = Base.GetDesktopSession(device_name);
+    	Assert.assertNotNull(ConflictSession);
+    	
+    	log.info("Checking for print settings conflicts...");
+        	try {
+        		if(ConflictSession.findElementByName("Resolve all conflicts for me automatically.").isSelected()) {
+        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
+        			ClickButton(ConflictSession, "OK");
+        		}
+        		else {
+        			ConflictSession.findElementByName("Resolve all conflicts for me automatically.").click();
+        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
+        			ClickButton(ConflictSession, "OK");
+        		}
+        	} catch (Exception e) {
+        		log.info("No print settings conflicts found.");
+        	}
+
+
     }
 
     
