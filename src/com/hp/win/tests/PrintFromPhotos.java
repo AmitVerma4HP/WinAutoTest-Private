@@ -14,7 +14,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.hp.win.utility.*;							
-
 import java.io.IOException;
 
 	@Listeners({ScreenshotUtility.class})
@@ -25,17 +24,19 @@ import java.io.IOException;
 		
 		@BeforeClass
 		@Parameters({ "device_name", "ptr_name", "test_filename"})
-	    public static void setup(String device_name, String ptr_name, @Optional("Rose_Portrait.jpg")String test_filename) throws InterruptedException, IOException { 
+	    public static void setup(String device_name, String ptr_name, @Optional("Rose_Portrait.jpg")String test_filename) throws Throwable { 
 	       
 		currentClass = PrintFromPhotos.class.getSimpleName();
 				
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
 	    PhotosSession = PhotoAppBase.OpenPhotosFile(device_name, test_filename);
-	    Thread.sleep(1000);
-         
-	    }
-	
+	    
+	    //Verify if the test folder is already added, if not add it.
+		PhotoAppBase.VerifyAddTestFolder(device_name, test_filename, testfiles_loc);
+		
+		}
+		
 		
 	@Test
 	@Parameters({ "ptr_name", "test_filename","copies","orientation","paper_size","photo_size","photo_fit","page_margins","color_optn","duplex_optn","borderless","paper_tray","paper_type","output_qlty","stapling_optn"})
