@@ -13,10 +13,14 @@ import io.appium.java_client.windows.WindowsElement;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.xpath.axes.WalkingIteratorSorted;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hp.win.utility.*;							
 import java.io.IOException;
@@ -27,6 +31,7 @@ import java.net.URL;
 		private static final Logger log = LogManager.getLogger(PrintFromPhotos.class);
 		private static String currentClass;							
 		public static RemoteWebDriver PhotosSession = null;
+		static WebDriverWait wait;
 		
 		@BeforeClass
 		@Parameters({ "device_name", "ptr_name", "test_filename"})
@@ -191,60 +196,18 @@ import java.net.URL;
 	    }
 	    
 	    log.info("Found correct job in print queue => "+test_filename);
+	    
+	    //Waiting for the job to get spooled completely before closing the print queue window.
+	    wait = new WebDriverWait(PrintQueueSession,60);
+	    wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("//ListItem[@AutomationId='ListViewItem-1']"),"Spooling"));
+	    log.info("Waiting until the job spooling is completed");
+	    
 	    PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
-	    //Thread.sleep(1000);	    
-	    
-	    //PhotosSession.getKeyboard().pressKey(Keys.ENTER);
-	    /*DesktopSession = Base.GetDesktopSession(device_name);
-	    	    
-	    if(PhotosSession.findElementsByXPath("//Shell_Flyout[@AutomationId = 'Popup Window']").size()!=0){
-	    	PhotosSession.findElementByXPath("//TouchButton[@Name = 'Close App']").click();
-	    	log.info("Unexpected popup seen.");	    	
-	    }else{
-	    	log.info("Proceeding with next testcase execution");
-	    }
-	     
-	    try {
-            DesktopSession.quit();
-            log.info("Closed DesktopSession...");
-        } catch (Exception e) {
-            log.info("DesktopSession already terminated.");
-        }*/
-		    
-	    try {
-			
-			DesktopSession = Base.GetDesktopSession(device_name);
-		    
-		    //Get handle to PrinterQueue window
-		    WebElement photoErrorWindow = DesktopSession.findElementByClassName("Shell_Flyout");
-	    	String nativeWindowHandle = photoErrorWindow.getAttribute("NativeWindowHandle");
-	    	int photoErrorWindowHandle = Integer.parseInt(nativeWindowHandle);
-	    	log.debug("int value:" + nativeWindowHandle);
-	    	String photoErrorTopWindowHandle  = hex.concat(Integer.toHexString(photoErrorWindowHandle));
-	    	log.info("Hex Value:" + photoErrorTopWindowHandle);
-
-	    	log.info("Successfully got PhotoErrore handle.");
-	    	// Create a PhotoErrorSession by attaching to an existing application top level window handle
-	    	DesiredCapabilities capabilities = new DesiredCapabilities();
-	    	capabilities.setCapability("appTopLevelWindow", photoErrorTopWindowHandle);
-	    	capabilities.setCapability("platformName", "Windows");
-	        capabilities.setCapability("deviceName", device_name);
-	        WindowsDriver<WindowsElement> PhotoErrorSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
-	        
-	        // Closing the Photo Error Pop up.    	
-			PhotoErrorSession.findElementByXPath("//TouchButton[@Name = 'Close App']").click();
-	    	log.info("Unexpected popup seen.");	
-	    
-	    }catch(Exception e){
-				//e.printStackTrace();
-				log.info("Error getting Photo Error session");
-				//throw new RuntimeException(e);
-	        	}
-		log.info("PhotoError session handled created successfully");
-    	   
+	    Thread.sleep(1000);
 	}
     
+	
     @AfterClass(alwaysRun=true)
     public static void TearDown() throws IOException, InterruptedException 
     {	        
