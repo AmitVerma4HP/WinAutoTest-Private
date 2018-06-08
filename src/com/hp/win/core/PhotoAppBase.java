@@ -36,6 +36,7 @@ public class PhotoAppBase extends UwpAppBase {
 			PhotosSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
 			Assert.assertNotNull(PhotosSession);
 			PhotosSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			PhotosSession.manage().window().maximize();
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info("Error opening Photos app");
@@ -68,6 +69,9 @@ public class PhotoAppBase extends UwpAppBase {
 		WindowsAddSession.findElementByXPath("//Button[@Name = 'Add this folder to Pictures']").click();
 		Thread.sleep(1000);
 		log.info("Added Test Folder => \"testfiles\" to the Photos app successfully");
+		
+		//Making sure we are on right tab - Folders tab.
+		PhotosSession.findElementByName("Folders").click();
 		
 		//Clicking on the test folder to display the images.
 		PhotosSession.findElementByXPath("//Button[@HelpText = '"+testfiles_loc+"']").click();
