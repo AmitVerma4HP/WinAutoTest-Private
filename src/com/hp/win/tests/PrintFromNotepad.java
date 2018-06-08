@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 import com.hp.win.core.Base;
@@ -44,11 +45,11 @@ public class PrintFromNotepad extends NotepadBase{
 
     
 	@Test
-	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "borderless", "paper_type", "paper_tray", "copies", "page_range", "pages_per_sheet", "device_name" })
-    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, @Optional("Off")String borderless, @Optional("Plain Paper")String paper_type, @Optional("Main Tray")String paper_tray, @Optional("1")String copies, @Optional("All")String page_range, @Optional("1")String pages_per_sheet, String device_name) throws InterruptedException, IOException
+	@Parameters({ "ptr_name", "orientation", "duplex_optn", "color_optn", "prnt_quality", "paper_size", "borderless", "paper_type", "paper_tray", "copies", "collation", "page_range", "pages_per_sheet", "device_name" })
+    public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, @Optional("Off")String borderless, @Optional("Plain Paper")String paper_type, @Optional("Main Tray")String paper_tray, @Optional("1")String copies, @Optional("Collated")String collation, @Optional("All")String page_range, @Optional("1")String pages_per_sheet, String device_name) throws InterruptedException, IOException
     {   
 		// Method to Print Notepad File to Printer Under Test
-		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, borderless, paper_type, paper_tray, copies, page_range, pages_per_sheet, device_name);
+		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, borderless, paper_type, paper_tray, copies, collation, page_range, pages_per_sheet, device_name);
 	}
 	
 	
@@ -56,7 +57,7 @@ public class PrintFromNotepad extends NotepadBase{
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
-/*	    // Method to open the print queue (Moved from setup() method)
+	    // Method to open the print queue (Moved from setup() method)
 	    Base.OpenPrintQueue(ptr_name);
 	    
 		// Method to attach session to Printer Queue Window
@@ -69,7 +70,7 @@ public class PrintFromNotepad extends NotepadBase{
 
 	    //Validate Print Job Queued up
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
-	    log.info("Found correct job in print queue => "+test_filename);*/
+	    log.info("Found correct job in print queue => "+test_filename);
 	    
 	    // Get the Notepad handle so that we can switch back to the app and close it
         try {

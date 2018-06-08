@@ -14,16 +14,16 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import com.hp.win.core.Win32Base;
+import com.hp.win.core.ClassicBase;
 import com.hp.win.utility.ScreenshotUtility;
 
 import io.appium.java_client.windows.WindowsDriver;
 
 
 @Listeners({ScreenshotUtility.class})
-public class NotepadBase extends Win32Base {
+public class NotepadBase extends ClassicBase {
 
-    private static final Logger log = LogManager.getLogger(Win32Base.class);
+    private static final Logger log = LogManager.getLogger(ClassicBase.class);
     @SuppressWarnings("rawtypes")
 	public static WindowsDriver   NotepadSession     = null;
     public static RemoteWebDriver PrintDialogSession = null;
@@ -32,9 +32,48 @@ public class NotepadBase extends Win32Base {
     public static RemoteWebDriver ConflictSession = null;
 
 
-    // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String borderless, String paper_type, String paper_tray, String copies, String page_range, String pages_per_sheet, String device_name) throws InterruptedException, MalformedURLException  {
+    // Method to open Notepad test file
+    @SuppressWarnings("rawtypes")
+	public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
 
+        try {
+            capabilities = new DesiredCapabilities();
+            capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
+            capabilities.setCapability("appArguments",test_filename );
+            capabilities.setCapability("appWorkingDir", testfiles_loc);
+            capabilities.setCapability("platformName", "Windows");
+            capabilities.setCapability("deviceName",device_name);
+            NotepadSession = new WindowsDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
+            Assert.assertNotNull(NotepadSession);
+            NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);                                                  
+        }catch(Exception e){
+            e.printStackTrace();
+            log.info("Error opening notepad file");
+            throw new RuntimeException(e);
+        }
+        log.info("Opened"+test_filename+"file from "+testfiles_loc);
+        return NotepadSession;
+    }
+    
+    
+    // Method to print from Notepad
+    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String borderless, String paper_type, String paper_tray, String copies, String collation, String page_range, String pages_per_sheet, String device_name) throws InterruptedException, MalformedURLException  {
+
+        // Store all parameters in a Hash Map to make them easier to find
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("orientation", orientation);
+        parameters.put("duplex", duplex_optn);
+        parameters.put("color", color_optn);
+        parameters.put("printQuality", prnt_quality);
+        parameters.put("paperSize", paper_size);
+        parameters.put("borderless", borderless);
+        parameters.put("paperType", paper_type);
+        parameters.put("paperTray", paper_tray);
+        parameters.put("copies", copies);
+        parameters.put("collation", collation);
+        parameters.put("pageRange", page_range);
+        parameters.put("pagesPerSheet", pages_per_sheet);    	
+    	
         // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
         NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
         NotepadSession.getKeyboard().releaseKey(Keys.ARROW_UP);
@@ -69,11 +108,34 @@ public class NotepadBase extends Win32Base {
                 throw new RuntimeException(e);
             }
         }
+        
+        
+        List<WebElement> editBoxes = PrintDialogSession.findElementsByClassName("Edit");
+        for(WebElement box : editBoxes) {
+        	// number of copies always resets to 1 after Notepad is closed and reopened 
+        	if(box.getText().toString().equals("1")) {
+        		try {
+        			box.click();
+        			box.sendKeys(Keys.BACK_SPACE);
+        			box.sendKeys(parameters.get("copies"));
+        			log.info("Successfully set number of copies to " + parameters.get("copies"));
+        		} catch (Exception e) {
+        			log.info("Couldn't enter number of copies. Using default amount of " + box.getText().toString() + "'.");
+        		}
+        		Thread.sleep(1000);
+        		if((!parameters.get("copies").equals("1")) && (parameters.get("collation").equals("Collated"))) {
+        			ClickButton(PrintDialogSession, "Collate");
+        		}
+        		break;
+        	}
+        }
+
 
         // Open Preferences window
         ClickButton(PrintDialogSession, "Preferences");
 
         // A new desktop session must be created every time a dialog box is created or destroyed
+        // The previous desktop session should be quit first
         try {
             PrintDialogSession.quit();
             log.info("Closed PrintDialogSession...");
@@ -81,102 +143,77 @@ public class NotepadBase extends Win32Base {
             log.info("PrintDialogSession already terminated.");
         }
 
-        // In order to access the Preferences dialog, we need to start a new desktop session
+        // After the previous desktop session was quit, a new desktop session can be created
         log.info("Opening PreferencesSession...");
         PreferencesSession = GetDesktopSession(device_name);
-        Assert.assertNotNull(PreferencesSession);
-        
-        // Store all parameters in a Hash Map to find them easier
-        HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("orientation", orientation);
-        parameters.put("duplex", duplex_optn);
-        parameters.put("color", color_optn);
-        parameters.put("printQuality", prnt_quality);
-        parameters.put("paperSize", paper_size);
-        parameters.put("borderless", borderless);
-        parameters.put("paperType", paper_type);
-        parameters.put("paperTray", paper_tray);
-        parameters.put("copies", copies);
-        parameters.put("pageRange", page_range);
-        parameters.put("pagesPerSheet", pages_per_sheet);
-        
+        Assert.assertNotNull(PreferencesSession);       
                
-    	// Create a hashmap of all textblock elements on the tab
+        // Create a hashmap of all tabs to check which ones are available
     	HashMap<String, String> tabs = new HashMap<String, String>();
-    	
-    	List<WebElement> elList = PreferencesSession.findElementsByTagName("TabItem");
-    	for(WebElement el : elList) {
-    		String value = el.getText().toString();
+
+    	List<WebElement> tabsList = PreferencesSession.findElementsByTagName("TabItem");
+    	for(WebElement tab : tabsList) {
+    		String value = tab.getText().toString();
     		String key = value;
     		tabs.put(key, value);
-    		//log.info("Found tab '" + tabs.get(key) + "'.");
     	}
         
         
     	// WPF print settings windows have a 'Printing Shortcuts' tab, but Win32 print settings dialog boxes do not
     	if(tabs.get("Printing Shortcuts") != null) {
-        	log.info("Going to use WPF interface.");
+        	log.info("WPF UI detected.");
             RunWPFTest(PreferencesSession, tabs, parameters, device_name, ptr_name); 
             try {
-                PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'CancelButton')]").click();
-                log.info("Successfully clicked on Cancel button.");
+                PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'OkButton')]").click();
+                log.info("Successfully clicked on OK button.");
                 Thread.sleep(1000);
             } catch (Exception e) {
-                log.info("Could not click on Cancel button.");
+                log.info("Could not click on OK button.");
                 throw new RuntimeException(e);
             }
+            
+        	ConflictSession = Base.GetDesktopSession(device_name);
+        	Assert.assertNotNull(ConflictSession);
+            
+        	log.info("Checking for print settings conflicts...");
+        	try {
+        		if(ConflictSession.findElementByXPath("//Text[contains(@Name, 'Selection conflicts were encountered. Would you like them auto-resolved?')]").isDisplayed()) {
+        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
+        			ClickButton(ConflictSession, "Yes");
+        		}
+        	} catch (Exception e) {
+        		log.info("No print settings conflicts found.");
+        	}
+
     	}
     	else {
-        	log.info("Going to use Win32 interface.");
+        	log.info("Win32 UI detected.");
             RunWin32Test(PreferencesSession, tabs, parameters, device_name);
     	}
     	
+    	// Quit the session used to detect print settings conflicts
     	if(ConflictSession != null) {
     		try {
     			ConflictSession.quit();
-    			log.info("Closed ConflictSession.");
+    			log.info("Successfully quit ConflictSession.");
     		} catch (Exception e) {
-    			log.info("Could not close ConflictSession.");
+    			log.info("ConflictSession already quit.");
     		}
     	}
     	
-    	PreferencesSession = Win32Base.GetDesktopSession(device_name);
+    	// Reopening PreferencesSession to complete the test
+    	PreferencesSession = ClassicBase.GetDesktopSession(device_name);
     	Assert.assertNotNull(PreferencesSession);
     	
-        ClickButton(PreferencesSession, "Cancel");
+        ClickButton(PreferencesSession, "Print");
         
-    }
-
-
-    // Method to open Notepad test file
-    @SuppressWarnings("rawtypes")
-	public static WindowsDriver OpenNoteFile(String device_name, String test_filename) throws MalformedURLException {
-
-        try {
-            capabilities = new DesiredCapabilities();
-            capabilities.setCapability("app", "C:\\Windows\\System32\\notepad.exe");
-            capabilities.setCapability("appArguments",test_filename );
-            capabilities.setCapability("appWorkingDir", testfiles_loc);
-            capabilities.setCapability("platformName", "Windows");
-            capabilities.setCapability("deviceName",device_name);
-            NotepadSession = new WindowsDriver(new URL(WindowsApplicationDriverUrl), capabilities);   
-            Assert.assertNotNull(NotepadSession);
-            NotepadSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);                                                  
-        }catch(Exception e){
-            e.printStackTrace();
-            log.info("Error opening notepad file");
-            throw new RuntimeException(e);
-        }
-        log.info("Opened"+test_filename+"file from "+testfiles_loc);
-        return NotepadSession;
     }
    
     
-    //public static void RunWin32Test(RemoteWebDriver session, List<WebElement> tabs, HashMap<String, String> parameters, String device_name) throws InterruptedException, MalformedURLException {
     public static void RunWin32Test(RemoteWebDriver session, HashMap<String, String> tabs, HashMap<String, String> parameters, String device_name) throws InterruptedException, MalformedURLException {
         
         // Change the settings on the Layout tab
-    	Win32Base.SelectPreferencesTab_Win32(session, tabs.get("Layout").toString());
+    	ClassicBase.SelectPreferencesTab_Classic(session, tabs.get("Layout").toString());
         
         // Select duplex option
         ChooseDuplexOrSimplex_Win32(session, parameters.get("duplex").toString(), device_name);
@@ -186,7 +223,7 @@ public class NotepadBase extends Win32Base {
 
 
         // Change the settings on the Paper/Quality tab
-        Win32Base.SelectPreferencesTab_Win32(session, tabs.get("Paper/Quality").toString());
+        ClassicBase.SelectPreferencesTab_Classic(session, tabs.get("Paper/Quality").toString());
         
         // Select color option
         log.info("Selecting color choice.");
@@ -252,41 +289,48 @@ public class NotepadBase extends Win32Base {
     }
 
     
-    //public static void RunWPFTest(RemoteWebDriver session, List<WebElement> tabs, HashMap<String, String> parameters, String device_name, String ptr_name) throws InterruptedException, MalformedURLException {
     public static void RunWPFTest(RemoteWebDriver session, HashMap<String, String> tabs, HashMap<String, String> parameters, String device_name, String ptr_name) throws InterruptedException, MalformedURLException {
 
         // Ensure correct printer selected
     	// TODO: The "contains" method returns a false positive - needs fixing
-        Assert.assertTrue(session.findElementByClassName("Window").getAttribute("Name").contains(ptr_name));
+        Assert.assertTrue(session.findElementByClassName("Window").getAttribute("Name").equals(ptr_name));
         log.info("Opened printer settings is correct for the printer => " + ptr_name);
 
         /*  
-         *  Because of differences between wording for different printers' settings
-         *  the "Printing Shortcuts" tab will not be used to test printer settings.
+         *  The "Printing Shortcuts" tab will not be used to test printer settings
+         *  so that there can be greater accuracy with the settings
          */
 
         if(tabs.get("Paper/Quality") != null) {
-        	SelectPreferencesTab_Win32(session, tabs.get("Paper/Quality"));
+        	SelectPreferencesTab_Classic(session, tabs.get("Paper/Quality"));
 
         	// Get a hash map of all text elements on the tab in order to confirm which settings are on the tab
-        	//HashMap<String, String> settings = GetHashMap(session, "TextBlock");
-        	//SetPaperQualityTabOptions(session, parameters, settings, tabs, device_name);
+        	HashMap<String, String> settings = GetHashMap(session, "TextBlock");
+        	SetPaperQualityTabOptions(session, parameters, settings, tabs, device_name);
         }
         
         // Sometimes duplex settings are on a "Layout" tab
         if((tabs.get("Layout") != null)) {
-        	SelectPreferencesTab_Win32(session, tabs.get("Layout"));
+        	SelectPreferencesTab_Classic(session, tabs.get("Layout"));
         	HashMap<String, String> settings = GetHashMap(session, "TextBlock");
         	SetLayoutFinishingTabOptions(session, parameters, settings, tabs, device_name);
         }
         
         // Sometimes duplex settings are on a "Finishing" tab
         if((tabs.get("Finishing") != null)) {
-        	SelectPreferencesTab_Win32(session, tabs.get("Finishing"));
+        	SelectPreferencesTab_Classic(session, tabs.get("Finishing"));
 
         	HashMap<String, String> settings = GetHashMap(session, "TextBlock");
 
         	SetLayoutFinishingTabOptions(session, parameters, settings, tabs, device_name);
+        }
+        
+        
+        // Sometimes color settings are on a separate "Color" tab
+        if((tabs.get("Color") != null)) {
+        	SelectPreferencesTab_Classic(session, tabs.get("Color"));
+        	HashMap<String, String> settings = GetHashMap(session, "TextBlock)");
+        	SetColorTabOptions(session, parameters, settings, tabs, device_name);
         }
 
 
@@ -319,11 +363,6 @@ public class NotepadBase extends Win32Base {
     	if(settings.get("borderless printing") != null) {
     		log.info("Selecting borderless option...");
     		SelectListItem_WPF(session, "cboBorderless", parameters.get("borderless"), device_name);
-    	}
-
-    	if(settings.get("special pages") != null) {
-    		String specialPages = settings.get("special pages").replaceAll("_", "");
-    		log.info("******************** '" + specialPages + "' settings needs to be added as a parameter. ********************");
     	}
     	
     	// Print quality selection
@@ -359,78 +398,103 @@ public class NotepadBase extends Win32Base {
     
     public static void SetLayoutFinishingTabOptions(RemoteWebDriver session, HashMap<String, String> parameters, HashMap<String, String> settings, HashMap<String, String> tabs, String device_name) throws InterruptedException {
 
-/*    	// If there is a duplex option, make a selection
+    	// If there is a duplex option, make a selection
     	if(settings.get("print on both sides") != null) {
-    		log.info("Selecting duplex option...");
-    		
-    		if(parameters.get("duplex").equals("None")) {
-    			if(session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
-    				Win32Base.ClickCheckbox_WPF(session, "Print on Both Sides:");
-    			}
-    			log.info("Document will print on one side of paper.");
-    		}
-    		
-    		else if(parameters.get("duplex").equals("Flip on Long Edge")) {   			
-    			// If the Print on Both Sides checkbox is not checked, check it
-    			if(!session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
-    				Win32Base.ClickCheckbox_WPF(session, "chkPrintOnBothSides");
-    			}
-    			
-    			// If the Flip Pages Up checkbox is checked, then uncheck it
-    			if(session.findElementByXPath("//CheckBox[@AutomationId='chkFlipPagesUp']").isSelected()){
-    					Win32Base.ClickCheckbox_WPF(session, "chkFlipPagesUp");
-    			}
-    			
-    			log.info("'Print on Both Sides' is selected. Document will flip on long edge.");
-    		}
-    		
-    		else if(parameters.get("duplex").equals("Flip on Short Edge")) {
-    			// If the Print on Both Sides checkbox is not checked, check it
-    			if(!session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
-    				Win32Base.ClickCheckbox_WPF(session, "chkPrintOnBothSides");
-    			}
-    			
-    			// If the Flip Pages Up checkbox is not checked, check it
-				if(!session.findElementByXPath("//CheckBox[@AutomationId='chkFlipPagesUp']").isSelected()) {
-					Win32Base.ClickCheckbox_WPF(session, "chkFlipPagesUp");
-				}
-				
-				log.info("'Flip Pages Up' is selected. Document will flip on short edge.");
-    		}
-    		
-    		else {
-    			log.info("Duplex selection not recognized. Select 'None,' 'Flip on Long Edge,' or 'Flip on Short Edge.'");
-    		}
-    	}*/
+    		SelectDuplexOption(session, parameters,settings, tabs);
+    	}
     	
     	// If there is an orientation option, make a selection
     	if(settings.get("orientation") != null) {
-    		if(parameters.get("orientation").equals("Portrait")) {
-    			try {
-    				session.findElementByXPath("//RadioButton[@AutomationId='rdoPortrait']").click();
-    				log.info("Successfully selected 'Portrait'.");
-    			} catch (Exception e) {
-    				log.info("There was a problem selecting 'Portrait'.");
-    			}
-    			Thread.sleep(1000);
-    		}
-    		else if(parameters.get("orientation").equals("Landscape")) {
-    			try {
-    				session.findElementByXPath("//RadioButton[@AutomationId='rdoLandscape']").click();
-    				log.info("Successfully selected 'Landscape'.");
-    			} catch (Exception e) {
-    				log.info("There was a problem selecting 'Landscape'.");
-    			}
-    		}
-    		else {
-    			log.info("Orientation selection not recognized. Select 'Portrait' or 'Landscape.'");
-    		}
+    		SelectOrientation(session, parameters, settings, tabs);
     	}
     }
     
+
+    public static void SetColorTabOptions(RemoteWebDriver session, HashMap<String, String> parameters, HashMap<String, String> settings, HashMap<String, String> tabs, String device_name) throws InterruptedException {
+    	// Color selection - colorSel variable must be set for actual values in UI based on input from test parameters
+    	String colorSel = null;
+    	log.info("Selecting color option...");
+    	if((parameters.get("color").toLowerCase().equals("color")) || (parameters.get("color").toLowerCase().equals("off"))) {
+    		colorSel = "Off";
+    	}
+    	else if((parameters.get("color").toLowerCase().equals("blackandwhite")) || (parameters.get("color").toLowerCase().equals("black ink only"))) {
+    		colorSel = "Black Ink Only";
+    	}
+    	else if(parameters.get("color").toLowerCase().equals("grayscale")) {
+    		colorSel = "High Quality Grayscale";
+    	}
+    	else {
+    		log.info("Color option '" + parameters.get("color") + "' is not recognized. Please use 'Off', 'Black Ink Only', or 'Grayscale'.");
+    	}
+    	SelectListItem_WPF(session, "cboPrintInGrayscale", colorSel, device_name);
+    }
     
-    public static void SelectOrientation(RemoteWebDriver session, HashMap<String, String> parameters, HashMap<String, String> settings, HashMap<String, String> tabs, String device) {
-    	
+    
+    public static void SelectOrientation(RemoteWebDriver session, HashMap<String, String> parameters, HashMap<String, String> settings, HashMap<String, String> tabs) throws InterruptedException {
+		if(parameters.get("orientation").equals("Portrait")) {
+			try {
+				session.findElementByXPath("//RadioButton[@AutomationId='rdoPortrait']").click();
+				log.info("Successfully selected 'Portrait'.");
+			} catch (Exception e) {
+				log.info("There was a problem selecting 'Portrait'.");
+			}
+			Thread.sleep(1000);
+		}
+		else if(parameters.get("orientation").equals("Landscape")) {
+			try {
+				session.findElementByXPath("//RadioButton[@AutomationId='rdoLandscape']").click();
+				log.info("Successfully selected 'Landscape'.");
+			} catch (Exception e) {
+				log.info("There was a problem selecting 'Landscape'.");
+			}
+		}
+		else {
+			log.info("Orientation selection not recognized. Select 'Portrait' or 'Landscape.'");
+		}
+    }
+    
+    
+    public static void SelectDuplexOption(RemoteWebDriver session, HashMap<String, String> parameters, HashMap<String, String> settings, HashMap<String, String> tabs) throws InterruptedException {
+		log.info("Selecting duplex option...");
+		
+		if(parameters.get("duplex").equals("None")) {
+			if(session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
+				ClassicBase.ClickCheckbox_WPF(session, "Print on Both Sides:");
+			}
+			log.info("Document will print on one side of paper.");
+		}
+		
+		else if(parameters.get("duplex").equals("Flip on Long Edge")) {   			
+			// If the Print on Both Sides checkbox is not checked, check it
+			if(!session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
+				ClassicBase.ClickCheckbox_WPF(session, "chkPrintOnBothSides");
+			}
+			
+			// If the Flip Pages Up checkbox is checked, then uncheck it
+			if(session.findElementByXPath("//CheckBox[@AutomationId='chkFlipPagesUp']").isSelected()){
+					ClassicBase.ClickCheckbox_WPF(session, "chkFlipPagesUp");
+			}
+			
+			log.info("'Print on Both Sides' is selected. Document will flip on long edge.");
+		}
+		
+		else if(parameters.get("duplex").equals("Flip on Short Edge")) {
+			// If the Print on Both Sides checkbox is not checked, check it
+			if(!session.findElementByXPath("//CheckBox[@AutomationId='chkPrintOnBothSides']").isSelected()) {
+				ClassicBase.ClickCheckbox_WPF(session, "chkPrintOnBothSides");
+			}
+			
+			// If the Flip Pages Up checkbox is not checked, check it
+			if(!session.findElementByXPath("//CheckBox[@AutomationId='chkFlipPagesUp']").isSelected()) {
+				ClassicBase.ClickCheckbox_WPF(session, "chkFlipPagesUp");
+			}
+			
+			log.info("'Flip Pages Up' is selected. Document will flip on short edge.");
+		}
+		
+		else {
+			log.info("Duplex selection not recognized. Select 'None,' 'Flip on Long Edge,' or 'Flip on Short Edge.'");
+		}
     }
     
     
