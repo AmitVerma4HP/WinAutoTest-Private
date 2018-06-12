@@ -481,7 +481,6 @@ public class SettingBase extends Base {
 			
 			ProcessBuilder pb = new ProcessBuilder("cmd.exe","/k", cmd);
 			pb.redirectErrorStream(true);
-			//pb.directory(new File(providersFileLoc));
 			Process pc = pb.start();
 			log.debug("executed the cmd successfully");
 			try {
