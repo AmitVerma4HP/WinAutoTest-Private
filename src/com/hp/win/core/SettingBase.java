@@ -1,5 +1,8 @@
 package com.hp.win.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -211,7 +214,73 @@ public class SettingBase extends Base {
 	  }
 	  
 	  
-	  //if printer was found then determine whether it is already added or new one
+	  //if printer was found then remove it and confirm the printer removal
+	  public static void RemoveAlreadyAddedPrinter(String ptr_name,String device_name ) throws InterruptedException {
+		  	//Move mouse pointer to printer under test and then remove it.
+			MoveMousePointerToPrinter(ptr_name);
+			Thread.sleep(1000);
+			
+			//Click on the printer that has to be removed
+			try {
+				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
+				log.info("Waiting until Remove button is clickable");
+	    	    wait = new WebDriverWait(SettingSession, 60);
+	    	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//Button[contains(@Name,'Remove device')]")));	    	    
+			}catch(Exception e) {
+				log.info("Error clicking on printer that has to be removed");
+				throw new RuntimeException(e);
+			}
+		    
+			//Click on the Remove device button
+			try {
+				SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).click();
+				log.info("Clicked on \"Remove device\" Successfully");
+			}catch(Exception e) {
+				log.info("Error clicking on \"Remove device\" button for the printer that has to be removed");
+				throw new RuntimeException(e);
+			}			
+			Thread.sleep(2000);
+			
+			try {
+		    //Confirm deletion
+			DesktopSession = Base.GetDesktopSession(device_name);
+			DesktopSession.findElement(By.xpath("//Button[contains(@Name,'Yes')]")).click();
+		    log.info("Clicked on \"Yes\" Successfully");
+		    Thread.sleep(4000);
+			}catch(Exception e) {
+				log.info("Error confirming deletion of the printer that has to be removed");
+				throw new RuntimeException(e);
+			}
+			
+			// Ensure printer is not visible anymore
+			SettingSession.findElementByClassName("ScrollViewer").click();
+			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
+			Assert.assertNotNull(PrinterListItem);			
+			int ptrExistingCount = 0;			
+			for(WebElement el : PrinterListItem) {
+				ptrExistingCount++;					
+				log.info("Existing Added Printer List After Removing Printer Under Test"+ptrExistingCount+" => "+el.getText());
+			}
+			log.info("Total Added Printers Count => "+ptrExistingCount);
+			
+			boolean printerRemoved=true;
+			for(WebElement el : PrinterListItem) {
+				log.info("Looking if removed printer is still there");
+					if (el.getText().contains(ptr_name)) 
+					{
+						printerRemoved = false;
+						break;
+						
+					}					
+				}				
+				Assert.assertEquals(printerRemoved,true,"Failed to Remove Target Printer => "+ptr_name);
+				log.info("Successfully removed printer under test => "+ptr_name);
+										
+		}
+
+
+
+	//if printer was found then determine whether it is already added or new one
 	  //Better logic could be just see if printer is visible in already added printer list (before going for discovery)
 	  // Store all printers in a List	  	
 	  public static boolean IsPrinterAlreadyAdded(String ptr_name,String device_name) throws InterruptedException, MalformedURLException {	
@@ -251,71 +320,7 @@ public class SettingBase extends Base {
 	  
 	  
 	  
-	 //if printer was found then remove it and confirm the printer removal
-	  public static void RemoveAlreadyAddedPrinter(String ptr_name,String device_name ) throws InterruptedException {
-		  	//Move mouse pointer to printer under test and then remove it.
-			MoveMousePointerToPrinter(ptr_name);
-			Thread.sleep(1000);
-			
-			//Click on the printer that has to be removed
-			try {
-				SettingSession.findElement(By.xpath("//ListItem[contains(@Name,'"+ptr_name+"')]")).click();
-				log.info("Waiting until Remove button is clickable");
-	    	    wait = new WebDriverWait(SettingSession, 60);
-	    	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//Button[contains(@Name,'Remove device')]")));	    	    
-			}catch(Exception e) {
-				log.info("Error clicking on printer that has to be removed");
-				throw new RuntimeException(e);
-			}
-    	    
-			//Click on the Remove device button
-			try {
-				SettingSession.findElement(By.xpath("//Button[contains(@Name,'Remove device')]")).click();
-				log.info("Clicked on \"Remove device\" Successfully");
-			}catch(Exception e) {
-				log.info("Error clicking on \"Remove device\" button for the printer that has to be removed");
-				throw new RuntimeException(e);
-			}			
-			Thread.sleep(2000);
-			
-			try {
-    	    //Confirm deletion
-			DesktopSession = Base.GetDesktopSession(device_name);
-			DesktopSession.findElement(By.xpath("//Button[contains(@Name,'Yes')]")).click();
-    	    log.info("Clicked on \"Yes\" Successfully");
-    	    Thread.sleep(4000);
-			}catch(Exception e) {
-				log.info("Error confirming deletion of the printer that has to be removed");
-				throw new RuntimeException(e);
-			}
-			
-			// Ensure printer is not visible anymore
-			SettingSession.findElementByClassName("ScrollViewer").click();
-			List<WebElement> PrinterListItem = SettingSession.findElementsByClassName("ListViewItem");
-			Assert.assertNotNull(PrinterListItem);			
-			int ptrExistingCount = 0;			
-			for(WebElement el : PrinterListItem) {
-				ptrExistingCount++;					
-				log.info("Existing Added Printer List After Removing Printer Under Test"+ptrExistingCount+" => "+el.getText());
-			}
-			log.info("Total Added Printers Count => "+ptrExistingCount);
-			
-			boolean printerRemoved=true;
-			for(WebElement el : PrinterListItem) {
-				log.info("Looking if removed printer is still there");
-					if (el.getText().contains(ptr_name)) 
-					{
-						printerRemoved = false;
-						break;
-						
-					}					
-				}				
-				Assert.assertEquals(printerRemoved,true,"Failed to Remove Target Printer => "+ptr_name);
-				log.info("Successfully removed printer under test => "+ptr_name);
-										
-		}	
-	  
-	  // Method to perform discovery
+	 // Method to perform discovery
 	  public static void PerformDiscovery() throws InterruptedException {
 		  	
 		  	//Go to top of the screen
@@ -378,6 +383,16 @@ public class SettingBase extends Base {
 
 	  
 	  public static void OpenSettings(String device_name) throws InterruptedException, MalformedURLException {
+		  
+		// Launching Printer and Scanners Settings Screen.  
+		try {
+			SettingBase.CmdLineExecution("Start ms-settings:printers");
+			log.info("Successfuly launched Printers & scanners");
+		} catch (IOException e1) {
+			log.info("Error Occurred while Launching Printers & sanners");
+			e1.printStackTrace();
+		}
+		 /* 	
 		  	CortanaSession=SettingBase.GetCortanaSession(device_name);	    	    
 		    Thread.sleep(3000);
 		    try {
@@ -388,13 +403,14 @@ public class SettingBase extends Base {
 		    	}catch(Exception e){
 		    	e.printStackTrace();
 		    	log.info("Error getting to Settings -> \"Printers & scanner\"");
-		    	}
-		    Thread.sleep(1000);
+		    	}*/
 		    
-		    SettingSession=SettingBase.GetSettingSession(device_name);
-		    wait = new WebDriverWait(SettingSession, 60);
-		    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
-		    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
+		Thread.sleep(1000);
+	    SettingSession=SettingBase.GetSettingSession(device_name);
+	    wait = new WebDriverWait(SettingSession, 60);
+	    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
+	    SettingSession.manage().window().maximize();
+	    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
 	  }
 	  
 	  
@@ -457,7 +473,29 @@ public class SettingBase extends Base {
 			log.info("Moved Mouse to the label => "+label);
 	  }
 	  
-	  
+	 			
+		public static void CmdLineExecution(String cmdStart)
+				throws IOException, InterruptedException {
+		
+			String cmd = cmdStart;
+			
+			ProcessBuilder pb = new ProcessBuilder("cmd.exe","/k", cmd);
+			pb.redirectErrorStream(true);
+			//pb.directory(new File(providersFileLoc));
+			Process pc = pb.start();
+			log.debug("executed the cmd successfully");
+			try {
+				InputStreamReader isr = new InputStreamReader(pc.getInputStream());
+				BufferedReader br = new BufferedReader(isr);
+				while ((br.readLine()) == null) {
+					pc.waitFor();
+				}	
+			} catch (InterruptedException e) {
+				pc.destroyForcibly();
+			}
+			log.info("Cmd executed and closed");
+		}
+  
 }
 	  
 	
