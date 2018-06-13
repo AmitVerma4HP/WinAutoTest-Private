@@ -409,7 +409,6 @@ public class SettingBase extends Base {
 	    SettingSession=SettingBase.GetSettingSession(device_name);
 	    wait = new WebDriverWait(SettingSession, 60);
 	    wait.until(ExpectedConditions.elementToBeClickable(By.name("Add a printer or scanner")));
-	    SettingSession.manage().window().maximize();
 	    log.info("Waited until \"Printers & scanner\" is clickable");	  	  
 	  }
 	  
@@ -476,13 +475,11 @@ public class SettingBase extends Base {
 	 			
 		public static void CmdLineExecution(String cmdStart)
 				throws IOException, InterruptedException {
-		
-			String cmd = cmdStart;
 			
-			ProcessBuilder pb = new ProcessBuilder("cmd.exe","/k", cmd);
+			ProcessBuilder pb = new ProcessBuilder("cmd.exe","/k", cmdStart);
 			pb.redirectErrorStream(true);
 			Process pc = pb.start();
-			log.debug("executed the cmd successfully");
+			log.debug("Executed Command line =>" +cmdStart );
 			try {
 				InputStreamReader isr = new InputStreamReader(pc.getInputStream());
 				BufferedReader br = new BufferedReader(isr);
