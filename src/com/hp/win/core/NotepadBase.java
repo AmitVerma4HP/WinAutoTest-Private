@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.ClassicBase;
@@ -109,10 +112,17 @@ public class NotepadBase extends ClassicBase {
             }
         }
         
-        
+        // Get printer status and change settings on initial Print dialog box
         List<WebElement> editBoxes = PrintDialogSession.findElementsByClassName("Edit");
         for(WebElement box : editBoxes) {
-        	// number of copies always resets to 1 after Notepad is closed and reopened 
+        	
+        	if((box.getAttribute("Name").equals("Status:")) && (!box.getText().toString().equals("Ready"))){
+        		log.info("Printer is not in a 'Ready' state!");
+        		log.info("Printer status is '" + box.getText().toString() + "'.");
+        	}
+        	
+        	// Set the number of copies to print
+        	// The number of copies always resets to 1 after Notepad is closed and reopened, so the element can be found by this number
         	if(box.getText().toString().equals("1")) {
         		try {
         			box.click();
@@ -123,9 +133,11 @@ public class NotepadBase extends ClassicBase {
         			log.info("Couldn't enter number of copies. Using default amount of " + box.getText().toString() + "'.");
         		}
         		Thread.sleep(1000);
+        		// If the number of desired copies is more than one and collation is requested, check the collated box
         		if((!parameters.get("copies").equals("1")) && (parameters.get("collation").equals("Collated"))) {
         			ClickButton(PrintDialogSession, "Collate");
         		}
+        		// TODO: Add PageRange selection here??
         		break;
         	}
         }
@@ -161,11 +173,16 @@ public class NotepadBase extends ClassicBase {
         
     	// WPF print settings windows have a 'Printing Shortcuts' tab, but Win32 print settings dialog boxes do not
     	if(tabs.get("Printing Shortcuts") != null) {
+    		
         	log.info("WPF UI detected.");
+        	
             RunWPFTest(PreferencesSession, tabs, parameters, device_name, ptr_name); 
+            
             try {
-                PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'OkButton')]").click();
-                log.info("Successfully clicked on OK button.");
+/*                PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'OkButton')]").click();
+                log.info("Successfully clicked on OK button.");*/
+            	PreferencesSession.findElementByXPath("//Button[starts-with(@AutomationId, 'CancelButton')]").click();
+            	log.info("Successfully clicked on Cancel button.");
                 Thread.sleep(1000);
             } catch (Exception e) {
                 log.info("Could not click on OK button.");
@@ -178,16 +195,22 @@ public class NotepadBase extends ClassicBase {
         	log.info("Checking for print settings conflicts...");
         	try {
         		if(ConflictSession.findElementByXPath("//Text[contains(@Name, 'Selection conflicts were encountered. Would you like them auto-resolved?')]").isDisplayed()) {
-        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
+        		boolean conflict = ConflictSession.findElementByXPath("//Text[contains(@Name, 'Selection conflicts were encountered. Would you like them auto-resolved?')]").isDisplayed();	
+        		log.info("Conflict is '" + conflict + "'. One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
         			ClickButton(ConflictSession, "Yes");
         		}
+        		else {
+        			log.info("No print settings conflicts found.");
+        		}
         	} catch (Exception e) {
-        		log.info("No print settings conflicts found.");
+        		log.info("There was a problem resolving the print settings conflict.");
         	}
 
     	}
     	else {
+    		
         	log.info("Win32 UI detected.");
+        	
             RunWin32Test(PreferencesSession, tabs, parameters, device_name);
     	}
     	
@@ -212,7 +235,7 @@ public class NotepadBase extends ClassicBase {
     
     public static void RunWin32Test(RemoteWebDriver session, HashMap<String, String> tabs, HashMap<String, String> parameters, String device_name) throws InterruptedException, MalformedURLException {
         
-        // Change the settings on the Layout tab
+/*        // Change the settings on the Layout tab
     	ClassicBase.SelectPreferencesTab_Classic(session, tabs.get("Layout").toString());
         
         // Select duplex option
@@ -233,7 +256,7 @@ public class NotepadBase extends ClassicBase {
         // Select print quality
         log.info("Selecting print quality.");
         log.info("Using " + parameters.get("printQuality"));
-        ChoosePrintQuality_Win32(session, parameters.get("printQuality").toString());
+        ChoosePrintQuality_Win32(session, parameters.get("printQuality").toString());*/
         
         // Now open the Advanced settings
         ClickButton(session, "Advanced...");
@@ -252,7 +275,9 @@ public class NotepadBase extends ClassicBase {
         AdvancedSession = GetDesktopSession(device_name);
         Assert.assertNotNull(AdvancedSession);
         
-        ChoosePaperSize_Win32(AdvancedSession, parameters.get("paperSize"), device_name);
+        //ChoosePaperSize_Win32(AdvancedSession, parameters.get("paperSize"), device_name);
+        
+        ChooseBorderlessOption_Win32(AdvancedSession, parameters.get("borderless"), device_name);
         
         //Quitting Advanced dialog
         ClickButton(AdvancedSession, "OK");
@@ -266,26 +291,33 @@ public class NotepadBase extends ClassicBase {
     	} catch (Exception e) {
     		log.info("AdvancedSession already closed.");
     	}
+    	
+    	// TODO: SELECT BORDERLESS OPTION
         
     	ConflictSession = Base.GetDesktopSession(device_name);
     	Assert.assertNotNull(ConflictSession);
     	
     	log.info("Checking for print settings conflicts...");
         	try {
-        		if(ConflictSession.findElementByName("Resolve all conflicts for me automatically.").isSelected()) {
-        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
+        		        		
+        		//if(ConflictSession.findElementByName("Resolve all conflicts for me automatically.").isSelected()) {
+        		if(ConflictSession.findElementByName("OK").isDisplayed()) {
+        			/*        			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
         			ClickButton(ConflictSession, "OK");
         		}
-        		else {
+        		else {*/
         			ConflictSession.findElementByName("Resolve all conflicts for me automatically.").click();
         			log.info("One or more conflicts was found. Resolving all conflicts automatically. Compare printer output to desired settings.");
         			ClickButton(ConflictSession, "OK");
         		}
+        		else {
+        			log.info("No print settings conflicts found.");
+        		}
         	} catch (Exception e) {
-        		log.info("No print settings conflicts found.");
+        		log.info("There was a problem resolving the print settings conflicts.");
         	}
 
-
+        	
     }
 
     
@@ -499,7 +531,7 @@ public class NotepadBase extends ClassicBase {
     
     
     public static HashMap<String, String> GetHashMap(RemoteWebDriver session, String className){
-    	// Create a hashmap of all textblock elements on the tab
+    	// Create a hashmap of all desired elements
     	HashMap<String, String> elPairs = new HashMap<String, String>();
     	List<WebElement> elList = session.findElementsByClassName(className);
     	for(WebElement el : elList) {

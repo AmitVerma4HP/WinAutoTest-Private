@@ -219,7 +219,7 @@ public class ClassicBase extends Base {
         }
         else if(color_sel.equals("off")) {
             log.info("'Off' is not a valid color selection for this interface. Changing selection to 'Color'.");
-            color_choice = mono;
+            color_choice = color;
         }
         else {
             color_choice = color;
@@ -241,6 +241,10 @@ public class ClassicBase extends Base {
         
         SelectListItem_Win32(session, "Paper Size: ", size, device_name);
 
+    }
+    
+    public static void ChooseBorderlessOption_Win32(RemoteWebDriver session, String borderless, String device_name) throws InterruptedException {
+    	SelectListItem_Win32(session, "Borderless printing:", borderless, device_name);
     }
 
 }

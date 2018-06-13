@@ -3,9 +3,16 @@
 <suite name="Microsoft Win10 Notepad Test suite - Printing Tests">
  		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
  		
+ 		<!--  eero_test network -->
       <!--   <parameter name="ptr_name" value="HP418D24 (HP OfficeJet Pro 8720)" /> --> <!-- Win32 Test -->
         <!-- <parameter name="ptr_name" value ="HP82B5AD (HP ENVY Photo 7800 series)" /> --> <!-- WPF No Color Tab test -->
         <parameter name="ptr_name" value = "HPDFF323 (HP PageWide MFP P57750)" /> <!-- WPF Color Tab test -->
+        <!-- <parameter name="ptr_name" value ="HP5353E7 (HP ENVY 7640 series)" /> -->
+
+<!-- R12 network -->
+        <!-- <parameter name="ptr_name" value ="ipp: HP ENVY 7640 series [CCF025]" /> -->
+<!-- 	<parameter name="ptr_name" value ="ipp: HP LaserJet M605 [04F7AB]" />
+	<parameter name="ptr_name" value ="ipp: HP OfficeJet Pro 8740 [F613F6]" /> -->
 
 
  <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
@@ -44,7 +51,6 @@
  		<parameter name = "borderless"      value = "Off"                  />
  		<parameter name = "paper_type"      value = "HP Photo Papers"      />
  		<parameter name = "paper_tray"      value = "Photo Tray"           />
- 		<!-- <parameter name = "page_range"      value = "All"                  /> -->
 		<!-- <parameter name = "pages_per_sheet" value = "2"                    /> -->
      	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		
@@ -67,9 +73,8 @@
  		<parameter name = "borderless"      value = "On"                   />
  		<parameter name = "paper_type"      value = "Plain Paper"          />
  		<parameter name = "paper_tray"      value = "Main Tray"            />
- 		<!-- <parameter name = "page_range"      value = "All"                  /> -->
  		<!-- <parameter name = "pages_per_sheet" value = "4"                    /> -->
-     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
+     	<parameter name = "test_filename"   value = "NotepadTestFile2.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -90,9 +95,8 @@
  		<parameter name = "borderless"      value = "On"                   />
  		<parameter name = "paper_type"      value = "Plain Paper"          />
  		<parameter name = "paper_tray"      value = "Photo Tray"           />
- 		<!-- <parameter name = "page_range"      value = "Even Pages Only"      /> -->
 		<!-- <parameter name = "pages_per_sheet" value = "3"                    /> -->
-     	<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
+     	<parameter name = "test_filename"   value = "NotepadTestFile2.txt" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -113,7 +117,6 @@
  		<parameter name = "borderless"      value = "Off"                  />
  		<parameter name = "paper_type"      value = "HP Photo Paper"       />
  		<parameter name = "paper_tray"      value = "Main Tray"            />
- 		<!-- <parameter name = "page_range"      value = "All"                  /> -->
         <!-- <parameter name = "pages_per_sheet" value = "1"                    /> -->
 		<parameter name = "test_filename"   value = "NotepadTestFile1.txt" />
 		

@@ -6,9 +6,12 @@ import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -57,6 +60,29 @@ public class PrintFromNotepad extends NotepadBase{
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
+		log.info("Checking for further conflicts...");
+		ConflictSession = Base.GetDesktopSession(device_name);
+		Assert.assertNotNull(ConflictSession);
+		try {
+			if(ConflictSession.findElementByName("OK").isDisplayed()){
+				log.info("Printer under test cannot support printing more than one copy of the document. Resetting copy number and collation settings.");
+				wait = new WebDriverWait(ConflictSession, 20);
+				wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
+				ClickButton(ConflictSession, "OK");
+				wait.until(ExpectedConditions.elementToBeClickable(By.name("Print")));
+				ClickButton(ConflictSession, "Print");
+			}
+		} catch (Exception e) {
+			log.info("No other conflicts found.");
+		}
+
+		
+		try {
+			ConflictSession.quit();
+		} catch (Exception e) {
+			log.info("Conflict session was already quit.");
+		}
+		
 	    // Method to open the print queue (Moved from setup() method)
 	    Base.OpenPrintQueue(ptr_name);
 	    
