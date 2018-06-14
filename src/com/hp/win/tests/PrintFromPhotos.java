@@ -8,23 +8,16 @@ import com.hp.win.core.PhotoAppBase;
 import com.hp.win.core.UwpAppBase;
 import com.hp.win.utility.ScreenshotUtility;
 
-import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xpath.axes.WalkingIteratorSorted;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.hp.win.utility.*;							
 import java.io.IOException;
-import java.net.URL;
 
 	@Listeners({ScreenshotUtility.class})
 	public class PrintFromPhotos extends PhotoAppBase {

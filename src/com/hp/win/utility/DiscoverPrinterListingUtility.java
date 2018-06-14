@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,9 +26,9 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 			
 	@BeforeClass
 	@Parameters({"device_name"})
-	public static void setup(String device_name) throws MalformedURLException, InterruptedException {
-	SettingBase.OpenSettings(device_name);
-	    	    
+	public static void setup(String device_name) throws InterruptedException, IOException {
+		SettingBase.OpenSettings(device_name);
+  	    
     }
 		
 		
