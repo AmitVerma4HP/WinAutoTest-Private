@@ -235,6 +235,9 @@ public class MsWordAppBase extends Base {
 		     } else {
 		    	log.info("Desired collation option => " +CollationListComboBox.getText().toString()+" <= is already selected so proceeding");
 	        }
+
+	        //Added wait to fix issue where WINWORD test failed while selecting Print TabItem
+	        Thread.sleep(2000);
 	 }
 	 
 	 
