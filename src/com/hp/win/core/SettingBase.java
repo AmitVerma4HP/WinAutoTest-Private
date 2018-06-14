@@ -388,9 +388,11 @@ public class SettingBase extends Base {
 		try {
 			SettingBase.CmdLineExecution("Start ms-settings:printers");
 			log.info("Successfuly launched Printers & scanners");
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			log.info("Error Occurred while Launching Printers & sanners");
 			e1.printStackTrace();
+			throw new RuntimeException(e1);
+			
 		}
 		 /* 	
 		  	CortanaSession=SettingBase.GetCortanaSession(device_name);	    	    
@@ -487,6 +489,8 @@ public class SettingBase extends Base {
 					pc.waitFor();
 				}	
 			} catch (InterruptedException e) {
+				pc.destroyForcibly();
+			} catch (Exception e1) {
 				pc.destroyForcibly();
 			}
 			log.info("Cmd executed and closed");
