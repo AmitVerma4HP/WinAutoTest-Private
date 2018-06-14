@@ -206,6 +206,7 @@ public class MsWordAppBase extends Base {
 		        		}		      
 		     } else {
 		    	log.info("Desired orientation option => " +OrientationListComboBox.getText().toString()+" <= is already selected so proceeding");
+		    	Thread.sleep(1000);
 	        }
 	 }
 	 
