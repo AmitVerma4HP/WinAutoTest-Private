@@ -46,8 +46,7 @@ public class PrintMsWord extends MsWordAppBase{
 		Thread.sleep(2000);		
 		
 		//Selecting desired printer
-		MsWordAppBase.SelectDesiredPrinter_Msword(ptr_name);        
-		
+		MsWordAppBase.SelectDesiredPrinter_Msword(ptr_name);      
 		
 		// Write method to select Print settings
 		// Select Desired Paper Size

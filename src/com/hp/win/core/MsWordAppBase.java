@@ -248,7 +248,9 @@ public class MsWordAppBase extends Base {
 		 	//Directly working with EditBox "Copies" is erroring out so trying to select working with copies using keys "tab" 
 		 	
 		 	//Click on Print in the Menu Item and then press 2 Tabs
-	        MsWordSession.findElementByXPath("//TabItem[@Name='Print']").click();
+		 	//Using * in Xpath to resolve the element identification issue seen on only few systems, Its vulnerable as there exist 
+	        // two elements with same name.So need to relook once the proper tab property element is available.
+	        MsWordSession.findElementByXPath("//*[contains(@Name,'Print')]").click();
 	        Thread.sleep(1000);
 	        
 	        // Press Tab - Once
@@ -265,7 +267,9 @@ public class MsWordAppBase extends Base {
 	        Thread.sleep(1000);
 
 		 	//Click on Print in the Menu Item (outside Print group screen to save entered copies value)
-	        MsWordSession.findElementByXPath("//TabItem[@Name='Print']").click();
+	        //Using * in Xpath to resolve the element identification issue seen on only few systems, Its vulnerable as there exist 
+	        // two elements with same name.So need to relook once the proper tab property element is available. 
+	        MsWordSession.findElementByXPath("//*[contains(@Name,'Print')]").click();
 	        Thread.sleep(1000);
 	        log.info("Entered copies value ***** "+copies+" *****");        	        
 
