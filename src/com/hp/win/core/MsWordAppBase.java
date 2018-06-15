@@ -237,7 +237,7 @@ public class MsWordAppBase extends Base {
 	        }
 
 	        //Added wait to fix issue where WINWORD test failed while selecting Print TabItem
-	        Thread.sleep(2000);
+	        Thread.sleep(1000);
 	 }
 	 
 	 
