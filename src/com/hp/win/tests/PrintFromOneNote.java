@@ -2,6 +2,7 @@ package com.hp.win.tests;
 
 
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
@@ -93,14 +94,28 @@ import java.util.concurrent.TimeUnit;
         if (OneNoteSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
             OneNoteBase.SelectOrientation_Uwp(OneNoteSession,orientation);
         }else{
-            log.info("The desired Orientation feature is not supported by the printer ");
+			log.info("........................................................");
+			log.info("The desired Orientation selection didnt appear in App UI");
+			log.info("........................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("........................................................");
+			Reporter.log("The desired Orientation selection didnt appear in App UI");
+			Reporter.log("........................................................");
         }
         
         //Enter desired Copies value.
         if (OneNoteSession.findElementsByName("Copies").size()!=0){
             OneNoteBase.SelectCopies_Uwp(OneNoteSession, copies);
         }else{
-            log.info("The desired Copies selection feature is not supported by the printer ");
+			log.info("...................................................");
+			log.info("The desired Copies selection didnt appear in App UI");
+			log.info("...................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("...................................................");
+			Reporter.log("The desired Copies selection didnt appear in App UI");
+			Reporter.log("...................................................");
         }
         
                     
@@ -109,7 +124,14 @@ import java.util.concurrent.TimeUnit;
             String pageSelection = "Current " + pages_selection;
             OneNoteBase.SelectPageRange_Uwp(OneNoteSession, pageSelection);
         }else{
-            log.info("The desired Pages(Page Range) feature is not supported by the printer ");
+			log.info(".............................................................");
+			log.info("The desired Pages(PageRange) selection didnt appear in App UI");
+			log.info(".............................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("..............................................................");
+			Reporter.log("The desired Pages(PageRange)  selection didnt appear in App UI");
+			Reporter.log("..............................................................");
         }
         
         //Opening more settings to access more printing options.
@@ -120,49 +142,98 @@ import java.util.concurrent.TimeUnit;
             if (OneNoteSession.findElementsByName("Duplex printing").size()!=0){
                 OneNoteBase.SelectDuplexOption_Uwp(OneNoteSession, duplex_optn);
             }else{
-                log.info("The desired Duplexing feature is not supported by the printer ");
+				log.info("...................................................");
+				log.info("The desired Duplex selection didnt appear in App UI");
+				log.info("...................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...................................................");
+				Reporter.log("The desired Duplex selection didnt appear in App UI");
+				Reporter.log("...................................................");
             }
             
             //Select Desired Collation Option.          
             if (OneNoteSession.findElementsByName("Collation").size()!=0){
                 OneNoteBase.SelectCollation_Uwp(OneNoteSession, collation_optn);
             }else{
-                log.info("The desired Collation feature is not supported by the printer ");
+    			log.info("......................................................");
+    			log.info("The desired Collation selection didnt appear in App UI");
+    			log.info("......................................................");
+    			
+    			//This is to insert msg to TestNG emailable-report.html
+    			Reporter.log("......................................................");
+    			Reporter.log("The desired Collation selection didnt appear in App UI");
+    			Reporter.log("......................................................");
             }
             
             //Select Desired Paper Size Option
             if (OneNoteSession.findElementsByName("Paper size").size()!=0){
                 OneNoteBase.SelectPaperSize_Uwp(OneNoteSession, paper_size);
             }else{
-                log.info("The desired Paper Size feature is not supported by the printer ");
+    			log.info("......................................................");
+    			log.info("The desired PaperSize selection didnt appear in App UI");
+    			log.info("......................................................");
+    			
+    			//This is to insert msg to TestNG emailable-report.html
+    			Reporter.log("......................................................");
+    			Reporter.log("The desired PaperSize selection didnt appear in App UI");
+    			Reporter.log("......................................................");
             }
 
             //Select Desired Paper Tray Option.         
             if (OneNoteSession.findElementsByName("Paper tray").size()!=0){
                 OneNoteBase.SelectPaperTray_Uwp(OneNoteSession, paper_tray);
             }else{
-                log.info("The desired Paper Tray feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperTray selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperTray selection didnt appear in App UI");
+				Reporter.log("......................................................");
             }
                             
             //Select Desired Output Quality Option.         
             if (OneNoteSession.findElementsByName("Output quality").size()!=0){
                 OneNoteBase.SelectOutputQuality_Uwp(OneNoteSession, output_qlty);
             }else{
-                log.info("The desired Output Quality feature is not supported by the printer ");
+				log.info("...........................................................");
+				log.info("The desired Output Quality selection didnt appear in App UI");
+				log.info("...........................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...........................................................");
+				Reporter.log("The desired Output Quality selection didnt appear in App UI");
+				Reporter.log("...........................................................");
             }
             
             //Select Desired Color Mode Option.         
             if (OneNoteSession.findElementsByName("Color mode").size()!=0){
                 OneNoteBase.SelectColorOrMono_Uwp(OneNoteSession, color_optn);
             }else{
-                log.info("The desired Color Mode feature is not supported by the printer ");
+				log.info(".......................................................");
+				log.info("The desired Color Mode selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Color Mode selection didnt appear in App UI");
+				Reporter.log(".......................................................");
             }
                         
             //Select Desired Stapling Option.           
             if (OneNoteSession.findElementsByName("Stapling").size()!=0){
                 EdgeAppBase.SelectStaplingOption_Uwp(OneNoteSession,stapling_optn);
             }else{
-                log.info("The desired Stapling feature is not supported by the printer ");
+				log.info(".....................................................");
+				log.info("The desired Stapling selection didnt appear in App UI");
+				log.info(".....................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".....................................................");
+				Reporter.log("The desired Stapling selection didnt appear in App UI");
+				Reporter.log(".....................................................");
             }
             
             
