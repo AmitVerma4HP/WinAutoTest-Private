@@ -2,6 +2,7 @@ package com.hp.win.tests;
 
 
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
@@ -53,14 +54,28 @@ import java.io.IOException;
 		if (MsEdgeSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
 			EdgeAppBase.SelectOrientation_Uwp(MsEdgeSession,orientation);
 		}else{
-			log.info("The desired Orientation feature is not supported by the printer ");
+			log.info("........................................................");
+			log.info("The desired Orientation selection didnt appear in App UI");
+			log.info("........................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("........................................................");
+			Reporter.log("The desired Orientation selection didnt appear in App UI");
+			Reporter.log("........................................................");
 		}
 		
 		//Enter desired Copies value.
 		if (MsEdgeSession.findElementsByName("Copies").size()!=0){
 			EdgeAppBase.SelectCopies_Uwp(MsEdgeSession,copies);
 		}else{
-			log.info("The desired Copies selection feature is not supported by the printer ");
+			log.info("...................................................");
+			log.info("The desired Copies selection didnt appear in App UI");
+			log.info("...................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("...................................................");
+			Reporter.log("The desired Copies selection didnt appear in App UI");
+			Reporter.log("...................................................");
 		}
 		
 					
@@ -68,35 +83,70 @@ import java.io.IOException;
 		if (MsEdgeSession.findElementsByName("Pages").size()!=0){
 			EdgeAppBase.SelectPageRange_Uwp(MsEdgeSession,page_range);
 		}else{
-			log.info("The desired Pages(Page Range) feature is not supported by the printer ");
+			log.info(".............................................................");
+			log.info("The desired Pages(PageRange) selection didnt appear in App UI");
+			log.info(".............................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log(".............................................................");
+			Reporter.log("The desired Pages(PageRange) selection didnt appear in App UI");
+			Reporter.log(".............................................................");
 		}
 		
 		//Select Desired Scaling Option.
 		if (MsEdgeSession.findElementsByName("Scale").size()!=0){
 			EdgeAppBase.SelectScale_Uwp(MsEdgeSession,scale_optn);
 		}else{
-			log.info("The desired Scaling feature is not supported by the printer ");
+			log.info("..................................................");
+			log.info("The desired Scale selection didnt appear in App UI");
+			log.info("..................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("..................................................");
+			Reporter.log("The desired Scale selection didnt appear in App UI");
+			Reporter.log("..................................................");
 		}
 		
 		//Select Desired Page Margins Option.
 		if (MsEdgeSession.findElementsByName("Margins").size()!=0){
 			EdgeAppBase.SelectPageMargins_Uwp(MsEdgeSession,page_margins);
 		}else{
-			log.info("The desired Page Margin feature is not supported by the printer ");
+			log.info("........................................................");
+			log.info("The desired Page Margin selection didnt appear in App UI");
+			log.info("........................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("........................................................");
+			Reporter.log("The desired Page Margin selection didnt appear in App UI");
+			Reporter.log("........................................................");
 		}
 		
 		//Select Desired Borderless Printing Option.
 		if (MsEdgeSession.findElementsByName("Borderless printing").size()!=0){
 			EdgeAppBase.SelectBorderless_Uwp(MsEdgeSession,borderless);
 		}else{
-			log.info("The desired Borderless feature is not supported by the printer ");
+			log.info(".......................................................");
+			log.info("The desired Borderless selection didnt appear in App UI");
+			log.info(".......................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log(".......................................................");
+			Reporter.log("The desired Borderless selection didnt appear in App UI");
+			Reporter.log(".......................................................");
 		}
 		
 		//Select Desired Header and Footer Option.
 		if (MsEdgeSession.findElementsByName("Headers and footers").size()!=0){
 			EdgeAppBase.SelectHeadersAndFooters_Uwp(MsEdgeSession,headerandfooter_optn);
 		}else{
-			log.info("The desired Header and Footer feature is not supported by the printer ");
+			log.info("................................................................");
+			log.info("The desired Headers and Footers selection didnt appear in App UI");
+			log.info("................................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("................................................................");
+			Reporter.log("The desired Headers and Footers selection didnt appear in App UI");
+			Reporter.log("................................................................");
 		}
 		
 		//Opening more settings to access more printing options.
@@ -107,56 +157,112 @@ import java.io.IOException;
 			if (MsEdgeSession.findElementsByName("Duplex printing").size()!=0){
 				EdgeAppBase.SelectDuplexOption_Uwp(MsEdgeSession,duplex_optn);
 			}else{
-				log.info("The desired Duplexing feature is not supported by the printer ");
+				log.info("...................................................");
+				log.info("The desired Duplex selection didnt appear in App UI");
+				log.info("...................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...................................................");
+				Reporter.log("The desired Duplex selection didnt appear in App UI");
+				Reporter.log("...................................................");
 			}
 			
 			//Select Desired Collation Option.			
 			if (MsEdgeSession.findElementsByName("Collation").size()!=0){
 				EdgeAppBase.SelectCollation_Uwp(MsEdgeSession,collation_optn);
 			}else{
-				log.info("The desired Collation feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired Collation selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired Collation selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 			
 			//Select Desired Paper Size Option
 			if (MsEdgeSession.findElementsByName("Paper size").size()!=0){
 				EdgeAppBase.SelectPaperSize_Uwp(MsEdgeSession,paper_size);
 			}else{
-				log.info("The desired Paper Size feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperSize selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperSize selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 						
 			//Select Desired Paper Type Option.			
 			if (MsEdgeSession.findElementsByName("Paper type").size()!=0){
 				EdgeAppBase.SelectPaperType_Uwp(MsEdgeSession,paper_type);
 			}else{
-				log.info("The desired Paper Type feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperType selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperType selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 			
 			//Select Desired Paper Tray Option.			
 			if (MsEdgeSession.findElementsByName("Paper tray").size()!=0){
 				EdgeAppBase.SelectPaperTray_Uwp(MsEdgeSession,paper_tray);
 			}else{
-				log.info("The desired Paper Tray feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperTray selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperTray selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 							
 			//Select Desired Output Quality Option.			
 			if (MsEdgeSession.findElementsByName("Output quality").size()!=0){
 				EdgeAppBase.SelectOutputQuality_Uwp(MsEdgeSession,output_qlty);
 			}else{
-				log.info("The desired Output Quality feature is not supported by the printer ");
+				log.info("...........................................................");
+				log.info("The desired Output Quality selection didnt appear in App UI");
+				log.info("...........................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...........................................................");
+				Reporter.log("The desired Output Quality selection didnt appear in App UI");
+				Reporter.log("...........................................................");
 			}
 			
 			//Select Desired Color Mode Option.			
 			if (MsEdgeSession.findElementsByName("Color mode").size()!=0){
 				EdgeAppBase.SelectColorOrMono_Uwp(MsEdgeSession,color_optn);
 			}else{
-				log.info("The desired Color Mode feature is not supported by the printer ");
+				log.info(".......................................................");
+				log.info("The desired Color Mode selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Color Mode selection didnt appear in App UI");
+				Reporter.log(".......................................................");
 			}
 			
 			//Select Desired Stapling Option.			
 			if (MsEdgeSession.findElementsByName("Stapling").size()!=0){
 				EdgeAppBase.SelectStaplingOption_Uwp(MsEdgeSession,stapling_optn);
 			}else{
-				log.info("The desired Stapling feature is not supported by the printer ");
+				log.info(".....................................................");
+				log.info("The desired Stapling selection didnt appear in App UI");
+				log.info(".....................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".....................................................");
+				Reporter.log("The desired Stapling selection didnt appear in App UI");
+				Reporter.log(".....................................................");
 			}
 						
 			//Closing more settings after accessing more printing options.
