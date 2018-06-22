@@ -10,6 +10,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 
 public class UwpAppBase extends Base {
@@ -33,9 +34,9 @@ public class UwpAppBase extends Base {
 				log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");
 				Thread.sleep(2000);
 			} catch (Exception e) {
-				log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
+				log.info("Printer under test "+ptr_name+ " is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
 				e.printStackTrace();
-				log.info("Error selecting printer under test so moving to next test");
+				log.info("Error selecting printer under test");
 				throw new RuntimeException(e);
 			}			
 		} else {
@@ -79,7 +80,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired orientation option *****" + OrientationListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Orientation option is not found so either 1) your Printer does not support desired orientation OR 2) you have typed the orientation value incorrectly in testsuite xml");
+				log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+orientation+"\" Orientation is NOT FOUND so either 1) your Printer does not support \""+orientation+"\" Orientation OR 2) you have typed the Orientation value incorrectly in testsuite xml.");
+            	log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+orientation+"\" Orientation is NOT FOUND so either 1) your Printer does not support \""+orientation+"\" Orientation OR 2) you have typed the Orientation value incorrectly in testsuite xml.");
+				Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting orientation option but continuing test with rest of the print options");
 				//throw new RuntimeException(e);

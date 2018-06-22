@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
@@ -65,7 +66,15 @@ public class OneNoteBase extends UwpAppBase {
                 Thread.sleep(2000);
                 log.info("Selected desired Page Selection *****" +page_selection+ "*****");
             } catch(Exception e){
-                log.info("Desired Page Selection is not found so either 1) your Printer does not support desired Page Selection OR 2) you have typed the Page Selection option incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+page_selection+"\" Page Selection is not found so either 1) your Printer does not support \""+page_selection+"\" Page Selection OR 2) you have typed the Page Selection option incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+            	//This is to insert msg to TestNG emailable-report.html
+            	Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	Reporter.log("\""+page_selection+"\" Page Selection is NOT FOUND so either 1) your Printer does not support \""+page_selection+"\" Page Selection OR 2) you have typed the Page Selection option incorrectly in testsuite xml.");
+            	Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
                 log.info("Error selecting desired Page Selection but continuing with rest of the print options");     
                 //Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
                 PageRangeListComboBox.click();
