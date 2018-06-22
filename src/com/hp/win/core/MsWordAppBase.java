@@ -212,10 +212,10 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 				    log.info("Selected orientation option *****" +OrientationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        		log.info("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the orientation value incorrectly in testsuite xml");
 		        		
 		        		//This is to insert msg to TestNG emailable-report.html 
-		        		Reporter.log("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the orientation value incorrectly in testsuite xml");
 			        	
 			        	//e.printStackTrace();
 			            log.info("Error selecting orientation option but continuing with rest of the print options");     
@@ -245,10 +245,10 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 			        log.info("Selected collation option *****" +CollationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        		log.info("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the collation option value incorrectly in testsuite xml");
 		        		
 		        		//This is to insert msg to TestNG emailable-report.html 
-		        		Reporter.log("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the collation option value incorrectly in testsuite xml");
 			        	
 			        	//e.printStackTrace();
 			            log.info("Error selecting collation option but continuing with rest of the print options");     
@@ -338,10 +338,10 @@ public class MsWordAppBase extends Base {
 			        }
 		        
 		          }catch(Exception e){
-		        		log.info("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the pages to print option value incorrectly in testsuite xml");
 		        		
 		        		//This is to insert msg to TestNG emailable-report.html 
-		        		Reporter.log("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the pages to print option value incorrectly in testsuite xml");
 
 			        	//e.printStackTrace();
 			            log.info("Error selecting pages to print option but continuing test with rest of the print options");     
@@ -373,10 +373,10 @@ public class MsWordAppBase extends Base {
 			        	Thread.sleep(1000);
 					    log.info("Selected margin option *****" +PrintMarginComboBox.getText().toString()+"*****");
 			        	}catch(Exception e){
-			        		log.info("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+			        		log.info("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the margin option value incorrectly in testsuite xml");
 			        		
 			        		//This is to insert msg to TestNG emailable-report.html 
-			        		Reporter.log("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+			        		Reporter.log("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the margin option value incorrectly in testsuite xml");
 			        		//e.printStackTrace();
 			        		log.info("Error selecting margin option but continuing test with rest of the print options");     
 			        		//throw new RuntimeException(e);
@@ -404,10 +404,10 @@ public class MsWordAppBase extends Base {
 			        	Thread.sleep(1000);
 					    log.info("Selected PagesPerSheet option *****" +PagesPerSheetComboBox.getText().toString()+"*****");
 			        	}catch(Exception e){
-			        		log.info("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+			        		log.info("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the pages per sheet option value incorrectly in testsuite xml");
 			        		
 			        		//This is to insert msg to TestNG emailable-report.html 
-			        		Reporter.log("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+			        		Reporter.log("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the pages per sheet option value incorrectly in testsuite xml");
 
 			        		//e.printStackTrace();
 			        		log.info("Error selecting PagesPerSheet option but continuing test with rest of the print options");     
