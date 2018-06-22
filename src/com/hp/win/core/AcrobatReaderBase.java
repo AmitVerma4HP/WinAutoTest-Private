@@ -1,10 +1,13 @@
 package com.hp.win.core;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -45,11 +48,35 @@ public class AcrobatReaderBase extends Base {
 		    
 		    Thread.sleep(3000); 
 		    		    
-			return AcrobatSession;
-
- 
+			return AcrobatSession; 
     }
    
 
+     // Method to select desired printer from printers list combo box
+	 // Possible candidate for re-factoring when there are multiple application in automation
+	 public static void SelectDesiredPrinter_AcrobatPdf(String ptr_name) throws MalformedURLException, InterruptedException {
+		 
+		 	WebElement PrinterListComboBox = AcrobatSession.findElementByXPath("//ComboBox[@Name ='Printer']");		
+	        Assert.assertNotNull(PrinterListComboBox);           
+	        if(!PrinterListComboBox.getText().toString().contentEquals(ptr_name)) 
+	        {
+		        log.info("Desired printer  => "+ptr_name+" <=  is not selected so selecting it from drop down");
+		        PrinterListComboBox.click();
+		        Thread.sleep(1000);
+		        try {
+		        	PrinterListComboBox.findElement(By.name(ptr_name)).click();
+		        	Thread.sleep(1000);
+		        	log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");		        	
+		        	}catch(Exception e){
+		        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
+		        	e.printStackTrace();
+		            log.info("Error selecting printer under test so moving to next test");     
+		            throw new RuntimeException(e);
+		        	}		        		        
+		    } else {
+		    	log.info("Desired printer => " +PrinterListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+		 
+	 }
 
 }

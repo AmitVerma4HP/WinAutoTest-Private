@@ -26,7 +26,7 @@
   <!-- ********************************************** PRINTING PDF TEST FILE *********************************************************** -->
   
 	 <test verbose="2" name="Test-01 : Printing Test PDF test file from Acrobat">     	   	
-     	<parameter name="test_filename" value="File9.pdf" />
+     	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
