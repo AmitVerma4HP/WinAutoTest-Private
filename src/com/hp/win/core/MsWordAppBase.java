@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 
 
@@ -90,9 +91,9 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 		        	log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");		        	
 		        	}catch(Exception e){
-		        	log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
+		        	log.info("Printer under test "+ptr_name+ " is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
 		        	e.printStackTrace();
-		            log.info("Error selecting printer under test so moving to next test");     
+		            log.info("Error selecting printer");     
 		            throw new RuntimeException(e);
 		        	}		        		        
 		    } else {
@@ -119,10 +120,19 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 		        	log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        		log.info("Desired paper size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		log.info("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html 
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			        	//e.printStackTrace();
 			            log.info("Error selecting paper size option but continuing test with rest of the print options");     
 			            //throw new RuntimeException(e);
+			            //Click on Surface in order to make next click work for further print settings
+			            MsWordSession.findElementByName("Settings").click();
 		        	}		     
 		        
 		     } else {
@@ -146,10 +156,19 @@ public class MsWordAppBase extends Base {
 				Thread.sleep(1000);
 				log.info("Selected => ***** Duplex LongEdge ***** Option");
 				}catch(Exception e){
-					log.info("Longedge duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+					log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					log.info("\"Longedge\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \"Longedge\" Duplex Option OR 2) You have typed the duplex option value incorrectly in testsuite xml");
+					log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+					Reporter.log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					Reporter.log("\"Longedge\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \"Longedge\" Duplex Option OR 2) You have typed the duplex option value incorrectly in testsuite xml");
+					Reporter.log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		        	//e.printStackTrace();
 		            log.info("Error selecting Longedge duplex option but continuing the  test with rest of the print options");     
 		            //throw new RuntimeException(e);
+		            //Click on Surface in order to make next click work for further print settings
+		            MsWordSession.findElementByName("Settings").click();
 				}		
 			
 			} 
@@ -160,10 +179,19 @@ public class MsWordAppBase extends Base {
 				Thread.sleep(1000);
 				log.info("Selected => ***** Duplex ShortEdge ***** Option");
 				}catch(Exception e){
-					log.info("Shortedge duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
-		        	//e.printStackTrace();
-		            log.info("Error selecting Shortedge duplex option but continuing the  test with rest of the print options");     
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					log.info("\"Shortedge\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \"Shortedge\" Duplex Option OR 2) You have typed the duplex option value incorrectly in testsuite xml");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("\"Shortedge\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \"Shortedge\" Duplex Option OR 2) You have typed the duplex option value incorrectly in testsuite xml");
+	        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        	log.info("Error selecting Shortedge duplex option but continuing the  test with rest of the print options");     
 		            //throw new RuntimeException(e);
+		            //Click on Surface in order to make next click work for further print settings
+		            MsWordSession.findElementByName("Settings").click();
+
 				}			
 			
 			}
@@ -173,10 +201,21 @@ public class MsWordAppBase extends Base {
 			Thread.sleep(1000);
 			log.info("Selected desired duplex option *****" +DuplexListComboBox.getText().toString()+"*****");
 			}catch(Exception e){
-				log.info("Desired duplex option is not found so either 1) your Printer does not Support desired Duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+				log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				log.info("\""+duplex_option+"\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \""+duplex_option+"\" Duplex Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+				log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        		
+        		//This is to insert msg to TestNG emailable-report.html 
+        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+duplex_option+"\" Duplex Option is NOT FOUND so either 1) Your Printer does not support \""+duplex_option+"\" Duplex Option OR 2) You have typed the paper size value incorrectly in testsuite xml");
+				Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	        	
 	        	//e.printStackTrace();
 	            log.info("Error selecting duplex option but continuing the test with rest of the print options");     
 	            //throw new RuntimeException(e);
+	            //Click on Surface in order to make next click work for further print settings
+	            MsWordSession.findElementByName("Settings").click();
+
 				}
 			}   
 		}
@@ -199,10 +238,20 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 				    log.info("Selected orientation option *****" +OrientationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        		log.info("Desired orientation option is not found so either 1) your Printer does not Support desired orientation option OR 2) you have typed the orientation option value incorrectly in testsuite xml");
+		        		log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		log.info("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the orientation value incorrectly in testsuite xml");
+		        		log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html 
+		        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+orientation+"\" Orientation is NOT FOUND so either 1) Your Printer does not support \""+orientation+"\" Orientation OR 2) You have typed the orientation value incorrectly in testsuite xml");
+		        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			        	//e.printStackTrace();
 			            log.info("Error selecting orientation option but continuing with rest of the print options");     
 			            //throw new RuntimeException(e);
+			            //Click on Surface in order to make next click work for further print settings
+			            MsWordSession.findElementByName("Settings").click();
+
 		        		}		      
 		     } else {
 		    	log.info("Desired orientation option => " +OrientationListComboBox.getText().toString()+" <= is already selected so proceeding");
@@ -228,10 +277,21 @@ public class MsWordAppBase extends Base {
 		        	Thread.sleep(1000);
 			        log.info("Selected collation option *****" +CollationListComboBox.getText().toString()+"*****");
 		        	}catch(Exception e){
-		        	log.info("Desired collation option is not found so either 1) your Printer does not Support collation option OR 2) you have typed the collation option value incorrectly in testsuite xml");
-		        	//e.printStackTrace();
-		            log.info("Error selecting collation option but continuing with rest of the print options");     
-		            //throw new RuntimeException(e);
+		        		log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		log.info("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the collation option value incorrectly in testsuite xml");
+		        		log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html 
+		        		Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+collation+"\" Collation Option is NOT FOUND so either 1) Your Printer does not support \""+collation+"\" Collation Option OR 2) You have typed the collation option value incorrectly in testsuite xml");
+		        		Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        	
+			        	//e.printStackTrace();
+			            log.info("Error selecting collation option but continuing with rest of the print options");     
+			            //throw new RuntimeException(e);
+			            //Click on Surface in order to make next click work for further print settings
+			            MsWordSession.findElementByName("Settings").click();
+
 		        	}		        
 		     } else {
 		    	log.info("Desired collation option => " +CollationListComboBox.getText().toString()+" <= is already selected so proceeding");
@@ -317,10 +377,21 @@ public class MsWordAppBase extends Base {
 			        }
 		        
 		          }catch(Exception e){
-			        	log.info("Desired pages to print option is not found so 1) check you have selected relevant multipage test file OR 2) typed the pages to print option value correctly in testsuite xml");
+		        	  	log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        	  	log.info("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the pages to print option value incorrectly in testsuite xml");
+		        	  	log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html
+		        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+pages_to_print+"\" Pages To Print Option is NOT FOUND so either 1) Your Printer does not support \""+pages_to_print+"\" Pages To Print Option OR 2) You have typed the pages to print option value incorrectly in testsuite xml");
+		        		Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 			        	//e.printStackTrace();
 			            log.info("Error selecting pages to print option but continuing test with rest of the print options");     
 			            //throw new RuntimeException(e);
+			            //Click on Surface in order to make next click work for further print settings
+			            MsWordSession.findElementByName("Settings").click();
+
 			        }
 		        
 		  } 
@@ -348,10 +419,20 @@ public class MsWordAppBase extends Base {
 			        	Thread.sleep(1000);
 					    log.info("Selected margin option *****" +PrintMarginComboBox.getText().toString()+"*****");
 			        	}catch(Exception e){
-			        	log.info("Desired margin option is not found so 1) make sure Printer Support this margin option OR 2) have typed the margin option value incorrectly in testsuite xml");
-			        	//e.printStackTrace();
-			            log.info("Error selecting margin option but continuing test with rest of the print options");     
-			            //throw new RuntimeException(e);
+			        		log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		log.info("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the margin option value incorrectly in testsuite xml");
+			        		log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		
+			        		//This is to insert msg to TestNG emailable-report.html 
+			        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		Reporter.log("\""+margin+"\" Margin Option is NOT FOUND so either 1) Your Printer does not support \""+margin+"\" Margin Option OR 2) You have typed the margin option value incorrectly in testsuite xml");
+			        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		//e.printStackTrace();
+			        		log.info("Error selecting margin option but continuing test with rest of the print options");     
+			        		//throw new RuntimeException(e);
+				            //Click on Surface in order to make next click work for further print settings
+				            MsWordSession.findElementByName("Settings").click();
+
 			        	}
 			       
 			     } else {
@@ -376,10 +457,21 @@ public class MsWordAppBase extends Base {
 			        	Thread.sleep(1000);
 					    log.info("Selected PagesPerSheet option *****" +PagesPerSheetComboBox.getText().toString()+"*****");
 			        	}catch(Exception e){
-			        	log.info("Desired PagesPerSheet option is not found so 1) make sure Printer Support this PagesPerSheet option OR 2) have typed the PagesPerSheet option value incorrectly in testsuite xml");
-			        	//e.printStackTrace();
-			            log.info("Error selecting PagesPerSheet option but continuing test with rest of the print options");     
-			            //throw new RuntimeException(e);
+			        		log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		log.info("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the pages per sheet option value incorrectly in testsuite xml");
+			        		log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		
+			        		//This is to insert msg to TestNG emailable-report.html 
+			        		Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			        		Reporter.log("\""+pages_per_sheet+"\" Pages Per Sheet Option is NOT FOUND so either 1) Your Printer does not support \""+pages_per_sheet+"\" Pages Per Sheet Option OR 2) You have typed the pages per sheet option value incorrectly in testsuite xml");
+			        		Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+			        		//e.printStackTrace();
+			        		log.info("Error selecting PagesPerSheet option but continuing test with rest of the print options");     
+			        		//throw new RuntimeException(e);
+				            //Click on Surface in order to make next click work for further print settings
+				            MsWordSession.findElementByName("Settings").click();
+
 			        	}
 			       
 			     } else {

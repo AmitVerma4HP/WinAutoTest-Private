@@ -10,6 +10,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 
 public class UwpAppBase extends Base {
@@ -33,9 +34,9 @@ public class UwpAppBase extends Base {
 				log.info("Selected desired printer *****" +PrinterListComboBox.getText().toString()+"*****");
 				Thread.sleep(2000);
 			} catch (Exception e) {
-				log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
+				log.info("Printer under test "+ptr_name+ " is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
 				e.printStackTrace();
-				log.info("Error selecting printer under test so moving to next test");
+				log.info("Error selecting printer under test");
 				throw new RuntimeException(e);
 			}			
 		} else {
@@ -79,7 +80,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired orientation option *****" + OrientationListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Orientation option is not found so either 1) your Printer does not support desired orientation OR 2) you have typed the orientation value incorrectly in testsuite xml");
+				log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+orientation+"\" Orientation is NOT FOUND so either 1) your Printer does not support \""+orientation+"\" Orientation OR 2) you have typed the Orientation value incorrectly in testsuite xml.");
+            	log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+orientation+"\" Orientation is NOT FOUND so either 1) your Printer does not support \""+orientation+"\" Orientation OR 2) you have typed the Orientation value incorrectly in testsuite xml.");
+				Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting orientation option but continuing test with rest of the print options");
 				//throw new RuntimeException(e);
@@ -108,7 +118,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired paper size *****" + PaperSizeListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Paper Size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+				log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) your Printer does not support \""+paper_size+"\" Paper Size OR 2) you have typed the Paper Size value incorrectly in testsuite xml.");
+            	log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) your Printer does not support \""+paper_size+"\" Paper Size OR 2) you have typed the Paper Size value incorrectly in testsuite xml.");
+				Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting paper size option but continuing test with rest of the print options");
 				//throw new RuntimeException(e);
@@ -136,7 +155,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired margins *****" + PageMarginListComboBox.getText().toString() + "*****");		
 			} catch (Exception e) {
-				log.info("Desired Page Margins is not found so either 1) your Printer does not support desired page margins OR 2) you have typed the page margins value incorrectly in testsuite xml");
+				log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+page_margins+"\" Page Margin is NOT FOUND so either 1) your Printer does not support \""+page_margins+"\" Page Margin OR 2) you have typed the Page Margin value incorrectly in testsuite xml.");
+            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+page_margins+"\" Page Margin is NOT FOUND so either 1) your Printer does not support \""+page_margins+"\" Page Margin OR 2) you have typed the Page Margin value incorrectly in testsuite xml.");
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting desired Page Margin but continuing with rest of the print options");
 				//throw new RuntimeException(e);
@@ -199,7 +227,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired Color Option *****" + ColorModeListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Color Option is not found so either 1) your Printer does not support desired color option OR 2) you have typed the color option value incorrectly in testsuite xml");
+				log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+color_optn+"\" Color Options is NOT FOUND so either 1) your Printer does not support \""+color_optn+"\" Color Options OR 2) you have typed the Color Options value incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+color_optn+"\" Color Options is NOT FOUND so either 1) your Printer does not support \""+color_optn+"\" Color Options OR 2) you have typed the Color Options value incorrectly in testsuite xml.");
+				Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired color mode but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
@@ -236,7 +273,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(1000);
 				log.info("Selected desired duplex option *****" + DuplexListComboBox.getText().toString() + " - " +duplex_optn +"*****");
 			} catch (Exception e) {
-				log.info("Desired Duplex Option is not found so either 1) your Printer does not support desired duplex option OR 2) you have typed the duplex option value incorrectly in testsuite xml");
+				log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+duplex_optn+"\" Duplex Option is NOT FOUND so either 1) your Printer does not support \""+duplex_optn+"\" Duplex Option OR 2) you have typed the Duplex Option value incorrectly in testsuite xml.");
+            	log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+duplex_optn+"\" Duplex Option is NOT FOUND so either 1) your Printer does not support \""+duplex_optn+"\" Duplex Option OR 2) you have typed the Duplex Options value incorrectly in testsuite xml.");
+				Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting duplex option but continuing with rest of the print options");
 				//throw new RuntimeException(e);
@@ -264,7 +310,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired borderless option *****" + BorderlessListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Borderless option is not found so either 1) your Printer does not support desired borderless option OR 2) you have typed the borderless option value incorrectly in testsuite xml");
+				log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+borderless+"\" Borderless Option is NOT FOUND so either 1) your Printer does not support \""+borderless+"\" Borderless Option OR 2) you have typed the Borderless Option value incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+borderless+"\" Borderless Option is NOT FOUND so either 1) your Printer does not support \""+borderless+"\" Borderless Option OR 2) you have typed the Borderless Options value incorrectly in testsuite xml.");
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 				//e.printStackTrace();
 				log.info("Error selecting desired Borderless option but continuing with rest of the print options");
 				//throw new RuntimeException(e);
@@ -293,7 +348,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired paper tray option *****" + PaperTrayListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Paper tray is not found so either 1) your Printer does not support desired paper tray OR 2) you have typed the paper tray incorrectly in testsuite xml");
+				log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+paper_tray+"\" PaperTray Option is NOT FOUND so either 1) your Printer does not support \""+paper_tray+"\" PaperTray Option OR 2) you have typed the PaperTray Option value incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+paper_tray+"\" PaperTray Option is NOT FOUND so either 1) your Printer does not support \""+paper_tray+"\" PaperTray Option OR 2) you have typed the PaperTray Options value incorrectly in testsuite xml.");
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Paper Tray but continuing with rest of the print options");     
 				//throw new RuntimeException(e);
@@ -321,7 +385,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired paper type option *****" + PaperTypeListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Paper type is not found so either 1) your Printer does not support desired paper type OR 2) you have typed the paper type incorrectly in testsuite xml");
+				log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+paper_type+"\" PaperType Option is NOT FOUND so either 1) your Printer does not support \""+paper_type+"\" PaperType Option OR 2) you have typed the PaperType Option value incorrectly in testsuite xml.");
+            	log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+paper_type+"\" PaperType Option is NOT FOUND so either 1) your Printer does not support \""+paper_type+"\" PaperType Option OR 2) you have typed the PaperType Options value incorrectly in testsuite xml.");
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Paper Type but continuing with rest of the print options");     
 				//throw new RuntimeException(e);
@@ -349,7 +422,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired Photo Output Quality option *****" + OutputQualityListComboBox.getText().toString() + "*****");
 			} catch(Exception e){
-	        	log.info("Desired Photo Output Quality is not found so either 1) your Printer does not support desired output quality OR 2) you have typed the output quality tray incorrectly in testsuite xml");
+				log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+output_qlty+"\" OutputQuality Option is NOT FOUND so either 1) your Printer does not support \""+output_qlty+"\" OutputQuality Option OR 2) you have typed the OutputQuality Option value incorrectly in testsuite xml.");
+            	log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+output_qlty+"\" OutputQuality Option is NOT FOUND so either 1) your Printer does not support \""+output_qlty+"\" OutputQuality Option OR 2) you have typed the OutputQuality Options value incorrectly in testsuite xml.");
+				Reporter.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Photo Output Quality but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
@@ -377,7 +459,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired Stapling Option *****" + SelectStaplingOption.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired Stapling Option is not found so either 1) your Printer does not support desired stapling option OR 2) you have typed the stapling option incorrectly in testsuite xml");
+				log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+stapling_optn+"\" Stapling Option is NOT FOUND so either 1) your Printer does not support \""+stapling_optn+"\" Stapling Option OR 2) you have typed the Stapling Option value incorrectly in testsuite xml.");
+            	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+stapling_optn+"\" Stapling Option is NOT FOUND so either 1) your Printer does not support \""+stapling_optn+"\" Stapling Option OR 2) you have typed the Stapling Options value incorrectly in testsuite xml.");
+				Reporter.log("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Stapling Option but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
@@ -406,7 +497,16 @@ public class UwpAppBase extends Base {
 		        	Thread.sleep(2000);
 					log.info("Selected desired Header and Footer Option *****" + HeadersAndFooters.getText().toString() + "*****");
 	            } catch(Exception e){
-		        	log.info("Desired Header and Footer Option is not found so either 1) your Printer does not support desired header and footer option OR 2) you have typed the header and footer option incorrectly in testsuite xml");
+					log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	log.info("\""+headerandfooter_optn+"\" HeaderFooter Option is NOT FOUND so either 1) your Printer does not support \""+headerandfooter_optn+"\" HeaderFooter Option OR 2) you have typed the HeaderFooter Option value incorrectly in testsuite xml.");
+	            	log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	
+					//e.printStackTrace();
+	            	//This is to insert msg to TestNG emailable-report.html
+					Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					Reporter.log("\""+headerandfooter_optn+"\" HeaderFooter Option is NOT FOUND so either 1) your Printer does not support \""+headerandfooter_optn+"\" HeaderFooter Option OR 2) you have typed the HeaderFooter Options value incorrectly in testsuite xml.");
+					Reporter.log("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 		        	//e.printStackTrace();
 		            log.info("Error selecting desired Header and Footer Option but continuing with rest of the print options");     
 		            //throw new RuntimeException(e);
@@ -434,7 +534,16 @@ public class UwpAppBase extends Base {
 				Thread.sleep(2000);
 				log.info("Selected desired Scaling and Footer Option *****" + ScaleListComboBox.getText().toString() + "*****");
             } catch(Exception e){
-	        	log.info("Desired scaling Option is not found so either 1) your Printer does not support desired scaling option OR 2) you have typed the scaling option incorrectly in testsuite xml");
+				log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+scale_optn+"\" Scaling Option is NOT FOUND so either 1) your Printer does not support \""+scale_optn+"\" Scaling Option OR 2) you have typed the Scaling Option value incorrectly in testsuite xml.");
+            	log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+scale_optn+"\" Scaling Option is NOT FOUND so either 1) your Printer does not support \""+scale_optn+"\" Scaling Option OR 2) you have typed the Scaling Options value incorrectly in testsuite xml.");
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired scaling Option but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
@@ -482,7 +591,16 @@ public class UwpAppBase extends Base {
 				}
 				log.info("Selected desired Page Range *****" +page_range+ "*****");
             } catch(Exception e){
-	        	log.info("Desired Page Range is not found so either 1) your Printer does not support desired Page Range OR 2) you have typed the Page Range option incorrectly in testsuite xml");
+				log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+page_range+"\" PageRange Option is NOT FOUND so either 1) your Printer does not support \""+page_range+"\" PageRange Option OR 2) you have typed the PageRange Option value incorrectly in testsuite xml.");
+            	log.info("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+				//e.printStackTrace();
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+page_range+"\" PageRange Option is NOT FOUND so either 1) your Printer does not support \""+page_range+"\" PageRange Option OR 2) you have typed the PageRange Options value incorrectly in testsuite xml.");
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting desired Page Range but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
@@ -510,7 +628,16 @@ public class UwpAppBase extends Base {
 	        	Thread.sleep(2000);
 		        log.info("Selected collation option *****" +CollationListComboBox.getText().toString()+"*****");
 	        	}catch(Exception e){
-	        	log.info("Desired collation option is not found so either 1) your Printer does not Support collation option OR 2) you have typed the collation option value incorrectly in testsuite xml");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	log.info("\""+collation+"\" Collation Option is NOT FOUND so either 1) your Printer does not support \""+collation+"\" Collation Option OR 2) you have typed the Collation Option value incorrectly in testsuite xml.");
+	            	log.info("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	
+					//e.printStackTrace();
+	            	//This is to insert msg to TestNG emailable-report.html
+					Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					Reporter.log("\""+collation+"\" Collation Option is NOT FOUND so either 1) your Printer does not support \""+collation+"\" Collation Option OR 2) you have typed the Collation Option value incorrectly in testsuite xml.");
+					Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 	        	//e.printStackTrace();
 	            log.info("Error selecting collation option but continuing with rest of the print options");     
 	            //throw new RuntimeException(e);
