@@ -23,9 +23,9 @@ public class Win32Base extends Base {
     // Method to select the necessary tab to change the print preference options
     public static void SelectPreferencesTab_Win32(RemoteWebDriver session, String desiredTab) throws InterruptedException {
 
+    	// If the 'OK' button is clickable then other elements in the dialog box are also clickable
         wait = new WebDriverWait(session, 30);
         wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
-        log.info("Waited for combo box to become clickable.");
         
         try {
             if(session.findElementByName(desiredTab).isSelected()) {
@@ -37,8 +37,8 @@ public class Win32Base extends Base {
                 Thread.sleep(1000);
             }
         } catch (Exception e) {
-            log.info("Error: Tab '" + desiredTab + "' doesn't exist. Use 'Layout' or 'Paper/Quality.'");
-            throw new RuntimeException(e);
+            log.info("There was a problem clicking on the '" + desiredTab + "' tab.' Please confirm that the tab exists and is clickable when this printer is selected.");
+            
         }
 
     }
@@ -55,7 +55,7 @@ public class Win32Base extends Base {
             
         } catch (Exception e) {
             
-            log.info("Printer does not support '" + groupName + "'. Confirm printer's available settings.");
+            log.info("'" + groupName + "' was not found. Please confirm printer's available settings. If it is a valid setting, please confirm that the setting is seen in the print settings dialog box.");
             return exists;
         
         }
@@ -76,8 +76,6 @@ public class Win32Base extends Base {
             if(type.equals("dialog")) {
                 Assert.assertNotNull(session.findElementByName(dialogTitle));
                 log.info("Confirmed dialog box '" + title.getAttribute("Name").toString() + "' is on top.");
-/*                session.getKeyboard().pressKey(Keys.TAB);
-                log.info("Successfully used 'Tab' to ensure dialog '" + title.getAttribute("Name").toString() + "' is in focus.");*/
             }
         }
             
@@ -106,14 +104,14 @@ public class Win32Base extends Base {
                         
                         // Click on the combo box
                         try {
-                            log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
+                            //log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
                             
                             li.click();
                             Thread.sleep(1000);
                             break;
                         } catch (Exception e) {
-                            log.info("Unable to click on the combo box.");
-                            throw new RuntimeException(e);
+                            log.info("There was a problem clicking on '" + boxName + "'. Continuing with the default selection.");
+                            
                         }
                         
                     }
@@ -121,7 +119,7 @@ public class Win32Base extends Base {
                 // If there is an element with the name we're looking for, but there is no combo box...
                 } else
                 {
-                    log.info("Cannot find a combo box with the name '" + boxName + "'.");
+                    log.info("Cannot find a combo box with the name '" + boxName + "'. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
                     return;
                 }
             }
@@ -133,15 +131,15 @@ public class Win32Base extends Base {
                 listItem.click();
                 Thread.sleep(1000);
             } catch (Exception e) {
-                log.info("Unable to click on list item.");
-                throw new RuntimeException(e);
+                log.info("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
+                
             }
             
         }
         
         // If there are no elements that have the name we're looking for...
         else {
-            log.info("Printer does not support '" + boxName + "'. Confirm printer's available settings.");
+            log.info("'" + boxName + "' is not found in the print settings. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
             return;
         }
     }
@@ -152,17 +150,17 @@ public class Win32Base extends Base {
         
         if (ConfirmGroupExists_Win32(session, radioGroup)){
             
+        	// Using the 'OK' button's status -- if the 'OK' button is clickable then other elements in the dialog box are clickable
             wait = new WebDriverWait(session, 30);
             wait.until(ExpectedConditions.elementToBeClickable(By.name("OK")));
-            log.info("Waited for combo box to become clickable.");
             
             try {
                 session.findElementByName(settingsSel).click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
             } catch (Exception e) {
-                e.printStackTrace();
-                log.info("Couldn't click on '" + settingsSel + "' button.");
-                throw new RuntimeException(e);
+                //e.printStackTrace();
+                log.info("There was a problem clicking on '" + settingsSel + "'. Either 1) your Printer does not support " + settingsSel + " OR 2) you have typed the option value incorrectly in testsuite xml.");
+                
             }
         }
         else {
@@ -199,17 +197,17 @@ public class Win32Base extends Base {
                     }
 
                 } catch (Exception e1) {
-                    log.info("There was a problem clicking on '" + option + "'.");
-                    throw new RuntimeException(e1);
+                    log.info("There was a problem clicking on '" + option + "'. Continuing with the default selection.");
+                    //throw new RuntimeException(e1);
                 }
             }
             else {
-                log.info("'" + boxName + "' setting is not available for this printer.");
+                log.info("'" + boxName + "' setting is not found. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
                 return;
             }
 
         } catch (Exception e) {
-            log.info("Could not find any elements of '" + boxName + "'.");
+            log.info("Could not find '" + boxName + "'. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
             return;
         }
         
