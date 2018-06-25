@@ -67,7 +67,7 @@ public class OneNoteBase extends UwpAppBase {
                 log.info("Selected desired Page Selection *****" +page_selection+ "*****");
             } catch(Exception e){
             	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            	log.info("\""+page_selection+"\" Page Selection is not found so either 1) your Printer does not support \""+page_selection+"\" Page Selection OR 2) you have typed the Page Selection option incorrectly in testsuite xml.");
+            	log.info("\""+page_selection+"\" Page Selection is NOT FOUND so either 1) your Printer does not support \""+page_selection+"\" Page Selection OR 2) you have typed the Page Selection option incorrectly in testsuite xml.");
             	log.info("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             	
             	//This is to insert msg to TestNG emailable-report.html

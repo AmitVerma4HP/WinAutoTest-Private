@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Printing Test suite - Basic Compatability Tests">
-    	<parameter name="device_name" value="vermak-PC" />
-     	<parameter name="ptr_name" value="ipp: Canon MF6100 Series" />
+    	<parameter name="device_name" value="DESKTOP-C39OUJ5" />
+     	<parameter name="ptr_name" value="HP5353E7 (HP ENVY 7640 series)" />
 		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
 		
 
@@ -168,7 +168,8 @@
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="2" />
 		<parameter name="duplex_optn" value="Longedge" />
-		<parameter name="page_range" value="1-4" />     	
+		<!-- <parameter name="page_range" value="1-4" />     	-->
+		<parameter name="page_range" value="1,2-3"/>
 		<parameter name="color_optn" value="Monochrome" />
 		<parameter name="page_margins" value="Moderate" />
 		<parameter name="borderless" value="On" />
@@ -192,8 +193,8 @@
      	<parameter name="copies" value="1" />
 		<parameter name="duplex_optn" value="None" />
 		<parameter name="page_range" value="All" />
-		<parameter name="page_margins" value="Normal" />
 		<parameter name="color_optn" value="Color" />
+		<parameter name="page_margins" value="Normal" />
 		<parameter name="borderless" value="Off" />
 		<parameter name="paper_tray" value="Auto select" />
 		<parameter name="output_qlty" value="Draft" />
@@ -218,7 +219,8 @@
      	<parameter name="copies" value="2" />
      	<parameter name="duplex_option" value="Print One Sided" />
 		<parameter name="pages_to_print" value="Custom Print" />  
-		<parameter name="page_count" value="1,2-3" />  
+		<parameter name="page_count" value="1,2-3" />
+<!-- Prints in color -->  
 		<parameter name="pages_per_sheet" value="2 Pages Per Sheet" />     	
    		
 		<classes>
@@ -233,7 +235,8 @@
      	<parameter name="copies" value="1" />
      	<parameter name="duplex_option" value="DuplexLongEdge" />
 		<parameter name="pages_to_print" value="Custom Print" />  
-		<parameter name="page_count" value="1,2,3"/>   
+		<parameter name="page_count" value="1,2,3"/>
+<!-- prints in color -->   
 
 		
 		<classes>
@@ -251,6 +254,7 @@
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Landscape" />
 		<parameter name="copies" value="2" />
+<!-- prints simplex -->
 				
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -275,7 +279,8 @@
 <!-- ********************************************** START: PRINTING PHOTO TEST FILE *********************************************************** -->
  
 	<test verbose="2" name="Test-09 - Printing Photos from Photo App">
-    	<parameter name="test_filename" value="Landscape_Jpeg_Image_New.png" />
+    	<!-- <parameter name="test_filename" value="Landscape_Jpeg_Image_New.png" /> -->
+    	<parameter name="test_filename" value="Test-09_Landscape_Jpeg_Image_New.png" />
 		<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Landscape" /> 
      	<parameter name="copies" value="1" />
@@ -289,7 +294,8 @@
 	</test> 
  
 	<test verbose="2" name="Test-10 - Printing Photos from Photo App">
-    	<parameter name="test_filename" value="Portrait_Png_Image_New.png" />
+    	<!-- <parameter name="test_filename" value="Portrait_Png_Image_New.png" /> -->
+    	<parameter name="test_filename" value="Test-10_Portrait_Png_Image_New.png" />
 		<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Portrait" /> 
      	<parameter name="copies" value="2" />
