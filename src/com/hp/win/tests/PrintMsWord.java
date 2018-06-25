@@ -4,8 +4,11 @@ package com.hp.win.tests;
 import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -18,6 +21,7 @@ import com.hp.win.utility.ScreenshotUtility;
 public class PrintMsWord extends MsWordAppBase{
 	private static final Logger log = LogManager.getLogger(PrintMsWord.class);
 	private static String currentClass;	
+	static WebDriverWait wait;
 
     @BeforeClass
 	@Parameters({"device_name", "ptr_name", "test_filename","word2016_exe_loc"})
@@ -131,7 +135,14 @@ public class PrintMsWord extends MsWordAppBase{
 	    }
 	    
 	    log.info("Found correct job in print queue => "+test_filename);
-	    PrintQueueSession.close();
+	    
+        //Waiting for the job to get spooled completely before closing the print queue window.
+	    wait = new WebDriverWait(PrintQueueSession,60);
+	    wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("//ListItem[@AutomationId='ListViewItem-1']"),"Spooling"));
+	    log.info("Waiting until the job spooling is completed");
+
+	    
+        PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    
 	}

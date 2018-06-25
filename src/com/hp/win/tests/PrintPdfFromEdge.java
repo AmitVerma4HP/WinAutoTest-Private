@@ -10,8 +10,12 @@ import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.hp.win.utility.*;							
 
 import java.io.IOException;
@@ -22,6 +26,7 @@ import java.io.IOException;
 		private static String currentClass;	
 		public static RemoteWebDriver MsEdgeSession = null;
 		public static String expectedPrintjob;
+		static WebDriverWait wait;
 		
 		@BeforeClass
 		@Parameters({ "device_name", "ptr_name", "test_filename"})
@@ -313,6 +318,11 @@ import java.io.IOException;
 	    	throw new RuntimeException(e);
 	    }
 	    
+	    //Waiting for the job to get spooled completely before closing the print queue window.
+	    wait = new WebDriverWait(PrintQueueSession,60);
+	    wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("//ListItem[@AutomationId='ListViewItem-1']"),"Spooling"));
+	    log.info("Waiting until the job spooling is completed");
+        
 	    PrintQueueSession.close();
 	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
 	    

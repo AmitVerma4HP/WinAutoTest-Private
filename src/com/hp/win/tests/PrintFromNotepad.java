@@ -6,9 +6,12 @@ import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
@@ -70,6 +73,13 @@ public class PrintFromNotepad extends NotepadBase{
 	    //Validate Print Job Queued up
 	    Assert.assertTrue(PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").contains(test_filename));
 	    log.info("Found correct job in print queue => "+test_filename);
+	    
+	    
+	    //Waiting for the job to get spooled completely before closing the print queue window.
+	    wait = new WebDriverWait(PrintQueueSession,60);
+	    wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("//ListItem[@AutomationId='ListViewItem-1']"),"Spooling"));
+	    log.info("Waiting until the job spooling is completed");
+	    
 	    
 	    // Get the Notepad handle so that we can switch back to the app and close it
         try {
