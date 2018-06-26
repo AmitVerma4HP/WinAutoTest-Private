@@ -55,7 +55,7 @@ import java.io.IOException;
 		PhotoAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
 
 		//Enter desired Copies value.
-		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Copies']").size()!=0){
+		if (PhotosSession.findElements(By.xpath("//*[contains(@Name,'Copies')]")).size()!=0){	
 			PhotoAppBase.SelectCopies_Uwp(PhotosSession,copies);
 		}else{
 			log.info("...................................................");
