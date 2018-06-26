@@ -69,21 +69,7 @@ import java.io.IOException;
 
 		}
 	
-		
-		//Select Desired Orientation Option.
-		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
-			PhotoAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
-		}else{
-			log.info("........................................................");
-			log.info("The desired Orientation selection didnt appear in App UI");
-			log.info("........................................................");
-			
-			//This is to insert msg to TestNG emailable-report.html
-			Reporter.log("........................................................");
-			Reporter.log("The desired Orientation selection didnt appear in App UI");
-			Reporter.log("........................................................");
-		}
-		
+	
 		//Select Desired Paper Size Option
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper size']").size()!=0){
 			PhotoAppBase.SelectPaperSize_Uwp(PhotosSession, paper_size);
@@ -140,23 +126,24 @@ import java.io.IOException;
 			Reporter.log("......................................................");
 		}
 					
-		//Select Desired Borderless Printing Option.
-		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Borderless printing']").size()!=0){
-			PhotoAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
-		}else{
-			log.info(".......................................................");
-			log.info("The desired Borderless selection didnt appear in App UI");
-			log.info(".......................................................");
-			
-			//This is to insert msg to TestNG emailable-report.html
-			Reporter.log(".......................................................");
-			Reporter.log("The desired Borderless selection didnt appear in App UI");
-			Reporter.log(".......................................................");
-		}
-		
+				
 		//Opening more settings to access more printing options.
 		int MoreSettings = UwpAppBase.OpenMoreSettings(PhotosSession);
 		if	(MoreSettings == 1){	
+			
+			//Select Desired Orientation Option.
+			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
+				PhotoAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
+			}else{
+				log.info("........................................................");
+				log.info("The desired Orientation selection didnt appear in App UI");
+				log.info("........................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("........................................................");
+				Reporter.log("The desired Orientation selection didnt appear in App UI");
+				Reporter.log("........................................................");
+			}
 			
 			//Select Desired Duplex Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Duplex printing']").size()!=0){
@@ -240,6 +227,20 @@ import java.io.IOException;
 				Reporter.log(".....................................................");
 				Reporter.log("The desired Stapling selection didnt appear in App UI");
 				Reporter.log(".....................................................");
+			}
+			
+			//Select Desired Borderless Printing Option.
+			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Borderless printing']").size()!=0){
+				PhotoAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
+			}else{
+				log.info(".......................................................");
+				log.info("The desired Borderless selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Borderless selection didnt appear in App UI");
+				Reporter.log(".......................................................");
 			}
 			
 			//Closing more settings after accessing more printing options.

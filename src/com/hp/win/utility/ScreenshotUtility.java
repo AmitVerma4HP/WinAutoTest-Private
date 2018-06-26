@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -22,6 +23,7 @@ public class ScreenshotUtility implements ITestListener {
 	public static String sTestName;
 	private static final Logger log = LogManager.getLogger(ScreenshotUtility.class);
 	protected static RemoteWebDriver curSession = null;
+	protected static File scrFile = null;
 
 	public ScreenshotUtility() throws IOException {
 		super();
@@ -95,14 +97,24 @@ public class ScreenshotUtility implements ITestListener {
 			curSession = SettingBase.SettingSession;		
 		}else if (passfailMethod.contains("OneNote")) {
 			curSession = OneNoteBase.OneNoteSession;
+		} else {
+			curSession = Base.DesktopSession;   // Ensure curSession is NOT NULL
 		}
+		
+		Assert.assertNotNull(curSession); // Assert if curSession is NULL
+		
 		
 		log.info("Print Session:" + curSession);
 		log.info("Print status:" + status);
 		
 		
 		// To capture screenshot.
-		File scrFile = ((TakesScreenshot) curSession).getScreenshotAs(OutputType.FILE);
+		try {
+		scrFile = ((TakesScreenshot) curSession).getScreenshotAs(OutputType.FILE);
+		} catch (Exception e) {
+			log.info("Error Getting Screenshot");
+			e.printStackTrace();
+		}
 		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
 
 		// If status = fail then set folder name "screenshots/Failures"
