@@ -62,7 +62,7 @@ public class NotepadBase extends Win32Base {
                 log.info("Clicked on '" + ptr_name + "' successfully.");
                 Thread.sleep(1000);
             } catch (Exception e) {
-                log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
+            	log.info("Printer under test "+ptr_name+ " is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
                 throw new RuntimeException(e);
             }
         }

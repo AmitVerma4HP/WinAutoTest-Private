@@ -2,6 +2,7 @@ package com.hp.win.tests;
 
 
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.PhotoAppBase;
@@ -57,96 +58,189 @@ import java.io.IOException;
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Copies']").size()!=0){
 			PhotoAppBase.SelectCopies_Uwp(PhotosSession,copies);
 		}else{
-			log.info("The desired Copies selection feature is not supported by the printer ");
+			log.info("...................................................");
+			log.info("The desired Copies selection didnt appear in App UI");
+			log.info("...................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("...................................................");
+			Reporter.log("The desired Copies selection didnt appear in App UI");
+			Reporter.log("...................................................");
+
 		}
 	
-		
-		//Select Desired Orientation Option.
-		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
-			PhotoAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
-		}else{
-			log.info("The desired Orientation feature is not supported by the printer ");
-		}
-		
+	
 		//Select Desired Paper Size Option
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper size']").size()!=0){
 			PhotoAppBase.SelectPaperSize_Uwp(PhotosSession, paper_size);
 		}else{
-			log.info("The desired Paper Size feature is not supported by the printer ");
+			log.info("......................................................");
+			log.info("The desired PaperSize selection didnt appear in App UI");
+			log.info("......................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("......................................................");
+			Reporter.log("The desired PaperSize selection didnt appear in App UI");
+			Reporter.log("......................................................");
 		}
 		
 		//Select Desired Photo Size Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Photo size']").size()!=0){
 			PhotoAppBase.SelectPhotoSize_Photos(PhotosSession, photo_size);
 		}else{
-			log.info("The desired Photo Size feature is not supported by the printer ");
+			log.info("......................................................");
+			log.info("The desired PhotoSize selection didnt appear in App UI");
+			log.info("......................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("......................................................");
+			Reporter.log("The desired PhotoSize selection didnt appear in App UI");
+			Reporter.log("......................................................");
 		}
 		
 		//Select Desired Page Margins Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Page Margins']").size()!=0){
 			PhotoAppBase.SelectPageMargins_Uwp(PhotosSession, page_margins);
 		}else{
-			log.info("The desired Page Margin feature is not supported by the printer ");
+			log.info("........................................................");
+			log.info("The desired Page Margin selection didnt appear in App UI");
+			log.info("........................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("........................................................");
+			Reporter.log("The desired Page Margin selection didnt appear in App UI");
+			Reporter.log("........................................................");
 		}
 		
 		//Select Desired Photo Fit Option.
 		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Fit']").size()!=0){
 			PhotoAppBase.SelectPhotoFit_Photos(PhotosSession, photo_fit);
 		}else{
-			log.info("The desired Photo Fit feature is not supported by the printer ");
+			log.info(".......................................................");
+			log.info("The desired Photo Fit  selection didnt appear in App UI");
+			log.info(".......................................................");
+			
+			//This is to insert msg to TestNG emailable-report.html
+			Reporter.log("......................................................");
+			Reporter.log("The desired Photo Fit selection didnt appear in App UI");
+			Reporter.log("......................................................");
 		}
 					
-		//Select Desired Borderless Printing Option.
-		if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Borderless printing']").size()!=0){
-			PhotoAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
-		}else{
-			log.info("The desired Borderless feature is not supported by the printer ");
-		}
-		
+				
 		//Opening more settings to access more printing options.
 		int MoreSettings = UwpAppBase.OpenMoreSettings(PhotosSession);
 		if	(MoreSettings == 1){	
+			
+			//Select Desired Orientation Option.
+			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
+				PhotoAppBase.SelectOrientation_Uwp(PhotosSession, orientation);
+			}else{
+				log.info("........................................................");
+				log.info("The desired Orientation selection didnt appear in App UI");
+				log.info("........................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("........................................................");
+				Reporter.log("The desired Orientation selection didnt appear in App UI");
+				Reporter.log("........................................................");
+			}
 			
 			//Select Desired Duplex Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Duplex printing']").size()!=0){
 				PhotoAppBase.SelectDuplexOption_Uwp(PhotosSession, duplex_optn);
 			}else{
-				log.info("The desired Duplexing feature is not supported by the printer ");
+				log.info("...................................................");
+				log.info("The desired Duplex selection didnt appear in App UI");
+				log.info("...................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...................................................");
+				Reporter.log("The desired Duplex selection didnt appear in App UI");
+				Reporter.log("...................................................");
 			}
 			
 			//Select Desired Paper Type Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper type']").size()!=0){
 				PhotoAppBase.SelectPaperType_Uwp(PhotosSession, paper_type);
 			}else{
-				log.info("The desired Paper Type feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperType selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperType selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 			
 			//Select Desired Paper Tray Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Paper tray']").size()!=0){
 				PhotoAppBase.SelectPaperTray_Uwp(PhotosSession, paper_tray);
 			}else{
-				log.info("The desired Paper Tray feature is not supported by the printer ");
+				log.info("......................................................");
+				log.info("The desired PaperTray selection didnt appear in App UI");
+				log.info("......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("......................................................");
+				Reporter.log("The desired PaperTray selection didnt appear in App UI");
+				Reporter.log("......................................................");
 			}
 							
 			//Select Desired Output Quality Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Output quality']").size()!=0){
 				PhotoAppBase.SelectOutputQuality_Uwp(PhotosSession, output_qlty);
 			}else{
-				log.info("The desired Paper Type feature is not supported by the printer ");
+				log.info("...........................................................");
+				log.info("The desired Output Quality selection didnt appear in App UI");
+				log.info("...........................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("...........................................................");
+				Reporter.log("The desired Output Quality selection didnt appear in App UI");
+				Reporter.log("...........................................................");
 			}
 			
 			//Select Desired Color Mode Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Color mode']").size()!=0){
 				PhotoAppBase.SelectColorOrMono_Uwp(PhotosSession, color_optn);
 			}else{
-				log.info("The desired Color feature is not supported by the printer ");
+				log.info(".......................................................");
+				log.info("The desired Color Mode selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Color Mode selection didnt appear in App UI");
+				Reporter.log(".......................................................");
 			}
 			
 			//Select Desired Stapling Option.			
 			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Stapling']").size()!=0){
 				PhotoAppBase.SelectStaplingOption_Uwp(PhotosSession, stapling_optn);
 			}else{
-				log.info("The desired Stapling feature is not supported by the printer ");
+				log.info(".....................................................");
+				log.info("The desired Stapling selection didnt appear in App UI");
+				log.info(".....................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".....................................................");
+				Reporter.log("The desired Stapling selection didnt appear in App UI");
+				Reporter.log(".....................................................");
+			}
+			
+			//Select Desired Borderless Printing Option.
+			if (PhotosSession.findElementsByXPath("//ComboBox[@Name = 'Borderless printing']").size()!=0){
+				PhotoAppBase.SelectBorderless_Uwp(PhotosSession, borderless);
+			}else{
+				log.info(".......................................................");
+				log.info("The desired Borderless selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Borderless selection didnt appear in App UI");
+				Reporter.log(".......................................................");
 			}
 			
 			//Closing more settings after accessing more printing options.

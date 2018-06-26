@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 
 
@@ -135,9 +136,18 @@ public class PhotoAppBase extends UwpAppBase {
 				Thread.sleep(1000);
 				log.info("Selected desired photo size *****" + PhotoSizeListComboBox.getText().toString() + "*****");
 			} catch (Exception e) {
-				log.info("Desired Photo Size is not found so either 1) your Printer does not support desired photo size OR 2) you have typed the photo size value incorrectly in testsuite xml");
+				log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	log.info("\""+photo_size+"\" Photo Size is NOT FOUND so either 1) your Printer does not support \""+photo_size+"\" Photo Size OR 2) you have typed the Photo Size option value incorrectly in testsuite xml.");
+            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
 				//e.printStackTrace();
-				log.info("Error selecting desired photo size but continuing with rest of the print options");
+            	//This is to insert msg to TestNG emailable-report.html
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				Reporter.log("\""+photo_size+"\" Photo Size is NOT FOUND so either 1) your Printer does not support \""+photo_size+"\" Photo Size OR 2) you have typed the Photo Size option value incorrectly in testsuite xml.");
+				Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            	
+            	
+            	log.info("Error selecting desired photo size but continuing with rest of the print options");
 				//throw new RuntimeException(e);
 				//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
 				PhotoSizeListComboBox.click();
@@ -163,8 +173,16 @@ public class PhotoAppBase extends UwpAppBase {
 					Thread.sleep(1000);
 					log.info("Selected desired photo fit *****" + PhotoFitListComboBox.getText().toString() + "*****");
 				} catch (Exception e) {
-					log.info("Desired Photo Fit is not found so either 1) your Printer does not support desired photo fit OR 2) you have typed the photo fit value incorrectly in testsuite xml");
+					log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	log.info("\""+photo_fit+"\" Photo Fit value is NOT FOUND so either 1) your Printer does not support \""+photo_fit+"\" Photo Fit OR 2) you have typed the Photo Fit option value incorrectly in testsuite xml.");
+	            	log.info("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	
 					//e.printStackTrace();
+	            	//This is to insert msg to TestNG emailable-report.html
+					Reporter.log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					Reporter.log("\""+photo_fit+"\" Photo Fit value is NOT FOUND so either 1) your Printer does not support \""+photo_fit+"\" Photo Fit OR 2) you have typed the Photo Fit option value incorrectly in testsuite xml.");
+					Reporter.log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	            	
 					log.info("Error selecting desired photo fit but continuing with rest of the print options");
 					//throw new RuntimeException(e);
 					//Clicking again on the ComboBox to close the expanded dropdown in order to access the next option which otherwise is not visible and hence test fails.
