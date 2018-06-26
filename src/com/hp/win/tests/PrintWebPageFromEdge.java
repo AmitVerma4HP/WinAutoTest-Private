@@ -42,6 +42,7 @@ import java.io.IOException;
 	@Parameters({ "ptr_name", "web_url","copies","page_range","orientation","paper_size","page_margins","color_optn","duplex_optn","borderless","paper_tray","paper_type","output_qlty","stapling_optn","headerandfooter_optn","scale_optn","collation_optn"})
     public void PrintEdge(String ptr_name, String web_url, @Optional("1")String copies,@Optional("All")String page_range, @Optional("Portrait")String orientation, @Optional("Letter")String paper_size, @Optional("Normal")String page_margins,  @Optional("Color")String color_optn,  @Optional("None")String duplex_optn,  @Optional("On")String borderless,  @Optional("Auto select")String paper_tray, @Optional("Plain Paper")String paper_type, @Optional("Normal")String output_qlty, @Optional("Staple")String stapling_optn, @Optional("On")String headerandfooter_optn, @Optional("Shrink to fit")String scale_optn, @Optional("Uncollated")String collation_optn) throws InterruptedException, IOException
     {
+		EdgeAppBase.CloseErrorEdgePopup();
 		
 		// Method to Print Web page to Printer Under Test
 		EdgeAppBase.PrintEdge(ptr_name,web_url);
@@ -172,6 +173,8 @@ import java.io.IOException;
 	    	MsEdgeSession.findElementByXPath("//Button[@AutomationId = 'PrintButton']").click();
 	    	log.info("Clicked on final Print button -> Print option Successfully");
 		    
+	    	//EdgeAppBase.CloseErrorEdgePopup();
+	    	
 	    }
  
 		
@@ -179,6 +182,7 @@ import java.io.IOException;
 	@Parameters({ "device_name", "ptr_name", "web_url"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String web_url) throws IOException, InterruptedException 
 	{
+
 		// Open Print Queue
 		Base.OpenPrintQueue(ptr_name);
 				

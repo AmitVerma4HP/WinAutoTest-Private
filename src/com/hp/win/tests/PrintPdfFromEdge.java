@@ -169,6 +169,8 @@ import java.io.IOException;
 			// Tap on Print button(Give Print)
 	    	MsEdgeSession.findElementByXPath("//Button[@AutomationId = 'PrintButton']").click();
 	    	log.info("Clicked on final Print button -> Print option Successfully");
+	    	
+	    	EdgeAppBase.CloseErrorEdgePopup();
 		    
 	    }
  
@@ -200,7 +202,8 @@ import java.io.IOException;
 	    }
 	    
 	    PrintQueueSession.close();
-	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
+	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	  
+	    
 	    
 	}
     

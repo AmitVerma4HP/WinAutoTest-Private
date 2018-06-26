@@ -62,29 +62,58 @@ public class EdgeAppBase extends UwpAppBase {
 		}
 
 		// Method to open PDF File via MsEdge app.
-			public static RemoteWebDriver OpenPdfEdgeApp(String device_name, String test_filename)
-					throws MalformedURLException {
+		public static RemoteWebDriver OpenPdfEdgeApp(String device_name, String test_filename)
+				throws MalformedURLException {
 
-				try {
-					capabilities = new DesiredCapabilities();
-					capabilities.setCapability("app", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge");
-					capabilities.setCapability("appArguments", testfiles_loc + test_filename);
-					capabilities.setCapability("platformName", "Windows");
-					capabilities.setCapability("deviceName", device_name);
-					capabilities.setCapability("appWorkingDir", testfiles_loc);
-					MsEdgeSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
-					Assert.assertNotNull(MsEdgeSession);
-					MsEdgeSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-					Thread.sleep(1000);
-				} catch (Exception e) {
-					e.printStackTrace();
-					log.info("Error opening PDF file");
-					throw new RuntimeException(e);
-				}
-					
-				log.info("Opened PDF File via MsEdge successfully");
-				return MsEdgeSession;
-				
+			try {
+				capabilities = new DesiredCapabilities();
+				capabilities.setCapability("app", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge");
+				capabilities.setCapability("appArguments", testfiles_loc + test_filename);
+				capabilities.setCapability("platformName", "Windows");
+				capabilities.setCapability("deviceName", device_name);
+				capabilities.setCapability("appWorkingDir", testfiles_loc);
+				MsEdgeSession = new RemoteWebDriver(new URL(WindowsApplicationDriverUrl), capabilities);
+				Assert.assertNotNull(MsEdgeSession);
+				MsEdgeSession.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.info("Error opening PDF file");
+				throw new RuntimeException(e);
 			}
+				
+			log.info("Opened PDF File via MsEdge successfully");
+			return MsEdgeSession;
+			
+		}
 		
+		
+		public static void CloseErrorEdgePopup(){
+			try{
+				
+				if (MsEdgeSession.findElementByXPath("//TextBlock[contains(@Name,'Microsoft Edge is printing a file.')]").isDisplayed()){
+					MsEdgeSession.findElementByXPath("//Button[@Name = 'Close anyway']").click();
+					log.info("Error popup Found and closed Successfully");
+				} else {
+					log.info("Error popup Found but failed to close");
+				}
+			} catch (Exception e){
+				log.info("Error popup Not Found");
+			}
+			
+			try{
+				if (MsEdgeSession.findElementByXPath("//TextBlock[contains(@Name,'Do you want to close all tabs?')]").isDisplayed()){
+					MsEdgeSession.findElementByXPath("//Button[@Name = 'Close all']").click();
+					log.info("Close all tabs confirmation popup Found and closed Successfully");
+				} else {
+					log.info("Close all tabs confirmation popup Found but failed to close");
+				}
+			} catch (Exception e){
+				log.info("Close all tabs confirmation popup Not Found");
+			}
+			
+			
+		}
+		
+			
 }

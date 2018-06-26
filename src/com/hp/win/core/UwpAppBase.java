@@ -36,6 +36,7 @@ public class UwpAppBase extends Base {
 				log.info("Printer under test is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name correctly in testsuite xml");
 				e.printStackTrace();
 				log.info("Error selecting printer under test so moving to next test");
+				Session.findElementByName("Close Start - Print");
 				throw new RuntimeException(e);
 			}			
 		} else {
