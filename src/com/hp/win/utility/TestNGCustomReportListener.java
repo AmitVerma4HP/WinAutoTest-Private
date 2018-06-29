@@ -158,7 +158,6 @@ public class TestNGCustomReportListener implements IReporter{
 				long end = Long.MIN_VALUE;
 				long start = Long.MAX_VALUE;
 				long startMS=0;
-				@SuppressWarnings("unused")
 				String firstLine="";
 				
 				for (ITestResult testResult : tests.getResults(method)) {
@@ -179,7 +178,7 @@ public class TestNGCustomReportListener implements IReporter{
 						firstLine = scanner.nextLine();
 					}
 				}
-				@SuppressWarnings("unused")
+				
 				DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 				Calendar calendar = Calendar.getInstance();
 			    calendar.setTimeInMillis(startMS);
@@ -406,7 +405,7 @@ public class TestNGCustomReportListener implements IReporter{
 		return result;
 	}
 
-	@SuppressWarnings("unused")
+	
 	public void generateSuiteSummaryReport(List<ISuite> suites) {
 		tableStart("testOverview", null);
 		writer.print("<tr>");
@@ -422,9 +421,11 @@ public class TestNGCustomReportListener implements IReporter{
 		tableColumnStart("Excluded<br/>Groups");
 
 		writer.println("</tr>");
+		@SuppressWarnings("unused")
 		NumberFormat formatter = new DecimalFormat("#,##0.0");
 		int qty_tests = 0;
 		int qty_pass_m = 0;
+		@SuppressWarnings("unused")
 		int qty_pass_s = 0;
 		int qty_skip = 0;
 		long time_start = Long.MAX_VALUE;
