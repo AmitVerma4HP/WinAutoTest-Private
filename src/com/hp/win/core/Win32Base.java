@@ -285,4 +285,23 @@ public class Win32Base extends Base {
 
     }
 
+ // Method to select desired Copies option
+ 	public static void SelectCopies_Win32(RemoteWebDriver session, String copies) throws MalformedURLException, InterruptedException {
+
+ 		// Clicking on Copies Edit box.
+ 		session.findElementByXPath("//Edit[@Name = 'Number of copies:']").click();
+ 		Thread.sleep(2000);
+
+ 		session.getKeyboard().pressKey(Keys.CLEAR);
+ 		session.getKeyboard().pressKey(Keys.BACK_SPACE);
+ 		Thread.sleep(1000);
+
+ 		session.getKeyboard().pressKey(copies);
+ 		Thread.sleep(1000);
+
+ 		log.info("Successfully entered copies value as ***** " + copies + " *****");
+
+ 	}
+    
+    
 }

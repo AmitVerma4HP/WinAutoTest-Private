@@ -30,7 +30,7 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
+    public static void PrintNotePadFile(String ptr_name, String copies, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
 
         // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
         NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
@@ -67,6 +67,10 @@ public class NotepadBase extends Win32Base {
             }
         }
 
+        
+        //Select Copies on Print Preferences window.
+        Win32Base.SelectCopies_Win32(PrintDialogSession, copies);       
+        
         
         
         // Open Preferences window
