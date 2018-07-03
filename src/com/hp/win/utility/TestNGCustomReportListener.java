@@ -202,14 +202,7 @@ public class TestNGCustomReportListener implements IReporter{
 								+ "</a>"
 								+ (null == testInstanceName ? "" : "<br>("
 										+ testInstanceName + ")") + "</td>"
-										+ "<td class=\"numi\">" + resultSet.size() + "</td>"
-										
-//				                        + "<td>" + start + "</td>" + "<td class=\"numi\">"
-//				                        + (end - start) + "</td>" + "</tr>");
-										
-//										+ "<td class="numi" style="text-align:left;padding-right:2em">" + firstLine+"<br/></td>"
-//										+ "<td style="text-align:right">" + formatter.format(calendar.getTime()) + "</td>" + "<td class="numi">"
-//										+ timeConversion(end - start) + "</td>" + "</tr>");										
+								//		+ "<td class=\"numi\">" + resultSet.size() + "</td>"										
 										+ "<td class=\"numi\" style=\"text-align:left;padding-right:2em\">" +firstLine+"<br/></td>"
 										+ "<td style=\"text-align:right\">" + formatter.format(calendar.getTime()) + "</td>" + "<td class=\"numi\">"
 										+ timeConversion(end - start) + "</td>" + "</tr>");
