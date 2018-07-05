@@ -30,7 +30,7 @@ public class NotepadBase extends Win32Base {
 
 
     // Method to print from Notepad
-    public static void PrintNotePadFile(String ptr_name, String copies, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
+    public static void PrintNotePadFile(String ptr_name, String copies, String collate, String orientation, String duplex_optn, String color_optn, String prnt_quality, String paper_size, String device_name) throws InterruptedException, MalformedURLException  {
 
         // Maximize the Notepad window to prevent false errors if Notepad is partially off-screen
         NotepadSession.getKeyboard().sendKeys(Keys.COMMAND, Keys.ARROW_UP);
@@ -60,16 +60,24 @@ public class NotepadBase extends Win32Base {
             try {
                 PrintDialogSession.findElementByName(ptr_name).click();
                 log.info("Clicked on '" + ptr_name + "' successfully.");
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (Exception e) {
             	log.info("Printer under test "+ptr_name+ " is not found so make sure you have \"discovered and added printer\" before running this test OR have typed the printer name incorrectly in testsuite xml");
                 throw new RuntimeException(e);
             }
         }
-
         
         //Select Copies on Print Preferences window.
-        Win32Base.SelectCopies_Win32(PrintDialogSession, copies);       
+     /*   try{
+	        if (PrintDialogSession.findElementByXPath("//Edit[@Name = 'Number of copies:']").getText().toString().equalsIgnoreCase(copies)){
+	        	PrintDialogSession.findElementByXPath("//Edit[@Name = 'Number of copies:']").click();
+	        	log.info("Default Number of copies, " +copies+ " is already selected");
+	        }else{
+	        	Win32Base.SelectCopies_Win32(PrintDialogSession, copies, collate);
+	        }
+        } catch (Exception e){
+        	log.info("Error in setting the copies value.");
+        }*/
         
         
         

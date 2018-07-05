@@ -68,14 +68,14 @@ public class Base {
 		        // There is something strange about clicking buttons with findElementByName() - Appium thinks the button
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
 		        // the button's name is unique or not - EMC
-		        session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
-		        log.info("Clicked '" + buttonName + "' button successfully.");
+		        session.findElementByXPath("//Button[starts-with(@Name, \'" + buttonName +"\')]").click();
+		        log.info("Clicked '" + buttonName + "' button successfully from Xpath.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {
 		        log.info("Could not find button using xpath. Going to try finding button by name.");
 		        try {
 		            session.findElementByName(buttonName).click();
-		            log.info("Clicked '" + buttonName + "' button successfully.");
+		            log.info("Clicked '" + buttonName + "' button successfully from name.");
 		            Thread.sleep(1000);
 		        }
 		        catch (Exception e1) {

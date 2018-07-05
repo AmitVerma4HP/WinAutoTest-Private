@@ -286,7 +286,7 @@ public class Win32Base extends Base {
     }
 
  // Method to select desired Copies option
- 	public static void SelectCopies_Win32(RemoteWebDriver session, String copies) throws MalformedURLException, InterruptedException {
+ 	public static void SelectCopies_Win32(RemoteWebDriver session, String copies, String collate) throws MalformedURLException, InterruptedException {
 
  		// Clicking on Copies Edit box.
  		session.findElementByXPath("//Edit[@Name = 'Number of copies:']").click();
@@ -298,8 +298,15 @@ public class Win32Base extends Base {
 
  		session.getKeyboard().pressKey(copies);
  		Thread.sleep(1000);
-
- 		log.info("Successfully entered copies value as ***** " + copies + " *****");
+		log.info("Successfully entered copies value as ***** " + copies + " *****");
+ 		
+ 		if (collate.contentEquals("Collated")){
+ 			session.findElementByName("Collate").click(); 	       
+        	log.info(" \"Collate\" option selected successfully");
+        }else{
+        	log.info(" \"Collate\" option  not selected by user.");
+        	Thread.sleep(1000);
+        }
 
  	}
     
