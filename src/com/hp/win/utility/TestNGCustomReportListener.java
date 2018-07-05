@@ -144,7 +144,9 @@ public class TestNGCustomReportListener implements IReporter{
 				if (!className.equalsIgnoreCase(lastClassName)) {
 					if (mq > 0) {
 						cq += 1;
-						writer.print("<tr class=\""+style+ (cq % 2 == 0 ? "even" : "odd") + "\">"+"<td");
+						writer.print("<tr class=\""+style
+								+ (cq % 2 == 0 ? "even" : "odd") + "\">"
+								+"<td");
 						if (mq > 1) {
 							writer.print("rowspan=\"" + mq + "\"");
 						}
@@ -205,12 +207,12 @@ public class TestNGCustomReportListener implements IReporter{
 								//		+ "<td class=\"numi\">" + resultSet.size() + "</td>"										
 										+ "<td class=\"numi\" style=\"text-align:left;padding-right:2em\">" +firstLine+"<br/></td>"
 										+ "<td style=\"text-align:right\">" + formatter.format(calendar.getTime()) + "</td>" + "<td class=\"numi\">"
-										+ timeConversion(end - start) + "</td>" + "</tr>");
-				
+										+ timeConversion(end - start) + "</td>" + "</tr>");				
 			}
 			if (mq > 0) {
 				cq += 1;
-				writer.print("<tr class=\"" + style + (cq % 2 == 0 ? "even" : "odd") + "\">" + "<td");
+				writer.print("<tr class=\"" + style 
+						+ (cq % 2 == 0 ? "even" : "odd") + "\">" + "<td");
 				if (mq > 1) {
 					writer.print("rowspan=\"" + mq + "\"");
 				}
