@@ -69,13 +69,13 @@ public class Base {
 		        // has been clicked even though the cursor is not on the button when it clicks - this is regardless of whether
 		        // the button's name is unique or not - EMC
 		        session.findElementByXPath("//Button[starts-with(@Name, \"" + buttonName +"\")]").click();
-		        log.info("Clicked '" + buttonName + "' button successfully from Xpath.");
+		        log.info("Clicked '" + buttonName + "' button successfully.");
 		        Thread.sleep(1000);
 		    } catch (Exception e) {
 		        log.info("Could not find button using xpath. Going to try finding button by name.");
 		        try {
 		            session.findElementByName(buttonName).click();
-		            log.info("Clicked '" + buttonName + "' button successfully from name.");
+		            log.info("Clicked '" + buttonName + "' button successfully.");
 		            Thread.sleep(1000);
 		        }
 		        catch (Exception e1) {
