@@ -49,6 +49,8 @@
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Better" />
      	<parameter name="paper_size" value="Legal" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="collate" value="Uncollated" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>
@@ -66,6 +68,8 @@
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Best" />
      	<parameter name="paper_size" value="Letter" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="collate" value="Collated" />
      	<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>
@@ -83,6 +87,8 @@
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Draft" />
 		<parameter name="paper_size" value="A4" />
+		<parameter name="copies" value="1" />
+     	<parameter name="collate" value="Uncollated" />
 		<parameter name="test_filename" value="NotepadTestFile1.txt" />
 		
     <classes>

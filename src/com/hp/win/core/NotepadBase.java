@@ -68,16 +68,15 @@ public class NotepadBase extends Win32Base {
         }
         
         //Select Copies on Print Preferences window.
-     /*   try{
+       try{
 	        if (PrintDialogSession.findElementByXPath("//Edit[@Name = 'Number of copies:']").getText().toString().equalsIgnoreCase(copies)){
-	        	PrintDialogSession.findElementByXPath("//Edit[@Name = 'Number of copies:']").click();
 	        	log.info("Default Number of copies, " +copies+ " is already selected");
 	        }else{
 	        	Win32Base.SelectCopies_Win32(PrintDialogSession, copies, collate);
 	        }
         } catch (Exception e){
         	log.info("Error in setting the copies value.");
-        }*/
+        }
         
         
         
