@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.Set;
 
 import org.testng.IInvokedMethod;
@@ -121,7 +121,7 @@ public class TestNGCustomReportListener implements IReporter{
 	/**
 	 * @param tests
 	 */
-	@SuppressWarnings("resource")
+	
 	private void resultSummary(ISuite suite, IResultMap tests, String testname,
 			String style, String details) {
 		
@@ -160,7 +160,7 @@ public class TestNGCustomReportListener implements IReporter{
 				long end = Long.MIN_VALUE;
 				long start = Long.MAX_VALUE;
 				long startMS=0;
-				String firstLine="";
+				//String firstLine="";
 				
 				for (ITestResult testResult : tests.getResults(method)) {
 					if (testResult.getEndMillis() > end) {
@@ -170,7 +170,7 @@ public class TestNGCustomReportListener implements IReporter{
 						startMS = testResult.getStartMillis();
 						start =startMS/1000;
 					}
-					
+					/*
 					Throwable exception=testResult.getThrowable();
 					boolean hasThrowable = exception != null;
 					if(hasThrowable){
@@ -178,7 +178,7 @@ public class TestNGCustomReportListener implements IReporter{
 						String str = Utils.stackTrace(exception, true)[0];
 						Scanner scanner = new Scanner(str);
 						firstLine = scanner.nextLine();
-					}
+					} */
 				}
 				
 				DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
@@ -205,7 +205,7 @@ public class TestNGCustomReportListener implements IReporter{
 								+ (null == testInstanceName ? "" : "<br>("
 										+ testInstanceName + ")") + "</td>"
 								//		+ "<td class=\"numi\">" + resultSet.size() + "</td>"										
-										+ "<td class=\"numi\" style=\"text-align:left;padding-right:2em\">" +firstLine+"<br/></td>"
+								//		+ "<td class=\"numi\" style=\"text-align:left;padding-right:2em\">" +firstLine+"<br/></td>"
 										+ "<td style=\"text-align:right\">" + formatter.format(calendar.getTime()) + "</td>" + "<td class=\"numi\">"
 										+ timeConversion(end - start) + "</td>" + "</tr>");				
 			}
@@ -251,7 +251,8 @@ public class TestNGCustomReportListener implements IReporter{
 	private void startResultSummaryTable(String style) {
 		tableStart(style, "summary");
 		writer.println("<tr><th>Class</th>"
-				+ "<th>Method</th><th>Exception Info</th><th>Start Time </th><th>Execution Time<br/>(hh:mm:ss)</th></tr>");
+				//+ "<th>Method</th><th>Exception Info</th><th>Start Time </th><th>Execution Time<br/>(hh:mm:ss)</th></tr>");
+				+ "<th>Method</th><th>Start Time </th><th>Execution Time<br/>(hh:mm:ss)</th></tr>");
 		m_row = 0;
 	}
 
@@ -294,12 +295,16 @@ public class TestNGCustomReportListener implements IReporter{
 
 	private void generateResult(ITestResult ans, ITestNGMethod method,
 			int resultSetSize) {
-		Object[] parameters = ans.getParameters();
+		Object[] parameters = ans.getParameters();		
 		boolean hasParameters = parameters != null && parameters.length > 0;
 		if (hasParameters) {
 			tableStart("result", null);
 			writer.print("<tr class=\"param\">");
-			for (int x = 1; x <= parameters.length; x++) {
+//			for (Object p1 : parameters) {
+//				writer.println("<th>" + ans.getAttribute(p1.toString())
+//						+ "</th>");
+//			}
+			for (int x = 1; x <= parameters.length; x++) {				
 				writer.print("<th>Param." + x + "</th>");
 			}
 			writer.println("</tr>");
@@ -332,7 +337,7 @@ public class TestNGCustomReportListener implements IReporter{
 					writer.println(line + "<br/>");
 				}
 			}
-			if (hasThrowable) {
+		/*	if (hasThrowable) {
 				boolean wantsMinimalOutput = ans.getStatus() == ITestResult.SUCCESS;
 				if (hasReporterOutput) {
 					writer.println("<h3>"
@@ -340,7 +345,7 @@ public class TestNGCustomReportListener implements IReporter{
 									: "Failure") + "</h3>");
 				}
 				generateExceptionReport(exception, method);
-			}
+			}*/
 			if (hasParameters) {
 				writer.println("</td></tr>");
 			} else {
