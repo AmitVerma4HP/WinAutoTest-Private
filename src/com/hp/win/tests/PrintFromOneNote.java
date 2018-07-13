@@ -92,6 +92,10 @@ import java.util.concurrent.TimeUnit;
         // Method to select the desired printer.
         OneNoteBase.SelectDesiredPrinter(OneNoteSession, ptr_name);
         
+        
+        // Uncheck option "“Let the app change my printing preferences” if it is checked in App Print UI
+     	Base.UncheckAppChangePreference(OneNoteSession);
+        
         //Select Desired Orientation Option.
         if (OneNoteSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
             OneNoteBase.SelectOrientation_Uwp(OneNoteSession,orientation);

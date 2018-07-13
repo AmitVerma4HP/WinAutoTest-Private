@@ -54,6 +54,9 @@ import java.io.IOException;
 		// Method to select the desired printer.
 		EdgeAppBase.SelectDesiredPrinter(MsEdgeSession, ptr_name);
 		
+		// Uncheck option "“Let the app change my printing preferences” if it is checked in App Print UI
+		Base.UncheckAppChangePreference(MsEdgeSession);
+		
 		//Select Desired Orientation Option.
 		if (MsEdgeSession.findElementsByXPath("//ComboBox[@Name = 'Orientation']").size()!=0){
 			EdgeAppBase.SelectOrientation_Uwp(MsEdgeSession,orientation);
