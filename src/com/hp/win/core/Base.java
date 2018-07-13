@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -174,5 +176,26 @@ public class Base {
                     }
             log.info("Successfully switched to different window.");
         }
-	
+        
+        
+        // Uncheck option "“Let the app change my printing preferences” if it is checked in App Print UI
+        public static void UncheckAppChangePreference(RemoteWebDriver session) throws InterruptedException {
+        	
+        	try {
+    			if(session.findElementByName("Let the app change my printing preferences").isSelected())
+    			{
+    				log.info("Option \"Let the app change my printing preferences\" is CHECKED so UNCHECKING it");
+    				Thread.sleep(1000);    				
+    				session.findElementByName("Let the app change my printing preferences").click();
+    				Thread.sleep(1000); 
+    			}else {
+    				log.info("Option \"Let the app change my printing preferences\" is UNCHECKED so No Action needed");
+    			}
+    		}catch(NoSuchElementException e) {
+    				log.info("There is no \"Let the app change my printing preferences\" option in App Print UI");
+    		}
+        	
+        	
+        }
+            
 }
