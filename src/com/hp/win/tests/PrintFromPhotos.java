@@ -53,6 +53,9 @@ import java.io.IOException;
 		
 		// Method to select the desired printer.
 		PhotoAppBase.SelectDesiredPrinter(PhotosSession, ptr_name);
+		
+		// Uncheck option "“Let the app change my printing preferences” if it is checked in App Print UI
+		Base.UncheckAppChangePreference(PhotosSession);
 
 		//Enter desired Copies value.
 		if (PhotosSession.findElements(By.xpath("//*[contains(@Name,'Copies')]")).size()!=0){	
