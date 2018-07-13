@@ -36,7 +36,7 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 
-public class TestNGCustomReportListener implements IReporter{
+public class TestNGCustomReportListener implements IReporter {
 
 	private PrintWriter writer;
 	private int m_row;
@@ -74,6 +74,7 @@ public class TestNGCustomReportListener implements IReporter{
 	 * Creates a table showing the highlights of each test method with links to
 	 * the method details
 	 */
+
 	protected void generateMethodSummaryReport(List<ISuite> suites) {
 		m_methodIndex = 0;
 		startResultSummaryTable("methodOverview");
@@ -98,6 +99,7 @@ public class TestNGCustomReportListener implements IReporter{
 		}
 		writer.println("</table>");
 	}
+	
    
 	/** Creates a section showing known results for each method */
 	protected void generateMethodDetailReport(List<ISuite> suites) {
@@ -121,10 +123,103 @@ public class TestNGCustomReportListener implements IReporter{
 	/**
 	 * @param tests
 	 */
+   
+	private void resultSummary(
+		      ISuite suite, IResultMap tests, String testname, String style, String details) {
+		    if (!tests.getAllResults().isEmpty()) {
+		      StringBuilder buff = new StringBuilder();
+		      String lastClassName = "";
+		      int mq = 0;
+		      int cq = 0;
+		      for (ITestNGMethod method : getMethodSet(tests, suite)) {
+		        m_row += 1;
+		        m_methodIndex += 1;
+		        ITestClass testClass = method.getTestClass();
+		        String className = testClass.getName();
+		        if (mq == 0) {
+		          String id = (m_testIndex == null ? null : "t" + Integer.toString(m_testIndex));
+		          titleRow(testname + " &#8212; " + style + details, 5, id);
+		          m_testIndex = null;
+		        }
+		        if (!className.equalsIgnoreCase(lastClassName)) {
+		          if (mq > 0) {
+		            cq += 1;
+		            writer.print("<tr class=\"" + style + (cq % 2 == 0 ? "even" : "odd") + "\">" + "<td");
+		            if (mq > 1) {
+		            	writer.print(" rowspan=\"" + mq + "\"");
+		            }
+		            writer.println(">" + lastClassName + "</td>" + buff);
+		          }
+		          mq = 0;
+		          buff.setLength(0);
+		          lastClassName = className;
+		        }
+		        Set<ITestResult> resultSet = tests.getResults(method);
+		        long end = Long.MIN_VALUE;
+		        long start = Long.MAX_VALUE;		       
+				long startMS=0;				
+				for (ITestResult testResult : tests.getResults(method)) {
+					if (testResult.getEndMillis() > end) {
+						end = testResult.getEndMillis()/1000;
+					}
+					if (testResult.getStartMillis() < start) {
+						startMS = testResult.getStartMillis();
+						start =startMS/1000;
+					}		  		  
+		        }
+				DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+				Calendar calendar = Calendar.getInstance();
+			    calendar.setTimeInMillis(startMS);
+		        mq += 1;
+		        if (mq > 1) {
+		          buff.append("<tr class=\"")
+		              .append(style)
+		              .append(cq % 2 == 0 ? "odd" : "even")
+		              .append("\">");
+		        }
+		        String description = method.getDescription();
+		        String testInstanceName = resultSet.toArray(new ITestResult[] {})[0].getTestName();
+		        buff.append("<td><a href=\"#m")
+		            .append(m_methodIndex)
+		            .append("\">")
+		            .append(qualifiedName(method))
+		            .append(" ");
+		        if (description != null && !description.isEmpty()) {
+		          buff.append("(\"").append(description).append("\")");
+		        }
+		        buff.append("</a>");
+		        if (testInstanceName != null) {
+		          buff.append("<br>(").append(testInstanceName).append(")");
+		        }
+		        buff.append("</td>")
+//		            .append("<td class=\"numi\">")
+//		            .append(resultSet.size())
+//		            .append("</td>")
+		            .append("<td>")
+		            .append(formatter.format(calendar.getTime()))
+		            .append("</td>")
+		            .append("<td class=\"numi\">")
+		            .append(timeConversion(end - start))
+		            .append("</td>")
+		            .append("</tr>");
+		      }	      
+		      
+			    
+		      if (mq > 0) {
+		        cq++;
+		        writer.print("<tr class=\"" + style + (cq % 2 == 0 ? "even" : "odd") + "\">" + "<td");
+		        if (mq > 1) {
+		        	writer.print(" rowspan=\"" + mq + "\"");
+		        }
+		        writer.println(">" + lastClassName + "</td>" + buff);
+		      }
+		    }
+		  }
+
 	
+	/*
 	private void resultSummary(ISuite suite, IResultMap tests, String testname,
-			String style, String details) {
-		
+			String style, String details) {		
 		if (tests.getAllResults().size() > 0) {
 			StringBuffer buff = new StringBuffer();
 			String lastClassName = "";
@@ -179,8 +274,8 @@ public class TestNGCustomReportListener implements IReporter{
 						Scanner scanner = new Scanner(str);
 						firstLine = scanner.nextLine();
 					} */
-				}
-				
+			
+		/*		}				
 				DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 				Calendar calendar = Calendar.getInstance();
 			    calendar.setTimeInMillis(startMS);
@@ -220,7 +315,7 @@ public class TestNGCustomReportListener implements IReporter{
 			}
 		}
 	}
-    
+*/
 	
 	private String timeConversion(long seconds) {
 
@@ -245,7 +340,7 @@ public class TestNGCustomReportListener implements IReporter{
 		else
 			return ""+number;
 		
-	}
+	} 
 	
 	/** Starts and defines columns result summary table */
 	private void startResultSummaryTable(String style) {
