@@ -27,6 +27,10 @@ public class DiscoverPrinterListingUtility extends SettingBase {
 	@BeforeClass
 	@Parameters({"device_name"})
 	public static void setup(String device_name) throws InterruptedException, IOException {
+		//Get windows build info
+		GetWindowsBuild.GetWindowsBuildInfo();
+		GetWindowsBuild.PrintWindowsBuildInfo();
+		
 		SettingBase.OpenSettings(device_name);
   	    
     }

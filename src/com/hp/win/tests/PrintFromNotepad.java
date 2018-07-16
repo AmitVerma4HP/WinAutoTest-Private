@@ -16,6 +16,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.NotepadBase;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -39,6 +40,11 @@ public class PrintFromNotepad extends NotepadBase{
 	
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);	
+		
+		//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
 		NotepadSession = NotepadBase.OpenNoteFile(device_name, test_filename);
        
     	Thread.sleep(1000);                         

@@ -6,7 +6,7 @@ import org.testng.Reporter;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
-import com.hp.win.utility.ScreenshotUtility;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -34,7 +34,12 @@ import java.io.IOException;
 		currentClass = PrintWebPageFromEdge.class.getSimpleName();
 				
 		//Start PrintTrace log capturing 
-		PrintTraceCapture.StartLogCollection(currentClass);											   
+		PrintTraceCapture.StartLogCollection(currentClass);	
+		
+		//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
 	    MsEdgeSession = EdgeAppBase.OpenEdgeApp(device_name, web_url);
 	    Thread.sleep(2000);
 	    

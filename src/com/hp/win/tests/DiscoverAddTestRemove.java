@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import com.hp.win.core.Base;
 import com.hp.win.core.SettingBase;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -33,7 +34,11 @@ public class DiscoverAddTestRemove extends SettingBase {
 		currentClass = DiscoverAddTestRemove.class.getSimpleName();
 		
 		//Start PrintTrace log capturing 
-    	PrintTraceCapture.StartLogCollection(currentClass);			
+    	PrintTraceCapture.StartLogCollection(currentClass);	
+    	
+    	//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
 		SettingBase.OpenSettings(device_name);	    	    
     }
 	

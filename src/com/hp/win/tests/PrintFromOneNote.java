@@ -7,7 +7,6 @@ import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
 import com.hp.win.core.OneNoteBase;
-import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +35,12 @@ import java.util.concurrent.TimeUnit;
         currentClass = PrintFromOneNote.class.getSimpleName();
                 
         //Start PrintTrace log capturing 
-        PrintTraceCapture.StartLogCollection(currentClass);                                            
+        PrintTraceCapture.StartLogCollection(currentClass);   
+        
+        //Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
         OneNoteSession = OneNoteBase.OpenOneNoteApp(device_name, test_pagename);
         Thread.sleep(2000);
         
