@@ -6,7 +6,6 @@ import org.testng.Reporter;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.EdgeAppBase;
-import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,19 +25,25 @@ import java.io.IOException;
 		private static String currentClass;	
 		public static RemoteWebDriver MsEdgeSession = null;
 		public static String expectedPrintjob;
-		static WebDriverWait wait;
+		static WebDriverWait wait;		
 		
 		@BeforeClass
 		@Parameters({ "device_name", "ptr_name", "test_filename"})
 	    public static void setup(String device_name, String ptr_name, String test_filename) throws InterruptedException, IOException { 
 	       
 		currentClass = PrintPdfFromEdge.class.getSimpleName();
-				
+		
+		
 		//Start PrintTrace log capturing 
 		PrintTraceCapture.StartLogCollection(currentClass);											   
-	    MsEdgeSession = EdgeAppBase.OpenPdfEdgeApp(device_name, test_filename);
-	    Thread.sleep(2000);
-	  
+	    
+		//Get windows build info
+		GetWindowsBuild.GetWindowsBuildInfo();
+		GetWindowsBuild.PrintWindowsBuildInfo();
+		
+		MsEdgeSession = EdgeAppBase.OpenPdfEdgeApp(device_name, test_filename);
+	    Thread.sleep(2000);	    
+	    
 	    }
 	
 		

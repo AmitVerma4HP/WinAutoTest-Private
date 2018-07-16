@@ -36,6 +36,7 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 
+
 public class TestNGCustomReportListener implements IReporter {
 
 	private PrintWriter writer;
@@ -44,6 +45,7 @@ public class TestNGCustomReportListener implements IReporter {
 	private int m_methodIndex;
 	private String reportTitle= "TestNG Customized Report";
 	private String reportFileName = "emailable-report.html";
+	
 
 	/** Creates summary of the run */
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites,String outdir) {
@@ -57,7 +59,15 @@ public class TestNGCustomReportListener implements IReporter {
 
 		startHtml(writer);
 		writeReportTitle(reportTitle);
-		generateSuiteSummaryReport(suites);
+		try {
+			generateSuiteSummaryReport(suites);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		generateMethodSummaryReport(suites);
 		generateMethodDetailReport(suites);
 		endHtml(writer);
@@ -501,14 +511,16 @@ public class TestNGCustomReportListener implements IReporter {
 	}
 
 	
-	public void generateSuiteSummaryReport(List<ISuite> suites) {
+	public void generateSuiteSummaryReport(List<ISuite> suites) throws IOException, InterruptedException {
 		tableStart("testOverview", null);
-		writer.print("<tr>");
+		writer.print("<tr>");		
 		tableColumnStart("Test");
 		tableColumnStart("Methods<br/>Passed");
 		tableColumnStart("# Skipped");
 		tableColumnStart("# Failed");
+		tableColumnStart("Date");
 		tableColumnStart("Printer");
+		tableColumnStart("WindowsBuild<br/>Ver");
 		tableColumnStart("Start<br/>Time");
 		tableColumnStart("End<br/>Time");
 		tableColumnStart("Total<br/>Time(hh:mm:ss)");
@@ -547,8 +559,18 @@ public class TestNGCustomReportListener implements IReporter {
 				qty_fail += q;
 				summaryCell(q, 0);
 				
-				// Write OS and PrinterName
+				// Write Execution Date
+				SimpleDateFormat summaryFormatDate = new SimpleDateFormat("dd-MMM-yyyy");
+				summaryCell(summaryFormatDate.format(overview.getStartDate()),true);				
+				writer.println("</td>");
+				
+				// Write PrinterName
 				summaryCell(suite.getParameter("ptr_name"), true);
+				writer.println("</td>");
+				
+				// Write Windows Build Version	
+				String buildver = GetWindowsBuild.winbuildverinfo;
+				summaryCell(buildver, true);
 				writer.println("</td>");
 							
 				SimpleDateFormat summaryFormat = new SimpleDateFormat("hh:mm:ss");
