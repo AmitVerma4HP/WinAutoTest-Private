@@ -284,5 +284,17 @@ public class Win32Base extends Base {
         SelectListItem_Win32(session, "Paper Size: ", size, device_name);
 
     }
+    // Method to select the paper source
+    public static void ChoosePaperSource_Win32(RemoteWebDriver session, String source, String device_name) throws InterruptedException, MalformedURLException {   
+        
+        SelectListItem_Win32(session, "Paper Source: ", source, device_name);
 
+    }
+    
+    // Method to select the paper type(Media)
+    public static void ChoosePaperType_Win32(RemoteWebDriver session, String media, String device_name) throws InterruptedException, MalformedURLException {   
+        
+        SelectListItem_Win32(session, "Media: ", media, device_name);
+
+    }
 }

@@ -38,10 +38,11 @@ public class PrintMsWord extends MsWordAppBase{
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","paper_size","duplex_option","orientation","collation","copies","pages_to_print","page_count","margin","pages_per_sheet"})
+	@Parameters({"device_name","ptr_name","paper_size","duplex_option","orientation","collation","copies","pages_to_print","page_count","margin","pages_per_sheet","color_optn","prnt_quality","paper_source","paper_type"})
     public void PrintMsWordFile(String device_name,String ptr_name, @Optional("Letter")String paper_size,@Optional("Print One Sided")String duplex_option,
     	@Optional("Portrait Orientation")String orientation,@Optional("Collated")String collation,@Optional("1")String copies,
-    	@Optional("Print All Pages")String pages_to_print, @Optional("NA")String page_count,@Optional("Normal")String margin,@Optional("1 Page Per Sheet")String pages_per_sheet) throws InterruptedException, IOException    {
+    	@Optional("Print All Pages")String pages_to_print, @Optional("NA")String page_count,@Optional("Normal")String margin,@Optional("1 Page Per Sheet")String pages_per_sheet,
+    	@Optional("Color")String color_optn, @Optional("Better")String prnt_quality, @Optional("Automatically Select")String paper_source, @Optional("Plain Paper")String paper_type) throws InterruptedException, IOException    {
 		
 		MsWordSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -79,6 +80,26 @@ public class PrintMsWord extends MsWordAppBase{
 		MsWordAppBase.SelectPagesPerSheet_Msword(pages_per_sheet);		
 		Thread.sleep(1000);		
 		
+		//Selecting printer properties from Printer Properties screen.
+		MsWordSession.findElementByName("Printer Properties").click();
+		
+        // Select settings on Paper/Quality tab after the Layout tab
+        SelectPreferencesTab_Win32(MsWordSession, "Paper/Quality");
+        
+        // Select Desired Color.
+        ChooseColorOrMono_Win32(MsWordSession, color_optn);
+        
+        // Select Desired Print Quality
+        ChoosePrintQuality_Win32(MsWordSession, prnt_quality);
+        
+        // Select Desired Paper Source
+        ChoosePaperSource_Win32(MsWordSession, paper_source, device_name);
+        
+        // Select Desired Paper Type
+        ChoosePaperType_Win32(MsWordSession, paper_type, device_name);
+        
+        // Close Printer Properties dialog box
+        ClickButton(MsWordSession, "OK");
 		//After all print settings give print 
 		MsWordSession.findElementByXPath("//Button[@Name ='Print']").click();	
 		Thread.sleep(1000);
