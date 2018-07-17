@@ -17,7 +17,7 @@ import org.testng.Reporter;
 
 
 
-public class MsWordAppBase extends Base {
+public class MsWordAppBase extends Win32Base {
 		private static final Logger log = LogManager.getLogger(MsWordAppBase.class);
 		public static RemoteWebDriver MsWordSession = null;
 		protected static RemoteWebDriver PrintSettingConflictSession = null;		
