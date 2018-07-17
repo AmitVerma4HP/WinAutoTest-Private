@@ -93,10 +93,10 @@ public class PrintMsWord extends MsWordAppBase{
         ChoosePrintQuality_Win32(MsWordSession, prnt_quality);
         
         // Select Desired Paper Source
-        ChoosePaperSource_Win32(MsWordSession, paper_source, device_name);
+        //ChoosePaperSource_Win32(MsWordSession, paper_source, device_name);
         
         // Select Desired Paper Type
-        ChoosePaperType_Win32(MsWordSession, paper_type, device_name);
+        //ChoosePaperType_Win32(MsWordSession, paper_type, device_name);
         
         // Close Printer Properties dialog box
         ClickButton(MsWordSession, "OK");
