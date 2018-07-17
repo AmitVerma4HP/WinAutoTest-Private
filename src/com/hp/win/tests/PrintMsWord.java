@@ -13,6 +13,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.MsWordAppBase;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -32,7 +33,12 @@ public class PrintMsWord extends MsWordAppBase{
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
-   		MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename,word2016_exe_loc);    		
+    	
+    	//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
+    	MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename,word2016_exe_loc);    		
         Thread.sleep(1000); 
     }
 

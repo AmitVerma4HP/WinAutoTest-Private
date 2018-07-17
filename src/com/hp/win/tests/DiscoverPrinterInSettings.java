@@ -12,6 +12,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import com.hp.win.core.SettingBase;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -29,6 +30,11 @@ public class DiscoverPrinterInSettings extends SettingBase {
 			
 			//Start PrintTrace log capturing 
 	    	PrintTraceCapture.StartLogCollection(currentClass);
+	    	
+	    	//Get windows build info
+	    	GetWindowsBuild.GetWindowsBuildInfo();
+	    	GetWindowsBuild.PrintWindowsBuildInfo();
+	    	
 	        SettingBase.OpenSettings(device_name);
 	    	    
 	    }

@@ -7,7 +7,6 @@ import org.testng.annotations.*;
 import com.hp.win.core.Base;
 import com.hp.win.core.PhotoAppBase;
 import com.hp.win.core.UwpAppBase;
-import com.hp.win.utility.ScreenshotUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,12 @@ import java.io.IOException;
 		currentClass = PrintFromPhotos.class.getSimpleName();
 				
 		//Start PrintTrace log capturing 
-		PrintTraceCapture.StartLogCollection(currentClass);											   
+		PrintTraceCapture.StartLogCollection(currentClass);	
+		
+		//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
 	    PhotosSession = PhotoAppBase.OpenPhotosFile(device_name, test_filename);
 	    
 	    //Verify if the test folder is already added, if not add it.
