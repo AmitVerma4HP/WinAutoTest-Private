@@ -39,8 +39,18 @@ public class Win32Base extends Base {
                 Thread.sleep(1000);
             }
         } catch (Exception e) {
+        	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             log.info("There was a problem clicking on the '" + desiredTab + "' tab.' Please confirm that the tab exists and is clickable when this printer is selected.");
+            log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             //throw new RuntimeException(e);
+            
+          //This is to insert msg to TestNG emailable-report.html 
+        	Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+    		Reporter.log("There was a problem clicking on '" + desiredTab + "Please confirm that the tab exists" );
+    		Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            //throw new RuntimeException(e);
+            
+            
         }
 
     }
