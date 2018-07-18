@@ -43,7 +43,7 @@ public class TestNGCustomReportListener implements IReporter {
 	private int m_row;
 	private Integer m_testIndex;
 	private int m_methodIndex;
-	private String reportTitle= "TestNG Customized Report";
+	private String reportTitle= "Basic Compatibility Test Report"; // Updated
 	private String reportFileName = "emailable-report.html";
 	
 
@@ -514,18 +514,21 @@ public class TestNGCustomReportListener implements IReporter {
 	public void generateSuiteSummaryReport(List<ISuite> suites) throws IOException, InterruptedException {
 		tableStart("testOverview", null);
 		writer.print("<tr>");		
-		tableColumnStart("Test");
-		tableColumnStart("Methods<br/>Passed");
-		tableColumnStart("# Skipped");
-		tableColumnStart("# Failed");
-		tableColumnStart("Date");
-		tableColumnStart("Printer");
-		tableColumnStart("WindowsBuild<br/>Ver");
-		tableColumnStart("Start<br/>Time");
-		tableColumnStart("End<br/>Time");
-		tableColumnStart("Total<br/>Time(hh:mm:ss)");
-		tableColumnStart("Included<br/>Groups");
-		tableColumnStart("Excluded<br/>Groups");
+		tableColumnStart("Tests"); // Updated
+		tableColumnStart("AutoTests=Submitted+Queued"); // Added
+		tableColumnStart("AutoTests-Passed"); // Updated
+		tableColumnStart("AutoTests-Skipped"); // Updated
+		tableColumnStart("AutoTests-Failed"); // Updated
+		tableColumnStart("Manual-PrintRecvd-1ForYes/0ForNo"); // Updated
+		tableColumnStart("Manual-PerOptions-1ForYes/0ForNo"); // Updated
+		tableColumnStart("Date"); //Added
+		tableColumnStart("Printer"); //Added
+		tableColumnStart("WindowsBuildVer"); //Added
+		tableColumnStart("StartTime");
+		tableColumnStart("EndTime");
+		tableColumnStart("TotalTime(hh:mm:ss)");
+		tableColumnStart("ErrorCategory"); //Updated
+		tableColumnStart("TestersComments"); //Updated
 
 		writer.println("</tr>");
 		@SuppressWarnings("unused")
@@ -537,18 +540,23 @@ public class TestNGCustomReportListener implements IReporter {
 		int qty_skip = 0;
 		long time_start = Long.MAX_VALUE;
 		int qty_fail = 0;
+		int test_count = 2; //Added
 		long time_end = Long.MIN_VALUE;
 		m_testIndex = 1;
 		for (ISuite suite : suites) {
-			if (suites.size() >= 1) {
-				titleRow(suite.getName(), 10);
-			}
+			// Comment this code to remove suite title from HTML report so that It will be easy in copy/paste the table to excel 
+//			if (suites.size() >= 1) {
+//				titleRow(suite.getName(), 10);
+//			}
 			Map<String, ISuiteResult> tests = suite.getResults();
 			for (ISuiteResult r : tests.values()) {
 				qty_tests += 1;
 				ITestContext overview = r.getTestContext();
 				
 				startSummaryRow(overview.getName());
+				
+				summaryCell(test_count,Integer.MAX_VALUE); // Added for "AutoTests=Submitted+Queued" -- Fixed value 2
+				
 				int q = getMethodSet(overview.getPassedTests(), suite).size();
 				qty_pass_m += q;
 				summaryCell(q, Integer.MAX_VALUE);
@@ -558,6 +566,17 @@ public class TestNGCustomReportListener implements IReporter {
 				q = getMethodSet(overview.getFailedTests(), suite).size();
 				qty_fail += q;
 				summaryCell(q, 0);
+				
+				//For Manual Use - Physical Print Received - Result update - Give empty cell
+				//Group isn't used in test-suite so using its value to print empty cell
+				summaryCell(overview.getIncludedGroups());
+				writer.println("</td>");
+				
+				//For Manual Use - Physical Received As per Print Option - Result update - Give empty cell
+				//Group isn't used in test-suite so using its value to print empty cell
+				summaryCell(overview.getIncludedGroups());
+				writer.println("</td>");
+				
 				
 				// Write Execution Date
 				SimpleDateFormat summaryFormatDate = new SimpleDateFormat("dd-MMM-yyyy");
@@ -584,21 +603,34 @@ public class TestNGCustomReportListener implements IReporter {
 				time_end = Math.max(overview.getEndDate().getTime(), time_end);
 				summaryCell(timeConversion((overview.getEndDate().getTime() - overview.getStartDate().getTime()) / 1000), true);
 				
+				//For Manual use - Error category update - Give empty cell
+				//Group isn't used in test-suite so using its value to print empty cell
 				summaryCell(overview.getIncludedGroups());
+				
+				//For Manual use - Testers comments update - Give empty cell
+				//Group isn't used in test-suite so using its value to print empty cell
 				summaryCell(overview.getExcludedGroups());
+				
 				writer.println("</tr>");
 				m_testIndex++;
 			}
 		}
 		if (qty_tests > 1) {
 			writer.println("<tr class=\"total\"><td>Total</td>");
+			int qty_total = qty_pass_m + qty_skip + qty_fail;
+			summaryCell(qty_total, Integer.MAX_VALUE); //Added
 			summaryCell(qty_pass_m, Integer.MAX_VALUE);
 			summaryCell(qty_skip, 0);
 			summaryCell(qty_fail, 0);
+			summaryCell(" ", true); //Added
+			summaryCell(" ", true); //Added
+			summaryCell(" ", true); //Added
+			summaryCell(" ", true); //Added
 			summaryCell(" ", true);
 			summaryCell(" ", true);
 			summaryCell(" ", true);
 			summaryCell(timeConversion(((time_end - time_start) / 1000)), true);
+			summaryCell(" ", true); //Added			
 			writer.println("<td colspan=\"3\">&nbsp;</td></tr>");
 		}
 		writer.println("</table>");
