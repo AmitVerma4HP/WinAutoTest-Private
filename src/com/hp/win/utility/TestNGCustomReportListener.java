@@ -534,9 +534,9 @@ public class TestNGCustomReportListener implements IReporter {
 		@SuppressWarnings("unused")
 		NumberFormat formatter = new DecimalFormat("#,##0.0");
 		int qty_tests = 0;
-		int qty_pass_m = 0;
-		@SuppressWarnings("unused")
-		int qty_pass_s = 0;
+		int qty_pass = 0; //Updated variable name from qty_pass_m to qty_pass
+//		@SuppressWarnings("unused")
+//		int qty_pass_s = 0;
 		int qty_skip = 0;
 		long time_start = Long.MAX_VALUE;
 		int qty_fail = 0;
@@ -558,7 +558,7 @@ public class TestNGCustomReportListener implements IReporter {
 				summaryCell(test_count,Integer.MAX_VALUE); // Added for "AutoTests=Submitted+Queued" -- Fixed value 2
 				
 				int q = getMethodSet(overview.getPassedTests(), suite).size();
-				qty_pass_m += q;
+				qty_pass += q;
 				summaryCell(q, Integer.MAX_VALUE);
 				q = getMethodSet(overview.getSkippedTests(), suite).size();
 				qty_skip += q;
@@ -617,9 +617,9 @@ public class TestNGCustomReportListener implements IReporter {
 		}
 		if (qty_tests > 1) {
 			writer.println("<tr class=\"total\"><td>Total</td>");
-			int qty_total = qty_pass_m + qty_skip + qty_fail;
+			int qty_total = qty_pass + qty_skip + qty_fail;
 			summaryCell(qty_total, Integer.MAX_VALUE); //Added
-			summaryCell(qty_pass_m, Integer.MAX_VALUE);
+			summaryCell(qty_pass, Integer.MAX_VALUE);
 			summaryCell(qty_skip, 0);
 			summaryCell(qty_fail, 0);
 			summaryCell(" ", true); //Added
