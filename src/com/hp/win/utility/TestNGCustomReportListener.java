@@ -515,7 +515,7 @@ public class TestNGCustomReportListener implements IReporter {
 		tableStart("testOverview", null);
 		writer.print("<tr>");		
 		tableColumnStart("Tests"); // Updated
-		tableColumnStart("AutoTests=Submitted+Queued"); // Added
+		tableColumnStart("Total AutoTests=Submitted+Queued"); // Added
 		tableColumnStart("AutoTests-Passed"); // Updated
 		tableColumnStart("AutoTests-Skipped"); // Updated
 		tableColumnStart("AutoTests-Failed"); // Updated
