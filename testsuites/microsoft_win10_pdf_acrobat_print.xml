@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 MSWord 2016 Test suite - Printing Tests">
 		<parameter name="acrobat_exe_loc" value="C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe" />
-		<parameter name="device_name" value="DESKTOP-C39OUJ5" />
-		<parameter name="ptr_name" value="HP5353E7 (HP ENVY 7640 series)" />		
+		<parameter name="device_name" value="vermak-PC" />
+		<parameter name="ptr_name" value="HP5353E7 (HP ENVY 7640 series)" />	
  
  
  <!-- Supported Parameters:  -->
@@ -27,6 +27,7 @@
   
 	 <test verbose="2" name="Test-01 : Printing Test PDF test file from Acrobat">     	   	
      	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
+     	<parameter name="copies" value="2" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>

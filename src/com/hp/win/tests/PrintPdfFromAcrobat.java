@@ -8,7 +8,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
 import com.hp.win.core.AcrobatReaderBase;
 import com.hp.win.core.Base;
 import com.hp.win.utility.PrintTraceCapture;
@@ -29,26 +28,31 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
-   		AcrobatSession = AcrobatReaderBase.OpenAcrobatReader(device_name, test_filename,acrobat_exe_loc);    		
-        Thread.sleep(1000); 
+   		acrobatSession = AcrobatReaderBase.OpenAcrobatReader(device_name, test_filename,acrobat_exe_loc);    		
+        Thread.sleep(1000);
+        
     }
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name"})
-    public void PrintPdfFile(String device_name,String ptr_name) throws InterruptedException, IOException    {
+	@Parameters({"device_name","ptr_name","copies"})
+    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies) throws InterruptedException, IOException    {
 		
-		AcrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
+		acrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
 		Thread.sleep(1000);
-		AcrobatSession.getKeyboard().releaseKey(Keys.CONTROL);
+		acrobatSession.getKeyboard().releaseKey(Keys.CONTROL+"p");
 		Thread.sleep(2000);	
-		
+				
 		// Select Desired Printer from ComboBox
-		PrintPdfFromAcrobat.SelectDesiredPrinter_AcrobatPdf(ptr_name);
+		AcrobatReaderBase.SelectDesiredPrinter_AcrobatPdf(ptr_name,acrobatSession,device_name);
+		
+		// Enter Desired Copies Value		
+		AcrobatReaderBase.SelectCopies_Acrobat(acrobatSession, copies);
+		
 		
 		//After all print settings give print 
-		AcrobatSession.findElementByXPath("//Button[@Name ='Print']").click();	
+		acrobatSession.findElementByXPath("//Button[@Name ='Print']").click();	
 		Thread.sleep(1000);
 		log.info("Finally gave a print by clicking on PRINT button");	
 	
@@ -56,6 +60,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	}
 	
 	
+
 	@Test(dependsOnMethods={"PrintPdfFile"})
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
@@ -90,7 +95,6 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	    
 	}
 	
-	
 
 
 	
@@ -107,12 +111,11 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 			{
 				PrintQueueSession.quit();
 			}
-			
-
-			
-        	if (AcrobatSession!= null)
-        	{       		
-        		AcrobatSession.quit();        		
+						
+        	if (acrobatSession!= null)
+        	{   
+        		acrobatSession.close();
+        		acrobatSession.quit();        		
         	}
       			        	
         	//Stop PrintTrace log capturing.
