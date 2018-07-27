@@ -11,9 +11,10 @@
  <!-- MUST 		ptr_name 	= <Printer name as it shows in discovery-->
  <!-- MUST 		acrobat_exe_loc 	= <Complete location to AcroRd32.exe from your system-->
  <!-- OPTIONAL	copies = <Any number between 1-32767> , DEFAULT = "1" -->
- <!-- OPTIONAL	pages_to_print = <"All","Current page","PageCount expression like 1,2 or 2-4 etc."> , DEFAULT = "All" --> 
- 
- <!-- Note: parameter page_count needed only if pages_to_print set to "Custom Print" -->
+ <!-- OPTIONAL	pages_count = <"All","Current page","PageCount expression like 1,2 or 2-4 etc."> , DEFAULT = "All" --> 
+ <!-- OPTIONAL	duplex = <"None","Longedge","Shortedge"> , DEFAULT = "None" -->
+ <!-- OPTIONAL	orientation = <"Auto","Portrait","Landscape"> , DEFAULT = "Auto" -->
+ <!-- OPTIONAL	color = <"Color","Mono"> , DEFAULT = "Color" -->
  
  
   <!-- ********************************************** PRINTING PDF TEST FILE *********************************************************** -->
@@ -24,6 +25,7 @@
      	<parameter name="page_count" value="2-3" />
      	<parameter name="duplex" value="Longedge" />
      	<parameter name="orientation" value="Portrait" />
+     	<parameter name="color" value="Mono" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>

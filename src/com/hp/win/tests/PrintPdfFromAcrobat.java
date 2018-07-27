@@ -35,8 +35,8 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation"})
-    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,@Optional("None")String duplex,@Optional("Auto")String orientation) throws InterruptedException, IOException    {
+	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation","color"})
+    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,@Optional("None")String duplex,@Optional("Auto")String orientation,@Optional("Color")String color) throws InterruptedException, IOException    {
 		
 		acrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -59,6 +59,9 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//Select Desired Orientation		
 		AcrobatReaderBase.SelectOrientation_Acrobat(acrobatSession, orientation);
+		
+		//Select Desired Color Option		
+		AcrobatReaderBase.SelectColor_Acrobat(acrobatSession, color);
 		
 		
 		//After all print settings give print 

@@ -176,39 +176,68 @@ public class AcrobatReaderBase extends Base {
 		// Method to Enter desired Page Count value
 		public static void SelectOrientation_Acrobat(RemoteWebDriver session, String orientation) throws MalformedURLException, InterruptedException {
 					
-					if(orientation.toLowerCase().contains("auto")) {
-						if(!session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").isSelected()) {
-							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
-							Thread.sleep(1000);
-							session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").click();
-							Thread.sleep(1000);
-							log.info("Selected desired Orientation *****" +orientation+"*****");
-						}else {
-							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
-						}
-					}else if(orientation.toLowerCase().contains("portrait")) {
-						if(!session.findElementByXPath("//RadioButton[@Name = 'Portrait']").isSelected()) {
-							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
-							Thread.sleep(1000);
-							session.findElementByXPath("//RadioButton[@Name = 'Portrait']").click();
-							Thread.sleep(1000);
-							log.info("Selected desired Orientation *****" +orientation+"*****");
-						}else {
-							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
-						}
-					} else if(orientation.toLowerCase().contains("landscape")) {
-						if(!session.findElementByXPath("//RadioButton[@Name = 'Landscape']").isSelected()) {
-							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
-							Thread.sleep(1000);
-							session.findElementByXPath("//RadioButton[@Name = 'Landscape']").click();
-							Thread.sleep(1000);
-							log.info("Selected desired Orientation *****" +orientation+"*****");
-						} else {
-							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
-						}
-					} else {
-						log.info("Duplex Option "+orientation+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+			if(orientation.toLowerCase().contains("auto")) {
+				if(!session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").isSelected()) {
+					log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired Orientation *****" +orientation+"*****");
+					}else {
+					log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
 					}
-				}	
-				
+				}else if(orientation.toLowerCase().contains("portrait")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Portrait']").isSelected()) {
+					log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'Portrait']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired Orientation *****" +orientation+"*****");
+					}else {
+						log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
+					}
+				} else if(orientation.toLowerCase().contains("landscape")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Landscape']").isSelected()) {
+					log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'Landscape']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired Orientation *****" +orientation+"*****");
+					} else {
+					log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
+					}
+				} else {
+					log.info("Orientation "+orientation+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+					}
+			}
+		
+		
+		
+		// Method to Enter desired Page Count value
+		public static void SelectColor_Acrobat(RemoteWebDriver session, String color) throws MalformedURLException, InterruptedException {
+						
+				if(color.toLowerCase().contains("color")) {
+					if(session.findElementByXPath("//CheckBox[@Name = 'Print in grayscale (black and white)']").isSelected()) {
+						log.info("Desired Color Option " +color+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//CheckBox[@Name = 'Print in grayscale (black and white)']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Color Option *****" +color+"*****");
+						}else {
+							log.info("Desired Color Option " +color+" is already SELECTED so proceeding further");
+							}
+				}else if(color.toLowerCase().contains("mono")) {
+					if(!session.findElementByXPath("//CheckBox[@Name = 'Print in grayscale (black and white)']").isSelected()) {
+						log.info("Desired Color Option " +color+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//CheckBox[@Name = 'Print in grayscale (black and white)']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Color Option *****" +color+"*****");
+						}else {
+							log.info("Desired Color Option " +color+" is already SELECTED so proceeding further");
+							}				
+				}else{
+					log.info("Color Option "+color+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+				}
+		}
 }
