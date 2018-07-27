@@ -295,18 +295,35 @@ public class AcrobatReaderBase extends Base {
 		
 		
 	 	// Method to Select desired Paper Size
-		public static void SelectPaperSize_Acrobat(RemoteWebDriver session, String page_count) throws MalformedURLException, InterruptedException {
+		public static void SelectPaperSize_Acrobat(RemoteWebDriver session, String paper_size,String device) throws MalformedURLException, InterruptedException {
 			
-			if(page_count.toLowerCase().contains("all")) {
-				if(!session.findElementByXPath("//RadioButton[@Name = 'All']").isSelected()) {
-					log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
-					Thread.sleep(1000);
-					session.findElementByXPath("//RadioButton[@Name = 'All']").click();
-					Thread.sleep(1000);
-					log.info("Selected desired page count *****" +page_count+"*****");
-				}else {
-					log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
-				}
-			}
-		}
+			session.findElementByXPath("//Button[@Name = 'Page Setup...']").click();
+			Thread.sleep(1000);
+			RemoteWebDriver TmpSession = GetDesktopSession(device); 
+			WebElement PaperSizeListComboBox = session.findElementByXPath("//ComboBox[@Name = 'Size:']");	 		
+	        Assert.assertNotNull(PaperSizeListComboBox);           
+	        if(!PaperSizeListComboBox.getText().toString().contentEquals(paper_size))   {
+		        log.info("Desired paper size => "+paper_size+" <= is not selected so selecting it from drop down");	  
+		        PaperSizeListComboBox.click();
+		        Thread.sleep(1000);		        
+		        try {
+		        	TmpSession.findElement(By.name(paper_size)).click(); // Listed paper size comes in Desktop Session so had to use it to select desired paper size
+		        	Thread.sleep(1000);
+		        	log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
+		        	TmpSession.quit();
+		        	}catch(Exception e){
+		        		log.info("Desired paper size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+			        	//e.printStackTrace();
+			            log.info("Error selecting paper size option but continuing test with rest of the print options");     
+			            //throw new RuntimeException(e);
+		        	}		     		        
+		     } else {
+		    	log.info("Desired paper size => " +PaperSizeListComboBox.getText().toString()+" <= is already selected so proceeding");
+	        }
+	        Thread.sleep(1000);
+	        session.findElementByXPath("//Button[@Name = 'OK']").click();
+	        Thread.sleep(1000);	        
+	 }
+	 
+		
 }

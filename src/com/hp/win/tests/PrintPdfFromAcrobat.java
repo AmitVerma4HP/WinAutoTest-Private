@@ -35,10 +35,10 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation","color","scale","size"})
+	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation","color","scale","paper_size"})
     public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,
     		@Optional("None")String duplex,@Optional("Auto")String orientation,@Optional("Color")String color,
-    		@Optional("Actual size")String scale,@Optional("Letter")String size) throws InterruptedException, IOException    {
+    		@Optional("Actual size")String scale,@Optional("Letter")String paper_size) throws InterruptedException, IOException    {
 		
 		acrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -48,6 +48,9 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 				
 		//Select Desired Printer from ComboBox
 		AcrobatReaderBase.SelectDesiredPrinter_AcrobatPdf(ptr_name,acrobatSession,device_name);
+		
+		//Select Paper Size Option		
+		AcrobatReaderBase.SelectPaperSize_Acrobat(acrobatSession, paper_size,device_name);	
 		
 		//Enter Desired Copies Value		
 		AcrobatReaderBase.SelectCopies_Acrobat(acrobatSession, copies);
@@ -66,10 +69,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		AcrobatReaderBase.SelectColor_Acrobat(acrobatSession, color);
 		
 		//Select Desired Scale Option		
-		AcrobatReaderBase.SelectScale_Acrobat(acrobatSession, scale);
-		
-		//Select Paper Size Option		
-		AcrobatReaderBase.SelectPaperSize_Acrobat(acrobatSession, size);		
+		AcrobatReaderBase.SelectScale_Acrobat(acrobatSession, scale);			
 		
 		
 		//After all print settings give print 
