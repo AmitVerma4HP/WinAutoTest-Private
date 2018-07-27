@@ -48,7 +48,6 @@ public class AcrobatReaderBase extends Base {
    
 
      // Method to select desired printer from printers list combo box
-	 // Possible candidate for re-factoring when there are multiple application in automation
 	 public static void SelectDesiredPrinter_AcrobatPdf(String ptr_name, RemoteWebDriver session, String device) throws MalformedURLException, InterruptedException {
 		 
 		    WebElement PrinterListComboBox = session.findElementByClassName("ComboBox");		 			 	 
@@ -88,5 +87,42 @@ public class AcrobatReaderBase extends Base {
 			log.info("Entered copies value ***** " + copies + " *****");
 			Thread.sleep(1000);
 		}
-	 
+		
+		
+	 	// Method to Enter desired Page Count value
+		public static void SelectPageCount_Acrobat(RemoteWebDriver session, String page_count) throws MalformedURLException, InterruptedException {
+			
+			if(page_count.contains("All")) {
+				if(!session.findElementByXPath("//RadioButton[@Name = 'All']").isSelected()) {
+					log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'All']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired page count *****" +page_count+"*****");
+				}else {
+					log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
+				}
+			}else if(page_count.contains("Current")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Current page']").isSelected()) {
+						log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Current page']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired page count *****" +page_count+"*****");
+					}else {
+						log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
+					}			
+			} else {
+			
+			session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
+			Thread.sleep(1000);
+			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
+			Thread.sleep(1000);
+			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
+			Thread.sleep(1000);
+			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(page_count);
+			log.info("Entered desired page count value ***** " + page_count + " *****");
+			Thread.sleep(1000);	
+			}	 
+		}
 }

@@ -35,8 +35,8 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","copies"})
-    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies) throws InterruptedException, IOException    {
+	@Parameters({"device_name","ptr_name","copies", "page_count"})
+    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count) throws InterruptedException, IOException    {
 		
 		acrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -44,11 +44,15 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		acrobatSession.getKeyboard().releaseKey(Keys.CONTROL+"p");
 		Thread.sleep(2000);	
 				
-		// Select Desired Printer from ComboBox
+		//Select Desired Printer from ComboBox
 		AcrobatReaderBase.SelectDesiredPrinter_AcrobatPdf(ptr_name,acrobatSession,device_name);
 		
-		// Enter Desired Copies Value		
+		//Enter Desired Copies Value		
 		AcrobatReaderBase.SelectCopies_Acrobat(acrobatSession, copies);
+		
+		
+		//Select Desired Page Count Value		
+		AcrobatReaderBase.SelectPageCount_Acrobat(acrobatSession, page_count);
 		
 		
 		//After all print settings give print 
