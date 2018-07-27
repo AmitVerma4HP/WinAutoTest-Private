@@ -57,7 +57,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//After all print settings give print 
 		acrobatSession.findElementByXPath("//Button[@Name ='Print']").click();	
-		Thread.sleep(1000);
+		Thread.sleep(5000); // Print progress dialog takes more time
 		log.info("Finally gave a print by clicking on PRINT button");	
 	
 				

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -116,11 +117,9 @@ public class AcrobatReaderBase extends Base {
 			
 			session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
 			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
+			session.getKeyboard().pressKey(Keys.TAB);
 			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
-			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(page_count);
+			session.getKeyboard().pressKey(page_count);
 			log.info("Entered desired page count value ***** " + page_count + " *****");
 			Thread.sleep(1000);	
 			}	 

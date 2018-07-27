@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Microsoft Win10 MSWord 2016 Test suite - Printing Tests">
+<suite name="Microsoft Win10 PDF Acrobat Test suite - Printing Tests">
 		<parameter name="acrobat_exe_loc" value="C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe" />
 		<parameter name="device_name" value="vermak-PC" />
 		<parameter name="ptr_name" value="HP5353E7 (HP ENVY 7640 series)" />	
@@ -9,16 +9,9 @@
  <!-- Supported Parameters:  -->
  <!-- MUST		device_name = <Your Windows PC Name> -->
  <!-- MUST 		ptr_name 	= <Printer name as it shows in discovery-->
- <!-- OPTIONAL	paper_size 	= <One Supported Paper Size> , DEFAULT = "Letter" -->
- <!-- OPTIONAL	duplex_option = <"Print One Sided", "DuplexLongEdge", "DuplexShortEdge","Manually Print on Both Sides"> , DEFAULT = "Print One Sided" -->
- <!-- OPTIONAL	orientation = <"Portrait Orientation","Landscape Orientation"> , DEFAULT = "Portrait Orientation" -->
- <!-- OPTIONAL	collation = <"Collated","Uncollated"> , DEFAULT = "Collated" -->
+ <!-- MUST 		acrobat_exe_loc 	= <Complete location to AcroRd32.exe from your system-->
  <!-- OPTIONAL	copies = <Any number between 1-32767> , DEFAULT = "1" -->
- <!-- OPTIONAL	pages_to_print = <"Print All Pages","Print Current Page","Custom Print"> , DEFAULT = "Print All Pages" -->
- <!-- OPTIONAL	page_count = <Page range like 1,2 or 1-3 etc.> , DEFAULT = "NA" -->
- <!-- OPTIONAL	margin = <"Normal","Narrow","Moderate","Wide","Mirrored","Office 2003 Default"> , DEFAULT = "Normal" -->
- <!-- OPTIONAL	pages_per_sheet = <"1 Page Per Sheet","2 Pages Per Sheet","4 Pages Per Sheet","6 Pages Per Sheet","8 Pages Per Sheet","16 Pages Per Sheet">, DEFAULT = "1 Page Per Sheet" -->
- <!-- OPTIONAL	TDB = <TDB> , DEFAULT = TBD -->
+ <!-- OPTIONAL	pages_to_print = <"All","Current page","PageCount expression like 1,2 or 2-4 etc."> , DEFAULT = "All" --> 
  
  <!-- Note: parameter page_count needed only if pages_to_print set to "Custom Print" -->
  
@@ -27,7 +20,7 @@
   
 	 <test verbose="2" name="Test-01 : Printing Test PDF test file from Acrobat">     	   	
      	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
-     	<parameter name="copies" value="2" />
+     	<parameter name="copies" value="1" />
      	<parameter name="page_count" value="2-3" />
 		
     <classes>
