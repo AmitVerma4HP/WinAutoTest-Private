@@ -169,8 +169,46 @@ public class AcrobatReaderBase extends Base {
 					}
 			} else {
 				log.info("Duplex Option "+duplex+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
-			}
+				}				
+		}
+		
+		
+		// Method to Enter desired Page Count value
+		public static void SelectOrientation_Acrobat(RemoteWebDriver session, String orientation) throws MalformedURLException, InterruptedException {
+					
+					if(orientation.toLowerCase().contains("auto")) {
+						if(!session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").isSelected()) {
+							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+							Thread.sleep(1000);
+							session.findElementByXPath("//RadioButton[@Name = 'Auto portrait/landscape']").click();
+							Thread.sleep(1000);
+							log.info("Selected desired Orientation *****" +orientation+"*****");
+						}else {
+							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
+						}
+					}else if(orientation.toLowerCase().contains("portrait")) {
+						if(!session.findElementByXPath("//RadioButton[@Name = 'Portrait']").isSelected()) {
+							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+							Thread.sleep(1000);
+							session.findElementByXPath("//RadioButton[@Name = 'Portrait']").click();
+							Thread.sleep(1000);
+							log.info("Selected desired Orientation *****" +orientation+"*****");
+						}else {
+							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
+						}
+					} else if(orientation.toLowerCase().contains("landscape")) {
+						if(!session.findElementByXPath("//RadioButton[@Name = 'Landscape']").isSelected()) {
+							log.info("Desired Orientation " +orientation+" NOT selected so selecting it");
+							Thread.sleep(1000);
+							session.findElementByXPath("//RadioButton[@Name = 'Landscape']").click();
+							Thread.sleep(1000);
+							log.info("Selected desired Orientation *****" +orientation+"*****");
+						} else {
+							log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
+						}
+					} else {
+						log.info("Duplex Option "+orientation+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+					}
+				}	
 				
-			}
-			
 }

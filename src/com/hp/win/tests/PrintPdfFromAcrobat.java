@@ -35,8 +35,8 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
 	@Test
-	@Parameters({"device_name","ptr_name","copies", "page_count","duplex"})
-    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,@Optional("None")String duplex) throws InterruptedException, IOException    {
+	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation"})
+    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,@Optional("None")String duplex,@Optional("Auto")String orientation) throws InterruptedException, IOException    {
 		
 		acrobatSession.getKeyboard().pressKey(Keys.CONTROL+"p");
 		log.info("Pressed CTRL+P to get to Print Option");
@@ -56,6 +56,9 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//Select Desired Duplex Option		
 		AcrobatReaderBase.SelectDuplex_Acrobat(acrobatSession, duplex);
+		
+		//Select Desired Orientation		
+		AcrobatReaderBase.SelectOrientation_Acrobat(acrobatSession, orientation);
 		
 		
 		//After all print settings give print 

@@ -23,6 +23,7 @@
      	<parameter name="copies" value="1" />
      	<parameter name="page_count" value="2-3" />
      	<parameter name="duplex" value="Longedge" />
+     	<parameter name="orientation" value="Portrait" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
