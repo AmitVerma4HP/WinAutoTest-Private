@@ -15,6 +15,7 @@
  <!-- OPTIONAL	duplex = <"None","Longedge","Shortedge"> , DEFAULT = "None" -->
  <!-- OPTIONAL	orientation = <"Auto","Portrait","Landscape"> , DEFAULT = "Auto" -->
  <!-- OPTIONAL	color = <"Color","Mono"> , DEFAULT = "Color" -->
+ <!-- OPTIONAL	scale = <"Fit","Actual","Shrink" or "Any number between 1-999"> , DEFAULT = "Actual" -->
  
  
   <!-- ********************************************** PRINTING PDF TEST FILE *********************************************************** -->
@@ -26,6 +27,7 @@
      	<parameter name="duplex" value="Longedge" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="color" value="Mono" />
+     	<parameter name="scale" value="50" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>

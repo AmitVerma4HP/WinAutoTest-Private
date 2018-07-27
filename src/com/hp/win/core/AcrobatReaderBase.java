@@ -120,6 +120,8 @@ public class AcrobatReaderBase extends Base {
 			session.getKeyboard().pressKey(Keys.TAB);
 			Thread.sleep(1000);
 			session.getKeyboard().pressKey(page_count);
+			Thread.sleep(1000);
+			session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
 			log.info("Entered desired page count value ***** " + page_count + " *****");
 			Thread.sleep(1000);	
 			}	 
@@ -173,7 +175,7 @@ public class AcrobatReaderBase extends Base {
 		}
 		
 		
-		// Method to Enter desired Page Count value
+		// Method to Select desired Orientation value
 		public static void SelectOrientation_Acrobat(RemoteWebDriver session, String orientation) throws MalformedURLException, InterruptedException {
 					
 			if(orientation.toLowerCase().contains("auto")) {
@@ -207,13 +209,13 @@ public class AcrobatReaderBase extends Base {
 					log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
 					}
 				} else {
-					log.info("Orientation "+orientation+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+					log.info("Orientation "+orientation+" NOT FOUND so make sure you have typed the supported Orientation value correctly in testsuite xml");
 					}
 			}
 		
 		
 		
-		// Method to Enter desired Page Count value
+		// Method to Select desired Color Option value
 		public static void SelectColor_Acrobat(RemoteWebDriver session, String color) throws MalformedURLException, InterruptedException {
 						
 				if(color.toLowerCase().contains("color")) {
@@ -237,7 +239,74 @@ public class AcrobatReaderBase extends Base {
 							log.info("Desired Color Option " +color+" is already SELECTED so proceeding further");
 							}				
 				}else{
-					log.info("Color Option "+color+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+					log.info("Color Option "+color+" NOT FOUND so make sure you have typed the supported Color Option value correctly in testsuite xml");
 				}
+		}
+		
+		
+		// Method to Select desired Scaling value
+		public static void SelectScale_Acrobat(RemoteWebDriver session, String scale) throws MalformedURLException, InterruptedException {
+						
+				if(scale.toLowerCase().contains("fit")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Fit']").isSelected()) {
+						log.info("Desired Scale Option " +scale+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Fit']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Scale Option *****" +scale+"*****");
+						}else {
+							log.info("Desired Scale Option " +scale+" is already SELECTED so proceeding further");
+							}
+				}else if(scale.toLowerCase().contains("actual")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Actual size']").isSelected()) {
+						log.info("Desired Scale Option " +scale+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Actual size']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Scale Option *****" +scale+"*****");
+						}else {
+							log.info("Desired Scale Option " +scale+" is already SELECTED so proceeding further");
+							}			
+				}else if(scale.toLowerCase().contains("shrink")) {
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Shrink oversized pages']").isSelected()) {
+						log.info("Desired Scale Option " +scale+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Shrink oversized pages']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Scale Option *****" +scale+"*****");
+						}else {
+							log.info("Desired Scale Option " +scale+" is already SELECTED so proceeding further");
+							}	
+				}else if(scale.matches("[0-9]+")) {
+						log.info("Desired Scale Option " +scale+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Custom Scale:']").click();
+						Thread.sleep(1000);
+						session.getKeyboard().pressKey(Keys.TAB);
+						Thread.sleep(1000);
+						session.getKeyboard().pressKey(scale);
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Custom Scale:']").click();
+						log.info("Selected desired Custom Scale Option *****" +scale+"%*****");
+				}else{
+					log.info("Scale Option "+scale+" NOT FOUND so make sure you have typed the supported Scale Option value correctly in testsuite xml");
+				}
+		}
+		
+		
+	 	// Method to Select desired Paper Size
+		public static void SelectPaperSize_Acrobat(RemoteWebDriver session, String page_count) throws MalformedURLException, InterruptedException {
+			
+			if(page_count.toLowerCase().contains("all")) {
+				if(!session.findElementByXPath("//RadioButton[@Name = 'All']").isSelected()) {
+					log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'All']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired page count *****" +page_count+"*****");
+				}else {
+					log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
+				}
+			}
 		}
 }
