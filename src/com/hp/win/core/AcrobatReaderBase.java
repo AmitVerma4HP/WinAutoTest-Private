@@ -93,7 +93,7 @@ public class AcrobatReaderBase extends Base {
 	 	// Method to Enter desired Page Count value
 		public static void SelectPageCount_Acrobat(RemoteWebDriver session, String page_count) throws MalformedURLException, InterruptedException {
 			
-			if(page_count.contains("All")) {
+			if(page_count.toLowerCase().contains("all")) {
 				if(!session.findElementByXPath("//RadioButton[@Name = 'All']").isSelected()) {
 					log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
 					Thread.sleep(1000);
@@ -103,7 +103,7 @@ public class AcrobatReaderBase extends Base {
 				}else {
 					log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
 				}
-			}else if(page_count.contains("Current")) {
+			}else if(page_count.toLowerCase().contains("current")) {
 					if(!session.findElementByXPath("//RadioButton[@Name = 'Current page']").isSelected()) {
 						log.info("Desired Page Count " +page_count+" NOT selected so selecting it");
 						Thread.sleep(1000);
@@ -124,4 +124,53 @@ public class AcrobatReaderBase extends Base {
 			Thread.sleep(1000);	
 			}	 
 		}
+		
+		
+		// Method to Select Desired Duplex Option
+		public static void SelectDuplex_Acrobat(RemoteWebDriver session, String duplex) throws MalformedURLException, InterruptedException {
+			
+			if(duplex.toLowerCase().contains("none")) {
+				if(session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").isSelected()) {
+					log.info("Desired Duplex Option " +duplex+" NOT selected so selecting it");
+					Thread.sleep(1000);
+					session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").click();
+					Thread.sleep(1000);
+					log.info("Selected desired Duplex Option *****" +duplex+"*****");
+				}else {
+					log.info("Desired Duplex Option " +duplex+" is already SELECTED so proceeding further");
+				}
+			}else if(duplex.toLowerCase().contains("shortedge")) {
+					if(!session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").isSelected()) {						
+						session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").click();		
+						Thread.sleep(1000);
+						if(!session.findElementByXPath("//RadioButton[@Name = 'Flip on short edge']").isSelected()) {
+							log.info("Desired Duplex Option " +duplex+" NOT selected so selecting it");
+							Thread.sleep(1000);
+							session.findElementByXPath("//RadioButton[@Name = 'Flip on short edge']").click();
+							Thread.sleep(1000);
+							log.info("Selected desired Duplex Option *****" +duplex+"*****");
+						}else {
+							log.info("Desired Duplex Options " +duplex+" is already SELECTED so proceeding further");
+							  }
+						}
+			} else if(duplex.toLowerCase().contains("longedge")) {
+				if(!session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").isSelected()) {						
+					session.findElementByXPath("//CheckBox[@Name = 'Print on both sides of paper']").click();		
+					Thread.sleep(1000);
+					if(!session.findElementByXPath("//RadioButton[@Name = 'Flip on long edge']").isSelected()) {
+						log.info("Desired Duplex Option " +duplex+" NOT selected so selecting it");
+						Thread.sleep(1000);
+						session.findElementByXPath("//RadioButton[@Name = 'Flip on long edge']").click();
+						Thread.sleep(1000);
+						log.info("Selected desired Duplex Option *****" +duplex+"*****");
+					}else {
+						log.info("Desired Duplex Option " +duplex+" is already SELECTED so proceeding further");
+						  }
+					}
+			} else {
+				log.info("Duplex Option "+duplex+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+			}
+				
+			}
+			
 }

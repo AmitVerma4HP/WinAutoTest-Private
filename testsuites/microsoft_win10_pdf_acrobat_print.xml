@@ -22,6 +22,7 @@
      	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
      	<parameter name="copies" value="1" />
      	<parameter name="page_count" value="2-3" />
+     	<parameter name="duplex" value="Longedge" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
