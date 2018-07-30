@@ -88,7 +88,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	
 	
 
-	@Test(dependsOnMethods={"PrintPdfFile"})
+	@Test(dependsOnMethods={"PrintPdfAcrobat"})
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
