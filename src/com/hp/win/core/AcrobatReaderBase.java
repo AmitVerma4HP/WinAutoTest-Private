@@ -12,6 +12,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.Reporter;
 
 
 public class AcrobatReaderBase extends Base {
@@ -311,10 +312,16 @@ public class AcrobatReaderBase extends Base {
 		        	log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
 		        	TmpSession.quit();
 		        	}catch(Exception e){
-		        		log.info("Desired paper size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		log.info("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html 
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			        	//e.printStackTrace();
-			            log.info("Error selecting paper size option but continuing test with rest of the print options");     
-			            //throw new RuntimeException(e);
+			            log.info("Error selecting paper size option but continuing test with rest of the print options");  
 		        	}		     		        
 		     } else {
 		    	log.info("Desired paper size => " +PaperSizeListComboBox.getText().toString()+" <= is already selected so proceeding");
