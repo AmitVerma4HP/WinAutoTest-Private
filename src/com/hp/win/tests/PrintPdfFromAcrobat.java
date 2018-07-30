@@ -21,7 +21,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
     @BeforeClass
 	@Parameters({"device_name", "ptr_name", "test_filename","acrobat_exe_loc"})
-    public static void setup(String device_name, String ptr_name, @Optional("4Pages-ISO_IEC_24735_2009_Test_Pages.pdf")String test_filename,String acrobat_exe_loc) 
+    public static void setup(String device_name, String ptr_name,String test_filename,String acrobat_exe_loc) 
     		throws InterruptedException, IOException {
         	
     	currentClass = PrintPdfFromAcrobat.class.getSimpleName();

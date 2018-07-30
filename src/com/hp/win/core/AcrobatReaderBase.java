@@ -113,17 +113,16 @@ public class AcrobatReaderBase extends Base {
 					}else {
 						log.info("Desired Page Count " +page_count+" is already SELECTED so proceeding further");
 					}			
-			} else {
-			
-			session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
-			Thread.sleep(1000);
-			session.getKeyboard().pressKey(Keys.TAB);
-			Thread.sleep(1000);
-			session.getKeyboard().pressKey(page_count);
-			Thread.sleep(1000);
-			session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
-			log.info("Entered desired page count value ***** " + page_count + " *****");
-			Thread.sleep(1000);	
+			} else {			
+					session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
+					Thread.sleep(1000);
+					session.getKeyboard().pressKey(Keys.TAB);
+					Thread.sleep(1000);
+					session.getKeyboard().pressKey(page_count);
+					Thread.sleep(1000);
+					session.findElementByXPath("//RadioButton[@Name = 'Pages']").click();
+					log.info("Entered desired page count value ***** " + page_count + " *****");
+					Thread.sleep(1000);	
 			}	 
 		}
 		
