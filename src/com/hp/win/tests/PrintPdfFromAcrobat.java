@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.AcrobatReaderBase;
 import com.hp.win.core.Base;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -28,6 +29,11 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
+    	
+    	//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
    		acrobatSession = AcrobatReaderBase.OpenAcrobatReader(device_name, test_filename,acrobat_exe_loc);    		
         Thread.sleep(1000);
         
@@ -134,8 +140,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 			}
 						
         	if (acrobatSession!= null)
-        	{   
-        		acrobatSession.close();
+        	{           		
         		acrobatSession.quit();        		
         	}
       			        	
