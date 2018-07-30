@@ -133,7 +133,14 @@ public class Win32Base extends Base {
                 // If there is an element with the name we're looking for, but there is no combo box...
                 } else
                 {
-                    log.info("Cannot find a combo box with the name '" + boxName + "'. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
+                    log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	        		log.info("Cannot find a combo box with the name '" + boxName + "'. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");
+	        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	        		
+	        		//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("\""+boxName+"\" Option is NOT FOUND so either 1) Your Printer does not support \""+boxName+"\" Option OR 2) You have typed the value incorrectly in testsuite xml");
+	        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");                    
                     return;
                 }
             }
@@ -141,7 +148,7 @@ public class Win32Base extends Base {
             // Find the desired list item and click on it
             WebElement listItem = dialogSession.findElementByName(listSel);
             try {
-                log.info("Going to click on '" + listItem.getText().toString() + "'");
+            	log.info("Going to click on '" + listItem.getText().toString() + "'");
                 listItem.click();
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -270,11 +277,11 @@ public class Win32Base extends Base {
         String color_choice;
         String color_sel = color_optn.toLowerCase();
 
-        if(color_sel.equals("mono")) {
-            color_choice = mono;
+        if(color_sel.equals("color")){
+            color_choice = color;
         }
         else {
-            color_choice = color;
+            color_choice = mono;
         }
 
         SelectRadioButton_Win32(session, color_choice, "Color");

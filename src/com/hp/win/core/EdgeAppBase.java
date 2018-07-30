@@ -16,7 +16,6 @@ public class EdgeAppBase extends UwpAppBase {
 		private static final Logger log = LogManager.getLogger(EdgeAppBase.class);
 		public static RemoteWebDriver MsEdgeSession = null;
 		
-
 		// Method to open MsEdge browser with desired URL.
 		public static RemoteWebDriver OpenEdgeApp(String device_name, String web_url)
 				throws MalformedURLException {
@@ -87,4 +86,5 @@ public class EdgeAppBase extends UwpAppBase {
 				
 			}
 		
+			
 }

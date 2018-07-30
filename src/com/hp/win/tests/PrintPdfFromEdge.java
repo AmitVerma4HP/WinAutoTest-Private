@@ -132,21 +132,7 @@ import java.io.IOException;
 			Reporter.log("........................................................");
 		}
 		
-		//Select Desired Borderless Printing Option.
-		if (MsEdgeSession.findElementsByName("Borderless printing").size()!=0){
-			EdgeAppBase.SelectBorderless_Uwp(MsEdgeSession,borderless);
-		}else{
-			log.info(".......................................................");
-			log.info("The desired Borderless selection didnt appear in App UI");
-			log.info(".......................................................");
 			
-			//This is to insert msg to TestNG emailable-report.html
-			Reporter.log(".......................................................");
-			Reporter.log("The desired Borderless selection didnt appear in App UI");
-			Reporter.log(".......................................................");
-
-		}
-		
 		//Select Desired Header and Footer Option.
 		if (MsEdgeSession.findElementsByName("Headers and footers").size()!=0){
 			EdgeAppBase.SelectHeadersAndFooters_Uwp(MsEdgeSession,headerandfooter_optn);
@@ -281,6 +267,21 @@ import java.io.IOException;
 				Reporter.log(".....................................................");
 				Reporter.log("The desired Stapling selection didnt appear in App UI");
 				Reporter.log(".....................................................");
+
+			}
+			
+			//Select Desired Borderless Printing Option.
+			if (MsEdgeSession.findElementsByName("Borderless printing").size()!=0){
+				EdgeAppBase.SelectBorderless_Uwp(MsEdgeSession,borderless);
+			}else{
+				log.info(".......................................................");
+				log.info("The desired Borderless selection didnt appear in App UI");
+				log.info(".......................................................");
+				
+				//This is to insert msg to TestNG emailable-report.html
+				Reporter.log(".......................................................");
+				Reporter.log("The desired Borderless selection didnt appear in App UI");
+				Reporter.log(".......................................................");
 
 			}
 						
