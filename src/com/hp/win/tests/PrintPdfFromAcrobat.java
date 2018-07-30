@@ -42,7 +42,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	
 	@Test
 	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation","color","scale","paper_size"})
-    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,
+    public void PrintPdfAcrobat(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,
     		@Optional("None")String duplex,@Optional("Auto")String orientation,@Optional("Color")String color,
     		@Optional("Actual size")String scale,@Optional("Letter")String paper_size) throws InterruptedException, IOException    {
 		

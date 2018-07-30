@@ -97,7 +97,9 @@ public class ScreenshotUtility implements ITestListener {
 			curSession = SettingBase.SettingSession;		
 		}else if (passfailMethod.contains("OneNote")) {
 			curSession = OneNoteBase.OneNoteSession;
-		} else {
+		}else if (passfailMethod.contains("Acrobat")) {
+			curSession = AcrobatReaderBase.acrobatSession; 
+		}else {
 			curSession = Base.DesktopSession;   // Ensure curSession is NOT NULL
 		}
 		
