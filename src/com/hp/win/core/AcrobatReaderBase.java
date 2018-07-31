@@ -82,7 +82,7 @@ public class AcrobatReaderBase extends Base {
 	 }
 
 	 
-	 	// Method to select desired Copies option
+	 	// Method to select desired Copies option between 1-999
 		public static void SelectCopies_Acrobat(RemoteWebDriver session, String copies) throws MalformedURLException, InterruptedException {
 			
 			// Clicking on Copies Edit box.

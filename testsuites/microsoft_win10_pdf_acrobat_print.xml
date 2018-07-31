@@ -15,12 +15,12 @@
  <!-- MUST 		acrobat_exe_loc = <Complete location to AcroRd32.exe from your system-->
  <!-- MUST 		test_filename 	= <PDF Test file name with extension-->
  <!-- OPTIONAL	paper_size 			= <"Letter","A4","Legal" or "Any paper size supported by the printer "> , DEFAULT = "Letter" -->
- <!-- OPTIONAL	copies 			= <Any number between 1-32767> , DEFAULT = "1" -->
+ <!-- OPTIONAL	copies 			= <Any number between 1-999> , DEFAULT = "1" -->
  <!-- OPTIONAL	pages_count 	= <"All","Current page","PageCount expression like 1,2 or 2-4 etc."> , DEFAULT = "All" --> 
  <!-- OPTIONAL	duplex 			= <"None","Longedge","Shortedge"> , DEFAULT = "None" -->
  <!-- OPTIONAL	orientation 	= <"Auto","Portrait","Landscape"> , DEFAULT = "Auto" -->
  <!-- OPTIONAL	color 			= <"Color","Mono"> , DEFAULT = "Color" -->
- <!-- OPTIONAL	scale 			= <"Fit","Actual","Shrink" or "Any number between 1-999"> , DEFAULT = "Actual" -->
+ <!-- OPTIONAL	scale 			= <"Fit","Actual","Shrink" or "Any number between 1-1000"> , DEFAULT = "Actual" -->
  
  
   <!-- ********************************************** PRINTING PDF TEST FILE *********************************************************** -->
