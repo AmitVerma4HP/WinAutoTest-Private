@@ -126,7 +126,8 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
     @AfterClass(alwaysRun=true)
-    public static void TearDown() throws IOException, InterruptedException
+    @Parameters({"device_name"})
+    public static void TearDown(String device_name) throws IOException, InterruptedException
     {  
     	
 			if(DesktopSession!=null)
@@ -138,15 +139,29 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 			{
 				PrintQueueSession.quit();
 			}
-						
+			
         	if (acrobatSession!= null)
         	{           		
-        		acrobatSession.quit();        		
+        		try {
+        		acrobatSession.close();
+        		acrobatSession.quit();
+        		}catch(Exception e) {
+        			log.info("Error Closing Acrobat Session. Looks like Acrobat Session is already closed");
+        		}
         	}
-      			        	
+      		
+        	if (acrobatAppSession!= null)
+        	{           		
+        		try {
+	        		acrobatAppSession.close();
+	        		acrobatAppSession.quit();
+        		}catch(Exception e) {
+        			log.info("Error Closing Acrobat App Session. Looks like Acrobat App Session is already closed");
+        		}
+        	}
+        	
         	//Stop PrintTrace log capturing.
-        	PrintTraceCapture.StopLogCollection(currentClass);	
-        	        
+        	PrintTraceCapture.StopLogCollection(currentClass);        	        
     }
     
     

@@ -14,15 +14,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
 
+import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.WindowsElement;
+
 
 public class AcrobatReaderBase extends Base {
 
     private static final Logger log = LogManager.getLogger(AcrobatReaderBase.class);
 	public static RemoteWebDriver acrobatSession = null;
+	public static RemoteWebDriver acrobatAppSession = null;
     public static WebDriverWait wait;
     
     // Method to open testfile with Acrobat Reader App 
-    public static RemoteWebDriver OpenAcrobatReader(String device_name, String test_filename, String acrobat_exe_loc) throws InterruptedException {
+    public static RemoteWebDriver OpenAcrobatReader(String device_name, String test_filename, String acrobat_exe_loc) throws InterruptedException, MalformedURLException {
     	
     	 log.info("Acrobat Reader exe location: " +acrobat_exe_loc);
 
@@ -41,11 +45,12 @@ public class AcrobatReaderBase extends Base {
 	            log.info("Error opening PDF file from Acrobat");
 	            throw new RuntimeException(e);
 	        	}
-		    log.info("Opened"+test_filename+"file from "+testfiles_loc);
-		    
+		    log.info("Opened"+test_filename+"file from "+testfiles_loc);		    
 		    Thread.sleep(3000); 
+		    
+		    SwitchToAcrobatApp(device_name);
 		    		    
-			return acrobatSession; 
+			return acrobatAppSession; // Return Acrobat App Session which has actual control of the App
     }
    
 
@@ -330,6 +335,58 @@ public class AcrobatReaderBase extends Base {
 	        session.findElementByXPath("//Button[@Name = 'OK']").click();
 	        Thread.sleep(1000);	        
 	 }
+		
+		
+		
+		// Method to switch from to Acrobat session
+		public static void SwitchToAcrobatApp(String device_name) throws MalformedURLException {
+			try {
+			
+				DesktopSession = Base.GetDesktopSession(device_name);
+			    
+			    //Get handle to PrinterQueue window
+			    WebElement AcrobatAppWindow = DesktopSession.findElementByClassName("AcrobatSDIWindow");
+		    	String nativeWindowHandle = AcrobatAppWindow.getAttribute("NativeWindowHandle");
+		    	int acrobatAppWindowHandle = Integer.parseInt(nativeWindowHandle);
+		    	log.debug("int value:" + nativeWindowHandle);
+		    	String acrobatAppTopWindowHandle  = hex.concat(Integer.toHexString(acrobatAppWindowHandle));
+		    	log.debug("Hex Value:" + acrobatAppTopWindowHandle);
+	
+		    	log.info("Successfully got Acrobat App handle.");
+		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
+		    	DesiredCapabilities capabilities = new DesiredCapabilities();
+		    	capabilities.setCapability("appTopLevelWindow", acrobatAppTopWindowHandle);
+		    	capabilities.setCapability("platformName", "Windows");
+		        capabilities.setCapability("deviceName", device_name);
+		        acrobatAppSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+				}catch(Exception e){
+					e.printStackTrace();
+					log.info("Error getting Acrobat App session");
+					//throw new RuntimeException(e);
+		        	}
+			log.info("Acrobat App session created successfully");    	
+	    	
+		}
+	
+		// Method to find if App is closed or not , if not then close the Acrobat App
+		public static void CloseAcrobat(String device_name) throws MalformedURLException {
+			
+			try {
+				SwitchToAcrobatApp(device_name);
+			}catch(Exception e) {
+				log.info("Cant find Arobat App Session so Looks like App is already closed");
+			}		
+			
+			//Click on Close button if App is still open
+			try {
+				acrobatAppSession.findElementByXPath("//Button[@Name = 'Close']").click();
+				Thread.sleep(2000);
+				log.info("Closed Acrobat App Successfully");
+			}catch(Exception e) {
+				log.info("Error closing Acrobat App");
+			}
+			
+		}
 	 
 		
 }

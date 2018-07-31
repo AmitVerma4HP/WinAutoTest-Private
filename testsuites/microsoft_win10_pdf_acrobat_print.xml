@@ -5,6 +5,9 @@
 		<parameter name="device_name" value="vermak-PC" />
 		<parameter name="ptr_name" value="NPI04F7AB (HP LaserJet M605)" />	
  
+   <listeners>
+    <listener class-name="com.hp.win.utility.TestNGCustomReportListener"/>
+  </listeners>
  
  <!-- Supported Parameters:  -->
  <!-- MUST		device_name 	= <Your Windows PC Name> -->
@@ -37,6 +40,21 @@
     </classes>
   </test>
 
+
+	 <test verbose="2" name="Test-02 : Printing Test PDF test file from Acrobat">     	   	
+     	<parameter name="test_filename" value="4Pages-ISO_IEC_24735_2009_Test_Pages.pdf" />
+     	<parameter name="paper_size" value="A4" />
+     	<parameter name="copies" value="1" />
+     	<parameter name="page_count" value="2,4" />
+     	<parameter name="duplex" value="none" />
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="color" value="Color" />
+     	<parameter name="scale" value="Shrink" />
+     			
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
+    </classes>
+  </test>
 
  
 	<!-- ********************************************** PRINTING MSWORD TEST FILE *********************************************************** --> 
