@@ -85,14 +85,26 @@ public class AcrobatReaderBase extends Base {
 	 	// Method to select desired Copies option between 1-999
 		public static void SelectCopies_Acrobat(RemoteWebDriver session, String copies) throws MalformedURLException, InterruptedException {
 			
-			// Clicking on Copies Edit box.
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
-			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
-			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(copies);
-			log.info("Entered copies value ***** " + copies + " *****");
-			Thread.sleep(1000);
+			// Ensure supported copies value entered
+			if(Integer.parseInt(copies) >0 && Integer.parseInt(copies) <1000) {			
+				// Clicking on Copies Edit box.
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
+				Thread.sleep(1000);
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
+				Thread.sleep(1000);
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(copies);
+				log.info("Entered copies value ***** " + copies + " *****");
+				Thread.sleep(1000);
+			} else {
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				log.info("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies paramter value in XML");
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				
+				//This is to insert msg to TestNG emailable-report.html 
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");
+        		Reporter.log("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies paramter value in XML");
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");			
+				}
 		}
 		
 		
@@ -174,8 +186,15 @@ public class AcrobatReaderBase extends Base {
 						log.info("Desired Duplex Option " +duplex+" is already SELECTED so proceeding further");
 						  }
 					}
-			} else {
-				log.info("Duplex Option "+duplex+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+			} else {				
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				log.info("Duplex Option "+duplex+" is NOT FOUND so SKIPPING setting duplex option. Check the duplex option parameter value in XML");
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				
+				//This is to insert msg to TestNG emailable-report.html 
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");
+        		Reporter.log("Duplex Option "+duplex+" is NOT FOUND so SKIPPING setting duplex option. Check the duplex option parameter value in XML");
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");			
 				}				
 		}
 		
@@ -213,8 +232,15 @@ public class AcrobatReaderBase extends Base {
 					} else {
 					log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
 					}
-				} else {
-					log.info("Orientation "+orientation+" NOT FOUND so make sure you have typed the supported Orientation value correctly in testsuite xml");
+				} else {					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Orientation "+orientation+" is NOT FOUND so SKIPPING setting Orientation. Check the orientation option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Orientation "+orientation+" is NOT FOUND so SKIPPING setting Orientation. Check the orientation option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");		
 					}
 			}
 		
@@ -243,8 +269,15 @@ public class AcrobatReaderBase extends Base {
 						}else {
 							log.info("Desired Color Option " +color+" is already SELECTED so proceeding further");
 							}				
-				}else{
-					log.info("Color Option "+color+" NOT FOUND so make sure you have typed the supported Color Option value correctly in testsuite xml");
+				}else{					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Color Option "+color+" is NOT FOUND so SKIPPING setting Color Option. Check the color option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Color Option "+color+" is NOT FOUND so SKIPPING setting Color Option. Check the color option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");		
 				}
 		}
 		
@@ -293,8 +326,15 @@ public class AcrobatReaderBase extends Base {
 						Thread.sleep(1000);
 						session.findElementByXPath("//RadioButton[@Name = 'Custom Scale:']").click();
 						log.info("Selected desired Custom Scale Option *****" +scale+"%*****");
-				}else{
-					log.info("Scale Option "+scale+" NOT FOUND so make sure you have typed the supported Scale Option value correctly in testsuite xml");
+				}else{					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Scale Option "+scale+" is NOT FOUND so SKIPPING setting Scale Option. Check the scale option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Scale Option "+scale+" is NOT FOUND so SKIPPING setting Scale Option. Check the scale option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");	
 				}
 		}
 		
