@@ -442,7 +442,7 @@ public class TestNGCustomReportListener implements IReporter {
 					writer.println(line + "<br/>");
 				}
 			}
-		/*	if (hasThrowable) {
+		if (hasThrowable) {
 				boolean wantsMinimalOutput = ans.getStatus() == ITestResult.SUCCESS;
 				if (hasReporterOutput) {
 					writer.println("<h3>"
@@ -450,7 +450,7 @@ public class TestNGCustomReportListener implements IReporter {
 									: "Failure") + "</h3>");
 				}
 				generateExceptionReport(exception, method);
-			}*/
+			}
 			if (hasParameters) {
 				writer.println("</td></tr>");
 			} else {
