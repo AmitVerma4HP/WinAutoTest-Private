@@ -97,12 +97,12 @@ public class AcrobatReaderBase extends Base {
 				Thread.sleep(1000);
 			} else {
 				log.info("-----------------------------------------------------------------------------------------------------------------------------");
-				log.info("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies paramter value in XML");
+				log.info("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies parameter value in XML");
 				log.info("-----------------------------------------------------------------------------------------------------------------------------");
 				
 				//This is to insert msg to TestNG emailable-report.html 
         		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");
-        		Reporter.log("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies paramter value in XML");
+        		Reporter.log("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies parameter value in XML");
         		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");			
 				}
 		}
@@ -384,7 +384,7 @@ public class AcrobatReaderBase extends Base {
 			
 				DesktopSession = Base.GetDesktopSession(device_name);
 			    
-			    //Get handle to PrinterQueue window
+			    //Get handle to Acrobat App window
 			    WebElement AcrobatAppWindow = DesktopSession.findElementByClassName("AcrobatSDIWindow");
 		    	String nativeWindowHandle = AcrobatAppWindow.getAttribute("NativeWindowHandle");
 		    	int acrobatAppWindowHandle = Integer.parseInt(nativeWindowHandle);
@@ -393,7 +393,7 @@ public class AcrobatReaderBase extends Base {
 		    	log.debug("Hex Value:" + acrobatAppTopWindowHandle);
 	
 		    	log.info("Successfully got Acrobat App handle.");
-		    	// Create a PrintQueueSession by attaching to an existing application top level window handle
+		    	// Create a AcrobatAppSession by attaching to an existing application top level window handle
 		    	DesiredCapabilities capabilities = new DesiredCapabilities();
 		    	capabilities.setCapability("appTopLevelWindow", acrobatAppTopWindowHandle);
 		    	capabilities.setCapability("platformName", "Windows");
@@ -404,29 +404,7 @@ public class AcrobatReaderBase extends Base {
 					log.info("Error getting Acrobat App session");
 					//throw new RuntimeException(e);
 		        	}
-			log.info("Acrobat App session created successfully");    	
-	    	
-		}
-	
-		// Method to find if App is closed or not , if not then close the Acrobat App
-		public static void CloseAcrobat(String device_name) throws MalformedURLException {
-			
-			try {
-				SwitchToAcrobatApp(device_name);
-			}catch(Exception e) {
-				log.info("Cant find Arobat App Session so Looks like App is already closed");
-			}		
-			
-			//Click on Close button if App is still open
-			try {
-				acrobatAppSession.findElementByXPath("//Button[@Name = 'Close']").click();
-				Thread.sleep(2000);
-				log.info("Closed Acrobat App Successfully");
-			}catch(Exception e) {
-				log.info("Error closing Acrobat App");
-			}
-			
-		}
-	 
+			log.info("Acrobat App session created successfully");   	    	
+		}	 
 		
 }
