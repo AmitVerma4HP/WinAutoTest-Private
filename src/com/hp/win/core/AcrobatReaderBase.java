@@ -12,16 +12,21 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.Reporter;
+
+import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.WindowsElement;
 
 
 public class AcrobatReaderBase extends Base {
 
     private static final Logger log = LogManager.getLogger(AcrobatReaderBase.class);
 	public static RemoteWebDriver acrobatSession = null;
+	public static RemoteWebDriver acrobatAppSession = null;
     public static WebDriverWait wait;
     
     // Method to open testfile with Acrobat Reader App 
-    public static RemoteWebDriver OpenAcrobatReader(String device_name, String test_filename, String acrobat_exe_loc) throws InterruptedException {
+    public static RemoteWebDriver OpenAcrobatReader(String device_name, String test_filename, String acrobat_exe_loc) throws InterruptedException, MalformedURLException {
     	
     	 log.info("Acrobat Reader exe location: " +acrobat_exe_loc);
 
@@ -40,11 +45,12 @@ public class AcrobatReaderBase extends Base {
 	            log.info("Error opening PDF file from Acrobat");
 	            throw new RuntimeException(e);
 	        	}
-		    log.info("Opened"+test_filename+"file from "+testfiles_loc);
-		    
+		    log.info("Opened"+test_filename+"file from "+testfiles_loc);		    
 		    Thread.sleep(3000); 
+		    
+		    SwitchToAcrobatApp(device_name);
 		    		    
-			return acrobatSession; 
+			return acrobatAppSession; // Return Acrobat App Session which has actual control of the App
     }
    
 
@@ -76,17 +82,29 @@ public class AcrobatReaderBase extends Base {
 	 }
 
 	 
-	 	// Method to select desired Copies option
+	 	// Method to select desired Copies option between 1-999
 		public static void SelectCopies_Acrobat(RemoteWebDriver session, String copies) throws MalformedURLException, InterruptedException {
 			
-			// Clicking on Copies Edit box.
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
-			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
-			Thread.sleep(1000);
-			session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(copies);
-			log.info("Entered copies value ***** " + copies + " *****");
-			Thread.sleep(1000);
+			// Ensure supported copies value entered
+			if(Integer.parseInt(copies) >0 && Integer.parseInt(copies) <1000) {			
+				// Clicking on Copies Edit box.
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").click();
+				Thread.sleep(1000);
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").clear();			
+				Thread.sleep(1000);
+				session.findElementByXPath("//Edit[@Name = 'RichEdit Control']").sendKeys(copies);
+				log.info("Entered copies value ***** " + copies + " *****");
+				Thread.sleep(1000);
+			} else {
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				log.info("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies parameter value in XML");
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				
+				//This is to insert msg to TestNG emailable-report.html 
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");
+        		Reporter.log("Copies value "+copies+" is not between 1-999 so SKIPPING setting copies. Check the copies parameter value in XML");
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");			
+				}
 		}
 		
 		
@@ -168,8 +186,15 @@ public class AcrobatReaderBase extends Base {
 						log.info("Desired Duplex Option " +duplex+" is already SELECTED so proceeding further");
 						  }
 					}
-			} else {
-				log.info("Duplex Option "+duplex+" NOT FOUND so make sure you have typed the duplex option value correctly in testsuite xml");
+			} else {				
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				log.info("Duplex Option "+duplex+" is NOT FOUND so SKIPPING setting duplex option. Check the duplex option parameter value in XML");
+				log.info("-----------------------------------------------------------------------------------------------------------------------------");
+				
+				//This is to insert msg to TestNG emailable-report.html 
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");
+        		Reporter.log("Duplex Option "+duplex+" is NOT FOUND so SKIPPING setting duplex option. Check the duplex option parameter value in XML");
+        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------");			
 				}				
 		}
 		
@@ -207,8 +232,15 @@ public class AcrobatReaderBase extends Base {
 					} else {
 					log.info("Desired Orientation " +orientation+" is already SELECTED so proceeding further");
 					}
-				} else {
-					log.info("Orientation "+orientation+" NOT FOUND so make sure you have typed the supported Orientation value correctly in testsuite xml");
+				} else {					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Orientation "+orientation+" is NOT FOUND so SKIPPING setting Orientation. Check the orientation option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Orientation "+orientation+" is NOT FOUND so SKIPPING setting Orientation. Check the orientation option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");		
 					}
 			}
 		
@@ -237,8 +269,15 @@ public class AcrobatReaderBase extends Base {
 						}else {
 							log.info("Desired Color Option " +color+" is already SELECTED so proceeding further");
 							}				
-				}else{
-					log.info("Color Option "+color+" NOT FOUND so make sure you have typed the supported Color Option value correctly in testsuite xml");
+				}else{					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Color Option "+color+" is NOT FOUND so SKIPPING setting Color Option. Check the color option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Color Option "+color+" is NOT FOUND so SKIPPING setting Color Option. Check the color option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");		
 				}
 		}
 		
@@ -287,8 +326,15 @@ public class AcrobatReaderBase extends Base {
 						Thread.sleep(1000);
 						session.findElementByXPath("//RadioButton[@Name = 'Custom Scale:']").click();
 						log.info("Selected desired Custom Scale Option *****" +scale+"%*****");
-				}else{
-					log.info("Scale Option "+scale+" NOT FOUND so make sure you have typed the supported Scale Option value correctly in testsuite xml");
+				}else{					
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					log.info("Scale Option "+scale+" is NOT FOUND so SKIPPING setting Scale Option. Check the scale option parameter value in XML");
+					log.info("-----------------------------------------------------------------------------------------------------------------------------------");
+					
+					//This is to insert msg to TestNG emailable-report.html 
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");
+	        		Reporter.log("Scale Option "+scale+" is NOT FOUND so SKIPPING setting Scale Option. Check the scale option parameter value in XML");
+	        		Reporter.log("-------------------------------------------------------------------------------------------------------------------------------");	
 				}
 		}
 		
@@ -311,10 +357,16 @@ public class AcrobatReaderBase extends Base {
 		        	log.info("Selected desired paper size *****" +PaperSizeListComboBox.getText().toString()+"*****");
 		        	TmpSession.quit();
 		        	}catch(Exception e){
-		        		log.info("Desired paper size is not found so either 1) your Printer does not support desired paper size OR 2) you have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		log.info("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		log.info("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		
+		        		//This is to insert msg to TestNG emailable-report.html 
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		        		Reporter.log("\""+paper_size+"\" Paper Size is NOT FOUND so either 1) Your Printer does not support \""+paper_size+"\" Paper Size OR 2) You have typed the paper size value incorrectly in testsuite xml");
+		        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 			        	//e.printStackTrace();
-			            log.info("Error selecting paper size option but continuing test with rest of the print options");     
-			            //throw new RuntimeException(e);
+			            log.info("Error selecting paper size option but continuing test with rest of the print options");  
 		        	}		     		        
 		     } else {
 		    	log.info("Desired paper size => " +PaperSizeListComboBox.getText().toString()+" <= is already selected so proceeding");
@@ -323,6 +375,36 @@ public class AcrobatReaderBase extends Base {
 	        session.findElementByXPath("//Button[@Name = 'OK']").click();
 	        Thread.sleep(1000);	        
 	 }
-	 
+		
+		
+		
+		// Method to switch from to Acrobat session
+		public static void SwitchToAcrobatApp(String device_name) throws MalformedURLException {
+			try {
+			
+				DesktopSession = Base.GetDesktopSession(device_name);
+			    
+			    //Get handle to Acrobat App window
+			    WebElement AcrobatAppWindow = DesktopSession.findElementByClassName("AcrobatSDIWindow");
+		    	String nativeWindowHandle = AcrobatAppWindow.getAttribute("NativeWindowHandle");
+		    	int acrobatAppWindowHandle = Integer.parseInt(nativeWindowHandle);
+		    	log.debug("int value:" + nativeWindowHandle);
+		    	String acrobatAppTopWindowHandle  = hex.concat(Integer.toHexString(acrobatAppWindowHandle));
+		    	log.debug("Hex Value:" + acrobatAppTopWindowHandle);
+	
+		    	log.info("Successfully got Acrobat App handle.");
+		    	// Create a AcrobatAppSession by attaching to an existing application top level window handle
+		    	DesiredCapabilities capabilities = new DesiredCapabilities();
+		    	capabilities.setCapability("appTopLevelWindow", acrobatAppTopWindowHandle);
+		    	capabilities.setCapability("platformName", "Windows");
+		        capabilities.setCapability("deviceName", device_name);
+		        acrobatAppSession = new WindowsDriver<WindowsElement>(new URL(WindowsApplicationDriverUrl), capabilities);
+				}catch(Exception e){
+					e.printStackTrace();
+					log.info("Error getting Acrobat App session");
+					//throw new RuntimeException(e);
+		        	}
+			log.info("Acrobat App session created successfully");   	    	
+		}	 
 		
 }

@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import com.hp.win.core.AcrobatReaderBase;
 import com.hp.win.core.Base;
+import com.hp.win.utility.GetWindowsBuild;
 import com.hp.win.utility.PrintTraceCapture;
 import com.hp.win.utility.ScreenshotUtility;
 
@@ -28,6 +29,11 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 		
 		//Start PrintTrace log capturing 
     	PrintTraceCapture.StartLogCollection(currentClass);	
+    	
+    	//Get windows build info
+    	GetWindowsBuild.GetWindowsBuildInfo();
+    	GetWindowsBuild.PrintWindowsBuildInfo();
+    	
    		acrobatSession = AcrobatReaderBase.OpenAcrobatReader(device_name, test_filename,acrobat_exe_loc);    		
         Thread.sleep(1000);
         
@@ -36,7 +42,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	
 	@Test
 	@Parameters({"device_name","ptr_name","copies", "page_count","duplex","orientation","color","scale","paper_size"})
-    public void PrintPdfFile(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,
+    public void PrintPdfAcrobat(String device_name,String ptr_name, @Optional("1")String copies,@Optional("All")String page_count,
     		@Optional("None")String duplex,@Optional("Auto")String orientation,@Optional("Color")String color,
     		@Optional("Actual size")String scale,@Optional("Letter")String paper_size) throws InterruptedException, IOException    {
 		
@@ -82,7 +88,7 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 	
 	
 
-	@Test(dependsOnMethods={"PrintPdfFile"})
+	@Test(dependsOnMethods={"PrintPdfAcrobat"})
 	@Parameters({ "device_name", "ptr_name", "test_filename"})
 	public void ValidatePrintQueue(String device_name, String ptr_name, String test_filename) throws IOException, InterruptedException 
 	{
@@ -120,7 +126,8 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 
 	
     @AfterClass(alwaysRun=true)
-    public static void TearDown() throws IOException, InterruptedException
+    @Parameters({"device_name"})
+    public static void TearDown(String device_name) throws IOException, InterruptedException
     {  
     	
 			if(DesktopSession!=null)
@@ -132,16 +139,29 @@ public class PrintPdfFromAcrobat extends AcrobatReaderBase{
 			{
 				PrintQueueSession.quit();
 			}
-						
+			
         	if (acrobatSession!= null)
-        	{   
+        	{           		
+        		try {
         		acrobatSession.close();
-        		acrobatSession.quit();        		
+        		acrobatSession.quit();
+        		}catch(Exception e) {
+        			log.info("Error Closing Acrobat Session. Looks like Acrobat Session is already closed");
+        		}
         	}
-      			        	
+      		
+        	if (acrobatAppSession!= null)
+        	{           		
+        		try {
+	        		acrobatAppSession.close();
+	        		acrobatAppSession.quit();
+        		}catch(Exception e) {
+        			log.info("Error Closing Acrobat App Session. Looks like Acrobat App Session is already closed");
+        		}
+        	}
+        	
         	//Stop PrintTrace log capturing.
-        	PrintTraceCapture.StopLogCollection(currentClass);	
-        	        
+        	PrintTraceCapture.StopLogCollection(currentClass);        	        
     }
     
     
