@@ -119,9 +119,26 @@ public class Win32Base extends Base {
                         // Click on the combo box
                         try {
                             log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
-                            
                             li.click();
                             Thread.sleep(1000);
+                            // Find the desired list item and click on it
+                            WebElement listItem = dialogSession.findElementByName(listSel);
+                            try {
+                            	log.info("Going to click on '" + listItem.getText().toString() + "'");
+                                listItem.click();
+                                Thread.sleep(1000);
+                            } catch (Exception e) {
+                            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                            	log.info("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
+                            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                                
+                                //This is to insert msg to TestNG emailable-report.html 
+                            	Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                        		Reporter.log("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
+                        		Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                                //throw new RuntimeException(e);
+                            }
+                            
                             break;
                         } catch (Exception e) {
                             log.info("There was a problem clicking on '" + boxName + "'. Continuing with the default selection.");
@@ -145,26 +162,7 @@ public class Win32Base extends Base {
                 }
             }
         
-            // Find the desired list item and click on it
-            WebElement listItem = dialogSession.findElementByName(listSel);
-            try {
-            	log.info("Going to click on '" + listItem.getText().toString() + "'");
-                listItem.click();
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-            	log.info("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
-            	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                
-                //This is to insert msg to TestNG emailable-report.html 
-            	Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        		Reporter.log("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
-        		Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                //throw new RuntimeException(e);
-            }
-            
-        }
-        
+       }        
         // If there are no elements that have the name we're looking for...
         else {
             log.info("'" + boxName + "' is not found in the print settings. Please confirm the printer's settings. If it is a valid setting, please confirm that it is seen in the print settings dialog box.");

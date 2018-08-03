@@ -290,7 +290,7 @@ import java.io.IOException;
 			// Tap on Print button(Give Print)
 	    	MsEdgeSession.findElementByXPath("//Button[@AutomationId = 'PrintButton']").click();
 	    	log.info("Clicked on final Print button -> Print option Successfully");
-		    
+		    Thread.sleep(1000);
 	    }
  
 		
@@ -303,6 +303,7 @@ import java.io.IOException;
 				
 		// Method to attach session to Printer Queue Window
 		Base.SwitchToPrinterQueue(device_name,ptr_name);
+	
 		
 	    log.info("Expected queued job should be => "+web_url);
 	    //Validate Print Job Queued up
@@ -334,22 +335,30 @@ import java.io.IOException;
     
     @AfterClass(alwaysRun=true)
     public static void TearDown() throws IOException, InterruptedException 
-    {	        
-    
-		if (MsEdgeSession!= null)
-		{
-			MsEdgeSession.quit();
-		}
-		
-		if (DesktopSession!=null)
-		{
-			DesktopSession.quit();
-		}
-		
-		if (PrintQueueSession!=null)
-		{
-			PrintQueueSession.quit();
-		}
+    {	    
+    	
+    	try{
+    		MsEdgeSession.close();
+    		MsEdgeSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("MsEdgeSession has already been terminated.");
+	    }
+    	try{
+    		DesktopSession.close();
+    		DesktopSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("DesktopSession has already been terminated.");
+	    }
+    	try{
+    		PrintQueueSession.close();
+    		PrintQueueSession.quit();
+	    } catch (Exception e)
+	    {
+	        log.info("PrintQueueSession has already been terminated.");
+	    }
+    	
 				
 		//Stop PrintTrace log capturing.
 		PrintTraceCapture.StopLogCollection(currentClass);					   
