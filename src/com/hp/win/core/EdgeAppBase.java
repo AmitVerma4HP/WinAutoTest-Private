@@ -85,6 +85,5 @@ public class EdgeAppBase extends UwpAppBase {
 				return MsEdgeSession;
 				
 			}
-		
-			
+				
 }
