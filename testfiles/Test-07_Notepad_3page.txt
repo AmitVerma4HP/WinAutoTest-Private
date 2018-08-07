@@ -1,92 +1,114 @@
-***********************************************************************************************************************************************
-      ********************************   TEST- 07 :  START OF NOTEPAD PRINTING TEST CASE     ***************************
-***********************************************************************************************************************************************
-
-
-
-
-
-
-***********************************************************************************************************************************************
-      ********************************         BASIC COMPATIBILITY - TEST PARAMETERS  *******************************************
-***********************************************************************************************************************************************
-			
-		Test_filename 	=>   Test-07_Notepad_3page.txt
-		Description		=>	 3page random English text content.
-		
-		Job Properties
-		Paper_size 	=>   Letter
-		Orientation	=>   Landscape
-		Copies		=>   2
-		Duplexing	=>   None.	
-
-***********************************************************************************************************************************************
-      ********************************         BASIC COMPATIBILITY - TEST PARAMETERS  *******************************************
-***********************************************************************************************************************************************
-
-
-
-
-
-
-
-
-
-
-Lorem Ipsum
-"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
-"There 
-Lorem i
-
-Duis vel sem sem. Aliquam interdum at ante quis luctus. Fusce sollicitudin urna sit amet malesuada consequat. Maecenas sed dui turpis. In hac habitasse platea dictumst. Morbi malesuada lectus vitae felis pulvinar, in pretium lectus lobortis. Aenean fringilla leo eu lectus lacinia, volutpat gravida dui iaculis. Curabitur malesuada libero et dignissim luctus. Mauris vulputate vel lorem et porttitor. Cras suscipit bibendum molestie.
-
-
-
-Pellentesque luctus rutrum tortor, 
-
-
-c.
-
-Nunc ullamcorper ex auctor libero pretium, ac auctor risus luctus. Praesent ornare tempor nulla, lobortis hendrerit mi consequat in. Quisque posuere erat sed eros luctus, pharetra commodo eros malesuada. Ut congue lacinia consequat. Integer sagittis ex iaculis tempus euismod. Duis blandit vulputate convallis. In euismod, dui vel volutpat vulputate, massa sem elementum elit, eu mollis leo purus vitae dolor. Nulla facilisi. Proin feugiat suscipit augue ac semper. Vestibulum at dui nibh. In orci ante, tempus nec pharetra sed, rutrum at eros. Quisque tristique ut risus et ullamcorper.
-
-Vestibulum condimentum 
-
-
-
-
-
-Fusce rhoncus convallis ante,
-
-In hac habitasse platea dictumst. 
-
-Donec dignissim odio nunc, id malesuada nunc scelerisque ut. Phasellus tellus arcu, ornare tincidunt 
-
-Maecenas egestas turpis sed libero luctus, ut fermentum erat rutrum. Quisque scelerisque quis ipsum i
-
-
-
-
-
-
-Nullam elementum, leo ac varius ullamcorper, turpis massa ornare nulla, 
-
-elementum laoreet odio metus a quam. Fusce orci justo, blandit a mauris ut, consequat lacinia dui. 
-
-Quisque nibh sapien, malesuada et sapien pulvinar, pellentesque ultricies nunc. Nunc ultrices 
-
-Donec tristique dui 
-
-Proin molestie viverra finibus. 
-
-
-
-Donec aliquet sit amet nibh ut aliquet. Nam commodo euismod metus, ac volutpat magna vulputate eu. 
-
-Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
-
-Nunc malesuada placerat pulvinar. Donec et consectetur mi. Nunc fermentum urna eros,
-
-
-***********************************************************************************************************************************************
-      ********************************   TEST- 07 :  END OF NOTEPAD PRINTING TEST CASE     ***************************
-***********************************************************************************************************************************************
+: : : : : : : : : : : : : : : : : : : : : : : : : : :                                                      :
+: TEST- 07 :  START OF NOTEPAD PRINTING TEST CASE   :                                                      :
+: BASIC COMPATIBILITY - TEST PARAMETERS             :                                                      :
+: : : : : : : : : : : : : : : : : : : : : : : : : : :                                                      :
+:                                                                                                          :
+:                                                                                                          :
+: Test filename => Test-07_Notepad_3page.txt                                                               :
+: Description   => 3 pages of English letter and punctuation characters                                    :
+:               => Font is Consolas (for evenly spaced characters)                                         :
+:               => File is designed for letter sized paper                                                 :
+:               => File encoding is ANSI                                                                   :
+:                                                                                                          :
+: Job Properties:                                                                                          :
+:                                                                                                          :
+: Paper size  => Letter                                                                                    :
+: Orientation => Landscape                                                                                 :
+: Duplexing   => None                                                                                      :
+:                                                                                                          :
+: : : : : : : : : : : : : : : : : : : : : : : : : : :: : : : : : : : : : : : : : : : : : : : : : : : : : : :
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+: : : : : : : : : : : : : : : : : : :                                                           ::::::::::::
+: PAGE BREAK 1 (Landscape, Letter)  :                                                           : PAGE 1/3 :
+: : : : : : : : : : : : : : : : : : :                                                           ::::::::::::
+:
+:
+:
+:
+:
+:
+:
+:
+:
+: These are patterns made with parentheses, tildes, accents, and apostrophes:
+:
+:                   ()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()                     :
+:   (~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)(~)    :
+:      (`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)'(`)     :
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+: : : : : : : : : : : : : : : : : : :                                                           ::::::::::::
+: PAGE BREAK 2 (Landscape, Letter)  :                                                           : PAGE 2/3 :
+: : : : : : : : : : : : : : : : : : :                                                           ::::::::::::
+:
+:
+:
+:
+:	\          /\          /          |             |\     |
+:	 \        /  \        /           |             | \    |
+:	  \      /    \      /            |             |  \   |
+:	   \    /      \    /             |             |   \  |
+:	    \  /        \  /              |             |    \ |
+:	     \/          \/               |             |     \|
+:
+:
+:
+:
+:                      /|               --------          |
+:                     / |              |        |         |
+:                    /  |              |        |         |
+:                       |              |        |         |
+:                       |              |        |         |
+:                       |              |        |         |
+:                       |              |        |
+:                     __|__             --------          @
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+: : : : : : : : : : : : : : : : : : : : : : : : :                                               ::::::::::::
+: TEST - 07 : END OF NOTEPAD PRINTING TEST CASE :                                               : PAGE 3/3 :
+: : : : : : : : : : : : : : : : : : : : : : : : :                                               ::::::::::::

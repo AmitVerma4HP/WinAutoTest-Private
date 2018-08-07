@@ -2,14 +2,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Printing Test suite - Basic Compatability Tests">
     	<parameter name="device_name" value="vermak-PC" />
-     	<parameter name="ptr_name" value="NPI04F7AB (HP LaserJet M605)" />	
+     	<parameter name="ptr_name" value="NPI04F7AB (HP LaserJet M605)" />
 		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
+		<parameter name="acrobat_exe_loc" value="C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe" />
 		
   <listeners>
     <listener class-name="com.hp.win.utility.TestNGCustomReportListener"/>
   </listeners>
-		
-<!-- ********************************************** Instructions to follow ****************************************************-->
+
+<!-- ********************************************** Instructions to follow to create new testcase ****************************************************-->		
 <!-- For Printing PDF from Edge Browser --> 
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
@@ -32,9 +33,9 @@
 <!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
 <!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
+
+<!-- *******************************************************************************************************************************************************-->		
 		
-		
-<!-- ********************************************** Instructions to follow ****************************************************-->
 <!-- For Printing WebPage from Edge Browser --> 
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
@@ -58,10 +59,11 @@
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
 <!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
 
+<!-- *******************************************************************************************************************************************************-->		
 	
  <!-- For Printing MSWORD 2016 test files -->
  <!-- Note: parameter page_count needed only if pages_to_print set to "Custom Print" -->
- <!-- Supported Parameters:  -->
+ <!-- Supported Parameters:  --> 
 	 <!-- MUST		word2016_exe_loc = <WINWORD.EXE location from your PC> -->
 	 <!-- MUST		device_name = <Your Windows PC Name> -->
 	 <!-- MUST 		ptr_name 	= <Printer name as it shows in discovery-->
@@ -75,8 +77,9 @@
 	 <!-- OPTIONAL	margin = <"Normal","Narrow","Moderate","Wide","Mirrored","Office 2003 Default"> , DEFAULT = "Normal" -->
 	 <!-- OPTIONAL	pages_per_sheet = <"1 Page Per Sheet","2 Pages Per Sheet","4 Pages Per Sheet","6 Pages Per Sheet","8 Pages Per Sheet","16 Pages Per Sheet">, DEFAULT = "1 Page Per Sheet" -->
 	 <!-- OPTIONAL	TDB = <TDB> , DEFAULT = TBD -->
-	 
- 
+
+<!-- *******************************************************************************************************************************************************-->			 
+
  <!-- For Printing Notepad test files -->
  <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
  <!-- Supported Parameters:  																	-->
@@ -89,9 +92,10 @@
 	 <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
 	 <!-- OPTIONAL	test_filename  = <Full name of file to use in test>	 	 , DEFAULT = "NotepadTestFile1.txt"    -->
 	 <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT =  TBD 		-->
-  
 
-  <!-- For Printing Photo test files -->
+<!-- *******************************************************************************************************************************************************-->		
+
+<!-- For Printing Photo test files -->
 <!-- Note: Before initiating the test, import the Test Folder(testfiles) into Photos App. -->
 <!-- Supported Test Parameters:  -->
 	<!-- MUST          device_name = <Your Windows PC Name> -->
@@ -111,8 +115,48 @@
 	<!-- OPTIONAL      stapling_optn = <"Staple", "Top left", "Top right"> , DEFAULT = "Staple" -->
 	<!-- OPTIONAL      TDB = <TDB> , DEFAULT = TBD -->
 
+<!-- *******************************************************************************************************************************************************-->		
+ <!-- For Printing OneNote test files from OneNote App -->
+ <!-- NOTE: Test files for OneNote CANNOT be created and stored locally. OneNote will open with the last notebook/section/page       -->
+ <!--       that it closed on. The test_pagename parameter is global because, currently, the test cannot select pages automatically. -->
+ <!--       Thus, test_pagename is used only to validate that the correct job is in the print queue.                                 -->
+ <!--       The test_pagename value is persistent across all page print selections (Current Page, Current Section, Current Notebook) -->
+ <!--       because only the page name is what will be displayed in the printer queue.                                               -->
+	
+ <!-- Supported Parameters:                                                                                                -->
+ <!-- MUST      device_name     = <Your Windows PC Name>                                                                   -->
+ <!-- MUST      ptr_name        = <Printer name as it shows in discovery>                                                  -->
+ <!-- MUST      test_pagename   = <Name of the OneNote page to be used in the test>                                        -->
+ <!-- OPTIONAL  copies          = <Number of copies to be printed>                               , DEFAULT = "1"           -->
+ <!-- OPTIONAL  pages_selection = <"Page", "Section", "Notebook">                                , DEFAULT = "Page         -->
+ <!-- OPTIONAL  orientation     = <"Portrait", "Landscape">                                      , DEFAULT = "Portrait"    -->
+ <!-- OPTIONAL  duplex_optn     = <"None", "Shortedge", "Longedge">                              , DEFAULT = "None"        -->
+ <!-- OPTIONAL  paper_size      = <Paper size list>                                              , DEFAULT = "Letter"      -->
+ <!-- OPTIONAL  color_optn      = <"Color", "Monochrome">                                        , DEFAULT = "Color"       -->
+ <!-- OPTIONAL  paper_tray      = <"Auto select", "Tray 2", "Photo", etc (Depending on printer)> , DEFAULT = "Auto select" -->
+ <!-- OPTIONAL  stapling_optn   = <"Staple", "Top left", "Top right">                            , DEFAULT = "Staple"      -->
+ <!-- OPTIONAL  output_qlty     = <"Normal", "Draft">                                            , DEFAULT = "Normal"      -->
+ <!-- OPTIONAL  collation_optn  = <"Uncollated", "Collated">                                     , DEFAULT = "Uncollated"  -->
+ 
+<!-- *******************************************************************************************************************************************************-->		
+
+<!-- For Printing PDF test files via Acrobat Reader App -->
+<!-- Supported Test Parameters:  -->
+ <!-- Supported Parameters:  -->
+ <!-- MUST		device_name 	= <Your Windows PC Name> -->
+ <!-- MUST 		ptr_name 		= <Printer name as it shows in discovery-->
+ <!-- MUST 		acrobat_exe_loc = <Complete location to AcroRd32.exe from your system-->
+ <!-- MUST 		test_filename 	= <PDF Test file name with extension-->
+ <!-- OPTIONAL	paper_size 			= <"Letter","A4","Legal" or "Any paper size supported by the printer "> , DEFAULT = "Letter" -->
+ <!-- OPTIONAL	copies 			= <Any number between 1-999> , DEFAULT = "1" -->
+ <!-- OPTIONAL	pages_count 	= <"All","Current page","PageCount expression like 1,2 or 2-4 etc."> , DEFAULT = "All" --> 
+ <!-- OPTIONAL	duplex 			= <"None","Longedge","Shortedge"> , DEFAULT = "None" -->
+ <!-- OPTIONAL	orientation 	= <"Auto","Portrait","Landscape"> , DEFAULT = "Auto" -->
+ <!-- OPTIONAL	color 			= <"Color","Mono"> , DEFAULT = "Color" -->
+ <!-- OPTIONAL	scale 			= <"Fit","Actual","Shrink" or "Any number between 1-1000"> , DEFAULT = "Actual" -->
 
 <!-- ********************************************** START: PRINTING PDF FROM EDGE ********************************************************* -->
+
  <test verbose="2" name="Test-01 : Printing PDF from Edge">    
      	<parameter name="test_filename" value="Test-01_Pdf_4page.pdf" />
 		<parameter name="paper_size" value="A4" />
@@ -128,7 +172,7 @@
 		<parameter name="output_qlty" value="Draft" />
 		<parameter name="stapling_optn" value="Top left" />
 		<parameter name="headerandfooter_optn" value="On" />
-		<parameter name="scale_optn" value="Fit to page" />
+		<parameter name="scale_optn" value="Actual size" />
 		<parameter name="collation_optn" value="Collated" />
 		
     <classes>
@@ -150,7 +194,7 @@
 		<parameter name="output_qlty" value="Draft" />
 		<parameter name="stapling_optn" value="Top left" />
 		<parameter name="headerandfooter_optn" value="Off" />
-		<parameter name="scale_optn" value="Actual size" />		
+		<parameter name="scale_optn" value="Fit to page" />		
 		<parameter name="collation_optn" value="Uncollated" />
 		
     <classes>
@@ -188,7 +232,7 @@
  
  
 <test verbose="2" name="Test-04 : Printing Offline Web Page from Edge">
-     	<parameter name="test_filename" value="Test-04_Benefits_of_Exercise_MedlinePlus_WebPage.html" />
+     	<parameter name="test_filename" value="Test-04_BenifitsOfExcercise_WebPage.html" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="1" />
@@ -221,10 +265,10 @@
      	<parameter name="duplex_option" value="Print One Sided" />
 		<parameter name="pages_to_print" value="Custom Print" />  
 		<parameter name="page_count" value="1,2-3" />
-<!-- Prints in color -->  
-		<parameter name="pages_per_sheet" value="2 Pages Per Sheet" />     	
-   		
-		<classes>
+		<parameter name="color_optn" value="Color" />
+		<parameter name="pages_per_sheet" value="2 Pages Per Sheet" />  
+		
+   		<classes>
 			 <class name="com.hp.win.tests.PrintMsWord"/>
 		</classes>
 	</test> 
@@ -237,8 +281,7 @@
      	<parameter name="duplex_option" value="DuplexLongEdge" />
 		<parameter name="pages_to_print" value="Custom Print" />  
 		<parameter name="page_count" value="1,2,3"/>
-<!-- prints in color -->   
-
+		<parameter name="color_optn" value="mono" />
 		
 		<classes>
 			 <class name="com.hp.win.tests.PrintMsWord"/>
@@ -263,7 +306,7 @@
 	</test>
 
   	<test verbose="2" name="Test-08 - Printing text file from Notepad">
-		<parameter name="test_filename" value="Test-08_Notepad_3page_MixedFont.txt" />
+		<parameter name="test_filename" value="Test-08_Notepad_2page_MixedFont.txt" />
 		<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
 		<parameter name="copies" value="1" />
@@ -346,8 +389,43 @@
     <classes>
          <class name="com.hp.win.tests.PrintFromOneNote"/>
     </classes>
-  </test>
+	</test>
 <!-- ********************************************** END: PRINTING ONENOTE FILE ************************************************************ -->
+
+
+
+<!-- ********************************************** START: PRINTING PDF FILE via Acrobat Reader ******************************************** -->
+ 	 <test verbose="2" name="Test-13 : Printing PDF from Acrobat">     	   	
+     	<parameter name="test_filename" value="Test-13_Pdf_3page.pdf" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="copies" value="2" />
+     	<parameter name="page_count" value="All" />
+     	<parameter name="duplex" value="Longedge" />
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="color" value="Color" />
+     	<parameter name="scale" value="Fit" />
+     			
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
+    </classes>
+	</test>
+
+
+	 <test verbose="2" name="Test-14 : Printing DDF from Acrobat">     	   	
+     	<parameter name="test_filename" value="Test-14_Pdf_4page.pdf" />
+     	<parameter name="paper_size" value="A4" />
+     	<parameter name="copies" value="1" />
+     	<parameter name="page_count" value="1,3,4" />
+     	<parameter name="duplex" value="None" />
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="color" value="Monochrome" />
+     	<parameter name="scale" value="75" />
+     			
+    <classes>
+         <class name="com.hp.win.tests.PrintPdfFromAcrobat"/>
+    </classes>
+	</test>
+<!-- ********************************************** END: PRINTING PDF FILE via Acrobat Reader ******************************************** -->
   </suite>
   
    
