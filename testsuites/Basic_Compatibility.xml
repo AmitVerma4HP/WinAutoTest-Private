@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Printing Test suite - Basic Compatability Tests">
-    	<parameter name="device_name" value="vermak-PC" />
-     	<parameter name="ptr_name" value="NPI04F7AB (HP LaserJet M605)" />
-		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
-		<parameter name="acrobat_exe_loc" value="C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe" />
-		
+    	<parameter name="device_name" value="DESKTOP-OFCJ1KK" />
+ 		<parameter name="ptr_name" value="HP OfficeJet Pro 8720 [418D24]" />
+ 		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
+		<parameter name="Chrome_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
+  
   <listeners>
     <listener class-name="com.hp.win.utility.TestNGCustomReportListener"/>
   </listeners>
 
-<!-- ********************************************** Instructions to follow to create new testcase ****************************************************-->		
+<!-- ********************************************** Instructions to follow ****************************************************-->
+
 <!-- For Printing PDF from Edge Browser --> 
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
@@ -194,7 +195,8 @@
 		<parameter name="output_qlty" value="Draft" />
 		<parameter name="stapling_optn" value="Top left" />
 		<parameter name="headerandfooter_optn" value="Off" />
-		<parameter name="scale_optn" value="Fit to page" />		
+		<parameter name="scale_optn" value="Actualsize" />		
+
 		<parameter name="collation_optn" value="Uncollated" />
 		
     <classes>
@@ -208,8 +210,8 @@
 	
 
 <!-- ********************************************** START: PRINTING WEBPAGE FROM EDGE ********************************************************* -->
-<test verbose="2" name="Test-03 : Printing Offline Web Page from Edge">
-     	<parameter name="test_filename" value="Test-03_Himalayas_WebPage.html" />
+ <test verbose="2" name="Test-03 : Printing Offline Web Page from Edge">
+     	<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
 		<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="2" />
@@ -226,13 +228,13 @@
 		<parameter name="collation_optn" value="Collated" />		
 
 		<classes>
-         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
     </classes>
     </test>
  
  
 <test verbose="2" name="Test-04 : Printing Offline Web Page from Edge">
-     	<parameter name="test_filename" value="Test-04_BenifitsOfExcercise_WebPage.html" />
+     	<parameter name="web_url" value="Test-04_BenifitsOfExcercise_WebPage.html" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="1" />
@@ -249,15 +251,15 @@
 		<parameter name="collation_optn" value="Collated" />		
 
 		<classes>
-         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
+         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
     </classes>
-    </test>
+    </test> 
 <!-- ********************************************** END: PRINTING WEBPAGE FROM EDGE ********************************************************* -->
 
 
 <!-- ********************************************** START: PRINTING MSWORD TEST FILE ******************************************************** --> 
  
-   	<test verbose="2" name="Test-05 - Printing Document from WORD2016">
+  	<test verbose="2" name="Test-05 - Printing Document from WORD2016">
 		<parameter name="test_filename" value="Test-05_MsWord_5page.docx" />
      	<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Portrait Orientation" />
@@ -286,19 +288,20 @@
 		<classes>
 			 <class name="com.hp.win.tests.PrintMsWord"/>
 		</classes>
-	</test> 
+	</test>  
 	
 <!-- ********************************************** END: PRINTING MSWORD TEST FILE ******************************************************** --> 
 
 
 <!-- ********************************************** START: PRINTING NOTEPAD TEST FILE ***************************************************** -->
 
-    <test verbose="2" name="Test-07 - Printing text file from Notepad">
+     <test verbose="2" name="Test-07 - Printing text file from Notepad">
 		<parameter name="test_filename" value="Test-07_Notepad_3page.txt" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Landscape" />
+		<parameter name="color_optn" value="Color" />
+		<parameter name="output_qlty" value="Draft" />	
 		<parameter name="copies" value="2" />
-<!-- prints simplex -->
 				
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -309,19 +312,21 @@
 		<parameter name="test_filename" value="Test-08_Notepad_2page_MixedFont.txt" />
 		<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
+		<parameter name="color_optn" value="Color" />
 		<parameter name="copies" value="1" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
+		<parameter name="output_qlty" value="Best" />
 	
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
 		</classes>
-	</test>
-
+	</test> 
+	
 <!-- ********************************************** END: PRINTING NOTEPAD TEST FILE ***************************************************** -->
 
 
 <!-- ********************************************** START: PRINTING PHOTO TEST FILE *********************************************************** -->
- 
+
 	<test verbose="2" name="Test-09 - Printing Photos from Photo App">    	
     	<parameter name="test_filename" value="Test-09_Landscape_Jpeg_Image.png" />
 		<parameter name="paper_size" value="Letter" />
@@ -348,13 +353,13 @@
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromPhotos"/>
 		</classes>
-	</test> 
+	</test>  
 <!-- ********************************************** END: PRINTING PHOTO TEST FILE *********************************************************** -->
 
 
 
 <!-- ********************************************** START: PRINTING ONENOTE FILE ************************************************************ -->
-      <test verbose="2" name="Test-11 - Printing OneNote File from OneNote App">
+     <test verbose="2" name="Test-11 - Printing OneNote File from OneNote App">
 		<parameter name="test_pagename" value="1pg OneNote" />
 		<parameter name="paper_size"      value="A4"        />
 		<parameter name="orientation"     value="Landscape" />
@@ -426,7 +431,39 @@
     </classes>
 	</test>
 <!-- ********************************************** END: PRINTING PDF FILE via Acrobat Reader ******************************************** -->
-  </suite>
+
+<!-- ********************************************** START: PRINTING Chrome TEST FILE ***************************************************** -->
+
+     <test verbose="2" name="Test-13 - Printing text file from Chrome">
+		<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="orientation" value="Landscape" />
+		<parameter name="color_optn" value="Color" />
+		<parameter name="output_qlty" value="Draft" />	
+		<parameter name="copies" value="2" />
+				
+		<classes>
+			 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+		</classes>
+	</test>
+
+  	<test verbose="2" name="Test-14 - Printing text file from Chrome">
+		<parameter name="web_url" value="Test-04_BenifitsOfExcercise_WebPage.html" />
+		<parameter name="paper_size" value="Letter" />
+     	<parameter name="orientation" value="Portrait" />
+		<parameter name="color_optn" value="Color" />
+		<parameter name="copies" value="1" />
+     	<parameter name="duplex_optn" value="Flip on Long Edge" />
+		<parameter name="output_qlty" value="Best" />
+	
+		<classes>
+			 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+		</classes>
+	</test> 
+	
+<!-- ********************************************** END: PRINTING NOTEPAD TEST FILE ***************************************************** -->
+
+ </suite>
   
    
  

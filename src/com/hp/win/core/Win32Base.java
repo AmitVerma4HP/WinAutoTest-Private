@@ -118,16 +118,19 @@ public class Win32Base extends Base {
                         
                         // Click on the combo box
                         try {
-                            log.info("Going to click on '" + li.getAttribute("Name").toString() + "' combo box...");
                             li.click();
+                            log.info("Clicked on '" + li.getAttribute("Name").toString() + "' combo box...");
                             Thread.sleep(1000);
+                            
                             // Find the desired list item and click on it
-                            WebElement listItem = dialogSession.findElementByName(listSel);
+                            //WebElement listItem = dialogSession.findElementByName(listSel);
                             try {
-                            	log.info("Going to click on '" + listItem.getText().toString() + "'");
-                                listItem.click();
-                                Thread.sleep(1000);
+                            	WebElement listItem = dialogSession.findElementByName(listSel);
+                            	listItem.click();
+                            	log.info("Clicked on '" + listItem.getText().toString() + "'");
+                            	Thread.sleep(1000);
                             } catch (Exception e) {
+                            	dialogSession.findElementByClassName("SysTreeView32").click();
                             	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                             	log.info("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
                             	log.info("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -136,9 +139,9 @@ public class Win32Base extends Base {
                             	Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                         		Reporter.log("There was a problem clicking on '" + listSel + "'. Either 1) your Printer does not support '" + listSel + "' OR 2) you have typed the option value incorrectly in testsuite xml.");
                         		Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                                //throw new RuntimeException(e);
+                                Thread.sleep(1000);
+                        		//throw new RuntimeException(e);
                             }
-                            
                             break;
                         } catch (Exception e) {
                             log.info("There was a problem clicking on '" + boxName + "'. Continuing with the default selection.");
@@ -156,7 +159,7 @@ public class Win32Base extends Base {
 	        		
 	        		//This is to insert msg to TestNG emailable-report.html 
 	        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-	        		Reporter.log("\""+boxName+"\" Option is NOT FOUND so either 1) Your Printer does not support \""+boxName+"\" Option OR 2) You have typed the value incorrectly in testsuite xml");
+	        		Reporter.log("\""+boxName+"\" combo box NOT FOUND so either 1) Your Printer does not support \""+boxName+"\" Option OR 2) You have typed the value incorrectly in testsuite xml");
 	        		Reporter.log("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");                    
                 }
             }
@@ -193,8 +196,8 @@ public class Win32Base extends Base {
             	Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         		Reporter.log("There was a problem clicking on '" + settingsSel + "'. Either 1) your Printer does not support " + settingsSel + " OR 2) you have typed the option value incorrectly in testsuite xml.");
         		Reporter.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                //throw new RuntimeException(e);
-            }
+        		//throw new RuntimeException(e);
+        	}
         }
         else {
             return;
@@ -265,29 +268,31 @@ public class Win32Base extends Base {
 
 
     // Method to select color option
-    public static void ChooseColorOrMono_Win32(RemoteWebDriver session, String color_optn) throws InterruptedException {
+    public static void ChooseColorOrMono_Win32(RemoteWebDriver session, String color_optn) {
         
         // Test parameters have been paraphrased to prevent confusion around the two '&' in 'Black && White'
         // They are changed to their actual element names here
         String color = "Color";
         String mono = "Black && White";
-        String color_choice;
+        String color_choice = null;
         String color_sel = color_optn.toLowerCase();
 
         if(color_sel.equals("color")){
             color_choice = color;
         }
-        else {
+        else if(color_sel.equals("mono")||color_sel.equals("Black && White")||color_sel.equals("monochrome")) {
             color_choice = mono;
+        }else{
+        	color_choice = color_sel;
         }
-
+        
         SelectRadioButton_Win32(session, color_choice, "Color");
 
     }
 
     
     // Method to select print quality
-    public static void ChoosePrintQuality_Win32(RemoteWebDriver session, String qualitySel) {
+    public static void ChoosePrintQuality_Win32(RemoteWebDriver session, String qualitySel){
         SelectRadioButton_Win32(session, qualitySel, "Quality Settings");
     }
     

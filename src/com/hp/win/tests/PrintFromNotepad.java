@@ -86,6 +86,9 @@ public class PrintFromNotepad extends NotepadBase{
 	    wait.until(ExpectedConditions.invisibilityOfElementWithText(By.xpath("//ListItem[@AutomationId='ListViewItem-1']"),"Spooling"));
 	    log.info("Waiting until the job spooling is completed");
 	    
+	    PrintQueueSession.close();
+	    log.info("Tester MUST validate printed output physical copy to ensure job is printed with correct Print Options");	    
+	    
 	    
 	    // Get the Notepad handle so that we can switch back to the app and close it
         try {

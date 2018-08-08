@@ -97,7 +97,7 @@ public class NotepadBase extends Win32Base {
         ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
         // Now open the Advanced settings
-                ClickButton(PreferencesSession, "Advanced...");
+        ClickButton(PreferencesSession, "Advanced...");
         
         // Close the session for the Preferences dialog box
         try {
@@ -118,6 +118,15 @@ public class NotepadBase extends Win32Base {
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "Print");
+        
+     // A new desktop session must be created every time a dialog box is created or destroyed
+        try {
+        	AdvancedSession.quit();
+            log.info("Closed AdvancedSession...");
+        } catch (Exception e) {
+            log.info("AdvancedSession already terminated.");
+        }
+        Thread.sleep(1000);
      
     }
 
