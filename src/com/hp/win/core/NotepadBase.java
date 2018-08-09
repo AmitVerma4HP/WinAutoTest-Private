@@ -72,7 +72,7 @@ public class NotepadBase extends Win32Base {
         // Open Preferences window
         ClickButton(PrintDialogSession, "Preferences");
 
-        // A new desktop session must be created every time a dialog box is created or destroyed
+        // The desktop session created to access dialog box must be destroyed after completing actions on it.
         try {
             PrintDialogSession.quit();
             log.info("Closed PrintDialogSession...");
@@ -119,7 +119,7 @@ public class NotepadBase extends Win32Base {
         ClickButton(AdvancedSession, "OK");
         ClickButton(AdvancedSession, "Print");
         
-     // A new desktop session must be created every time a dialog box is created or destroyed
+        // The desktop session created to access dialog box must be destroyed after completing actions on it.
         try {
         	AdvancedSession.quit();
             log.info("Closed AdvancedSession...");

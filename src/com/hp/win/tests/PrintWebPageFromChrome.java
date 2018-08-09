@@ -32,21 +32,21 @@ import java.io.IOException;
 		@Parameters({ "device_name", "ptr_name", "web_url", "chrome_exe_loc"})
 	    public static void setup(String device_name, String ptr_name, String web_url, String chrome_exe_loc) throws InterruptedException, IOException { 
 	       
-		currentClass = PrintWebPageFromChrome.class.getSimpleName();
-				
-		//Start PrintTrace log capturing 
-		PrintTraceCapture.StartLogCollection(currentClass);	
-		
-		//Get windows build info
-    	GetWindowsBuild.GetWindowsBuildInfo();
-    	GetWindowsBuild.PrintWindowsBuildInfo();
-    	
-	    ChromeSession = ChromeAppBase.OpenChromeApp(device_name, web_url, chrome_exe_loc);
-	    Thread.sleep(2000);
-	    	    
-	    String expectedPrintjob = ChromeSession.getTitle().toString();	
-	    log.info("Expected Print Job: " + expectedPrintjob);
-	    Thread.sleep(1000);
+			currentClass = PrintWebPageFromChrome.class.getSimpleName();
+					
+			//Start PrintTrace log capturing 
+			PrintTraceCapture.StartLogCollection(currentClass);	
+			
+			//Get windows build info
+	    	GetWindowsBuild.GetWindowsBuildInfo();
+	    	GetWindowsBuild.PrintWindowsBuildInfo();
+	    	
+		    ChromeSession = ChromeAppBase.OpenChromeApp(device_name, web_url, chrome_exe_loc);
+		    Thread.sleep(2000);
+		    	    
+		    String expectedPrintjob = ChromeSession.getTitle().toString();	
+		    log.info("Expected Print Job: " + expectedPrintjob);
+		    Thread.sleep(1000);
 	    }
 	
 		
@@ -74,6 +74,7 @@ import java.io.IOException;
 			//Validate Print Job Queued up
 		    try {
 		    	String[] printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toString().split(" ");
+		    	Assert.assertNotNull(printJob[0]);
 		    	log.info(printJob[0]);
 		    	Assert.assertTrue(web_url.contains(printJob[0]));
 		    }catch(NoSuchElementException e) {
