@@ -48,7 +48,7 @@ public class ChromeAppBase extends Win32Base {
 			String prnt_quality, String paper_size, String device_name)
 			throws InterruptedException, MalformedURLException {
 
-		// Launching the Classic print window as the UWP print window not recognized by Winappdriver.
+		// Launching the Classic print window as the UWP print window is not recognized by WinAppDriver.
 		Thread.sleep(1000);
 		ChromeSession.getKeyboard().sendKeys(Keys.CONTROL, Keys.SHIFT);
 		ChromeSession.getKeyboard().pressKey("p");
@@ -59,9 +59,9 @@ public class ChromeAppBase extends Win32Base {
 		Thread.sleep(3000);
 
 		// launching Print properties screen for printing.
-		log.info("Opening PrintDialogSession...");
 		PrintDialogSession = GetDesktopSession(device_name);
 		Assert.assertNotNull(PrintDialogSession);
+		log.info("Successfully launched PrintDialogSession.");
 
 		// Select WiFi Printer
 		log.info("Looking for '" + ptr_name + "'...");
@@ -82,7 +82,7 @@ public class ChromeAppBase extends Win32Base {
 		// Open Preferences window
 		ClickButton(PrintDialogSession, "Preferences");
 
-		// A new desktop session must be created every time a dialog box is created or destroyed
+		// The desktop session created to access dialog box must be destroyed after completing actions on it.
 		try {
 			PrintDialogSession.quit();
 			log.info("Closed PrintDialogSession...");
@@ -90,20 +90,26 @@ public class ChromeAppBase extends Win32Base {
 			log.info("PrintDialogSession already terminated.");
 		}
 
-		// In order to access the Preferences dialog, we need to start a new
-		// desktop session
-		log.info("Opening PreferencesSession...");
+		// In order to access the Preferences dialog, we need to start a new desktop session
 		PreferencesSession = GetDesktopSession(device_name);
 		Assert.assertNotNull(PreferencesSession);
+		log.info("Successfully launched PreferencesSession.");
 
-		// Select Preferences on the Layout tab first
+		
+		// In Layout tab on the Preferences.
+		// Select Duplex settings on Layout tab in Preferences window.
 		ChooseDuplexOrSimplex_Win32(PreferencesSession, duplex_optn, device_name);
+
+		// Select Orientation settings on Layout tab in Preferences window.
 		ChooseOrientation_Win32(PreferencesSession, orientation, device_name);
 
-		// Select settings on Paper/Quality tab after the Layout tab
+		// Select Paper/Quality tab after the Layout tab in Preferences window.
 		SelectPreferencesTab_Win32(PreferencesSession, "Paper/Quality");
 
+		// Select Color settings on Paper/Quality tab in Preferences window.
 		ChooseColorOrMono_Win32(PreferencesSession, color_optn);
+
+		// Select Print Quality settings on Paper/Quality tab in Preferences window.
 		ChoosePrintQuality_Win32(PreferencesSession, prnt_quality);
 
 		// Now open the Advanced settings
@@ -118,19 +124,18 @@ public class ChromeAppBase extends Win32Base {
 		}
 
 		// Open a session for the Advanced dialog box
-		log.info("Opening AdvancedSession...");
 		AdvancedSession = GetDesktopSession(device_name);
 		Assert.assertNotNull(AdvancedSession);
+		log.info("Successfully launched AdvancedSession.");
 
+		// Select Paper size on Advanced window.
 		ChoosePaperSize_Win32(AdvancedSession, paper_size, device_name);
 
 		ClickButton(AdvancedSession, "OK");
 		ClickButton(AdvancedSession, "OK");
 		ClickButton(AdvancedSession, "Print");
-		// ClickButton(AdvancedSession, "Close"); //To close the Chrome window.
 
-		// A new desktop session must be created every time a dialog box is
-		// created or destroyed
+		// The desktop session created to access dialog box must be destroyed after completing actions on it.
 		try {
 			AdvancedSession.quit();
 			log.info("Closed AdvancedSession...");
