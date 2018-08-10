@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Microsoft Win10 Chrome Test suite - Printing Tests">
+ 		<parameter name="device_name" value="LAPTOP-3KFJRU7N" />
+     	<parameter name="ptr_name" value="ipp: HP ENVY 7640 series [CCF025]" />
+     	<parameter name="chrome_exe_loc" value="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" />
+
+
+ <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
+ 
+ <!-- Supported Parameters:  																	-->
+ <!-- MUST		device_name    = <Your Windows PC Name> 										-->
+ <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
+ <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
+ <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge"> , DEFAULT = "None"  -->
+ <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
+ <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
+ <!-- OPTIONAL	web_url  	   = <Full name of HTML file to use in test> , DEFAULT = TBD    -->
+ <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT = TBD 		-->
+
+ 
+ 
+<!-- ********************************************** PRINTING HTML TEST FILE FROM CHROME *********************************************************** -->
+
+
+
+<!-- ************************* OJ 8600 on R12 ************************* -->
+    <test verbose="2" name="Test-01 : Chrome Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])">
+<!--    <parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" /> -->     	
+		<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Flip on Short Edge" />
+     	<parameter name="color_optn" value="Color" />
+     	<parameter name="prnt_quality" value="Draft" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+    </classes>
+  </test>
+<!-- ************************* OJ 8600 on R12 ************************* -->
+  
+  
+<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+      <test verbose="2" name="Test-02 : Chrome Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
+<!--   	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
+     	<parameter name="orientation" value="Landscape" />
+     	<parameter name="duplex_optn" value="Flip on Long Edge" />
+     	<parameter name="color_optn" value="Mono" />
+     	<parameter name="prnt_quality" value="Better" />
+     	<parameter name="paper_size" value="A4" />
+     	<parameter name="web_url" value="Test-04_Benefits_of_Exercise_MedlinePlus_WebPage.html" />
+		
+    <classes>
+         <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+    </classes>
+  </test>
+<!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
+
+
+
+ <!-- ********************************************** PRINTING HTML TEST FILE FROM CHROME*********************************************************** -->
+     
+  </suite>

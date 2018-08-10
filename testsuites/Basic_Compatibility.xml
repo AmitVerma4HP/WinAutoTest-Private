@@ -299,8 +299,6 @@
 		<parameter name="test_filename" value="Test-07_Notepad_3page.txt" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Landscape" />
-		<parameter name="color_optn" value="Color" />
-		<parameter name="output_qlty" value="Draft" />	
 		<parameter name="copies" value="2" />
 				
 		<classes>
@@ -312,10 +310,8 @@
 		<parameter name="test_filename" value="Test-08_Notepad_2page_MixedFont.txt" />
 		<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
-		<parameter name="color_optn" value="Color" />
 		<parameter name="copies" value="1" />
      	<parameter name="duplex_optn" value="Flip on Long Edge" />
-		<parameter name="output_qlty" value="Best" />
 	
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
