@@ -58,7 +58,8 @@ import java.util.concurrent.TimeUnit;
         // A new desktop session is needed to click items in the taskbar 
         RemoteWebDriver TempSession = Base.GetDesktopSession(device_name);
         try {
-        	TempSession.findElementByName("OneNote - 1 running window").click();
+        	TempSession.findElementByXPath("//Button[contains(@Name,'OneNote - 1 running window')]").click();
+//        	TempSession.findElementByName("OneNote - 1 running window").click();
         	log.info("Successfully minimized OneNote by clicking icon in taskbar.");
         	Thread.sleep(1000);
         } catch (Exception e) {
@@ -66,7 +67,7 @@ import java.util.concurrent.TimeUnit;
         }
         
         try {
-        	TempSession.findElementByName("OneNote - 1 running window").click();
+        	TempSession.findElementByXPath("//Button[contains(@Name,'OneNote - 1 running window')]").click();
         	log.info("Successfully restored OneNote by clicking icon in taskbar.");
         	Thread.sleep(1000);
         } catch (Exception e) {
@@ -78,7 +79,7 @@ import java.util.concurrent.TimeUnit;
         }
         
         // Bring focus back to OneNote now
-        Base.BringWindowToFront(device_name, OneNoteSession, "ApplicationFrameWindow");
+        //Base.BringWindowToFront(device_name, OneNoteSession, "ApplicationFrameWindow");
         
         // Click on the OneNote page to ensure that it's in focus, otherwise 'ctrl + p' might not work
         try {
