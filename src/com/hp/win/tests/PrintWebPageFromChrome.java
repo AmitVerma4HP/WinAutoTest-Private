@@ -43,10 +43,10 @@ import java.io.IOException;
 	    	
 		    ChromeSession = ChromeAppBase.OpenChromeApp(device_name, web_url, chrome_exe_loc);
 		    Thread.sleep(2000);
-		    	    
-		    String expectedPrintjob = ChromeSession.getTitle().toString();	
+		    
+			expectedPrintjob = ChromeSession.getTitle().toString();	
 		    log.info("Expected Print Job: " + expectedPrintjob);
-		    Thread.sleep(1000);
+		    Thread.sleep(1000);	    
 	    }
 	
 		
@@ -65,18 +65,18 @@ import java.io.IOException;
 		@Parameters({ "device_name", "ptr_name", "web_url"})
 		public void ValidatePrintQueue(String device_name, String ptr_name, String web_url) throws IOException, InterruptedException 
 		{
+			
 			// Open Print Queue
 			Base.OpenPrintQueue(ptr_name);
 					
 			// Method to attach session to Printer Queue Window
 			Base.SwitchToPrinterQueue(device_name,ptr_name);
 				    
-			//Validate Print Job Queued up
+			 //Validate Print Job Queued up
 		    try {
-		    	String[] printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toString().split(" ");
-		    	Assert.assertNotNull(printJob[0]);
-		    	log.info(printJob[0]);
-		    	Assert.assertTrue(web_url.contains(printJob[0]));
+		    	String printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toString();
+		    	Assert.assertTrue((expectedPrintjob.contains(printJob)));
+		    	log.info("Found expected job in print queue => "+printJob);
 		    }catch(NoSuchElementException e) {
 		    	log.info("Expected Print job is not found in print queue");
 		     	throw new RuntimeException(e);
