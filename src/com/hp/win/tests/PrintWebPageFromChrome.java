@@ -65,7 +65,7 @@ import java.io.IOException;
 		@Parameters({ "device_name", "ptr_name", "web_url"})
 		public void ValidatePrintQueue(String device_name, String ptr_name, String web_url) throws IOException, InterruptedException 
 		{
-			
+						
 			// Open Print Queue
 			Base.OpenPrintQueue(ptr_name);
 					
@@ -75,7 +75,7 @@ import java.io.IOException;
 			 //Validate Print Job Queued up
 		    try {
 		    	String printJob = PrintQueueSession.findElementByXPath("//ListItem[@AutomationId='ListViewItem-0']").getAttribute("Name").toString();
-		    	Assert.assertTrue((expectedPrintjob.contains(printJob)));
+		    	Assert.assertTrue(printJob.contains(expectedPrintjob.substring(0, 30).trim()));
 		    	log.info("Found expected job in print queue => "+printJob);
 		    }catch(NoSuchElementException e) {
 		    	log.info("Expected Print job is not found in print queue");
