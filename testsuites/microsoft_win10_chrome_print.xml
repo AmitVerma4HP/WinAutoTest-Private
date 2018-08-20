@@ -26,31 +26,30 @@
 
 
 <!-- ************************* OJ 8600 on R12 ************************* -->
-    <test verbose="2" name="Test-01 : Chrome Duplex Short Edge Color - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: Officejet Pro 8600 [B80E15])">
-<!--    <parameter name="ptr_name" value="ipp: Officejet Pro 8600 [B80E15]" /> -->     	
-		<parameter name="orientation" value="Portrait" />
-     	<parameter name="duplex_optn" value="Flip on Short Edge" />
+  <test verbose="2" name="Test-01 : Printing HTML from Chrome">
+     	<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="None" />
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
-     	<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
+     	<parameter name="web_url" value="Test-15_RecipeList_WebPage.html" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
     </classes>
-  </test>
+  </test> 
+  
 <!-- ************************* OJ 8600 on R12 ************************* -->
   
   
 <!-- ************************* PageWide Color Flow 785 on R12 ************************* -->
-      <test verbose="2" name="Test-02 : Chrome Duplex Long Edge Mono - Device Under test (LAPTOP-3KFJRU7N) => Printer Under Test (ipp: HP PageWide Color Flow MFP 785 [A107AC])">
-<!--   	<parameter name="ptr_name" value="ipp: HP PageWide Color Flow MFP 785 [A107AC]" /> -->
-     	<parameter name="orientation" value="Landscape" />
-     	<parameter name="duplex_optn" value="Flip on Long Edge" />
+  <test verbose="2" name="Test-02 : Printing HTML from Chrome">
+		<parameter name="orientation" value="Portrait" />
+     	<parameter name="duplex_optn" value="Flip on Short Edge" />
      	<parameter name="color_optn" value="Mono" />
-     	<parameter name="prnt_quality" value="Better" />
-     	<parameter name="paper_size" value="A4" />
-     	<parameter name="web_url" value="Test-04_Benefits_of_Exercise_MedlinePlus_WebPage.html" />
+     	<parameter name="prnt_quality" value="Draft" />
+     	<parameter name="paper_size" value="Letter" />
+     	<parameter name="web_url" value="Test-16_ShellDrawings_WebPage.html" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintWebPageFromChrome"/>

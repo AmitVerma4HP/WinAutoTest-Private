@@ -184,7 +184,7 @@ public class Win32Base extends Base {
             log.info("Waited for combo box to become clickable.");
             
             try {
-                session.findElementByName(settingsSel).click();
+            	session.findElementByXPath("//RadioButton[@Name = '" +settingsSel+ "']").click();
                 log.info("Successfully clicked on '" + settingsSel + ".'");
             } catch (Exception e) {
                 //e.printStackTrace();
