@@ -16,7 +16,7 @@
  <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
  <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
  <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" -->
- <!-- OPTIONAL	web_url  	   = <Full name of HTML file to use in test> , DEFAULT = TBD    -->
+ <!-- OPTIONAL	html_filename  	   = <Full name of HTML file to use in test> , DEFAULT = TBD    -->
  <!-- OPTIONAL	TDB			   = <TDB>									 , DEFAULT = TBD 		-->
 
  
@@ -32,7 +32,7 @@
      	<parameter name="color_optn" value="Color" />
      	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
-     	<parameter name="web_url" value="Test-15_RecipeList_WebPage.html" />
+     	<parameter name="html_filename" value="Test-15_RecipeList_WebPage.html" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
@@ -49,7 +49,7 @@
      	<parameter name="color_optn" value="Mono" />
      	<parameter name="prnt_quality" value="Draft" />
      	<parameter name="paper_size" value="Letter" />
-     	<parameter name="web_url" value="Test-16_ShellDrawings_WebPage.html" />
+     	<parameter name="html_filename" value="Test-16_ShellDrawings_WebPage.html" />
 		
     <classes>
          <class name="com.hp.win.tests.PrintWebPageFromChrome"/>

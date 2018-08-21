@@ -29,8 +29,8 @@ import java.io.IOException;
 		static WebDriverWait wait;
 		
 		@BeforeClass
-		@Parameters({ "device_name", "ptr_name", "web_url", "chrome_exe_loc"})
-	    public static void setup(String device_name, String ptr_name, String web_url, String chrome_exe_loc) throws InterruptedException, IOException { 
+		@Parameters({ "device_name", "ptr_name", "html_filename", "chrome_exe_loc"})
+	    public static void setup(String device_name, String ptr_name, String html_filename, String chrome_exe_loc) throws InterruptedException, IOException { 
 	       
 			currentClass = PrintWebPageFromChrome.class.getSimpleName();
 					
@@ -41,7 +41,7 @@ import java.io.IOException;
 	    	GetWindowsBuild.GetWindowsBuildInfo();
 	    	GetWindowsBuild.PrintWindowsBuildInfo();
 	    	
-		    ChromeSession = ChromeAppBase.OpenChromeApp(device_name, web_url, chrome_exe_loc);
+		    ChromeSession = ChromeAppBase.OpenChromeApp(device_name, html_filename, chrome_exe_loc);
 		    Thread.sleep(2000);
 		    
 			expectedPrintjob = ChromeSession.getTitle().toString();	
@@ -62,8 +62,8 @@ import java.io.IOException;
 
 		
 		@Test(dependsOnMethods = { "PrintFromChrome" })
-		@Parameters({ "device_name", "ptr_name", "web_url"})
-		public void ValidatePrintQueue(String device_name, String ptr_name, String web_url) throws IOException, InterruptedException 
+		@Parameters({ "device_name", "ptr_name", "html_filename"})
+		public void ValidatePrintQueue(String device_name, String ptr_name, String html_filename) throws IOException, InterruptedException 
 		{
 						
 			// Open Print Queue
