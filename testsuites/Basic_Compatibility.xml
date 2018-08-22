@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Microsoft Win10 Printing Test suite - Basic Compatability Tests">
-    	<parameter name="device_name" value="DESKTOP-OFCJ1KK" />
- 		<parameter name="ptr_name" value="HP OfficeJet Pro 8720 [418D24]" />
- 		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
-		<parameter name="Chrome_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
-  
+    	<parameter name="device_name" value="vermak-PC" />
+     	<parameter name="ptr_name" value="NPI04F7AB (HP LaserJet M605)" />
+		<parameter name="word2016_exe_loc" value="C:\Program Files\Microsoft Office\Office16\WINWORD.EXE" />
+		<parameter name="acrobat_exe_loc" value="C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe" />
+		<parameter name="chrome_exe_loc" value="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" />
+		
   <listeners>
     <listener class-name="com.hp.win.utility.TestNGCustomReportListener"/>
   </listeners>
 
-<!-- ********************************************** Instructions to follow ****************************************************-->
-
+<!-- ********************************************** Instructions to follow to create new testcase ****************************************************-->		
 <!-- For Printing PDF from Edge Browser --> 
 <!-- Supported Test Parameters:  -->
 <!-- MUST          device_name 	= <Your Windows PC Name> -->
@@ -20,20 +20,14 @@
 <!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
 <!-- OPTIONAL      duplex_optn 	= <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
 <!-- OPTIONAL      orientation 	= <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
-<!-- OPTIONAL      photo_size 	= <Photo size list> , DEFAULT = "Full page" -->
 <!-- OPTIONAL      copies 		= <Any number between 1-32767> , DEFAULT = "1" -->
-<!-- OPTIONAL      photo_fit 	= <"Fill page","Shrink to fit"> , DEFAULT = "Fill page" -->
-<!-- OPTIONAL      borderless 	= <"On", "Off"> , DEFAULT = "On" -->
-<!-- OPTIONAL      page_margins = <"Normal", "Narrow", "Moderate", "Wide" > , DEFAULT = "Normal" -->
 <!-- OPTIONAL      color_optn 	= <"Color", "Monochrome"> , DEFAULT = "Color" -->
 <!-- OPTIONAL      paper_tray 	= <"Auto select", "Auto", "Tray 2", "Tray 1", "Main", "Photo"etc (Depending on printer)> , DEFAULT = "Auto select" -->
 <!-- OPTIONAL      paper_type 	= <"Plain Paper", "Photo paper"> , DEFAULT = "Plain Paper" -->
 <!-- OPTIONAL      output_qlty 	= <"Normal", "Draft", "High quality"> , DEFAULT = "Normal" -->
 <!-- OPTIONAL      stapling_optn= <"Staple", "Top left", "Top right"> , DEFAULT = "Staple" -->
-<!-- OPTIONAL      headerandfooter_optn = <"On", "Off"> , DEFAULT = "Off" -->
-<!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
+<!-- OPTIONAL      scaling_optn= <"Fit to page" , "Actual size">, DEFAULT = "Fit to page" -->
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
-<!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
 
 <!-- *******************************************************************************************************************************************************-->		
 		
@@ -45,9 +39,7 @@
 <!-- OPTIONAL      paper_size   = <Paper size list> , DEFAULT = "Letter" -->
 <!-- OPTIONAL      duplex_optn 	= <"None", "Shortedge", "Longedge"> , DEFAULT = "None" -->
 <!-- OPTIONAL      orientation 	= <"Portrait","Landscape"> , DEFAULT = "Portrait" -->
-<!-- OPTIONAL      photo_size 	= <Photo size list> , DEFAULT = "Full page" -->
 <!-- OPTIONAL      copies 		= <Any number between 1-32767> , DEFAULT = "1" -->
-<!-- OPTIONAL      photo_fit 	= <"Fill page","Shrink to fit"> , DEFAULT = "Fill page" -->
 <!-- OPTIONAL      borderless 	= <"On", "Off"> , DEFAULT = "On" -->
 <!-- OPTIONAL      page_margins = <"Normal", "Narrow", "Moderate", "Wide" > , DEFAULT = "Normal" -->
 <!-- OPTIONAL      color_optn 	= <"Color", "Monochrome"> , DEFAULT = "Color" -->
@@ -58,7 +50,6 @@
 <!-- OPTIONAL      headerandfooter_optn = <"On", "Off"> , DEFAULT = "Off" -->
 <!-- OPTIONAL      scaling_optn= <"25%", "50%", "75%", "Shrink to fit", "100%", "150%", "200%">, DEFAULT = "Shrink to fit" -->
 <!-- OPTIONAL      collation_optn= <"Uncollated", "Collated"> , DEFAULT = "Uncollated" -->
-<!-- OPTIONAL      TDB 			= <TDB> , DEFAULT = TBD -->
 
 <!-- *******************************************************************************************************************************************************-->		
 	
@@ -155,7 +146,22 @@
  <!-- OPTIONAL	orientation 	= <"Auto","Portrait","Landscape"> , DEFAULT = "Auto" -->
  <!-- OPTIONAL	color 			= <"Color","Mono"> , DEFAULT = "Color" -->
  <!-- OPTIONAL	scale 			= <"Fit","Actual","Shrink" or "Any number between 1-1000"> , DEFAULT = "Actual" -->
-
+ 
+ <!-- *******************************************************************************************************************************************************-->	
+ 
+ <!-- For Printing offline HTML test files via Chrome Browser -->
+ <!-- Note: Some parameters are paraphrased from their menu options for either clarification or simplification -->
+ 
+ <!-- Supported Test Parameters: -->
+ <!-- MUST		device_name    = <Your Windows PC Name> 										-->
+ <!-- MUST 		ptr_name 	   = <Printer name as it shows in discovery> 						-->
+ <!-- OPTIONAL	orientation    = <"Portrait","Landscape">				 , DEFAULT = "Portrait" -->
+ <!-- OPTIONAL	duplex_optn    = <"None", "Flip on Short Edge", "Flip on Long Edge"> , DEFAULT = "None"  -->
+ <!-- OPTIONAL	paper_size     = <Paper size list> 					 	 , DEFAULT = "Letter"   -->
+ <!-- OPTIONAL	color_optn	   = <"Color", "Mono"> 					 	 , DEFAULT = "Color"    -->
+ <!-- OPTIONAL	prnt_quality   = <"Better", "Draft", "Best">			 , DEFAULT = "Draft" 	-->
+ <!-- OPTIONAL	html_filename  = <Full name of HTML file to use in test> , DEFAULT = TBD    	-->
+								
 <!-- ********************************************** START: PRINTING PDF FROM EDGE ********************************************************* -->
 
  <test verbose="2" name="Test-01 : Printing PDF from Edge">    
@@ -195,8 +201,7 @@
 		<parameter name="output_qlty" value="Draft" />
 		<parameter name="stapling_optn" value="Top left" />
 		<parameter name="headerandfooter_optn" value="Off" />
-		<parameter name="scale_optn" value="Actualsize" />		
-
+		<parameter name="scale_optn" value="Fit to page" />		
 		<parameter name="collation_optn" value="Uncollated" />
 		
     <classes>
@@ -210,8 +215,8 @@
 	
 
 <!-- ********************************************** START: PRINTING WEBPAGE FROM EDGE ********************************************************* -->
- <test verbose="2" name="Test-03 : Printing Offline Web Page from Edge">
-     	<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
+<test verbose="2" name="Test-03 : Printing Offline Web Page from Edge">
+     	<parameter name="test_filename" value="Test-03_Himalayas_WebPage.html" />
 		<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="2" />
@@ -228,13 +233,13 @@
 		<parameter name="collation_optn" value="Collated" />		
 
 		<classes>
-         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
     </classes>
     </test>
  
  
 <test verbose="2" name="Test-04 : Printing Offline Web Page from Edge">
-     	<parameter name="web_url" value="Test-04_BenifitsOfExcercise_WebPage.html" />
+     	<parameter name="test_filename" value="Test-04_BenifitsOfExcercise_WebPage.html" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Portrait" />
      	<parameter name="copies" value="1" />
@@ -251,15 +256,15 @@
 		<parameter name="collation_optn" value="Collated" />		
 
 		<classes>
-         <class name="com.hp.win.tests.PrintWebPageFromEdge"/>
+         <class name="com.hp.win.tests.PrintPdfFromEdge"/>
     </classes>
-    </test> 
+    </test>
 <!-- ********************************************** END: PRINTING WEBPAGE FROM EDGE ********************************************************* -->
 
 
 <!-- ********************************************** START: PRINTING MSWORD TEST FILE ******************************************************** --> 
  
-  	<test verbose="2" name="Test-05 - Printing Document from WORD2016">
+   	<test verbose="2" name="Test-05 - Printing Document from WORD2016">
 		<parameter name="test_filename" value="Test-05_MsWord_5page.docx" />
      	<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Portrait Orientation" />
@@ -288,18 +293,19 @@
 		<classes>
 			 <class name="com.hp.win.tests.PrintMsWord"/>
 		</classes>
-	</test>  
+	</test> 
 	
 <!-- ********************************************** END: PRINTING MSWORD TEST FILE ******************************************************** --> 
 
 
 <!-- ********************************************** START: PRINTING NOTEPAD TEST FILE ***************************************************** -->
 
-     <test verbose="2" name="Test-07 - Printing text file from Notepad">
+    <test verbose="2" name="Test-07 - Printing text file from Notepad">
 		<parameter name="test_filename" value="Test-07_Notepad_3page.txt" />
      	<parameter name="paper_size" value="Letter" />
      	<parameter name="orientation" value="Landscape" />
 		<parameter name="copies" value="2" />
+<!-- prints simplex -->
 				
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
@@ -316,20 +322,20 @@
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromNotepad"/>
 		</classes>
-	</test> 
-	
+	</test>
+
 <!-- ********************************************** END: PRINTING NOTEPAD TEST FILE ***************************************************** -->
 
 
 <!-- ********************************************** START: PRINTING PHOTO TEST FILE *********************************************************** -->
-
+ 
 	<test verbose="2" name="Test-09 - Printing Photos from Photo App">    	
-    	<parameter name="test_filename" value="Test-09_Landscape_Jpeg_Image.png" />
+    	<parameter name="test_filename" value="Test-09_Landscape_Jpeg_Image.jpg" />
 		<parameter name="paper_size" value="Letter" />
 		<parameter name="orientation" value="Landscape" /> 
      	<parameter name="copies" value="1" />
 		<parameter name="color_optn" value="Monochrome" />
-		<parameter name="photo_size" value="3.5 x 5 in." />
+		<parameter name="photo_size" value="Full page" />
 		<parameter name="borderless" value="Off" />
 			
 		<classes>
@@ -349,13 +355,13 @@
 		<classes>
 			 <class name="com.hp.win.tests.PrintFromPhotos"/>
 		</classes>
-	</test>  
+	</test> 
 <!-- ********************************************** END: PRINTING PHOTO TEST FILE *********************************************************** -->
 
 
 
 <!-- ********************************************** START: PRINTING ONENOTE FILE ************************************************************ -->
-     <test verbose="2" name="Test-11 - Printing OneNote File from OneNote App">
+      <test verbose="2" name="Test-11 - Printing OneNote File from OneNote App">
 		<parameter name="test_pagename" value="1pg OneNote" />
 		<parameter name="paper_size"      value="A4"        />
 		<parameter name="orientation"     value="Landscape" />
@@ -412,7 +418,7 @@
 	</test>
 
 
-	 <test verbose="2" name="Test-14 : Printing DDF from Acrobat">     	   	
+	 <test verbose="2" name="Test-14 : Printing PDF from Acrobat">     	   	
      	<parameter name="test_filename" value="Test-14_Pdf_4page.pdf" />
      	<parameter name="paper_size" value="A4" />
      	<parameter name="copies" value="1" />
@@ -428,38 +434,36 @@
 	</test>
 <!-- ********************************************** END: PRINTING PDF FILE via Acrobat Reader ******************************************** -->
 
-<!-- ********************************************** START: PRINTING Chrome TEST FILE ***************************************************** -->
 
-     <test verbose="2" name="Test-13 - Printing text file from Chrome">
-		<parameter name="web_url" value="Test-03_Himalayas_WebPage.html" />
-     	<parameter name="paper_size" value="Letter" />
-     	<parameter name="orientation" value="Landscape" />
-		<parameter name="color_optn" value="Color" />
-		<parameter name="output_qlty" value="Draft" />	
-		<parameter name="copies" value="2" />
-				
-		<classes>
-			 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
-		</classes>
+<!-- ********************************************** START: PRINTING OFFLINE HTML FILE via Chrome Browser ********************************* -->
+	 <test verbose="2" name="Test-01 : Printing HTML from Chrome">
+			<parameter name="orientation" value="Portrait" />
+			<parameter name="duplex_optn" value="None" />
+			<parameter name="color_optn" value="Color" />
+			<parameter name="prnt_quality" value="Draft" />
+			<parameter name="paper_size" value="Letter" />
+			<parameter name="html_filename" value="Test-15_RecipeList_WebPage.html" />
+			
+	<classes>
+		 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+	</classes>
+	 </test> 
+
+	 <test verbose="2" name="Test-02 : Printing HTML from Chrome">
+			<parameter name="orientation" value="Portrait" />
+			<parameter name="duplex_optn" value="Flip on Short Edge" />
+			<parameter name="color_optn" value="Mono" />
+			<parameter name="prnt_quality" value="Draft" />
+			<parameter name="paper_size" value="Letter" />
+			<parameter name="html_filename" value="Test-16_ShellDrawings_WebPage.html" />
+			
+	<classes>
+		 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
+	</classes>
 	</test>
+<!-- ********************************************** END: PRINTING OFFLINE HTML FILE via Chrome Browser ********************************* -->
 
-  	<test verbose="2" name="Test-14 - Printing text file from Chrome">
-		<parameter name="web_url" value="Test-04_BenifitsOfExcercise_WebPage.html" />
-		<parameter name="paper_size" value="Letter" />
-     	<parameter name="orientation" value="Portrait" />
-		<parameter name="color_optn" value="Color" />
-		<parameter name="copies" value="1" />
-     	<parameter name="duplex_optn" value="Flip on Long Edge" />
-		<parameter name="output_qlty" value="Best" />
-	
-		<classes>
-			 <class name="com.hp.win.tests.PrintWebPageFromChrome"/>
-		</classes>
-	</test> 
-	
-<!-- ********************************************** END: PRINTING NOTEPAD TEST FILE ***************************************************** -->
-
- </suite>
+  </suite>
   
    
  
