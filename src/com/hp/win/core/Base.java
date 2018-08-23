@@ -196,5 +196,26 @@ public class Base {
         	
         	
         }
+        
+        
+        public static void PQTest(String device_name) {
+			try {
+				
+				DesktopSession = Base.GetDesktopSession(device_name);
+			    
+			    //Get handle to PrinterQueue window
+			    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
+		    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
+		    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
+		    	log.debug("int value:" + nativeWindowHandle);
+		    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
+		    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
+	
+		    	log.info("Print queue is open");
+			}
+		    catch (Exception e) {
+		    	log.info("Print queue is not open.");
+		    }
+        }
             
 }
