@@ -42,7 +42,9 @@ import java.io.IOException;
 		GetWindowsBuild.PrintWindowsBuildInfo();
 		
 		MsEdgeSession = EdgeAppBase.OpenPdfEdgeApp(device_name, test_filename);
-	    Thread.sleep(2000);	    
+	    Thread.sleep(2000);	  
+	    
+		Base.ClosePrintQueue(device_name, ptr_name);
 	    
 	    }
 	

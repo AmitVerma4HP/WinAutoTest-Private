@@ -44,6 +44,7 @@ import java.io.IOException;
 	    //Verify if the test folder is already added, if not add it.
 		PhotoAppBase.VerifyAddTestFolder(device_name, test_filename, testfiles_loc);
 		
+		Base.ClosePrintQueue(device_name, ptr_name);
 		}
 		
 		

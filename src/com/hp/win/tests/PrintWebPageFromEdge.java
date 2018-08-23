@@ -45,6 +45,9 @@ import java.io.IOException;
 	    
 	    String expectedPrintjob = MsEdgeSession.getTitle().toString();	
 	    log.info("Expected Print Job: " + expectedPrintjob);
+	    
+	    Base.ClosePrintQueue(device_name, ptr_name);
+	    
 	    }
 	
 		

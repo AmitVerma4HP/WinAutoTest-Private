@@ -57,7 +57,7 @@ public class PrintFromNotepad extends NotepadBase{
     public void PrintNoteFile(String ptr_name, @Optional("Portrait")String orientation, @Optional("None")String duplex_optn, @Optional("Color")String color_optn, @Optional("Draft")String prnt_quality, @Optional("Letter")String paper_size, String device_name) throws InterruptedException, IOException
     {   
 	
-		Base.PQTest("mopria1");
+		Base.ClosePrintQueue(device_name, ptr_name);
 		
 		// Method to Print Notepad File to Printer Under Test
 		PrintNotePadFile(ptr_name, orientation, duplex_optn, color_optn, prnt_quality, paper_size, device_name);

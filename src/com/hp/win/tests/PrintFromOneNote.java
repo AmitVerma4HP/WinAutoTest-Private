@@ -44,6 +44,8 @@ import java.util.concurrent.TimeUnit;
         OneNoteSession = OneNoteBase.OpenOneNoteApp(device_name, test_pagename);
         Thread.sleep(2000);
         
+        Base.ClosePrintQueue(device_name, ptr_name);
+        
         }
     
         

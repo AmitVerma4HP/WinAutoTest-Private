@@ -198,24 +198,38 @@ public class Base {
         }
         
         
-        public static void PQTest(String device_name) {
+        public static boolean CheckIfPrintQueueOpen(String device_name) {
+        	boolean pq_open = false;
+        	
 			try {
-				
 				DesktopSession = Base.GetDesktopSession(device_name);
-			    
-			    //Get handle to PrinterQueue window
+				
+				// if we can find the print queue element, then we confirm the window is open
 			    WebElement printerQueueWindow = DesktopSession.findElementByClassName("PrintUI_PrinterQueue");
-		    	String nativeWindowHandle = printerQueueWindow.getAttribute("NativeWindowHandle");
-		    	int printerQueueWindowHandle = Integer.parseInt(nativeWindowHandle);
-		    	log.debug("int value:" + nativeWindowHandle);
-		    	String printerQueueTopWindowHandle  = hex.concat(Integer.toHexString(printerQueueWindowHandle));
-		    	log.debug("Hex Value:" + printerQueueTopWindowHandle);
-	
-		    	log.info("Print queue is open");
+		    	pq_open = true;
+		    	log.info("Print queue window is open.");
 			}
 		    catch (Exception e) {
-		    	log.info("Print queue is not open.");
+		    	log.info("Print queue window is closed.");
 		    }
+			return pq_open;
+        }
+        
+        public static void ClosePrintQueue(String device_name, String ptr_name) throws MalformedURLException {
+        	
+        	// If print queue window open == true
+        	if(CheckIfPrintQueueOpen(device_name)) {
+        		
+        		SwitchToPrinterQueue(device_name, ptr_name);
+        	    try {
+        	        PrintQueueSession.close();
+        	        PrintQueueSession.quit();
+        	        log.info("Successfully closed print queue window.");
+        	    } catch (Exception e)
+        	    {
+        	        log.info("PrintQueueSession has already been terminated.");
+        	    }
+        	}
         }
             
 }

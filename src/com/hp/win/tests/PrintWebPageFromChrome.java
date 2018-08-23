@@ -47,6 +47,8 @@ import java.io.IOException;
 		    String expectedPrintjob = ChromeSession.getTitle().toString();	
 		    log.info("Expected Print Job: " + expectedPrintjob);
 		    Thread.sleep(1000);
+		    
+		    Base.ClosePrintQueue(device_name, ptr_name);
 	    }
 	
 		

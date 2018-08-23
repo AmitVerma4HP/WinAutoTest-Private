@@ -40,6 +40,8 @@ public class PrintMsWord extends MsWordAppBase{
     	
     	MsWordSession = MsWordAppBase.OpenMsWordFile(device_name, test_filename,word2016_exe_loc);    		
         Thread.sleep(1000); 
+        
+        Base.ClosePrintQueue(device_name, ptr_name);
     }
 
 	
